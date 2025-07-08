@@ -8,7 +8,8 @@ import { CartProvider } from "@/context/cart-context";
 import { SidebarProvider } from "@/components/ui/sidebar";
 import { Toaster } from "react-hot-toast";
 import Footer from "@/components/layouts/Footer";
-
+export const dynamic = "force-dynamic";
+export const revalidate = 60;
 const geistSans = Geist({ variable: "--font-geist-sans", subsets: ["latin"] });
 const geistMono = Geist_Mono({
   variable: "--font-geist-mono",

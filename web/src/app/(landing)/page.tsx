@@ -31,6 +31,8 @@ import { PartnerBrands } from "../(main)/components/PartnerBrands/PartnerBrands"
 import { NewsMasterPage } from "../(main)/components/News/News";
 import { Hero } from "../(main)/components/Hero/Hero";
 import { FeatureProducts } from "../(main)/components/FeatureProduct/FeatureProduct";
+export const dynamic = "force-dynamic";
+export const revalidate = 60;
 
 export async function generateMetadata(): Promise<Metadata> {
   const store = (await StoreAPI.getStoreInfo()).data.store as StoreInterface;
