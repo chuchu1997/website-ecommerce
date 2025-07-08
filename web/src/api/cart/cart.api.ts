@@ -2,7 +2,7 @@
 
 // import { CartItemSSR } from "@/app/(routes)/gio-hang/components/cart";
 
-import { CartItemSSR } from "@/app/gio-hang/components/cart";
+import { CartItemSSR } from "@/app/(main)/gio-hang/components/cart";
 import api from "../interceptor";
 const storeID = process.env.STORE_ID || 1;
 
