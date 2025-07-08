@@ -1,4 +1,3 @@
-version: "3.9"
 
 services:
   mysql:
@@ -90,4 +89,4 @@ networks:
     external: true
 
 volumes:
-  mysql-data:
+  mysql-data-happyfurniture:
