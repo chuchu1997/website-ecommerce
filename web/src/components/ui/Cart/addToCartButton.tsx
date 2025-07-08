@@ -2,7 +2,7 @@
 "use client";
 import authApi from "@/api/auth";
 import { UserCartAPI } from "@/api/cart/cart.api";
-import { CartItemSSR } from "@/app/gio-hang/components/cart";
+import { CartItemSSR } from "@/app/(main)/gio-hang/components/cart";
 import { useCartContext } from "@/context/cart-context";
 import { ProductInterface } from "@/types/product";
 import { ShoppingCart } from "lucide-react";
