@@ -21,7 +21,7 @@ import { discountTypeEnum } from "@/types/promotion";
 import { useRouter } from "next/navigation";
 import { AddToCartButton } from "@/components/ui/Cart/addToCartButton";
 import { UserCartAPI } from "@/api/cart/cart.api";
-import { CartItemSSR } from "@/app/gio-hang/components/cart";
+import { CartItemSSR } from "@/app/(main)/gio-hang/components/cart";
 import toast from "react-hot-toast";
 import { useCookies } from "react-cookie";
 import ProductSuggess from "./productSuggest";
