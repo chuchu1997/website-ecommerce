@@ -1,35 +1,93 @@
+version: "3.9"
 
 services:
+  mysql:
+    image: mysql:8
+    container_name: happyfurniture-mysql
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+    ports:
+      - "3308:3306"
+    volumes:
+      - mysql-data-happyfurniture:/var/lib/mysql
+    networks:
+      - proxy
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      timeout: 20s
+      retries: 10
+      interval: 10s
+      start_period: 40s
+
   api:
     build: ./api
-    container_name: furniture-api
-    ports:
-      - "3000:3000"
-    environment:
-      - NODE_ENV=production
-      - PORT=3000
-      - DATABASE_URL=mysql://user:password@host.docker.internal:3306/furniture
+    container_name: happyfurniture-api
+    expose:
+      - "3000"
     depends_on:
-      - admin
-      - web
-    restart: always
+      mysql:
+        condition: service_healthy
+    env_file:
+      - ./api/.env
+    environment:
+      DATABASE_URL: ${DATABASE_URL}
+      VIRTUAL_HOST: ${VIRTUAL_HOST}
+      VIRTUAL_PORT: ${VIRTUAL_PORT}
+      LETSENCRYPT_HOST: ${LETSENCRYPT_HOST}
+      LETSENCRYPT_EMAIL: ${LETSENCRYPT_EMAIL}
+    networks:
+      - proxy
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3000/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 20s
 
   admin:
     build: ./admin
-    container_name: furniture-admin
+    container_name: happyfurniture-admin
     ports:
-      - "3500:3500"
+      - "3003:3500"
+    env_file:
+      - ./admin/.env
     environment:
-      - NODE_ENV=production
-      - PORT=3500
-    restart: always
+      VIRTUAL_HOST: ${ADMIN_VIRTUAL_HOST}
+      VIRTUAL_PORT: ${ADMIN_VIRTUAL_PORT}
+      LETSENCRYPT_HOST: ${ADMIN_LETSENCRYPT_HOST}
+      LETSENCRYPT_EMAIL: ${ADMIN_LETSENCRYPT_EMAIL}
+    networks:
+      - proxy
+    restart: unless-stopped
 
   web:
     build: ./web
-    container_name: furniture-web
+    container_name: happyfurniture-web
     ports:
-      - "3900:3900"
+      - "3004:3900"
+    depends_on:
+      api:
+        condition: service_healthy
+    env_file:
+      - ./web/.env
     environment:
-      - NODE_ENV=production
-      - PORT=3900
-    restart: always
+      VIRTUAL_HOST: ${WEBSITE_VIRTUAL_HOST}
+      VIRTUAL_PORT: ${WEBSITE_VIRTUAL_PORT}
+      LETSENCRYPT_HOST: ${WEBSITE_LETSENCRYPT_HOST}
+      LETSENCRYPT_EMAIL: ${WEBSITE_LETSENCRYPT_EMAIL}
+    networks:
+      - proxy
+    restart: unless-stopped
+    # ✅ Chờ đến khi API thực sự sẵn sàng
+
+networks:
+  proxy:
+    external: true
+
+volumes:
+  mysql-data:
