@@ -1,6 +1,7 @@
 import React from 'react';
 import { Facebook, Twitter, Instagram, Youtube, Mail, Phone, MapPin, CreditCard, Shield, Truck, Star } from 'lucide-react';
 import { ImageLoader } from '../ui/image-loader';
+import Image from 'next/image';
 
 interface FooterLink {
   label: string;
@@ -132,7 +133,7 @@ const Footer: React.FC = () => {
                       Cửa Hàng Của Bạn
                     </span>
                   </h2> */}
-                  <ImageLoader src = "/logo.jpg" height={140} width={140} alt = "logo"  className='rounded-full'/>
+                  <Image src = "/logo.png" height={140} width={140} alt = "logo"  className='rounded-full'/>
                   <p className="text-gray-300 mb-8 leading-relaxed text-lg mt-2">
                     Chất lượng cao cấp kết hợp với thiết kế đặc biệt. Chúng tôi đam mê mang đến những sản phẩm vượt trội mong đợi và nâng tầm phong cách sống của bạn.
                   </p>
@@ -193,7 +194,8 @@ const Footer: React.FC = () => {
             <div className="flex flex-col lg:flex-row justify-between items-center space-y-6 lg:space-y-0">
               {/* Copyright */}
               <div className="text-gray-400 text-center lg:text-left">
-                © 2025 Copyright. Tất cả quyền được bảo lưu. Được tạo bởi NguyenCuong .
+                <Image src = "/bo-cong-thuong.png" alt = "bocongthuong" height = {120} width={120}  />
+           
               </div>
 
               {/* Social Links */}
@@ -209,18 +211,14 @@ const Footer: React.FC = () => {
                   </a>
                 ))}
               </div>
+             
 
               {/* Payment Methods */}
-              <div className="flex items-center space-x-4 text-gray-400">
-                <span className="font-medium">Thanh Toán An Toàn:</span>
-                <div className="flex space-x-2">
-                  <div className="bg-gradient-to-r from-yellow-400 to-yellow-300 text-black px-3 py-2 rounded-lg text-sm font-bold transform hover:scale-105 transition-transform duration-300">VISA</div>
-                  <div className="bg-gradient-to-r from-yellow-400 to-yellow-300 text-black px-3 py-2 rounded-lg text-sm font-bold transform hover:scale-105 transition-transform duration-300">MC</div>
-                  <div className="bg-gradient-to-r from-yellow-400 to-yellow-300 text-black px-3 py-2 rounded-lg text-sm font-bold transform hover:scale-105 transition-transform duration-300">AMEX</div>
-                  <div className="bg-gradient-to-r from-yellow-400 to-yellow-300 text-black px-3 py-2 rounded-lg text-sm font-bold transform hover:scale-105 transition-transform duration-300">MOMO</div>
-                </div>
-              </div>
+              
             </div>
+             <div className = "border-t border-gray-300 my-2 py-2 italic text-sm text-center">
+                     © 2025 Copyright. Tất cả quyền được bảo lưu. Được tạo bởi NguyenCuong .
+              </div>
           </div>
         </div>
       </div>

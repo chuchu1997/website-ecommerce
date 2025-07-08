@@ -363,46 +363,35 @@ export class ProductsService {
       );
     }
     //Phải xóa các bản ghi images liên quan ở S3 clound trước khi xóa !!!
-
-    if (existingProduct?.images) {
-      await Promise.all(
-        existingProduct.images.map((image) =>
-          this.uploadService.deleteImagesFromS3(image.url),
-        ),
-      );
+    if (existingProduct?.images?.length) {
+      try {
+        await Promise.all(
+          existingProduct.images.map((image) => {
+            if (image.url) {
+              return this.uploadService.deleteImagesFromS3(image.url);
+            }
+          }),
+        );
+      } catch (error) {
+        console.error('❌ Xóa ảnh S3 thất bại:', error);
+      }
     }
 
-    await this.prisma.product.update({
-      where: { id },
-      data: {
-        fakeComments: {
-          deleteMany: {},
+    const [, deletedProduct] = await this.prisma.$transaction([
+      this.prisma.product.update({
+        where: { id },
+        data: {
+          fakeComments: { deleteMany: {} },
+          promotionProducts: { deleteMany: {} },
+          images: { deleteMany: {} },
+          sizes: { deleteMany: {} },
+          colors: { deleteMany: {} },
+          giftProducts: { deleteMany: {} },
         },
-        images: {
-          deleteMany: {},
-          // Xóa tất cả ảnh liên quan đến sản phẩm ở bảng images quan hệ đến productId
-        },
-        sizes: {
-          // Xóa tất cả sizes liên quan đến sản phẩm ở bảng ProductSize quan hệ đến productId
-          deleteMany: {},
-        },
-        colors: {
-          //xóa tất cả colors liên quan đến sản phẩm ở bảng ProductColor quan hệ đến productId
-          deleteMany: {},
-        },
-        giftProducts: {
-          deleteMany: {},
-        },
-      },
-    });
-    const product = await this.prisma.product.delete({
-      where: { id },
-    });
-    if (!product) {
-      throw new NotFoundException(
-        `⚠️⚠️⚠️ Không tìm thấy sản phẩm để xóa với ID:${id} ⚠️⚠️⚠️ `,
-      );
-    }
-    return product;
+      }),
+      this.prisma.product.delete({ where: { id } }),
+    ]);
+
+    return deletedProduct;
   }
 }

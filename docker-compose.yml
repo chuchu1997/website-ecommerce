@@ -1,0 +1,35 @@
+
+services:
+  api:
+    build: ./api
+    container_name: furniture-api
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=production
+      - PORT=3000
+      - DATABASE_URL=mysql://user:password@host.docker.internal:3306/furniture
+    depends_on:
+      - admin
+      - web
+    restart: always
+
+  admin:
+    build: ./admin
+    container_name: furniture-admin
+    ports:
+      - "3500:3500"
+    environment:
+      - NODE_ENV=production
+      - PORT=3500
+    restart: always
+
+  web:
+    build: ./web
+    container_name: furniture-web
+    ports:
+      - "3900:3900"
+    environment:
+      - NODE_ENV=production
+      - PORT=3900
+    restart: always

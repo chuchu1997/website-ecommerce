@@ -78,6 +78,7 @@ export class ProductsController {
   @Delete(':id')
   async remove(@Param('id', ParseIntPipe) id: number) {
     const product = await this.productsService.remove(id);
+
     return {
       message: ` Sản phẩm với ID:${product.id} đã được xóa ✅`,
       product,

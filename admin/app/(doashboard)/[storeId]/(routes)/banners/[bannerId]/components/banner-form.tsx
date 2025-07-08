@@ -246,7 +246,7 @@ export const BannerForm: React.FC<BannerProps> = ({ initialData }) => {
           <ImageUploadSection
             form={form}
             loading={loading}
-            note="Kích thước nên là  1920x600"
+            note="Kích thước nên là  1920x1080"
             title="Hình ảnh Banner"
           />
 

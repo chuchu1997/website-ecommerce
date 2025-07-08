@@ -6,7 +6,7 @@ import { CategoryAPI } from "@/api/categories/category.api";
 import MainNavbar from "./components/NavbarClient";
 import { AppSidebar } from "../../app-sidebar";
 import { CategoryInterface } from "@/types/category";
-import NavbarClient from "./components/NavbarClient";
+import NavbarClientVer2 from "./components/NavbarClientVer2";
 
 const Navbar = async () => {
   let categories: CategoryInterface[] = [];
@@ -29,7 +29,7 @@ const Navbar = async () => {
 
   return (
     <nav className=" ">
-      <NavbarClient />
+      <NavbarClientVer2 />
       {/* <AppSidebar categories={getCategories} />
       <MainNavbar data={categories} /> */}
       {/* This is navbar */}

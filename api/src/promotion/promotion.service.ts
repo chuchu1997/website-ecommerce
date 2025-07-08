@@ -35,7 +35,7 @@ export class PromotionService {
   async findAll(query: PromotionQueryDto) {
     const { currentPage, limit, storeID, promotionType, isActive } = query;
 
-    return await this.prisma.promotion.findMany({
+    let promotions = await this.prisma.promotion.findMany({
       where: {
         promotionType,
         isActive,
@@ -68,6 +68,8 @@ export class PromotionService {
       take: limit, // Đảm bảo kiểu số và giá trị mặc định
       skip: (currentPage - 1) * limit, // Đảm bảo kiểu số và giá trị mặc định
     });
+
+    return promotions;
   }
 
   async findOne(id: number) {

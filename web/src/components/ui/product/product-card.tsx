@@ -22,7 +22,7 @@ import { BadgeFlashSale } from "../Badge/flashsale";
 import { discountTypeEnum, PromotionInterface } from "@/types/promotion";
 import { useCookies } from "react-cookie";
 import { UserCartAPI } from "@/api/cart/cart.api";
-import { CartItemSSR } from "@/app/gio-hang/components/cart";
+import { CartItemSSR } from "@/app/(main)/gio-hang/components/cart";
 import { useCartContext } from "@/context/cart-context";
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
@@ -96,6 +96,7 @@ export const ProductCard = ({
   };
 
   const hasPromotion = promotionProduct.length > 0 && promotion;
+
   const hasGifts = product.giftProducts && product.giftProducts.length > 0;
   const discountedPrice = getDiscountedPrice();
 

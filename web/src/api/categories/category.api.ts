@@ -20,8 +20,12 @@ export const CategoryAPI = {
 
   getAllCategoriesOfStore: async ({
     justGetParent,
+    currentPage,
+    limit,
   }: {
     justGetParent: boolean;
+    currentPage?: number;
+    limit?: number;
   }) => {
     return await api({
       method: "GET",
@@ -29,6 +33,8 @@ export const CategoryAPI = {
       params: {
         justGetParent,
         storeID,
+        limit,
+        currentPage,
 
         //     justGetParent,
         //   process.env.STORE_ID
