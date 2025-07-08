@@ -1,0 +1,101 @@
+# =====================================
+# 📦 Dependencies
+# =====================================
+node_modules/
+.pnp/
+.pnp.*
+
+
+# =====================================
+# 📁 Yarn (if used)
+# =====================================
+.yarn/*
+!.yarn/patches
+!.yarn/plugins
+!.yarn/releases
+!.yarn/versions
+
+# =====================================
+# 📦 Build output
+# =====================================
+dist/
+build/
+.next/
+out/
+
+# =====================================
+# 🧪 Testing
+# =====================================
+coverage/
+.nyc_output/
+
+# =====================================
+# 🧪 Debug logs
+# =====================================
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+.pnpm-debug.log*
+report.[0-9]*.[0-9]*.[0-9]*.[0-9]*.json
+
+# =====================================
+# 🔒 Environment
+# =====================================
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# =====================================
+# ☁️ Vercel deployment
+# =====================================
+.vercel/
+
+# =====================================
+# 💻 OS and system files
+# =====================================
+.DS_Store
+*.pem
+.temp/
+.tmp/
+
+# =====================================
+# 🧠 TypeScript
+# =====================================
+*.tsbuildinfo
+next-env.d.ts
+
+# =====================================
+# 🛠 IDE & Editor config
+# =====================================
+# VSCode
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+
+# JetBrains / IntelliJ
+.idea/
+*.iml
+*.ipr
+*.iws
+
+# Other IDEs
+.project
+.classpath
+.c9/
+*.launch
+.settings/
+*.sublime-workspace
+
+# =====================================
+# 🔒 Runtime data (pid, locks)
+# =====================================
+pids/
+*.pid
+*.pid.lock
+*.seed

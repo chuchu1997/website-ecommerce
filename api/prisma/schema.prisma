@@ -1,0 +1,551 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+  relationMode = "prisma"
+}
+
+// =============================================================================
+// ENUMS - Defined at the top for better organization
+// =============================================================================
+enum Role {
+  ADMIN     /// Quản trị viên
+  CUSTOMER  /// Khách hàng
+  SELLER    /// Người bán hàng
+}
+
+enum PromotionType {
+  FLASHSALE       // Giảm giá trong khung giờ giới hạn
+  PERCENTAGE    // Giảm theo phần trăm
+  FIXED_AMOUNT     // Giảm giá theo số tiền cố định
+  BUY_ONE_GET_ONE  // Mua 1 tặng 1
+  FREE_SHIPPING    // Miễn phí vận chuyển
+  VOUCHER_CODE     // Áp dụng mã giảm giá
+  QUANTITY_BASED   // Giảm khi mua số lượng lớn
+  COMBO            // Giảm khi mua theo combo
+
+}
+
+enum DiscountType {
+  PERCENT     /// GIẢM THEO %
+  FIXED  /// GIÁ GIẢM TRỰC TIẾP
+}
+
+
+enum OrderStatus {
+  ORDERED           // Đã đặt hàng
+  ON_SHIP         // Đang giao 
+  COMPLETED         // Đã thành công 
+  CANCELED          // Đã hủy
+}
+
+enum PaymentMethod {
+  COD              // Thanh toán khi nhận hàng
+  BANK_TRANSFER    // Chuyển khoản ngân hàng
+}
+enum SocialType {
+  FACEBOOK
+  TIKTOK
+  ZALO
+  YOUTUBE
+  SHOPEE
+  TIKI
+  LAZADA
+}
+enum PaymentStatus {
+  PENDING      // Đang chờ thanh toán
+  COMPLETED    // Đã thanh toán
+  FAILED       // Thanh toán thất bại
+  CANCELED     // Đã hủy thanh toán
+}
+enum CategoryVariant {
+  NEWS //TIN TUC
+  COURSES // KHOA HOC
+  SERVICES // DICH VU
+  PROMOTION // CHUONG TRINH KHUYEN MAI
+  CONTACT // LIEN HE 
+
+
+}
+
+
+// =============================================================================
+// USER MANAGEMENT
+// =============================================================================
+
+model User {
+  id          Int           @id @default(autoincrement())
+  email       String?     @unique   /// Email đăng nhập
+  password    String?                /// Mật khẩu đã hash
+  name        String?                /// Tên người dùng
+  phone       String?               /// Số điện thoại (tùy chọn)
+  address   String?             /// Danh sách địa chỉ giao hàng
+  avatar    String?             ///AVATAR
+  orders      Order[]               /// Đơn hàng đã đặt
+  cart        Cart?                 /// Giỏ hàng hiện tại
+  wishlist    Wishlist?             /// Danh sách yêu thích
+  reviews     Review[]              /// Các đánh giá sản phẩm
+  role        Role       @default(CUSTOMER) /// Vai trò người dùng
+  
+
+  stores Store[]
+  resetToken String? @unique
+  resetTokenExpiry DateTime?
+  
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+
+
+}
+// =============================================================================
+// STORE MANAGEMENT
+// =============================================================================
+
+model Store  {
+   id          Int          @id @default(autoincrement())
+   name String @unique
+
+   description   String?   @db.Text
+   userID Int
+   user User @relation(fields: [userID],references: [id])
+
+   email String?
+   phone String?
+   address String?
+   logo String?
+   favicon String?
+   seo        Json?     
+   
+   categories Category[] @relation("StoreToCategories")
+   products Product[] @relation("StoreToProducts")
+   news News[] @relation("StoreToNews")
+   banners Banner[] @relation("StoreToBanner")
+   socials Social[] @relation("StoreToSocial")
+   orders Order[] @relation("StoreToOrders")
+  
+
+   promotion Promotion[] @relation("StoreToPromotion")
+
+   createdAt DateTime @default(now())
+   updatedAt DateTime @updatedAt
+
+   @@index([userID])
+}
+model Social {
+  id       Int    @id @default(autoincrement())
+  type     SocialType // ví dụ: 'facebook', 'instagram', 'zalo', 'tiktok'
+  url      String
+  storeId  Int
+  store    Store  @relation("StoreToSocial",fields: [storeId], references: [id])
+
+  @@index([storeId])
+  @@unique([type, storeId]) // mỗi loại mạng xã hội chỉ nên có 1 bản ghi trên mỗi store
+}
+
+
+
+model News { 
+   id          Int          @id @default(autoincrement())
+   title String 
+   slug String @unique 
+   shortDescription String? @db.Text
+   description   String   @db.Text
+   imageUrl     String?  // URL ảnh đại diện của bài viết
+   storeId   Int?  // Tin có thể không thuộc store nào (optional)
+   createdAt DateTime @default(now())
+   updatedAt DateTime @updatedAt
+   seo Json?
+  // Quan hệ
+   store Store? @relation("StoreToNews",fields: [storeId],references: [id])
+   @@index([storeId])
+}
+
+
+
+
+
+// =============================================================================
+// PRODUCT MANAGEMENT
+// =============================================================================
+
+model Brand  {
+    id          Int          @id @default(autoincrement())
+    name String @unique
+    products Product[] //Danh sách các sản phẩm thuộc Brand này  
+}
+
+model Category {
+  id          Int       @id @default(autoincrement())
+  name        String    @unique
+  slug        String    @unique
+  description String  @db.Text
+  parentId    Int?
+  imageUrl String 
+  subCategories Category[] @relation("SubCategory")
+  parentCategory Category? @relation("SubCategory", fields: [parentId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  products    Product[]
+  seo          Json?
+  variant CategoryVariant?
+  storeId Int
+  store Store @relation("StoreToCategories",fields: [storeId],references: [id])
+
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  @@index([parentId])
+
+  @@index([storeId])
+}
+
+
+model Promotion {
+  id          Int                 @id @default(autoincrement())
+  name        String
+  description String?
+  startDate   DateTime
+  endDate     DateTime
+  isActive    Boolean            @default(true)
+
+  promotionType PromotionType? @default(FLASHSALE)
+  
+
+  promotionProducts PromotionProduct[]
+
+  storeId Int
+  store Store @relation("StoreToPromotion",fields: [storeId],references: [id])
+
+
+  createdAt   DateTime           @default(now())
+  updatedAt   DateTime           @updatedAt
+
+  @@index([storeId])
+}
+
+model PromotionProduct {
+  promotionId Int
+  productId   Int
+
+  discount    Float              @default(0) // % giảm giá hoặc số tiền
+  discountType DiscountType    @default(PERCENT) /// LOẠI HÌNH GIẢM GIÁ 
+
+
+  promotion   Promotion @relation(fields: [promotionId], references: [id])
+  product     Product   @relation(fields: [productId], references: [id])
+
+  // Khóa chính tổng hợp để tránh trùng
+  @@id([promotionId, productId])
+  @@index([productId])
+}
+
+model FakeComment {
+  id          Int          @id @default(autoincrement())
+  productId  Int
+  product    Product  @relation(fields: [productId], references: [id])
+  content    String @db.Text
+
+  ratingCount Int
+  authorName String   // Có thể là tên ảo
+  avatarUrl  String?  // Tuỳ chọn: avatar giả
+
+  createdAt  DateTime @default(now())
+  @@index([productId])
+}
+
+model Product {
+  id          Int          @id @default(autoincrement())
+  name        String @unique
+  shortDescription String
+  description String  @db.Text
+  originalPrice Float?
+  price       Float
+  isFeatured Boolean @default(false)
+  slug String @unique
+  discount    Float @default(0)
+  viewCount Int @default(0)
+  ratingCount Int @default(0)
+  orderItems OrderItem[]
+  colors      ProductColor[]
+  sizes       ProductSize[]
+  fakeComments FakeComment[]
+  stock       Int
+  images      Image[]
+  categoryId  Int
+  category    Category @relation(fields: [categoryId], references: [id])
+  brand       Brand?     @relation(fields: [brandId], references: [id])
+  brandId     Int?
+  reviews     Review[]
+
+   promotionProducts PromotionProduct[]
+    // A: sản phẩm này có tặng quà nào không?
+  giftProducts GiftProduct[] @relation("ProductWithGifts")
+
+  // B: sản phẩm này có phải quà tặng của sản phẩm nào không?
+  giftedIn     GiftProduct[] @relation("GiftedToProduct")
+
+  
+  cartItems CartItem[]  // optional
+
+
+  sku         String? @unique
+  seo           Json?     
+  storeId Int
+  store Store @relation("StoreToProducts",fields: [storeId],references: [id])
+
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
+
+  
+
+  @@index([categoryId])
+
+  @@index([brandId])
+
+  @@index([storeId])
+
+}
+
+
+model GiftProduct {
+  id         Int     @id @default(autoincrement())
+
+  
+  productId Int  // ID của sản phẩm chính (sản phẩm đang bán)
+  giftId    Int  // ID của sản phẩm được tặng kèm (quà)
+
+  product   Product @relation("ProductWithGifts", fields: [productId], references: [id])
+  gift      Product @relation("GiftedToProduct", fields: [giftId], references: [id])
+
+  @@unique([productId, giftId])
+  @@index([giftId])
+}
+
+//BẢNG TRUNG GIAN !!! (KHI XÓA CHI CHỈ CẦN XÓA BẢNG NÀY THÌ PRODUCT VÀ COLOR SẼ ĐƯỢC XÓA THEO)
+model ProductColor {
+  id         Int      @id @default(autoincrement())
+  name       String
+  productId  Int
+  product    Product  @relation(fields: [productId], references: [id])
+  hex       String
+  price      Float
+  stock      Int
+
+  @@index([productId])
+
+}
+
+
+//BẢNG TRUNG GIAN !!! (KHI XÓA CHI CHỈ CẦN XÓA BẢNG NÀY THÌ PRODUCT VÀ SIZE SẼ ĐƯỢC XÓA THEO)
+model ProductSize {
+  id         Int      @id @default(autoincrement())
+  name       String
+  productId  Int
+  product    Product  @relation(fields: [productId], references: [id])
+  price      Float
+  stock      Int
+  @@index([productId])
+
+}
+
+
+
+// =============================================================================
+// ORDER MANAGEMENT
+// =============================================================================
+
+
+
+model Order {
+  id              Int           @id @default(autoincrement())
+  user          User          @relation(fields: [userId], references: [id])
+  userId        Int
+
+
+  address   String    // ✅ Thêm địa chỉ đơn hàng ở đây
+  // Liên kết với bảng OrderItem
+  total         Float         /// Tổng tiền
+
+  status          OrderStatus   @default(ORDERED) //Default status là ORDERED (Đã đặt hàng !!!)
+  items           OrderItem[]
+  payment Payment?
+
+
+  trackingCode String?   // ✅ Mã vận đơn (nullable cho đến khi tạo)
+
+
+  note String?
+  storeId Int
+  store Store @relation("StoreToOrders",fields: [storeId],references: [id])
+
+  createdAt        DateTime      @default(now())
+  updatedAt        DateTime      @updatedAt
+
+  @@index([userId])
+
+  @@index([storeId])
+}
+model OrderItem {
+  id        Int      @id @default(autoincrement())
+  quantity  Int      @default(1)
+  unitPrice Float  // GIÁ TẠI THỜI ĐIỂM ĐÓ KHI ÁP DỤNG VOUCHER , PROMOTION  !!1
+  subtotal  Float    @default(0) // TỔNG TIỀN CHO SẢN PHẨM NÀY !!!
+  productId Int
+
+  product   Product  @relation(fields: [productId], references: [id])
+  orderId   Int
+  order     Order    @relation(fields: [orderId], references: [id])
+
+
+    // Snapshot promotion
+  promotionName String?
+  discountType  DiscountType?      // Loại khuyến mãi: "PERCENT" hoặc "FIXED", nullable nếu không có khuyến mãi
+  discountValue Float?       // Giá trị khuyến mãi: ví dụ 10 (%) hoặc 50000 (đồng)
+
+    // Snapshot quà tặng
+  giftItems     OrderGiftItem[] // Quan hệ 1-n: 1 OrderItem có nhiều quà tặng
+
+  createdAt        DateTime      @default(now())
+  updatedAt        DateTime      @updatedAt
+
+  @@index([productId])
+  @@index([orderId])
+}
+
+model OrderGiftItem {
+  id          Int      @id @default(autoincrement())
+  orderItemId Int
+  orderItem   OrderItem @relation(fields: [orderItemId], references: [id])
+  giftName    String      // Tên quà tặng
+  giftImage   String      // Ảnh quà tặng
+  giftQuantity Int   @default(1)     // Số lượng quà tặng
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+  @@index([orderItemId])
+}
+
+
+model Payment {
+  id               Int           @id @default(autoincrement())
+  method           PaymentMethod
+  status           PaymentStatus @default(PENDING)
+  isPaid           Boolean       @default(false)
+
+  // Thông tin chuyển khoản
+  bankName         String?       // Tên ngân hàng (nếu chuyển khoản)
+  payerName        String?       // Tên người chuyển
+  transactionId    String?       // Mã giao dịch
+
+  // Khóa ngoại liên kết với đơn hàng
+  orderId          Int           @unique
+  order            Order         @relation(fields: [orderId], references: [id])
+
+  createdAt        DateTime      @default(now())
+  updatedAt        DateTime      @updatedAt
+}
+
+
+// =============================================================================
+// SHOPPING CART
+// =============================================================================
+
+model Cart { 
+  id          Int           @id @default(autoincrement())
+  user      User       @relation(fields: [userId], references: [id])
+  userId Int @unique
+  items CartItem[]
+}
+model CartItem {
+  id          Int           @id @default(autoincrement())
+  cart      Cart     @relation(fields: [cartId], references: [id])
+  cartId    Int
+
+  productId Int
+  product   Product @relation(fields: [productId], references: [id])
+
+  quantity  Int      /// Số lượng đặt
+  isSelect Boolean @default(true)
+  @@index([cartId])
+  @@index([productId])
+}
+
+
+// =============================================================================
+// WISHLIST
+// =============================================================================
+model Wishlist { 
+  id         Int           @id @default(autoincrement())
+  user      User       @relation(fields: [userId], references: [id])
+  userId    Int     @unique
+  items WishlistItem[]
+
+}
+model WishlistItem  {
+    id         Int           @id @default(autoincrement())
+  wishlist   Wishlist @relation(fields: [wishlistId], references: [id])
+  wishlistId Int
+  productId  Int
+  addedAt    DateTime @default(now())
+
+
+  @@index([wishlistId])
+}
+
+
+// =============================================================================
+// REVIEWS
+// =============================================================================
+
+model Review {
+  id         Int           @id @default(autoincrement())
+  user      User     @relation(fields: [userId], references: [id])
+  userId    Int
+  product   Product  @relation(fields: [productId], references: [id])
+  productId Int
+  rating    Int      /// Điểm đánh giá (1-5)
+  comment   String?  /// Nhận xét (tùy chọn)
+  createdAt DateTime @default(now())
+
+  @@index([userId])
+  @@index([productId])
+}
+
+
+
+
+// =============================================================================
+// CMS & SEO
+// =============================================================================
+
+model Banner {
+  id        Int      @id @default(autoincrement())
+  storeId   Int
+  store Store @relation("StoreToBanner",fields: [storeId],references: [id])
+  imageUrl     String
+  link      String?
+  title     String?
+  description String?
+  cta         Json?   
+  position    Int       @default(1) // Luôn có giá trị, không để mặc định là 0 (Là vị trí đầu tiên khi thêm mới )
+  isActive  Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([storeId])
+}
+
+model Image {
+  id        Int      @id @default(autoincrement())
+  url       String
+  productId Int
+  product   Product  @relation(fields: [productId], references: [id])
+  @@index([productId])
+}
