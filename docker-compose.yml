@@ -24,7 +24,7 @@ services:
       interval: 10s
       start_period: 40s
 
-  api_hf:
+  api-hf:
     build: ./api
     container_name: happyfurniture-api
     expose:
@@ -72,7 +72,7 @@ services:
     ports:
       - "3004:3900"
     depends_on:
-      api_hf:
+      api-hf:
         condition: service_healthy
     env_file:
       - ./web/.env
