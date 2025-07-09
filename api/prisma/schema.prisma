@@ -73,7 +73,11 @@ enum CategoryVariant {
   COURSES // KHOA HOC
   SERVICES // DICH VU
   PROMOTION // CHUONG TRINH KHUYEN MAI
-  CONTACT // LIEN HE 
+  CONTACT // LIEN HE
+  PROJECTS   // DỰ ÁN
+ 
+
+
 
 
 }
