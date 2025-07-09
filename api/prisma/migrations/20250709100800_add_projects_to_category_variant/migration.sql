@@ -86,7 +86,7 @@ CREATE TABLE `Category` (
     `parentId` INTEGER NULL,
     `imageUrl` VARCHAR(191) NOT NULL,
     `seo` JSON NULL,
-    `variant` ENUM('NEWS', 'COURSES', 'SERVICES', 'PROMOTION', 'CONTACT') NULL,
+    `variant` ENUM('NEWS', 'COURSES', 'SERVICES', 'PROMOTION', 'CONTACT', 'PROJECTS') NULL,
     `storeId` INTEGER NOT NULL,
     `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
     `updatedAt` DATETIME(3) NOT NULL,

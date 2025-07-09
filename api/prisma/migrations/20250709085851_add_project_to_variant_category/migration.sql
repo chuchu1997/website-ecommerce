@@ -1,2 +1,0 @@
--- AlterTable
-ALTER TABLE `category` MODIFY `variant` ENUM('NEWS', 'COURSES', 'SERVICES', 'PROMOTION', 'CONTACT', 'PROJECTS') NULL;
