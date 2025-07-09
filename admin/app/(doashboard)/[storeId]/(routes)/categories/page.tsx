@@ -142,6 +142,7 @@ export default function CategoriesManagement() {
     [CategoryVariant.SERVICES]: "Dịch vụ",
     [CategoryVariant.PROMOTION]: "Khuyến mãi",
     [CategoryVariant.CONTACT]: "Liên hệ",
+    [CategoryVariant.PROJECTS]: "Dự án",
   };
 
   const fetchCategoriesFromAPI = async () => {

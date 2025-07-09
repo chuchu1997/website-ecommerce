@@ -18,6 +18,7 @@ export enum CategoryVariant {
   SERVICES = "SERVICES",
   PROMOTION = "PROMOTION",
   CONTACT ="CONTACT",
+  PROJECTS ="PROJECTS"
 }
 
 
@@ -29,8 +30,6 @@ interface CategoryBase {
     description:string;
     parentId?:number|null;
     variant?:CategoryVariant
-
-
     seo?:SeoType
     createdAt?:Date;
     updatedAt?:Date;
