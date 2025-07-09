@@ -1,6 +1,6 @@
 
 services:
-  mysql:
+  hf-mysql:
     image: mysql:8
     container_name: happyfurniture-mysql
     restart: always
@@ -30,7 +30,7 @@ services:
     expose:
       - "3000"
     depends_on:
-      mysql:
+      hf-mysql:
         condition: service_healthy
     env_file:
       - ./api/.env
