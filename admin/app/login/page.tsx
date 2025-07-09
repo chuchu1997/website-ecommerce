@@ -121,7 +121,7 @@ const LoginPage = () => {
               </div>
             </div>
             <h1 className="text-3xl font-bold text-gray-800 mb-2 italic">
-              <p>Guitar Sài Thành </p>
+              <p>Nmh Furniture </p>
               <p className="text-lg"> (Đăng Nhập)</p>
             </h1>
           </div>
