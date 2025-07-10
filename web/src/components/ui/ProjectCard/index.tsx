@@ -1,21 +1,30 @@
 /** @format */
 
-import { Project } from "@/types/project";
+import { Project, ProjectType } from "@/types/project";
 import { ArrowRight } from "lucide-react";
+import Link from "next/link";
 
+export const ProjectTypeLabel: Record<ProjectType, string> = {
+  [ProjectType.HOME]: "Nhà ở",
+  [ProjectType.APARTMENT]: "Chung cư",
+  [ProjectType.HOTEL]: "Khách sạn",
+  [ProjectType.INTERIOR]: "Nội thất",
+  [ProjectType.COMMERCIAL]: "Thương mại",
+  [ProjectType.RESTAURANT]: "Nhà hàng",
+};
 export const ProjectCard: React.FC<{ project: Project }> = ({ project }) => {
   return (
     <div className="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1">
       <div className="relative">
         <img
-          src={project.image}
+          src={project.imageUrl}
           alt={project.title}
           className="w-full h-64 object-cover"
         />
         <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
         <div className="absolute bottom-4 left-4 right-4 text-white">
           <span className="text-sm bg-amber-600 px-2 py-1 rounded-full">
-            {project.category}
+            {ProjectTypeLabel[project.type]}
           </span>
         </div>
         <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
@@ -31,10 +40,12 @@ export const ProjectCard: React.FC<{ project: Project }> = ({ project }) => {
           {project.title}
         </h3>
         <p className="text-gray-600 mb-4">{project.description}</p>
-        <button className="text-amber-600 hover:text-amber-700 font-semibold inline-flex items-center">
+        <Link
+          href={`/du-an/${project.slug}`}
+          className="text-amber-600 hover:text-amber-700 font-semibold inline-flex items-center">
           Xem dự án
           <ArrowRight className="ml-2 w-4 h-4" />
-        </button>
+        </Link>
       </div>
     </div>
   );

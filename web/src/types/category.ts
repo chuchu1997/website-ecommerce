@@ -10,9 +10,6 @@ import { SeoInterface } from "./seo";
 
 
 
-
-
-
 export enum CategoryVariant {
   NEWS = "NEWS",
   COURSES = "COURSES",

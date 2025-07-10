@@ -72,6 +72,7 @@ const Navbar: React.FC = () => {
   const [activeMegaMenu, setActiveMegaMenu] = useState<string | null>(null);
   const [isScrolled, setIsScrolled] = useState(false);
   const [categories, setCategories] = useState<CategoryInterface[]>([]);
+
   const [hoveredParentCategory, setHoveredParentCategory] = useState<
     string | null
   >(null);
@@ -296,7 +297,7 @@ const Navbar: React.FC = () => {
                     {hasMegaMenu(category) ? (
                       // Categories with megamenu
                       <button
-                        className={`${getTextColor()} px-3 py-2 text-sm font-medium transition-colors duration-200 flex items-center`}>
+                        className={`${getTextColor()} px-3 py-2 text-sm font-medium transition-colors duration-100 flex items-center`}>
                         {getCategoryDisplayName(category)}
                         <ChevronDown className="ml-1 h-4 w-4" />
                       </button>
@@ -335,7 +336,7 @@ const Navbar: React.FC = () => {
                                       subcategory.id.toString()
                                     )
                                   }
-                                  className={`p-3 rounded-lg cursor-pointer transition-all duration-200 ${
+                                  className={`p-3 rounded-lg cursor-pointer transition-all duration-100 ${
                                     hoveredParentCategory ===
                                     subcategory.id.toString()
                                       ? "bg-blue-100 text-blue-700 shadow-sm"
@@ -366,7 +367,7 @@ const Navbar: React.FC = () => {
                                       <Link
                                         key={childCategory.id}
                                         href={`/danh-muc/${childCategory.slug}`}
-                                        className="group gap-x-2 flex items-start p-4 rounded-lg hover:bg-blue-50 transition-all duration-200 hover:shadow-md border border-transparent hover:border-blue-200">
+                                        className="group gap-x-2 flex items-start p-4 rounded-lg hover:bg-blue-50 transition-all duration-100 hover:shadow-md border border-transparent hover:border-blue-200">
                                         <ImageLoader
                                           className="rounded-md"
                                           src={childCategory.imageUrl}
@@ -375,11 +376,11 @@ const Navbar: React.FC = () => {
                                           height={20}
                                         />
                                         <div className="flex-1">
-                                          <h4 className="text-sm font-medium text-gray-900 mb-1 group-hover:text-blue-600 transition-colors duration-200">
+                                          <h4 className="text-sm font-medium text-gray-900 mb-1 group-hover:text-blue-600 transition-colors duration-100">
                                             {childCategory.name}
                                           </h4>
                                           {childCategory.description && (
-                                            <p className="text-xs text-gray-500 group-hover:text-blue-500 transition-colors duration-200 leading-relaxed">
+                                            <p className="text-xs text-gray-500 group-hover:text-blue-500 transition-colors duration-100 leading-relaxed">
                                               {childCategory.description}
                                             </p>
                                           )}
@@ -414,7 +415,7 @@ const Navbar: React.FC = () => {
                                         href={`/danh-muc/${
                                           getActiveParentCategory()?.slug
                                         }`}
-                                        className="inline-block mt-4 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors duration-200">
+                                        className="inline-block mt-4 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors duration-100">
                                         Xem tất cả
                                       </Link>
                                     </div>
@@ -445,11 +446,11 @@ const Navbar: React.FC = () => {
                   className={`${getTextColor()} px-3 py-2 text-sm font-medium transition-colors duration-200`}>
                   Liên hệ
                 </Link>
-                <Link
+                {/* <Link
                   href="/tin-tuc"
                   className={`${getTextColor()} px-3 py-2 text-sm font-medium transition-colors duration-200`}>
                   Tin tức
-                </Link>
+                </Link> */}
               </div>
             </div>
 
@@ -504,11 +505,11 @@ const Navbar: React.FC = () => {
                   Liên hệ
                 </Link>
 
-                <Link
+                {/* <Link
                   href="/tin-tuc"
                   className="flex items-center px-4 py-3 text-gray-900 hover:text-blue-600 hover:bg-blue-50 rounded-xl transition-all duration-200 font-medium">
                   Tin tức
-                </Link>
+                </Link> */}
 
                 <div className="border-t border-gray-200 pt-4 mt-6">
                   <div className="flex items-center justify-between px-4 py-2">

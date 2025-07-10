@@ -1,7 +1,7 @@
 /** @format */
 
 import { Metadata } from "next";
-import TintucSlug from "./tin-tuc-slug";
+import TintucSlug from "./du-an-slug";
 import { NewsAPI } from "@/api/news/news.api";
 import { NewsInterface } from "@/types/news";
 import { generateSeoForPage } from "@/seo-ssr/seo-ssr";
