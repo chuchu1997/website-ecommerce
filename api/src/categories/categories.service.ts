@@ -41,7 +41,12 @@ export class CategoriesService {
   async findAll(query: CategoryQueryFilterDto) {
     //Chỉ lấy ra các categories cha !!!
 
-    const { justGetParent = false, storeID } = query;
+    const {
+      justGetParent = false,
+      storeID,
+      currentPage = 1,
+      limit = 9999,
+    } = query;
 
     const categories = await this.prisma.category.findMany({
       where: {
@@ -52,6 +57,8 @@ export class CategoriesService {
       include: {
         subCategories: true, // Lấy cấp con đầu tiên
       },
+      skip: (currentPage - 1) * limit,
+      take: limit,
       // orderBy: {
       //   createdAt: 'desc', // Sắp xếp theo thời gian tạo (có thể tùy chỉnh)
       // },

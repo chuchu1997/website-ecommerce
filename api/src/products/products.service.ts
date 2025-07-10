@@ -152,6 +152,7 @@ export class ProductsService {
           contains: data.name?.trim(),
         },
         slug: data.slug,
+        //THIS
         categoryId: data.categoryId,
         isFeatured: data.isFeatured ? true : undefined,
         storeId: data.storeID,

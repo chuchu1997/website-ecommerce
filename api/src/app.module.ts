@@ -24,6 +24,7 @@ import { PromotionCronService } from './utils/schedule.service';
 import { PrismaService } from './prisma.service';
 import { CartModule } from './cart/cart.module';
 import { FakecommentsModule } from './fakecomments/fakecomments.module';
+import { ProjectsModule } from './projects/projects.module';
 
 @Module({
   imports: [
@@ -50,6 +51,7 @@ import { FakecommentsModule } from './fakecomments/fakecomments.module';
     PromotionModule,
     CartModule,
     FakecommentsModule,
+    ProjectsModule,
   ],
   controllers: [AppController],
   providers: [
