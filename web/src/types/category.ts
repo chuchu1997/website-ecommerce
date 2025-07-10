@@ -19,6 +19,7 @@ export enum CategoryVariant {
   SERVICES = "SERVICES",
   PROMOTION = "PROMOTION",
   CONTACT ="CONTACT",
+  PROJECTS="PROJECTS"
 }
 
 

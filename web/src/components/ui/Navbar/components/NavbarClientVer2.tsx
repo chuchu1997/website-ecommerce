@@ -17,7 +17,6 @@ import { FormatUtils } from "@/utils/format";
 import Image from "next/image";
 
 // TypeScript interfaces
-
 interface SearchResult {
   id: string;
   title: string;
@@ -25,8 +24,7 @@ interface SearchResult {
   price?: number;
 }
 
-// Mock data for demonstration with icons
-
+// Mock data for demonstration
 const mockSearchResults: SearchResult[] = [
   {
     id: "1",
@@ -71,19 +69,9 @@ const Navbar: React.FC = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [searchResults, setSearchResults] = useState<ProductInterface[]>([]);
   const [isSearching, setIsSearching] = useState(false);
-  const [activeCategory, setActiveCategory] = useState<string | null>(null);
-
+  const [activeMegaMenu, setActiveMegaMenu] = useState<string | null>(null);
   const [isScrolled, setIsScrolled] = useState(false);
   const [categories, setCategories] = useState<CategoryInterface[]>([]);
-
-  useEffect(() => {
-    const handleScroll = () => {
-      setIsScrolled(window.scrollY > 50);
-    };
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
-
   const [hoveredParentCategory, setHoveredParentCategory] = useState<
     string | null
   >(null);
@@ -92,24 +80,26 @@ const Navbar: React.FC = () => {
   >(null);
 
   const pathname = usePathname();
-
   const searchInputRef = useRef<HTMLInputElement>(null);
   const categoryTimeoutRef = useRef<NodeJS.Timeout | null>(null);
   const debouncedSearchQuery = useDebounce(searchQuery, 300);
-
   const router = useRouter();
-
   const { cartQuantity } = useCartContext();
 
-  // Mock search API function
+  // Scroll effect
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 50);
+    };
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  // Search API function
   const searchAPI = async (query: string): Promise<ProductInterface[]> => {
-    // Simulate API delay
     await new Promise((resolve) => setTimeout(resolve, 500));
-
     if (!query.trim()) return [];
-
     let res = await ProductAPI.getProductByName(query);
-
     return res.data.products;
   };
 
@@ -129,10 +119,13 @@ const Navbar: React.FC = () => {
       setSearchResults([]);
     }
   }, [debouncedSearchQuery]);
+
+  // Close mobile menu on route change
   useEffect(() => {
     setIsMobileMenuOpen(false);
     setIsSearchOpen(false);
   }, [pathname]);
+
   // Focus search input when dialog opens
   useEffect(() => {
     if (isSearchOpen && searchInputRef.current) {
@@ -140,6 +133,24 @@ const Navbar: React.FC = () => {
     }
   }, [isSearchOpen]);
 
+  // Fetch categories
+  const fetchCategories = async () => {
+    try {
+      let res = await CategoryAPI.getAllCategoriesOfStore({
+        justGetParent: true,
+      });
+      const cate = res.data.categories as CategoryInterface[];
+      setCategories(cate || []);
+    } catch (error) {
+      console.error("Error fetching categories:", error);
+    }
+  };
+
+  useEffect(() => {
+    fetchCategories();
+  }, []);
+
+  // Handler functions
   const handleSearchOpen = () => {
     setIsSearchOpen(true);
   };
@@ -154,36 +165,33 @@ const Navbar: React.FC = () => {
     setIsMobileMenuOpen(!isMobileMenuOpen);
   };
 
-  const handleCategoryHover = (categoryId: string) => {
-    // Clear any existing timeout
+  const handleMegaMenuHover = (categoryId: string) => {
     if (categoryTimeoutRef.current) {
       clearTimeout(categoryTimeoutRef.current);
     }
-    setActiveCategory(categoryId);
-    // Set the first category as default hovered category
-    if (categoryId === "products" && categories.length > 0) {
-      setHoveredParentCategory(categories[0].id.toString());
+    setActiveMegaMenu(categoryId);
+    // Set the first subcategory as default hovered category
+    const category = categories.find((cat) => cat.id.toString() === categoryId);
+    if (category && category.subCategories.length > 0) {
+      setHoveredParentCategory(category.subCategories[0].id.toString());
     }
   };
 
-  const handleCategoryLeave = () => {
-    // Set a timeout to close the menu after a delay
+  const handleMegaMenuLeave = () => {
     categoryTimeoutRef.current = setTimeout(() => {
-      setActiveCategory(null);
+      setActiveMegaMenu(null);
       setHoveredParentCategory(null);
     }, 100);
   };
 
   const handleMenuEnter = () => {
-    // Clear the timeout when entering the menu
     if (categoryTimeoutRef.current) {
       clearTimeout(categoryTimeoutRef.current);
     }
   };
 
   const handleMenuLeave = () => {
-    // Close the menu when leaving the menu area
-    setActiveCategory(null);
+    setActiveMegaMenu(null);
     setHoveredParentCategory(null);
   };
 
@@ -197,31 +205,44 @@ const Navbar: React.FC = () => {
     );
   };
 
+  // Get category that should show megamenu
+  const getActiveMegaMenuCategory = () => {
+    return categories.find((cat) => cat.id.toString() === activeMegaMenu);
+  };
+
+  // Get the currently hovered parent category for megamenu
   const getActiveParentCategory = () => {
-    return categories.find(
+    const megaMenuCategory = getActiveMegaMenuCategory();
+    if (!megaMenuCategory) return null;
+
+    return megaMenuCategory.subCategories.find(
       (cat) => cat.id.toString() === hoveredParentCategory
     );
   };
 
-  const fetchCategories = async () => {
-    let res = await CategoryAPI.getAllCategoriesOfStore({
-      justGetParent: true,
-    });
-    const cate = res.data.categories as CategoryInterface[];
+  // Check if category has subcategories (should show megamenu)
+  const hasMegaMenu = (category: CategoryInterface) => {
+    return category.subCategories && category.subCategories.length > 0;
+  };
 
-    if (!cate || cate.length <= 0) return;
-
-    if (cate) {
-      const mainCate = cate[0];
-
-      if (mainCate.slug !== "san-pham") return null;
-
-      setCategories(mainCate.subCategories);
+  // Get category display name based on variant
+  const getCategoryDisplayName = (category: CategoryInterface) => {
+    switch (category.variant) {
+      case "SERVICES":
+        return "Dịch vụ";
+      case "PROJECTS":
+        return "Dự án";
+      default:
+        return category.name;
     }
   };
-  useEffect(() => {
-    fetchCategories();
-  }, []);
+
+  // Dynamic text color based on scroll state
+  const getTextColor = () => {
+    return pathname === "/" && !isScrolled
+      ? "text-white hover:text-blue-200"
+      : "text-gray-900 hover:text-blue-600";
+  };
 
   return (
     <>
@@ -233,14 +254,11 @@ const Navbar: React.FC = () => {
         }`}>
         <div className="container mx-auto px-4 py-4">
           <div className="flex items-center justify-between">
+            {/* Mobile menu button */}
             <div className="md:hidden mr-2">
               <button
                 onClick={handleMobileMenuToggle}
-                className={`${
-                  pathname === "/" && !isScrolled
-                    ? "text-white hover:text-blue-200"
-                    : "text-gray-900 hover:text-blue-600"
-                } px-3 py-2 text-sm font-medium transition-colors duration-200`}
+                className={`${getTextColor()} px-3 py-2 text-sm font-medium transition-colors duration-200`}
                 aria-label="Menu">
                 {isMobileMenuOpen ? (
                   <X className="h-6 w-6" />
@@ -250,6 +268,7 @@ const Navbar: React.FC = () => {
               </button>
             </div>
 
+            {/* Logo */}
             <Link href="/">
               <Image
                 priority
@@ -260,173 +279,203 @@ const Navbar: React.FC = () => {
                 className=""
               />
             </Link>
+
+            {/* Desktop Navigation */}
             <div className="hidden md:block">
-              <div className="ml-10 flex items-baseline space-x-8 ">
-                {/* Products with Mega Menu */}
-                <div
-                  className="relative"
-                  onMouseEnter={() => handleCategoryHover("products")}
-                  onMouseLeave={handleCategoryLeave}>
-                  <button
-                    className={`${
-                      pathname === "/" && !isScrolled
-                        ? "text-white hover:text-blue-200"
-                        : "text-gray-900 hover:text-blue-600"
-                    } px-3 py-2 text-sm font-medium transition-colors duration-200 flex items-center`}>
-                    Danh mục
-                    <ChevronDown className="ml-1 h-4 w-4" />
-                  </button>
+              <div className="ml-10 flex items-baseline space-x-8">
+                {/* Dynamic Categories with Megamenus */}
+                {categories.map((category) => (
+                  <div
+                    key={category.id}
+                    className="relative"
+                    onMouseEnter={() =>
+                      hasMegaMenu(category) &&
+                      handleMegaMenuHover(category.id.toString())
+                    }
+                    onMouseLeave={handleMegaMenuLeave}>
+                    {hasMegaMenu(category) ? (
+                      // Categories with megamenu
+                      <button
+                        className={`${getTextColor()} px-3 py-2 text-sm font-medium transition-colors duration-200 flex items-center`}>
+                        {getCategoryDisplayName(category)}
+                        <ChevronDown className="ml-1 h-4 w-4" />
+                      </button>
+                    ) : (
+                      // Categories without megamenu (direct links)
+                      <Link
+                        href={`/danh-muc/${category.slug}`}
+                        className={`${getTextColor()} px-3 py-2 text-sm font-medium transition-colors duration-200`}>
+                        {getCategoryDisplayName(category)}
+                      </Link>
+                    )}
 
-                  {/* Two-Column Mega Menu */}
-                  {activeCategory === "products" && (
-                    <div
-                      className="absolute left-0 top-full mt-0 w-[800px] h-[500px] bg-white rounded-xl shadow-2xl border border-gray-100 z-50 flex"
-                      onMouseEnter={handleMenuEnter}
-                      onMouseLeave={handleMenuLeave}>
-                      {/* Left Column - Parent Categories */}
-                      <div className="w-1/3 bg-gray-50 rounded-l-xl p-6 border-r border-gray-200">
-                        <h3 className="text-lg font-semibold text-gray-900 mb-4 border-b border-gray-300 pb-2">
-                          Danh mục sản phẩm
-                        </h3>
-                        <div className="space-y-2 max-h-[400px] overflow-y-auto">
-                          {categories.map((category) => (
-                            <div
-                              key={category.id}
-                              onClick={() => {
-                                router.push(`/danh-muc/${category.slug}`);
-                              }}
-                              onMouseEnter={() =>
-                                handleParentCategoryHover(
-                                  category.id.toString()
-                                )
-                              }
-                              className={`p-3 rounded-lg cursor-pointer transition-all duration-200 ${
-                                hoveredParentCategory === category.id.toString()
-                                  ? "bg-blue-100 text-blue-700 shadow-sm"
-                                  : "hover:bg-white hover:shadow-sm text-gray-700"
-                              }`}>
-                              <div className="font-medium">{category.name}</div>
-                              <div className="text-xs text-gray-500 mt-1">
-                                {category.subCategories.length} items
-                              </div>
-                            </div>
-                          ))}
-                        </div>
-                      </div>
-
-                      {/* Right Column - Child Categories */}
-                      <div className="w-2/3 p-6">
-                        {getActiveParentCategory() ? (
-                          <>
-                            <h3 className="text-lg font-semibold text-gray-900 mb-4 border-b border-gray-200 pb-2">
-                              {getActiveParentCategory()?.name}
+                    {/* Megamenu */}
+                    {hasMegaMenu(category) &&
+                      activeMegaMenu === category.id.toString() && (
+                        <div
+                          className="absolute left-0 top-full mt-0 w-[800px] h-[500px] bg-white rounded-xl shadow-2xl border border-gray-100 z-50 flex"
+                          onMouseEnter={handleMenuEnter}
+                          onMouseLeave={handleMenuLeave}>
+                          {/* Left Column - Parent Categories */}
+                          <div className="w-1/3 bg-gray-50 rounded-l-xl p-6 border-r border-gray-200">
+                            <h3 className="text-lg font-semibold text-gray-900 mb-4 border-b border-gray-300 pb-2">
+                              {getCategoryDisplayName(category)}
                             </h3>
-                            <div className="grid grid-cols-2 gap-4 max-h-[400px] overflow-y-auto">
-                              {getActiveParentCategory()?.subCategories.map(
-                                (subcategory) => (
-                                  <a
-                                    key={subcategory.id}
-                                    href={`/danh-muc/${subcategory.slug}`}
-                                    className="group gap-x-2 flex items-start p-4 rounded-lg hover:bg-blue-50 transition-all duration-200 hover:shadow-md border border-transparent hover:border-blue-200">
-                                    <ImageLoader
-                                      className="rounded-md"
-                                      src={subcategory.imageUrl}
-                                      alt={subcategory.name}
-                                      width={40}
-                                      height={20}
-                                    />
-
-                                    <div className="flex-1">
-                                      <h4 className="text-sm font-medium text-gray-900 mb-1 group-hover:text-blue-600 transition-colors duration-200">
-                                        {subcategory.name}
-                                      </h4>
-                                      {subcategory.description && (
-                                        <p className="text-xs text-gray-500 group-hover:text-blue-500 transition-colors duration-200 leading-relaxed">
-                                          {subcategory.description}
-                                        </p>
-                                      )}
-                                    </div>
-                                  </a>
-                                )
-                              )}
+                            <div className="space-y-2 max-h-[400px] overflow-y-auto">
+                              {category.subCategories.map((subcategory) => (
+                                <div
+                                  key={subcategory.id}
+                                  onClick={() => {
+                                    router.push(
+                                      `/danh-muc/${subcategory.slug}`
+                                    );
+                                  }}
+                                  onMouseEnter={() =>
+                                    handleParentCategoryHover(
+                                      subcategory.id.toString()
+                                    )
+                                  }
+                                  className={`p-3 rounded-lg cursor-pointer transition-all duration-200 ${
+                                    hoveredParentCategory ===
+                                    subcategory.id.toString()
+                                      ? "bg-blue-100 text-blue-700 shadow-sm"
+                                      : "hover:bg-white hover:shadow-sm text-gray-700"
+                                  }`}>
+                                  <div className="font-medium">
+                                    {subcategory.name}
+                                  </div>
+                                  <div className="text-xs text-gray-500 mt-1">
+                                    {subcategory.subCategories?.length || 0}{" "}
+                                    items
+                                  </div>
+                                </div>
+                              ))}
                             </div>
-                          </>
-                        ) : (
-                          <div className="flex items-center justify-center h-full">
-                            <p className="text-gray-500">
-                              Hover over a category to see subcategories
-                            </p>
                           </div>
-                        )}
-                      </div>
-                    </div>
-                  )}
-                </div>
 
-                <a
+                          {/* Right Column - Child Categories */}
+                          <div className="w-2/3 p-6">
+                            {getActiveParentCategory() ? (
+                              <>
+                                <h3 className="text-lg font-semibold text-gray-900 mb-4 border-b border-gray-200 pb-2">
+                                  {getActiveParentCategory()?.name}
+                                </h3>
+                                <div className="grid grid-cols-2 gap-4 max-h-[400px] overflow-y-auto">
+                                  {getActiveParentCategory()?.subCategories?.map(
+                                    (childCategory) => (
+                                      <Link
+                                        key={childCategory.id}
+                                        href={`/danh-muc/${childCategory.slug}`}
+                                        className="group gap-x-2 flex items-start p-4 rounded-lg hover:bg-blue-50 transition-all duration-200 hover:shadow-md border border-transparent hover:border-blue-200">
+                                        <ImageLoader
+                                          className="rounded-md"
+                                          src={childCategory.imageUrl}
+                                          alt={childCategory.name}
+                                          width={40}
+                                          height={20}
+                                        />
+                                        <div className="flex-1">
+                                          <h4 className="text-sm font-medium text-gray-900 mb-1 group-hover:text-blue-600 transition-colors duration-200">
+                                            {childCategory.name}
+                                          </h4>
+                                          {childCategory.description && (
+                                            <p className="text-xs text-gray-500 group-hover:text-blue-500 transition-colors duration-200 leading-relaxed">
+                                              {childCategory.description}
+                                            </p>
+                                          )}
+                                        </div>
+                                      </Link>
+                                    )
+                                  ) || (
+                                    // If no child categories, show the parent category info
+                                    <div className="col-span-2 text-center py-8">
+                                      <div className="w-16 h-16 bg-gradient-to-br from-blue-50 to-indigo-50 rounded-full flex items-center justify-center mx-auto mb-4">
+                                        <ImageLoader
+                                          className="rounded-md"
+                                          src={
+                                            getActiveParentCategory()
+                                              ?.imageUrl ?? ""
+                                          }
+                                          alt={
+                                            getActiveParentCategory()?.name ??
+                                            ""
+                                          }
+                                          width={32}
+                                          height={32}
+                                        />
+                                      </div>
+                                      <h4 className="font-medium text-gray-900 mb-2">
+                                        {getActiveParentCategory()?.name}
+                                      </h4>
+                                      <p className="text-sm text-gray-500">
+                                        {getActiveParentCategory()?.description}
+                                      </p>
+                                      <Link
+                                        href={`/danh-muc/${
+                                          getActiveParentCategory()?.slug
+                                        }`}
+                                        className="inline-block mt-4 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors duration-200">
+                                        Xem tất cả
+                                      </Link>
+                                    </div>
+                                  )}
+                                </div>
+                              </>
+                            ) : (
+                              <div className="flex items-center justify-center h-full">
+                                <p className="text-gray-500">
+                                  Hover over a category to see details
+                                </p>
+                              </div>
+                            )}
+                          </div>
+                        </div>
+                      )}
+                  </div>
+                ))}
+
+                {/* Static Navigation Links */}
+                <Link
                   href="/gioi-thieu"
-                  className={`${
-                    pathname === "/" && !isScrolled
-                      ? "text-white hover:text-blue-200"
-                      : "text-gray-900 hover:text-blue-600"
-                  } px-3 py-2 text-sm font-medium transition-colors duration-200`}>
+                  className={`${getTextColor()} px-3 py-2 text-sm font-medium transition-colors duration-200`}>
                   Giới thiệu
-                </a>
-                <a
+                </Link>
+                <Link
                   href="/lien-he"
-                  className={`${
-                    pathname === "/" && !isScrolled
-                      ? "text-white hover:text-blue-200"
-                      : "text-gray-900 hover:text-blue-600"
-                  } px-3 py-2 text-sm font-medium transition-colors duration-200`}>
-                  {" "}
+                  className={`${getTextColor()} px-3 py-2 text-sm font-medium transition-colors duration-200`}>
                   Liên hệ
-                </a>
-                <a
+                </Link>
+                <Link
                   href="/tin-tuc"
-                  className={`${
-                    pathname === "/" && !isScrolled
-                      ? "text-white hover:text-blue-200"
-                      : "text-gray-900 hover:text-blue-600"
-                  } px-3 py-2 text-sm font-medium transition-colors duration-200`}>
-                  {" "}
+                  className={`${getTextColor()} px-3 py-2 text-sm font-medium transition-colors duration-200`}>
                   Tin tức
-                </a>
+                </Link>
               </div>
             </div>
 
+            {/* Mobile Search Button */}
             <button
               onClick={handleSearchOpen}
               className="sm:hidden border border-gray-300 bg-white flex-1 mx-2 p-2 text-gray-600 hover:text-blue-600 hover:bg-gray-100 rounded-lg transition-colors duration-200"
               aria-label="Search">
               <div className="flex items-center gap-x-2">
                 <Search className="h-5 w-5" />
-                <span className="text-sm line-clamp-1">Tìm kiêm sản phẩm</span>
+                <span className="text-sm line-clamp-1">Tìm kiếm sản phẩm</span>
               </div>
             </button>
 
-            <div className="flex items-center space-x-4 ">
+            {/* Desktop Actions */}
+            <div className="flex items-center space-x-4">
               <button
                 onClick={handleSearchOpen}
-                className={`${
-                  pathname === "/" && !isScrolled
-                    ? "text-white hover:text-blue-200 "
-                    : "text-gray-900 hover:text-blue-600"
-                } hidden sm:block px-3 py-2 text-sm font-medium transition-colors duration-200`}
+                className={`${getTextColor()} hidden sm:block px-3 py-2 text-sm font-medium transition-colors duration-200`}
                 aria-label="Search">
                 <Search className="h-5 w-5" />
               </button>
 
-              {/* Cart */}
               <button
-                onClick={() => {
-                  router.push("/gio-hang");
-                }}
-                className={`${
-                  pathname === "/" && !isScrolled
-                    ? "text-white hover:text-blue-200"
-                    : "text-gray-900 hover:text-blue-600"
-                } px-3 py-2 text-sm font-medium transition-colors duration-200 relative`}>
+                onClick={() => router.push("/gio-hang")}
+                className={`${getTextColor()} px-3 py-2 text-sm font-medium transition-colors duration-200 relative`}>
                 <ShoppingCart className="h-5 w-5" />
                 <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
                   {cartQuantity}
@@ -435,69 +484,63 @@ const Navbar: React.FC = () => {
             </div>
           </div>
 
+          {/* Mobile Menu */}
           {isMobileMenuOpen && (
-            <div className="shadow-md  rounded-lg md:hidden border-t border-gray-200 bg-white">
+            <div className="shadow-md rounded-lg md:hidden border-t border-gray-200 bg-white">
               <div className="px-4 py-4 space-y-3 max-h-[70vh] overflow-y-auto">
-                {/* Products with Collapsible Categories */}
                 <div className="space-y-2">
                   <RecursiveCategoryTree categories={categories} />
                 </div>
 
-                {/* About Link */}
-                <a
+                <Link
                   href="/gioi-thieu"
                   className="flex items-center px-4 py-3 text-gray-900 hover:text-blue-600 hover:bg-blue-50 rounded-xl transition-all duration-200 font-medium">
                   Giới thiệu
-                </a>
+                </Link>
 
-                {/* Contact Link */}
-                <a
+                <Link
                   href="/lien-he"
                   className="flex items-center px-4 py-3 text-gray-900 hover:text-blue-600 hover:bg-blue-50 rounded-xl transition-all duration-200 font-medium">
                   Liên hệ
-                </a>
-                <a
+                </Link>
+
+                <Link
                   href="/tin-tuc"
                   className="flex items-center px-4 py-3 text-gray-900 hover:text-blue-600 hover:bg-blue-50 rounded-xl transition-all duration-200 font-medium">
                   Tin tức
-                </a>
+                </Link>
 
-                {/* Mobile Menu Footer */}
                 <div className="border-t border-gray-200 pt-4 mt-6">
                   <div className="flex items-center justify-between px-4 py-2">
                     <span className="text-sm text-gray-500">Need help?</span>
-                    <a
+                    <Link
                       href="#"
                       className="text-sm text-blue-600 hover:text-blue-700 font-medium">
                       Support Center
-                    </a>
+                    </Link>
                   </div>
                 </div>
               </div>
             </div>
           )}
-          {/* Mobile Menu */}
         </div>
       </header>
 
       {/* Search Dialog/Modal */}
       {isSearchOpen && (
-        <div className="fixed inset-0 z-50 flex   justify-center p-4">
-          {/* Background overlay */}
+        <div className="fixed inset-0 z-50 flex justify-center p-4">
           <div
             className="absolute inset-0 bg-black/20 backdrop-blur-sm"
             onClick={handleSearchClose}></div>
 
-          {/* Modal panel */}
           <div className="relative bg-white rounded-2xl shadow-2xl w-full max-w-2xl max-h-[80vh] overflow-hidden">
-            {/* Header */}
             <div className="flex items-center justify-between p-6 border-b border-gray-100">
               <div className="flex items-center space-x-3">
                 <div className="p-2 bg-blue-50 rounded-lg">
                   <Search className="h-5 w-5 text-blue-600" />
                 </div>
                 <h3 className="text-xl font-semibold text-gray-900">
-                  Tìm kiếm{" "}
+                  Tìm kiếm
                 </h3>
               </div>
               <button
@@ -507,7 +550,6 @@ const Navbar: React.FC = () => {
               </button>
             </div>
 
-            {/* Search Input */}
             <div className="p-6 border-b border-gray-100">
               <div className="relative">
                 <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
@@ -516,7 +558,7 @@ const Navbar: React.FC = () => {
                 <input
                   ref={searchInputRef}
                   type="text"
-                  placeholder={"Tìm kiếm ..."}
+                  placeholder="Tìm kiếm ..."
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
                   className="w-full pl-12 pr-4 py-4 text-lg border-2 border-gray-200 rounded-xl focus:outline-none focus:border-blue-500 focus:ring-4 focus:ring-blue-50 transition-all duration-200"
@@ -524,8 +566,7 @@ const Navbar: React.FC = () => {
               </div>
             </div>
 
-            {/* Search Results */}
-            <div className="max-h-96 overflow-y-auto ">
+            <div className="max-h-96 overflow-y-auto">
               {isSearching && (
                 <div className="flex flex-col items-center justify-center py-12">
                   <div className="animate-spin rounded-full h-8 w-8 border-2 border-blue-600 border-t-transparent mb-4"></div>
@@ -536,8 +577,7 @@ const Navbar: React.FC = () => {
               {!isSearching && searchResults.length > 0 && (
                 <div className="p-6 space-y-4">
                   <p className="text-sm font-medium text-gray-500 mb-4">
-                    {searchResults.length} sản phẩm
-                    {searchResults.length !== 1 ? "s" : ""} tìm thấy
+                    {searchResults.length} sản phẩm tìm thấy
                   </p>
                   {searchResults.map((result) => (
                     <Link
@@ -586,8 +626,8 @@ const Navbar: React.FC = () => {
                     Không tìm thấy sản phẩm
                   </p>
                   <p className="text-gray-500 text-center">
-                    Không tìm thấy được sản phẩm nào với từ khóa bạn cần tìm "
-                    <span className="font-medium"> {searchQuery}</span>"
+                    Không tìm thấy được sản phẩm nào với từ khóa "
+                    <span className="font-medium">{searchQuery}</span>"
                   </p>
                 </div>
               )}
