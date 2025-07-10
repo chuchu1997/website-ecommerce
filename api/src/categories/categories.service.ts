@@ -12,25 +12,30 @@ export class CategoriesService {
   async create(createCategoryDto: CreateCategoryDto) {
     const { seo, ...data } = createCategoryDto;
 
-    // Kiểm tra xem slug đã tồn tại hay chưa
-    const existingCategory = await this.prisma.category.findUnique({
-      where: { slug: data.slug },
-    });
-    if (existingCategory) {
-      throw new BadRequestException(
-        '⚠️⚠️⚠️ Slug Category này đã tồn tại ⚠️⚠️⚠️',
-      );
-    }
-    const category = await this.prisma.category.create({
-      data: {
-        ...data,
-        ...(seo !== undefined && {
-          seo: seo as any, // Cast to 'any' or 'Prisma.InputJsonValue'
-        }),
-      },
-    });
+    try {
+      const existingCategory = await this.prisma.category.findUnique({
+        where: { slug: data.slug },
+      });
+      if (existingCategory) {
+        throw new BadRequestException(
+          '⚠️⚠️⚠️ Slug Category này đã tồn tại ⚠️⚠️⚠️',
+        );
+      }
+      const category = await this.prisma.category.create({
+        data: {
+          ...data,
+          ...(seo !== undefined && {
+            seo: seo as any, // Cast to 'any' or 'Prisma.InputJsonValue'
+          }),
+        },
+      });
 
-    return category;
+      return category;
+    } catch (err) {
+      console.log('ERROR', err);
+    }
+
+    // Kiểm tra xem slug đã tồn tại hay chưa
   }
 
   async findAll(query: CategoryQueryFilterDto) {

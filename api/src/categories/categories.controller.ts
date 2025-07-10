@@ -24,6 +24,7 @@ export class CategoriesController {
   @HttpCode(200)
   @Post()
   async create(@Body() createCategoryDto: CreateCategoryDto) {
+    console.log('CREATE DTO', createCategoryDto);
     // const category = await this.categoriesService.create(createCategoryDto);
     return {
       message: ' Tạo danh mục thành công ✅',
