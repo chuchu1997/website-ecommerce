@@ -270,7 +270,6 @@ export default function CategoriesManagement() {
           variant: data.variant ?? undefined,
           seo: data.seo,
         };
-
         await onCreateCategory(newCategory);
       }
 
@@ -479,6 +478,112 @@ export default function CategoriesManagement() {
     );
   };
 
+  const renderHierarchicalOptions = (
+    categories: CategoryWithChildren[],
+    depth: number = 0
+  ): React.ReactNode[] => {
+    const options: React.ReactNode[] = [];
+
+    categories.forEach((category) => {
+      const isDisabled = editingCategoryId === category.id;
+      const indent = depth * 16; // 16px per level
+
+      // Visual indicators for hierarchy
+      const getDepthIndicator = (level: number) => {
+        if (level === 0) return { color: "bg-blue-500", label: "Gốc" };
+        if (level === 1) return { color: "bg-green-500", label: "Cấp 1" };
+        if (level === 2) return { color: "bg-orange-500", label: "Cấp 2" };
+        return { color: "bg-purple-500", label: `Cấp ${level}` };
+      };
+
+      const indicator = getDepthIndicator(depth);
+
+      options.push(
+        <SelectItem
+          key={category.id}
+          value={category.id.toString()}
+          disabled={isDisabled}
+          className={`
+          ${
+            isDisabled
+              ? "opacity-50 cursor-not-allowed"
+              : "cursor-pointer hover:bg-gray-50"
+          }
+          ${depth > 0 ? "border-l-2 border-gray-200" : ""}
+        `}
+          style={{ paddingLeft: `${12 + indent}px` }}>
+          <div className="flex items-center gap-2 w-full">
+            {/* Hierarchy lines for visual connection */}
+            {depth > 0 && (
+              <div className="flex items-center">
+                {Array.from({ length: depth }).map((_, i) => (
+                  <div
+                    key={i}
+                    className={`w-3 h-px ${
+                      i === depth - 1 ? "bg-gray-300" : "bg-transparent"
+                    }`}
+                  />
+                ))}
+                <div className="w-2 h-2 bg-gray-300 rounded-full mr-1"></div>
+              </div>
+            )}
+
+            {/* Category indicator */}
+            <div
+              className={`w-2 h-2 ${indicator.color} rounded-full flex-shrink-0`}></div>
+
+            {/* Category info */}
+            <div className="flex-1 min-w-0">
+              <div className="flex items-center gap-2">
+                <span
+                  className={`font-medium ${
+                    depth === 0 ? "text-gray-900" : "text-gray-700"
+                  }`}>
+                  {category.name}
+                </span>
+                {depth > 0 && (
+                  <span className="text-xs text-gray-500 bg-gray-100 px-1.5 py-0.5 rounded">
+                    {indicator.label}
+                  </span>
+                )}
+              </div>
+              {category.description && (
+                <p className="text-xs text-gray-500 truncate mt-0.5">
+                  {category.description}
+                </p>
+              )}
+            </div>
+
+            {/* Children count indicator */}
+            {category.children && category.children.length > 0 && (
+              <div className="text-xs text-gray-400 bg-gray-50 px-2 py-1 rounded-full">
+                {category.children.length} con
+              </div>
+            )}
+          </div>
+        </SelectItem>
+      );
+
+      // Add separator if this category has children
+      if (category.children && category.children.length > 0) {
+        options.push(
+          <div key={`separator-${category.id}`} className="my-1 mx-2">
+            <div className="border-t border-gray-100"></div>
+          </div>
+        );
+      }
+
+      // Recursively add children
+      if (category.children && category.children.length > 0) {
+        options.push(
+          ...renderHierarchicalOptions(category.children, depth + 1)
+        );
+      }
+    });
+
+    return options;
+  };
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50">
       <div className="container mx-auto p-3 sm:p-4 lg:p-6">
@@ -594,21 +699,24 @@ export default function CategoriesManagement() {
                                     <SelectValue placeholder="Chọn danh mục cha" />
                                   </SelectTrigger>
                                 </FormControl>
-                                <SelectContent>
-                                  <SelectItem value="null">
-                                    Không (Là Danh mục Cha)
+                                <SelectContent className="max-h-[300px] overflow-y-auto">
+                                  <SelectItem
+                                    value="null"
+                                    className="font-semibold text-blue-600">
+                                    <div className="flex items-center gap-2">
+                                      <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
+                                      Không (Là Danh mục Cha)
+                                    </div>
                                   </SelectItem>
-                                  {categories.map((cat) => (
-                                    <SelectItem
-                                      key={cat.id}
-                                      value={cat.id.toString()}
-                                      disabled={editingCategoryId === cat.id}>
-                                      {cat.name}
-                                    </SelectItem>
-                                  ))}
+                                  <div className="my-1 border-t border-gray-200"></div>
+                                  {renderHierarchicalOptions(categoryTree, 0)}
                                 </SelectContent>
                               </Select>
                               <FormMessage />
+                              <FormDescription className="text-xs text-gray-500 mt-1">
+                                Chọn danh mục cha để tạo cấu trúc phân cấp, hoặc
+                                để trống để tạo danh mục gốc
+                              </FormDescription>
                             </FormItem>
                           )}
                         />
