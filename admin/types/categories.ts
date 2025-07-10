@@ -3,15 +3,6 @@ import { SeoType } from "./seo";
 
 
 
-
-
-
-
-
-
-
-
-
 export enum CategoryVariant {
   NEWS = "NEWS",
   COURSES = "COURSES",
@@ -33,10 +24,6 @@ interface CategoryBase {
     seo?:SeoType
     createdAt?:Date;
     updatedAt?:Date;
-
-
-
-
 }
 
 export interface CategoryInterface extends CategoryBase{

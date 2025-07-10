@@ -74,6 +74,13 @@ export function AppSidebar() {
     ],
     products: [
       {
+        href: `/${params.storeId}/banners`,
+        label: "Quản lý Banner",
+        icon: FileImageIcon,
+        active: pathname === `/${params.storeId}/banners`,
+      },
+
+      {
         href: `/${params.storeId}/categories`,
         label: "Danh mục",
         icon: BookMinusIcon,
@@ -84,6 +91,18 @@ export function AppSidebar() {
         label: "Sản phẩm",
         icon: PackageSearchIcon,
         active: pathname === `/${params.storeId}/products`,
+      },
+      {
+        href: `/${params.storeId}/promotions`,
+        label: "Khuyến mãi (Flash Sale)",
+        icon: DiamondPercent,
+        active: pathname === `/${params.storeId}/promotions`,
+      },
+      {
+        href: `/${params.storeId}/projects`,
+        label: "Dự án",
+        icon: Command,
+        active: pathname === `/${params.storeId}/projects`,
       },
       {
         href: `/${params.storeId}/fake-comments`,
@@ -98,19 +117,6 @@ export function AppSidebar() {
       //   active: pathname === `/${params.storeId}/services`,
       // },
 
-      {
-        href: `/${params.storeId}/banners`,
-        label: "Quản lý Banner",
-        icon: FileImageIcon,
-        active: pathname === `/${params.storeId}/banners`,
-      },
-
-      {
-        href: `/${params.storeId}/promotions`,
-        label: "Khuyến mãi (Flash Sale)",
-        icon: DiamondPercent,
-        active: pathname === `/${params.storeId}/promotions`,
-      },
       // {
       //   href: `/${params.storeId}/sizes`,
       //   label: "Kích thước",
