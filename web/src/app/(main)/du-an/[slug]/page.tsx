@@ -25,7 +25,7 @@ export async function generateMetadata({
     }
 
     return {
-      title: project?.name ?? "Dự án ",
+      title: project?.title ?? "Dự án ",
     };
   } catch (error) {
     console.error("Lỗi khi gọi getNewsWithSlug:", error);

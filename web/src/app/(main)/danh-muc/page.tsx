@@ -4,7 +4,6 @@ import type { Metadata } from "next";
 
 import TileComponent from "@/components/layouts/TileComponent";
 // import ProductList from "@/components/product/product-list";
-import BillboardLayout from "@/components/ui/billboard";
 import CircleLoading from "@/components/ui/circle-loading";
 import { Suspense } from "react";
 import { CategoryAPI } from "@/api/categories/category.api";

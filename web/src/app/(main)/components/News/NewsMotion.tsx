@@ -5,6 +5,7 @@ import { ArrowRight } from "lucide-react";
 
 import { NewsInterface } from "@/types/news";
 import { NewsCard } from "@/components/ui/NewsCard";
+import Link from "next/link";
 
 const containerVariants = {
   hidden: {},
@@ -65,7 +66,8 @@ export const NewsMotion: React.FC<Props> = ({ news }) => {
           </div>
 
           {/* Call to Action */}
-          <motion.div variants={fadeInUp} className="text-center mt-12 sm:mt-16">
+            <Link href = "/danh-muc/tin-tuc">
+              <motion.div variants={fadeInUp} className="text-center mt-12 sm:mt-16">
             <motion.button
               whileHover={{ 
                 scale: 1.05,
@@ -81,6 +83,8 @@ export const NewsMotion: React.FC<Props> = ({ news }) => {
               <div className="absolute inset-0 bg-white/10 group-hover:opacity-100 opacity-0 transition-opacity duration-300" />
             </motion.button>
           </motion.div>
+            </Link>
+        
         </motion.div>
       </div>
     </section>

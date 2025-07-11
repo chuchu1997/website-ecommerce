@@ -4,7 +4,7 @@
 
 import { CategoryAPI } from "@/api/categories/category.api";
 import MainNavbar from "./components/NavbarClient";
-import { AppSidebar } from "../../app-sidebar";
+// import { AppSidebar } from "../../app-sidebar";
 import { CategoryInterface } from "@/types/category";
 import NavbarClientVer2 from "./components/NavbarClientVer2";
 
