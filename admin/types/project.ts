@@ -18,6 +18,8 @@ export enum ProjectType {
   title: string;
   slug: string;
   description: string;
+  shortDescription?:string;
+  
   imageUrl: string;
   type: ProjectType;
   seo?:SeoType;

@@ -104,6 +104,13 @@ export function AppSidebar() {
         icon: Command,
         active: pathname === `/${params.storeId}/projects`,
       },
+
+      {
+        href: `/${params.storeId}/services`,
+        label: "Dịch vụ",
+        icon: Command,
+        active: pathname === `/${params.storeId}/services`,
+      },
       {
         href: `/${params.storeId}/fake-comments`,
         label: "Comment giả lập",

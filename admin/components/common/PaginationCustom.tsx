@@ -20,7 +20,7 @@ const PaginationCustom = (props: Props) => {
   const { currentPage, onPageChange, totalPages } = props;
 
   return (
-    <Pagination className="mt-[10px]">
+    <Pagination className="my-[10px]">
       <PaginationContent>
         <PaginationItem>
           <PaginationPrevious

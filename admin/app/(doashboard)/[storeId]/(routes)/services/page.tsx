@@ -37,6 +37,7 @@ import {
   Settings,
   Eye,
   EyeOff,
+  DollarSign,
   FileText,
 } from "lucide-react";
 import axios from "axios";
@@ -45,11 +46,10 @@ import CategoryAPI from "@/app/api/categories/categories.api";
 import { useParams } from "next/navigation";
 
 import {
-  CreateProjectInterface,
-  ProjectInterface,
-  ProjectType,
-  UpdateProjectInterface,
-} from "@/types/project";
+  CreateServiceInterface,
+  ServiceInterface,
+  UpdateServiceInterface,
+} from "@/types/service";
 import { CategoryInterface, CategoryVariant } from "@/types/categories";
 import toast from "react-hot-toast";
 import { z } from "zod";
@@ -70,13 +70,12 @@ import { ImageUploadSection } from "../products/[slug]/components/product-image-
 import { TextAreaSectionWithForm } from "@/components/ui/textAreaSectionWithForm";
 import { seoSchemaZod } from "@/schemas/seoSchema";
 import SEOForm from "@/components/seo/seo";
-import ProjectAPI from "@/app/api/projects/project.api";
 import { FormatUtils } from "@/utils/format";
 import PaginationCustom from "@/components/common/PaginationCustom";
 import { DescriptionSection } from "../products/[slug]/components/product-description";
 
 const formSchema = z.object({
-  title: z.string().min(3, "Vui lòng nhập tiêu đề dự án "),
+  title: z.string().min(3, "Vui lòng nhập tiêu đề dịch vụ"),
   slug: z
     .string()
     .min(1, "Slug không được để trống")
@@ -99,30 +98,27 @@ const formSchema = z.object({
     .refine((val) => !!val.url, {
       message: "Vui lòng chọn ảnh.",
     }),
-  type: z.nativeEnum(ProjectType, {
-    errorMap: () => ({ message: "Vui lòng chọn loại dự án" }),
-  }),
   categoryId: z.string().min(1, "Vui lòng chọn danh mục"),
-  description: z.string().min(3, "Vui lòng nhập mô tả dự án"),
-  shortDescription: z.string().min(3, "Vui lòng nhập mô tả ngắn dự án"),
-
+  shortDescription: z.string().optional(),
+  description: z.string().min(3, "Vui lòng nhập mô tả dịch vụ"),
+  price: z.number().min(0, "Giá phải lớn hơn hoặc bằng 0").optional(),
   seo: seoSchemaZod.optional(),
 });
 
-type ProjectFormValues = z.infer<typeof formSchema>;
+type ServiceFormValues = z.infer<typeof formSchema>;
 
 export default function ServicesManagement() {
   const { storeId } = useParams();
 
-  const form = useForm<ProjectFormValues>({
+  const form = useForm<ServiceFormValues>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       title: "",
       slug: "",
+      shortDescription: "",
       description: "",
       categoryId: "",
-      type: ProjectType.HOME,
-      shortDescription: "",
+      price: undefined,
       seo: {
         title: "",
         description: "",
@@ -137,7 +133,7 @@ export default function ServicesManagement() {
     },
   });
 
-  const [projects, setProjects] = useState<ProjectInterface[]>([]);
+  const [services, setServices] = useState<ServiceInterface[]>([]);
   const [categories, setCategories] = useState<CategoryInterface[]>([]);
   const [isMounted, setIsMounted] = useState(false);
   const [editingServiceId, setEditingServiceId] = useState<number | null>(null);
@@ -155,47 +151,38 @@ export default function ServicesManagement() {
 
   useEffect(() => {
     if (isMounted) {
-      fetchProjectFromAPI();
+      fetchServicesFromAPI();
       fetchCategoriesFromAPI();
     }
   }, [isMounted]);
+
   useEffect(() => {
     if (currentPage && isMounted) {
-      fetchProjectFromAPI();
+      fetchServicesFromAPI();
     }
   }, [currentPage, isMounted]);
 
   if (!isMounted) return null;
 
-  const ProjectTypeLabel: Record<ProjectType, string> = {
-    [ProjectType.HOME]: "Nhà ở",
-    [ProjectType.APARTMENT]: "Chung cư",
-    [ProjectType.HOTEL]: "Khách sạn",
-    [ProjectType.INTERIOR]: "Nội thất",
-    [ProjectType.COMMERCIAL]: "Thương mại",
-    [ProjectType.RESTAURANT]: "Nhà hàng",
-  };
-
-  const fetchProjectFromAPI = async () => {
+  const fetchServicesFromAPI = async () => {
     try {
       const limitItemsFetch = 4;
-      const response = await ProjectAPI.getProjectsRelateWithStoreID({
+      const response = await ServiceAPI.getServicesRelateWithStoreID({
         storeID: Number(storeId),
         currentPage: currentPage,
         limit: limitItemsFetch,
       });
       if (response.status === 200) {
-        const { projects, total } = response.data as {
-          projects: ProjectInterface[];
+        const { services, total } = response.data as {
+          services: ServiceInterface[];
           total: number;
         };
-        // const totalPagesCal = Math.ceil(total / limit);
         setTotalPage(Math.ceil(total / limitItemsFetch));
-        setProjects(projects);
+        setServices(services);
       }
     } catch (error) {
       console.error("Error fetching services:", error);
-      toast.error("Có lỗi khi tải danh sách dự án ");
+      toast.error("Có lỗi khi tải danh sách dịch vụ");
     }
   };
 
@@ -210,7 +197,7 @@ export default function ServicesManagement() {
           categories: CategoryInterface[];
         };
         categories = categories.filter(
-          (category) => category.variant === CategoryVariant.PROJECTS
+          (category) => category.variant === CategoryVariant.SERVICES
         );
         setCategories(categories);
       }
@@ -220,36 +207,36 @@ export default function ServicesManagement() {
     }
   };
 
-  const onCreateProject = async (project: CreateProjectInterface) => {
+  const onCreateService = async (service: CreateServiceInterface) => {
     try {
-      const response = await ProjectAPI.createProject(project);
+      const response = await ServiceAPI.createService(service);
 
       if (response.status === 200) {
-        const { project: newProject, message } = response.data as {
+        const { service: newService, message } = response.data as {
           message: string;
-          project: ProjectInterface;
+          service: ServiceInterface;
         };
 
         toast.success(message);
-        setProjects([...projects, newProject]);
-        await fetchProjectFromAPI(); // Refresh the list
+        setServices([...services, newService]);
+        await fetchServicesFromAPI(); // Refresh the list
       }
     } catch (error) {
       console.error("Error creating service:", error);
-      toast.error("Có lỗi khi tạo dự án");
+      toast.error("Có lỗi khi tạo dịch vụ");
     }
   };
 
   const onUpdateService = async (
     id: number,
-    project: UpdateProjectInterface
+    service: UpdateServiceInterface
   ) => {
     try {
-      const response = await ProjectAPI.updateProject({ id, data: project });
+      const response = await ServiceAPI.updateService({ id, data: service });
       if (response.status === 200) {
         const { message } = response.data as { message: string };
         toast.success(message);
-        await fetchProjectFromAPI(); // Refresh the list
+        await fetchServicesFromAPI(); // Refresh the list
       }
     } catch (error) {
       console.error("Error updating service:", error);
@@ -257,16 +244,16 @@ export default function ServicesManagement() {
     }
   };
 
-  const onDeleteProject = async (projectId: number) => {
+  const onDeleteService = async (serviceId: number) => {
     try {
-      const response = await ProjectAPI.deleteProjectFromID(projectId);
+      const response = await ServiceAPI.deleteServiceFromID(serviceId);
       if (response.status === 200) {
         const { message } = response.data as {
           message: string;
         };
         toast.success(message);
-        setProjects((prev) =>
-          prev.filter((service) => service.id !== projectId)
+        setServices((prev) =>
+          prev.filter((service) => service.id !== serviceId)
         );
       }
     } catch (error) {
@@ -276,7 +263,7 @@ export default function ServicesManagement() {
   };
 
   // Handle form submission
-  const onSubmit = async (data: ProjectFormValues) => {
+  const onSubmit = async (data: ServiceFormValues) => {
     try {
       let finalImage = data.imageUrl;
       if (data.imageUrl.file) {
@@ -293,14 +280,14 @@ export default function ServicesManagement() {
 
       if (editingServiceId) {
         // Update existing service
-        const updateData: UpdateProjectInterface = {
+        const updateData: UpdateServiceInterface = {
           storeId: Number(storeId),
-          shortDescription: data.shortDescription,
           title: data.title,
           slug: data.slug,
+          shortDescription: data.shortDescription,
           description: data.description,
           imageUrl: finalImage.url,
-          type: data.type,
+          price: data.price,
           categoryId: Number(data.categoryId),
           updatedAt: new Date(),
           seo: data.seo,
@@ -309,18 +296,18 @@ export default function ServicesManagement() {
         await onUpdateService(editingServiceId, updateData);
       } else {
         // Create new service
-        const newProject: CreateProjectInterface = {
+        const newService: CreateServiceInterface = {
           storeId: Number(storeId),
           title: data.title,
-          shortDescription: data.shortDescription,
           slug: data.slug,
+          shortDescription: data.shortDescription,
           description: data.description,
           imageUrl: finalImage.url,
-          type: data.type,
+          price: data.price,
           categoryId: Number(data.categoryId),
           seo: data.seo,
         };
-        await onCreateProject(newProject);
+        await onCreateService(newService);
       }
 
       resetForm();
@@ -332,21 +319,21 @@ export default function ServicesManagement() {
   };
 
   // Edit a service
-  const handleEditService = (project: ProjectInterface) => {
-    setEditingServiceId(project.id);
+  const handleEditService = (service: ServiceInterface) => {
+    setEditingServiceId(service.id);
 
     form.reset({
-      title: project.title,
-      slug: project.slug,
-      description: project.description,
+      title: service.title,
+      slug: service.slug,
+      shortDescription: service.shortDescription || "",
+      description: service.description,
       imageUrl: {
         file: undefined,
-        url: project.imageUrl,
+        url: service.imageUrl,
       },
-      type: project.type,
-      categoryId: project.categoryId.toString(),
-      shortDescription: project.shortDescription,
-      seo: project.seo ?? {
+      price: service.price,
+      categoryId: service.categoryId.toString(),
+      seo: service.seo ?? {
         title: "",
         description: "",
         keywords: "",
@@ -366,11 +353,11 @@ export default function ServicesManagement() {
     form.reset({
       title: "",
       slug: "",
+      shortDescription: "",
       description: "",
       imageUrl: undefined,
       categoryId: "",
-      type: undefined,
-      shortDescription: "",
+      price: undefined,
       seo: {
         title: "",
         description: "",
@@ -405,29 +392,38 @@ export default function ServicesManagement() {
     return category ? category.name : "Không xác định";
   };
 
+  // Format price
+  const formatPrice = (price?: number) => {
+    if (!price) return "Liên hệ";
+    return new Intl.NumberFormat("vi-VN", {
+      style: "currency",
+      currency: "VND",
+    }).format(price);
+  };
+
   // Render services list
   const renderServicesList = () => {
     return (
       <div className="space-y-4">
-        {projects.map((project) => (
-          <div key={project.id} className="group">
+        {services.map((service) => (
+          <div key={service.id} className="group">
             <div className="bg-white border border-gray-200 rounded-lg shadow-sm hover:shadow-md transition-all duration-200 hover:scale-[1.01] overflow-hidden">
               <div className="p-4 sm:p-6">
                 <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4">
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center gap-2 mb-3">
                       <div className="flex items-center gap-2">
-                        <div className="w-3 h-3 rounded-full bg-blue-500"></div>
+                        <div className="w-3 h-3 rounded-full bg-green-500"></div>
                         <span className="text-sm font-medium text-gray-600">
-                          Dịch vụ #{project.id}
+                          Dịch vụ #{service.id}
                         </span>
                       </div>
                       <Button
                         variant="ghost"
                         size="sm"
-                        onClick={() => toggleServiceExpansion(project.id)}
+                        onClick={() => toggleServiceExpansion(service.id)}
                         className="p-1 h-6 w-6 hover:bg-gray-100 rounded-full">
-                        {expandedServices.has(project.id) ? (
+                        {expandedServices.has(service.id) ? (
                           <EyeOff className="h-3 w-3" />
                         ) : (
                           <Eye className="h-3 w-3" />
@@ -436,56 +432,66 @@ export default function ServicesManagement() {
                     </div>
 
                     <h3 className="text-lg font-bold text-gray-900 mb-2 uppercase tracking-wide">
-                      {project.title}
+                      {service.title}
                     </h3>
 
                     <div className="space-y-2 text-sm text-gray-600">
                       <div className="flex flex-wrap gap-2">
-                        <span className="font-medium">Loại dự án :</span>
+                        <span className="font-medium">Giá:</span>
                         <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800">
-                          {ProjectTypeLabel[project.type]}
+                          <DollarSign className="h-3 w-3 mr-1" />
+                          {formatPrice(service.price)}
                         </span>
                       </div>
 
                       <div className="flex flex-wrap gap-2">
                         <span className="font-medium">Danh mục:</span>
                         <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-purple-100 text-purple-800">
-                          {getCategoryName(project.categoryId)}
+                          {getCategoryName(service.categoryId)}
                         </span>
                       </div>
 
                       <div className="flex flex-wrap gap-1">
                         <span className="font-medium">Slug:</span>
                         <code className="bg-gray-100 px-2 py-1 rounded text-xs">
-                          {project.slug}
+                          {service.slug}
                         </code>
                       </div>
 
-                      {expandedServices.has(project.id) && (
-                        <div className="mt-4 p-4 bg-gray-50 rounded-lg border-l-4 border-blue-400 animate-in slide-in-from-top-2 duration-200">
+                      {service.shortDescription && (
+                        <div className="flex flex-wrap gap-1">
+                          <span className="font-medium">Mô tả ngắn:</span>
+                          <p className="text-gray-600">
+                            {service.shortDescription}
+                          </p>
+                        </div>
+                      )}
+
+                      {expandedServices.has(service.id) && (
+                        <div className="mt-4 p-4 bg-gray-50 rounded-lg border-l-4 border-green-400 animate-in slide-in-from-top-2 duration-200">
                           <div className="space-y-3">
                             <div>
                               <span className="font-medium text-gray-700">
-                                Mô tả:
+                                Mô tả chi tiết:
                               </span>
                               <p className="text-gray-600 mt-1">
-                                {project.description}
+                                {service.description}
                               </p>
                             </div>
 
-                            {project.imageUrl && (
+                            {service.imageUrl && (
                               <div>
                                 <span className="font-medium text-gray-700">
                                   Hình ảnh:
                                 </span>
                                 <div className="mt-2 flex items-center gap-3">
                                   <img
-                                    src={project.imageUrl}
-                                    alt={project.title}
+                                    src={service.imageUrl}
+                                    alt={service.title}
                                     className="w-16 h-16 object-cover rounded-lg border"
                                   />
                                   <p className="text-xs text-gray-500 break-all">
-                                    {project.imageUrl}
+                                    {service.imageUrl}
                                   </p>
                                 </div>
                               </div>
@@ -495,14 +501,14 @@ export default function ServicesManagement() {
                               <span>
                                 Tạo:{" "}
                                 {FormatUtils.formatDate(
-                                  project.createdAt ?? ""
+                                  service.createdAt ?? ""
                                 )}
                               </span>
                               <span>•</span>
                               <span>
                                 Cập nhật:{" "}
                                 {FormatUtils.formatDate(
-                                  project.updatedAt ?? ""
+                                  service.updatedAt ?? ""
                                 )}
                               </span>
                             </div>
@@ -516,7 +522,7 @@ export default function ServicesManagement() {
                     <Button
                       variant="outline"
                       size="sm"
-                      onClick={() => handleEditService(project)}
+                      onClick={() => handleEditService(service)}
                       className="flex-1 sm:flex-none hover:bg-blue-50 hover:border-blue-300 transition-colors">
                       <Edit className="h-4 w-4 mr-2" />
                       Sửa
@@ -530,7 +536,7 @@ export default function ServicesManagement() {
                             "Bạn có chắc chắn muốn xóa dịch vụ này?"
                           )
                         ) {
-                          onDeleteProject(project.id);
+                          onDeleteService(service.id);
                         }
                       }}
                       className="flex-1 sm:flex-none hover:bg-red-50 hover:border-red-300 transition-colors">
@@ -548,10 +554,10 @@ export default function ServicesManagement() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50">
+    <div className="min-h-screen bg-gradient-to-br from-green-50 via-white to-blue-50">
       <div className="container mx-auto p-4 lg:p-6">
         <Card className="w-full shadow-lg border-0 bg-white/80 backdrop-blur-sm m-0 p-0">
-          <CardHeader className="bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-t-lg">
+          <CardHeader className="bg-gradient-to-r from-green-600 to-blue-600 text-white rounded-t-lg">
             <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
               <div className="flex items-center gap-3">
                 <div className="p-2 bg-white/20 rounded-lg">
@@ -559,10 +565,10 @@ export default function ServicesManagement() {
                 </div>
                 <div>
                   <CardTitle className="text-xl font-bold">
-                    Quản lý dự án
+                    Quản lý dịch vụ
                   </CardTitle>
                   <p className="text-sm text-white/80 mt-1">
-                    Tổng: {projects.length} dự án
+                    Tổng: {services.length} dịch vụ
                   </p>
                 </div>
               </div>
@@ -574,15 +580,17 @@ export default function ServicesManagement() {
                       resetForm();
                       setIsDialogOpen(true);
                     }}
-                    className="bg-white text-blue-600 hover:bg-blue-50 hover:scale-105 transition-all duration-200 shadow-lg">
+                    className="bg-white text-green-600 hover:bg-green-50 hover:scale-105 transition-all duration-200 shadow-lg">
                     <Plus className="h-4 w-4 mr-2" />
-                    Thêm dự án
+                    Thêm dịch vụ
                   </Button>
                 </DialogTrigger>
                 <DialogContent className="max-h-[90vh] overflow-y-auto w-[95vw] sm:w-full max-w-2xl">
                   <DialogHeader className="flex-shrink-0 pb-4 border-b">
                     <DialogTitle className="text-center text-xl font-bold text-gray-800">
-                      {editingServiceId ? "Chỉnh sửa dự án " : "Tạo mới dự án "}
+                      {editingServiceId
+                        ? "Chỉnh sửa dịch vụ"
+                        : "Tạo mới dịch vụ"}
                     </DialogTitle>
                   </DialogHeader>
 
@@ -595,16 +603,10 @@ export default function ServicesManagement() {
                           form={form}
                           nameFormField="title"
                           loading={false}
-                          title="Tiêu đề dự án "
-                          placeholder="Vui lòng nhập tiêu đề dự án "
+                          title="Tiêu đề dịch vụ"
+                          placeholder="Vui lòng nhập tiêu đề dịch vụ"
                         />
-                        <InputSectionWithForm
-                          form={form}
-                          nameFormField="shortDescription"
-                          loading={false}
-                          title="Mô tả ngắn của dự án  "
-                          placeholder="Vui lòng nhập mô tả ngắn "
-                        />
+
                         <InputSectionWithForm
                           form={form}
                           nameFormField="slug"
@@ -617,35 +619,6 @@ export default function ServicesManagement() {
                           form={form}
                           loading={false}
                           nameFormField="imageUrl"
-                        />
-
-                        <FormField
-                          control={form.control}
-                          name="type"
-                          render={({ field }) => (
-                            <FormItem>
-                              <FormLabel className="text-base font-medium">
-                                Loại dự án
-                              </FormLabel>
-                              <Select
-                                onValueChange={field.onChange}
-                                value={field.value}>
-                                <FormControl>
-                                  <SelectTrigger className="h-11">
-                                    <SelectValue placeholder="Chọn loại dự án" />
-                                  </SelectTrigger>
-                                </FormControl>
-                                <SelectContent>
-                                  {Object.values(ProjectType).map((type) => (
-                                    <SelectItem key={type} value={type}>
-                                      {ProjectTypeLabel[type]}
-                                    </SelectItem>
-                                  ))}
-                                </SelectContent>
-                              </Select>
-                              <FormMessage />
-                            </FormItem>
-                          )}
                         />
 
                         <FormField
@@ -679,6 +652,42 @@ export default function ServicesManagement() {
                           )}
                         />
 
+                        <FormField
+                          control={form.control}
+                          name="price"
+                          render={({ field }) => (
+                            <FormItem>
+                              <FormLabel className="text-base font-medium">
+                                Giá (VND)
+                              </FormLabel>
+                              <FormControl>
+                                <Input
+                                  type="number"
+                                  placeholder="Nhập giá dịch vụ (để trống nếu liên hệ)"
+                                  {...field}
+                                  onChange={(e) => {
+                                    const value = e.target.value;
+                                    field.onChange(
+                                      value === "" ? undefined : Number(value)
+                                    );
+                                  }}
+                                  value={field.value || ""}
+                                  className="h-11"
+                                />
+                              </FormControl>
+                              <FormMessage />
+                            </FormItem>
+                          )}
+                        />
+
+                        <InputSectionWithForm
+                          form={form}
+                          nameFormField="shortDescription"
+                          loading={false}
+                          title="Mô tả ngắn (tùy chọn)"
+                          placeholder="Nhập mô tả ngắn cho dịch vụ"
+                        />
+
                         <Card className="border-0 shadow-md">
                           <CardHeader className="pb-4">
                             <CardTitle className="flex items-center gap-2 text-xl">
@@ -710,7 +719,7 @@ export default function ServicesManagement() {
                           <Button
                             type="submit"
                             disabled={form.formState.isSubmitting}
-                            className="w-full sm:w-auto order-1 sm:order-2 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700">
+                            className="w-full sm:w-auto order-1 sm:order-2 bg-gradient-to-r from-green-600 to-blue-600 hover:from-green-700 hover:to-blue-700">
                             {form.formState.isSubmitting
                               ? "Đang xử lý..."
                               : editingServiceId
@@ -728,8 +737,8 @@ export default function ServicesManagement() {
 
           <CardContent className="p-6">
             <div className="space-y-4">
-              <div className="flex items-center gap-3 p-4 bg-gradient-to-r from-blue-50 to-purple-50 rounded-lg border border-blue-200">
-                <div className="p-2 bg-blue-600 rounded-lg">
+              <div className="flex items-center gap-3 p-4 bg-gradient-to-r from-green-50 to-blue-50 rounded-lg border border-green-200">
+                <div className="p-2 bg-green-600 rounded-lg">
                   <Settings className="h-5 w-5 text-white" />
                 </div>
                 <div>
@@ -743,7 +752,7 @@ export default function ServicesManagement() {
               </div>
 
               <div className="bg-white rounded-lg border border-gray-200 overflow-hidden">
-                {projects.length > 0 ? (
+                {services.length > 0 ? (
                   <div className="p-4">{renderServicesList()}</div>
                 ) : (
                   <div className="p-8 text-center">

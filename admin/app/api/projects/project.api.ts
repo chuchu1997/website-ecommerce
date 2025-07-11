@@ -12,11 +12,21 @@ import {
 let url = "/projects";
 
 const ProjectAPI = {
-  getProjectsRelateWithStoreID: async ({ storeID }: { storeID: number }) => {
+  getProjectsRelateWithStoreID: async ({
+    storeID,
+    currentPage = 1,
+    limit = 4,
+  }: {
+    storeID: number;
+    currentPage?: number;
+    limit?: number;
+  }) => {
     return await api({
       method: "GET",
       url: url,
       params: {
+        currentPage,
+        limit,
         storeId: storeID,
       },
     });
