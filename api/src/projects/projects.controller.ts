@@ -42,11 +42,11 @@ export class ProjectsController {
     };
   }
   @Public()
-  @Get(':id')
-  async findOne(@Param('id', ParseIntPipe) id: number) {
+  @Get(':slug')
+  async findOne(@Param('slug') slug: string) {
     return {
       message: 'Đã tìm thấy dự án qua ID ',
-      project: await this.projectsService.findOne(id),
+      project: await this.projectsService.findOne(slug),
     };
   }
   @Roles(Role.ADMIN)

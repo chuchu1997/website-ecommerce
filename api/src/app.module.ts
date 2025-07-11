@@ -25,6 +25,7 @@ import { PrismaService } from './prisma.service';
 import { CartModule } from './cart/cart.module';
 import { FakecommentsModule } from './fakecomments/fakecomments.module';
 import { ProjectsModule } from './projects/projects.module';
+import { ServicesModule } from './services/services.module';
 
 @Module({
   imports: [
@@ -52,6 +53,7 @@ import { ProjectsModule } from './projects/projects.module';
     CartModule,
     FakecommentsModule,
     ProjectsModule,
+    ServicesModule,
   ],
   controllers: [AppController],
   providers: [

@@ -12,7 +12,7 @@ import {
   ValidateNested,
 } from 'class-validator';
 
-export class CreateProjectDto {
+export class CreateServiceDto {
   @IsString()
   @IsNotEmpty()
   @MinLength(3, { message: 'Tên sản phẩm phải có ít nhất 3 ký tự' })
@@ -43,9 +43,6 @@ export class CreateProjectDto {
   })
   slug: string;
 
-  @IsEnum(ProjectType)
-  type: ProjectType;
-
   @IsNotEmpty()
   @Transform(({ value }) => parseFloat(value))
   categoryId: number;
@@ -55,9 +52,8 @@ export class CreateProjectDto {
   @MinLength(10, { message: 'Mô tả phải có ít nhất 10 ký tự' })
   description: string;
 
+  @IsOptional()
   @IsString()
-  @IsNotEmpty()
-  @MinLength(5, { message: 'Mô tả ngắn phải có ít nhất 10 ký tự' })
   shortDescription: string;
 
   @IsString()
@@ -69,4 +65,9 @@ export class CreateProjectDto {
   @IsNotEmpty()
   @Transform(({ value }) => parseFloat(value))
   storeId: number;
+
+  @IsOptional()
+  @IsNumber()
+  @Transform(({ value }) => parseFloat(value))
+  price: number;
 }

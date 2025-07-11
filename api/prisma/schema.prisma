@@ -162,8 +162,8 @@ model Service {
   id             Int           @id @default(autoincrement())
   title          String
   slug           String        @unique
-  shortDescription String?
-  description    Json          // Nội dung chi tiết có thể là nội dung rich text
+  shortDescription   String?   @db.Text
+  description String  @db.Text
   imageUrl       String
   seo            Json?         // Đối tượng chứa meta: title, description, keywords, etc
   price          Float?      // Giá dịch vụ (nếu có)
@@ -183,7 +183,8 @@ model Project {
   id       Int    @id @default(autoincrement())
   title String
   slug String @unique
-  description String
+  description   String?   @db.Text
+  shortDescription  String?   @db.Text
   imageUrl String
   type ProjectType 
   seo Json?
@@ -191,6 +192,9 @@ model Project {
   store    Store  @relation("StoreToProject",fields: [storeId], references: [id])
   categoryId     Int
   category       Category     @relation(fields: [categoryId], references: [id])
+ 
+  createdAt      DateTime      @default(now())
+  updatedAt      DateTime      @updatedAt
 
   @@index([storeId])
   @@index([categoryId])

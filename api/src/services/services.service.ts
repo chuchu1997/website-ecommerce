@@ -1,21 +1,20 @@
 import { Injectable } from '@nestjs/common';
-import { CreateProjectDto } from './dto/create-project.dto';
-import { UpdateProjectDto } from './dto/update-project.dto';
-import { UploadService } from 'src/upload/upload.service';
+import { CreateServiceDto } from './dto/create-service.dto';
+import { UpdateServiceDto } from './dto/update-service.dto';
 import { PrismaService } from 'src/prisma.service';
-import { ProjectQueryFilterDto } from './dto/query-project.dto';
+import { UploadService } from 'src/upload/upload.service';
+import { ServiceQueryFilterDto } from './dto/query.service.dto';
 
 @Injectable()
-export class ProjectsService {
+export class ServicesService {
   constructor(
     private prisma: PrismaService,
     private uploadService: UploadService,
   ) {}
-  async create(createProjectDto: CreateProjectDto) {
+  async create(createServiceDto: CreateServiceDto) {
     try {
-      const { seo, ...data } = createProjectDto;
-
-      return await this.prisma.project.create({
+      const { seo, ...data } = createServiceDto;
+      return await this.prisma.service.create({
         data: {
           ...(seo !== undefined && {
             seo: seo as any, // Cast to 'any' or 'Prisma.InputJsonValue'
@@ -28,11 +27,10 @@ export class ProjectsService {
     }
   }
 
-  async findAll(query: ProjectQueryFilterDto) {
+  async findAll(query: ServiceQueryFilterDto) {
     const { limit = 9999, currentPage = 1, ...data } = query;
-
     try {
-      return await this.prisma.project.findMany({
+      return await this.prisma.service.findMany({
         where: {
           slug: data.slug ? data.slug : undefined,
           storeId: data.storeId,
@@ -46,23 +44,25 @@ export class ProjectsService {
     } catch (err) {
       console.log('ERR', err);
     }
+    return `This action returns all services`;
   }
-  async getTotalProjects() {
-    return await this.prisma.project.count();
+  async getTotalServices() {
+    return await this.prisma.service.count();
   }
+
   async findOne(slug: string) {
-    return await this.prisma.project.findUnique({
+    return await this.prisma.service.findUnique({
       where: {
-        slug: slug,
+        slug,
       },
     });
   }
 
-  async update(id: number, updateProjectDto: UpdateProjectDto) {
-    const { imageUrl, seo, ...data } = updateProjectDto;
+  async update(id: number, updateServiceDto: UpdateServiceDto) {
+    const { imageUrl, seo, ...data } = updateServiceDto;
 
     try {
-      const existProject = await this.prisma.project.findUnique({
+      const existProject = await this.prisma.service.findUnique({
         where: { id },
         select: {
           imageUrl: true,
@@ -77,7 +77,7 @@ export class ProjectsService {
         );
       }
 
-      return await this.prisma.project.update({
+      return await this.prisma.service.update({
         where: {
           id,
           storeId: data.storeId,
@@ -96,7 +96,7 @@ export class ProjectsService {
   }
 
   async remove(id: number) {
-    const existProject = await this.prisma.project.findUnique({
+    const existProject = await this.prisma.service.findUnique({
       where: { id },
       select: {
         imageUrl: true,
@@ -105,7 +105,7 @@ export class ProjectsService {
     if (existProject?.imageUrl) {
       await this.uploadService.deleteImagesFromS3(existProject.imageUrl);
     }
-    return await this.prisma.project.delete({
+    return await this.prisma.service.delete({
       where: { id },
     });
   }
