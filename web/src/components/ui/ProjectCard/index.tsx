@@ -1,6 +1,6 @@
 /** @format */
 
-import { Project, ProjectType } from "@/types/project";
+import { ProjectInterface, ProjectType } from "@/types/project";
 import { ArrowRight } from "lucide-react";
 import Link from "next/link";
 
@@ -12,7 +12,9 @@ export const ProjectTypeLabel: Record<ProjectType, string> = {
   [ProjectType.COMMERCIAL]: "Thương mại",
   [ProjectType.RESTAURANT]: "Nhà hàng",
 };
-export const ProjectCard: React.FC<{ project: Project }> = ({ project }) => {
+export const ProjectCard: React.FC<{ project: ProjectInterface }> = ({
+  project,
+}) => {
   return (
     <div className="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1">
       <div className="relative">
@@ -39,7 +41,7 @@ export const ProjectCard: React.FC<{ project: Project }> = ({ project }) => {
         <h3 className="text-xl font-bold text-gray-900 mb-2">
           {project.title}
         </h3>
-        <p className="text-gray-600 mb-4">{project.description}</p>
+        <p className="text-gray-600 mb-4">{project.shortDescription}</p>
         <Link
           href={`/du-an/${project.slug}`}
           className="text-amber-600 hover:text-amber-700 font-semibold inline-flex items-center">

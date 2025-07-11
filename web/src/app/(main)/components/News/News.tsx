@@ -1,6 +1,6 @@
 import { NewsInterface } from "@/types/news";
 
-import { Project } from "@/types/project";
+import { ProjectInterface } from "@/types/project";
 import { NewsMotion } from "./NewsMotion";
 
 

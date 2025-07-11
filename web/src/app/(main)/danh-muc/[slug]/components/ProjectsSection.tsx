@@ -1,142 +1,289 @@
+/** @format */
 
+"use client";
+import React, { useEffect, useState } from "react";
+import { Building2, Sparkles, TrendingUp, Award } from "lucide-react";
+import { ProjectAPI } from "@/api/projects/projects.api";
+import PaginationCustom from "@/common/PaginationCustom";
+import { ProjectCard } from "@/components/ui/ProjectCard";
+import { ProjectInterface } from "@/types/project";
 
+// Mock API and interfaces for demo
 
-"use-client";
-import { useEffect, useState } from "react";
+// Mock PaginationCustom component
 
-interface Project {
-  id: string;
-  title: string;
-  description: string;
-  technologies: string[];
-  completedAt: string;
-  imageUrl: string;
-  clientName: string;
-}
+const ProjectsSection = () => {
+  const [projects, setProjects] = useState<ProjectInterface[]>([]);
+  const [loading, setLoading] = useState(false);
+  const [totalPages, setTotalPages] = useState(0);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [isMounted, setIsMounted] = useState(false);
+  const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
+  const [searchQuery, setSearchQuery] = useState("");
+  const [selectedCategory, setSelectedCategory] = useState("all");
 
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
 
- const ProjectsSection = () => {
-    const mockProjects: Project[] = [
-    {
-      id: "project-1",
-      title: "Hệ thống E-commerce cho ABC Corp",
-      description: "Phát triển nền tảng thương mại điện tử toàn diện với tính năng thanh toán và quản lý đơn hàng",
-      technologies: ["React", "Node.js", "MongoDB", "AWS"],
-      completedAt: "2024-12-15",
-      imageUrl: "/images/projects/ecommerce-platform.jpg",
-      clientName: "ABC Corporation"
-    },
-    {
-      id: "project-2",
-      title: "Ứng dụng mobile quản lý tài chính",
-      description: "Ứng dụng di động giúp người dùng quản lý tài chính cá nhân với AI phân tích chi tiêu",
-      technologies: ["React Native", "Python", "TensorFlow", "Firebase"],
-      completedAt: "2024-11-20",
-      imageUrl: "/images/projects/finance-app.jpg",
-      clientName: "FinTech Startup"
-    },
-    {
-      id: "project-3",
-      title: "Hệ thống CRM cho doanh nghiệp",
-      description: "Hệ thống quản lý quan hệ khách hàng tích hợp với các công cụ marketing tự động",
-      technologies: ["Vue.js", "Laravel", "MySQL", "Docker"],
-      completedAt: "2024-10-30",
-      imageUrl: "/images/projects/crm-system.jpg",
-      clientName: "Marketing Solutions Ltd"
+  useEffect(() => {
+    fetchProjects();
+  }, [currentPage]);
+
+  const fetchProjects = async () => {
+    try {
+      const limit = 8;
+      setLoading(true);
+
+      let res = await ProjectAPI.getProjects({
+        currentPage: currentPage,
+        limit: limit,
+      });
+
+      if (res.status === 200) {
+        const { projects, total } = res.data as {
+          projects: ProjectInterface[];
+          total: number;
+        };
+        setTotalPages(Math.ceil(total / limit));
+        setProjects(projects);
+      }
+    } catch (err) {
+      console.error("Error fetching projects:", err);
+    } finally {
+      setLoading(false);
     }
-  ];
- 
-    const [projects, setProjects] = useState(mockProjects);
-    const [loading, setLoading] = useState(false);
-
-    //  useEffect(() => {
-    //   fetchProjectCategories(1, 6).then(data => {
-    //     setProjects(data.items);
-    //     setLoading(false);
-    //   });
-    // }, []);
-
-
-    if (loading) {
-      return (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {Array.from({ length: 6 }).map((_, i) => (
-            <div key={i} className="animate-pulse">
-              <div className="bg-gray-200 h-48 rounded-xl mb-4"></div>
-              <div className="h-4 bg-gray-200 rounded mb-2"></div>
-              <div className="h-3 bg-gray-200 rounded w-2/3"></div>
-            </div>
-          ))}
-        </div>
-      );
-    }
-
- return (
-      <div className="space-y-12">
-        <div className="text-center space-y-4">
-          <h2 className="text-4xl font-bold text-gray-900">Dự án tiêu biểu</h2>
-          <p className="text-gray-600 max-w-2xl mx-auto text-lg">
-            Khám phá những dự án thành công mà chúng tôi đã thực hiện
-          </p>
-        </div>
-        
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {projects.map((project) => (
-            <div key={project.id} className="group cursor-pointer">
-              <div className="bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden border border-gray-100">
-                <div className="relative overflow-hidden">
-                  <img 
-                    src={project.imageUrl} 
-                    alt={project.title}
-                    className="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300"
-                  />
-                  <div className="absolute top-4 left-4">
-                    <span className="bg-indigo-600 text-white px-3 py-1 rounded-full text-sm font-medium">
-                      Đã hoàn thành
-                    </span>
-                  </div>
-                </div>
-                <div className="p-6">
-                  <h3 className="text-xl font-bold text-gray-900 mb-3 group-hover:text-indigo-600 transition-colors">
-                    {project.title}
-                  </h3>
-                  <p className="text-gray-600 leading-relaxed mb-4">
-                    {project.description}
-                  </p>
-                  <div className="space-y-3 mb-6">
-                    <div className="flex items-center text-sm text-gray-500">
-                      <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
-                      </svg>
-                      Khách hàng: {project.clientName}
-                    </div>
-                    <div className="flex items-center text-sm text-gray-500">
-                      <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                      </svg>
-                      Hoàn thành: {new Date(project.completedAt).toLocaleDateString('vi-VN')}
-                    </div>
-                    <div className="flex flex-wrap gap-2 mt-3">
-                      {project.technologies.map((tech, index) => (
-                        <span key={index} className="bg-indigo-100 text-indigo-800 px-2 py-1 rounded-lg text-xs font-medium">
-                          {tech}
-                        </span>
-                      ))}
-                    </div>
-                  </div>
-                  <button className="w-full bg-indigo-600 text-white py-3 rounded-xl font-medium hover:bg-indigo-700 transition-colors group-hover:shadow-lg">
-                    Xem chi tiết
-                  </button>
-                </div>
-              </div>
-            </div>
-          ))}
-        </div>
-      </div>
-    );
   };
 
+  if (!isMounted) return null;
 
-  export default ProjectsSection;
-  
+  const ProjectsSkeletonLoader = () => (
+    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
+      {Array.from({ length: 8 }).map((_, i) => (
+        <div key={i} className="animate-pulse">
+          <div className="bg-gradient-to-r from-gray-200 via-gray-300 to-gray-200 h-48 rounded-2xl mb-4 bg-[length:200%_100%] animate-[shimmer_2s_infinite]"></div>
+          <div className="space-y-3">
+            <div className="h-5 bg-gradient-to-r from-gray-200 via-gray-300 to-gray-200 rounded-lg bg-[length:200%_100%] animate-[shimmer_2s_infinite]"></div>
+            <div className="h-4 bg-gradient-to-r from-gray-200 via-gray-300 to-gray-200 rounded-lg w-3/4 bg-[length:200%_100%] animate-[shimmer_2s_infinite]"></div>
+            <div className="h-3 bg-gradient-to-r from-gray-200 via-gray-300 to-gray-200 rounded-lg w-1/2 bg-[length:200%_100%] animate-[shimmer_2s_infinite]"></div>
+          </div>
+        </div>
+      ))}
+    </div>
+  );
 
+  return (
+    <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-gray-50">
+      <div className="max-w-7xl mx-auto px-6 py-16">
+        {/* Header Section */}
+        <div className="text-center mb-16">
+          <div className="inline-flex items-center justify-center space-x-2 bg-blue-50 text-blue-600 px-4 py-2 rounded-full text-sm font-medium mb-6">
+            <Sparkles className="w-4 h-4" />
+            <span>Dự án nổi bật</span>
+          </div>
+
+          <h1 className="text-6xl md:text-7xl font-bold text-gray-900 mb-6">
+            Dự Án
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-purple-600">
+              {" "}
+              Thành Công
+            </span>
+          </h1>
+
+          <p className="text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed mb-8">
+            Khám phá những dự án xuất sắc mà chúng tôi đã thực hiện thành công,
+            từ thiết kế nội thất hiện đại đến các giải pháp không gian sống hoàn
+            hảo
+          </p>
+
+          {/* Stats */}
+          <div className="flex flex-wrap justify-center gap-8 mb-12">
+            <div className="flex items-center space-x-2 text-gray-600">
+              <div className="bg-green-100 p-2 rounded-full">
+                <TrendingUp className="w-5 h-5 text-green-600" />
+              </div>
+              <div>
+                <div className="text-2xl font-bold text-gray-900">150+</div>
+                <div className="text-sm">Dự án hoàn thành</div>
+              </div>
+            </div>
+            <div className="flex items-center space-x-2 text-gray-600">
+              <div className="bg-blue-100 p-2 rounded-full">
+                <Award className="w-5 h-5 text-blue-600" />
+              </div>
+              <div>
+                <div className="text-2xl font-bold text-gray-900">98%</div>
+                <div className="text-sm">Khách hàng hài lòng</div>
+              </div>
+            </div>
+            <div className="flex items-center space-x-2 text-gray-600">
+              <div className="bg-purple-100 p-2 rounded-full">
+                <Building2 className="w-5 h-5 text-purple-600" />
+              </div>
+              <div>
+                <div className="text-2xl font-bold text-gray-900">50+</div>
+                <div className="text-sm">Đối tác tin cậy</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Controls Section */}
+        {/* <div className="bg-white rounded-2xl shadow-lg border border-gray-100 p-6 mb-12">
+          <div className="flex flex-col lg:flex-row gap-6 items-center justify-between">
+       
+            <div className="relative flex-1 max-w-md">
+              <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
+              <input
+                type="text"
+                placeholder="Tìm kiếm dự án..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className="w-full pl-12 pr-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
+              />
+            </div>
+
+            <div className="flex items-center space-x-4">
+              <div className="relative">
+                <select
+                  value={selectedCategory}
+                  onChange={(e) => setSelectedCategory(e.target.value)}
+                  className="appearance-none bg-white border border-gray-200 rounded-xl px-4 py-3 pr-10 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200">
+                  <option value="all">Tất cả danh mục</option>
+                  <option value="noi-that">Nội thất</option>
+                  <option value="thiet-ke">Thiết kế</option>
+                  <option value="thi-cong">Thi công</option>
+                </select>
+                <ChevronDown className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5 pointer-events-none" />
+              </div>
+
+              <div className="flex items-center bg-gray-100 rounded-xl p-1">
+                <button
+                  onClick={() => setViewMode("grid")}
+                  className={`p-2 rounded-lg transition-all duration-200 ${
+                    viewMode === "grid"
+                      ? "bg-white shadow-sm text-blue-600"
+                      : "text-gray-500 hover:text-gray-700"
+                  }`}>
+                  <Grid3X3 className="w-5 h-5" />
+                </button>
+                <button
+                  onClick={() => setViewMode("list")}
+                  className={`p-2 rounded-lg transition-all duration-200 ${
+                    viewMode === "list"
+                      ? "bg-white shadow-sm text-blue-600"
+                      : "text-gray-500 hover:text-gray-700"
+                  }`}>
+                  <List className="w-5 h-5" />
+                </button>
+              </div>
+            </div>
+          </div>
+        </div> */}
+
+        {/* Content Section */}
+        {loading ? (
+          <ProjectsSkeletonLoader />
+        ) : (
+          <>
+            {/* Results Info */}
+            <div className="flex items-center justify-between mb-8">
+              <div className="text-gray-600">
+                Hiển thị{" "}
+                <span className="font-semibold text-gray-900">
+                  {projects.length}
+                </span>{" "}
+                dự án
+                {searchQuery && (
+                  <span>
+                    {" "}
+                    cho từ khóa "
+                    <span className="font-semibold text-blue-600">
+                      {searchQuery}
+                    </span>
+                    "
+                  </span>
+                )}
+              </div>
+              <div className="text-sm text-gray-500">
+                Trang {currentPage} / {totalPages}
+              </div>
+            </div>
+
+            {/* Projects Grid */}
+            <div
+              className={`grid gap-8 mb-12 ${
+                viewMode === "grid"
+                  ? "grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4"
+                  : "grid-cols-1 lg:grid-cols-2"
+              }`}>
+              {projects.map((project) => (
+                <ProjectCard project={project} key={project.id} />
+              ))}
+            </div>
+
+            {/* Empty State */}
+            {projects.length === 0 && !loading && (
+              <div className="text-center py-16">
+                <div className="bg-gray-100 rounded-full w-24 h-24 mx-auto mb-6 flex items-center justify-center">
+                  <Building2 className="w-12 h-12 text-gray-400" />
+                </div>
+                <h3 className="text-2xl font-bold text-gray-900 mb-2">
+                  Không tìm thấy dự án
+                </h3>
+                <p className="text-gray-600 mb-6">
+                  Thử thay đổi bộ lọc hoặc từ khóa tìm kiếm
+                </p>
+                <button
+                  onClick={() => {
+                    setSearchQuery("");
+                    setSelectedCategory("all");
+                  }}
+                  className="bg-blue-600 text-white px-6 py-3 rounded-xl hover:bg-blue-700 transition-colors duration-200">
+                  Xóa bộ lọc
+                </button>
+              </div>
+            )}
+
+            {/* Pagination */}
+            {totalPages > 1 && (
+              <PaginationCustom
+                totalPages={totalPages}
+                currentPage={currentPage}
+                onPageChange={(page) => setCurrentPage(page)}
+              />
+            )}
+          </>
+        )}
+      </div>
+
+      {/* Background Decoration */}
+      <div className="fixed inset-0 pointer-events-none overflow-hidden">
+        <div className="absolute -top-40 -right-40 w-80 h-80 bg-gradient-to-br from-blue-100 to-purple-100 rounded-full opacity-50 animate-pulse" />
+        <div
+          className="absolute -bottom-40 -left-40 w-80 h-80 bg-gradient-to-br from-green-100 to-blue-100 rounded-full opacity-50 animate-pulse"
+          style={{ animationDelay: "2s" }}
+        />
+      </div>
+
+      <style jsx>{`
+        @keyframes shimmer {
+          0% {
+            background-position: -200% 0;
+          }
+          100% {
+            background-position: 200% 0;
+          }
+        }
+        .line-clamp-2 {
+          display: -webkit-box;
+          -webkit-line-clamp: 2;
+          -webkit-box-orient: vertical;
+          overflow: hidden;
+        }
+      `}</style>
+    </div>
+  );
+};
+
+export default ProjectsSection;

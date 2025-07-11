@@ -1,58 +1,53 @@
 /** @format */
 
 "use-client";
+import { NewsAPI } from "@/api/news/news.api";
+import PaginationCustom from "@/common/PaginationCustom";
 import { NewsCard } from "@/components/ui/NewsCard";
 import { NewsInterface } from "@/types/news";
+import { ProjectInterface } from "@/types/project";
 import { useEffect, useState } from "react";
 
 const NewsSection = () => {
-  const mockNews: NewsInterface[] = [
-    {
-      id: 1,
-      title: "Xu hướng công nghệ mới năm 2025",
-      description:
-        "Khám phá những xu hướng công nghệ đột phá sẽ định hình tương lai trong năm 2025...",
-      createdAt: new Date(),
-      updatedAt: new Date(),
-      imageUrl:
-        "https://images.unsplash.com/photo-1615874959474-d609969a20ed?auto=format&fit=crop&w=800&q=80",
-      slug: "xu-huong-cong-nghe-moi-nam-2025",
-    },
-    {
-      id: 2,
-
-      createdAt: new Date(),
-      updatedAt: new Date(),
-      title: "Thành công của dự án AI tại Việt Nam",
-      description:
-        "Dự án trí tuệ nhân tạo đầu tiên tại Việt Nam đã đạt được những thành tựu đáng kể...",
-      imageUrl:
-        "https://images.unsplash.com/photo-1615874959474-d609969a20ed?auto=format&fit=crop&w=800&q=80",
-      slug: "thanh-cong-du-an-ai-viet-nam",
-    },
-    {
-      id: 3,
-      title: "Khởi nghiệp công nghệ: Cơ hội và thách thức",
-      description:
-        "Phân tích về cơ hội và thách thức mà các startup công nghệ đang phải đối mặt...",
-      createdAt: new Date(),
-      updatedAt: new Date(),
-      imageUrl:
-        "https://images.unsplash.com/photo-1615874959474-d609969a20ed?auto=format&fit=crop&w=800&q=80",
-      slug: "khoi-nghiep-cong-nghe-co-hoi-thach-thuc",
-    },
-  ];
-
-  const [news, setNews] = useState(mockNews);
+  const [news, setNews] = useState<NewsInterface[]>([]);
   const [loading, setLoading] = useState(false);
+  const [totalPages, setTotalPages] = useState(0);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [isMounted, setIsMounted] = useState(false);
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
 
-  //  useEffect(() => {
-  //   fetchProjectCategories(1, 6).then(data => {
-  //     setProjects(data.items);
-  //     setLoading(false);
-  //   });
-  // }, []);
+  useEffect(() => {
+    fetchProjects();
+  }, [currentPage]);
+  const fetchProjects = async () => {
+    try {
+      const limit = 8;
 
+      setLoading(true);
+      let res = await NewsAPI.getNews({
+        currentPage: currentPage,
+        limit: limit,
+      });
+
+      if (res.status === 200) {
+        const { articles, total } = res.data as {
+          articles: NewsInterface[];
+          total: number;
+        };
+        // const totalPagesCal = Math.ceil(total / limit);
+        setTotalPages(Math.ceil(total / limit));
+        setNews(articles);
+      }
+    } catch (err) {
+      setLoading(false);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  if (!isMounted) return null;
   if (loading) {
     return (
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
@@ -70,17 +65,25 @@ const NewsSection = () => {
   return (
     <div className="space-y-12">
       <div className="text-center space-y-4">
-        <h2 className="text-4xl font-bold text-gray-900">Tin tức & Sự kiện</h2>
+        <h2 className="text-4xl font-bold text-gray-900">
+          {news.length > 0 ? news[0].title : "Tin tức"}
+        </h2>
         <p className="text-gray-600 max-w-2xl mx-auto text-lg">
-          Cập nhật những tin tức mới nhất và sự kiện quan trọng trong ngành
+          Khám phá những tin tức mà chúng tôi đã thực hiện
         </p>
       </div>
-
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-        {news.map((article) => (
-          <NewsCard news={article} key={article.id} />
+      <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-8">
+        {news.map((newItem) => (
+          <NewsCard news={newItem} key={newItem.id} />
         ))}
       </div>
+      <PaginationCustom
+        totalPages={totalPages}
+        currentPage={currentPage}
+        onPageChange={(page) => {
+          setCurrentPage(page);
+        }}
+      />
     </div>
   );
 };

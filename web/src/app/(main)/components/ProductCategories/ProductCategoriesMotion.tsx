@@ -2,6 +2,7 @@
 
 "use client";
 
+import CategoryCard from "@/components/ui/CategoryCard";
 import { CategoryInterface } from "@/types/category";
 import { motion } from "framer-motion";
 import Link from "next/link";
@@ -88,79 +89,13 @@ export const ProductCategoriesMotion = (props: Props) => {
 
           {/* Categories Grid */}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8 lg:gap-10">
-            {categories.map((category, index) => (
-              <Link
-                href={`/danh-muc/${category.slug}`}
-                aria-label={category.name}
-                key={index}>
-                <motion.div
-                  variants={fadeInUp}
-                  whileHover="hover"
-                  className="group cursor-pointer">
-                  <motion.div
-                    variants={cardHover}
-                    className="relative rounded-2xl sm:rounded-3xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-500 bg-white/50 backdrop-blur-sm border border-white/60">
-                    {/* Image Container */}
-                    <div className="relative aspect-[4/3] sm:aspect-[16/12] overflow-hidden">
-                      <img
-                        src={category.imageUrl}
-                        alt={category.name}
-                        className="w-full h-full object-cover transition-all duration-700 group-hover:scale-110 group-hover:rotate-1"
-                      />
-
-                      {/* Overlay Gradients */}
-                      <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-70 group-hover:opacity-85 transition-opacity duration-300" />
-                      <div className="absolute inset-0 bg-gradient-to-r from-purple-600/20 to-pink-600/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-
-                      {/* Shimmer Effect */}
-                      <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                        <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent transform -skew-x-12 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-1000" />
-                      </div>
-                    </div>
-
-                    {/* Content Overlay */}
-                    <div className="absolute inset-0 flex items-center justify-center">
-                      <div className="text-center text-white transform group-hover:scale-105 transition-transform duration-300">
-                        <motion.h3
-                          className="text-xl sm:text-2xl lg:text-3xl font-bold mb-2 sm:mb-3 drop-shadow-lg"
-                          whileHover={{ scale: 1.05 }}>
-                          {category.name}
-                        </motion.h3>
-
-                        <div className="flex items-center justify-center gap-2 text-gray-200 group-hover:text-white transition-colors">
-                          <span className="text-sm sm:text-base lg:text-lg">
-                            {category.products && category.products.length} Sản
-                            phẩm
-                          </span>
-                          <motion.span
-                            animate={{ x: [0, 5, 0] }}
-                            transition={{ duration: 2, repeat: Infinity }}
-                            className="opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                            →
-                          </motion.span>
-                        </div>
-                      </div>
-                    </div>
-
-                    {/* Category Badge */}
-                    <div className="absolute top-4 left-4 sm:top-6 sm:left-6">
-                      <div className="bg-white/20 backdrop-blur-sm rounded-full px-3 py-1 sm:px-4 sm:py-2 border border-white/30 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                        <span className="text-white text-xs sm:text-sm font-medium">
-                          Danh mục
-                        </span>
-                      </div>
-                    </div>
-
-                    {/* Bottom Accent */}
-                    <div className="absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-r from-purple-500 to-pink-500 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                  </motion.div>
-                </motion.div>
-              </Link>
+            {categories.map((category) => (
+              <CategoryCard category={category} key={category.id} />
             ))}
           </div>
 
           {/* Call to Action */}
-          <Link href={`/danh-muc/san-pham`}>
+          <Link href={`/danh-muc`}>
             <motion.div
               variants={fadeInUp}
               className="text-center mt-12 sm:mt-16 lg:mt-20">
@@ -172,7 +107,7 @@ export const ProductCategoriesMotion = (props: Props) => {
                 whileTap={{ scale: 0.98 }}
                 className="group relative bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white px-6 sm:px-8 lg:px-10 py-3 sm:py-4 lg:py-5 rounded-xl sm:rounded-2xl text-sm sm:text-base lg:text-lg font-semibold transition-all duration-300 shadow-lg hover:shadow-2xl overflow-hidden">
                 <span className="relative z-10 flex items-center justify-center gap-2">
-                  Khám Phá Danh Mục Sản Phẩm
+                  Khám Phá Tất Cả Danh Mục
                   <motion.span
                     animate={{ x: [0, 5, 0] }}
                     transition={{ duration: 1.5, repeat: Infinity }}>

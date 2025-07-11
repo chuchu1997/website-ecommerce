@@ -60,7 +60,7 @@ export const ProductCategories: FC = async () => {
   return (
     <ProductCategoriesMotion
       categories={categories}
-      title="Các danh mục nội thất "
+      title="Các danh mục nổi bật  "
       description="Tìm nội thất đẹp cho ngôi nhà của bạn "
     />
   );

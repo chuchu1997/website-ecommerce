@@ -378,6 +378,7 @@ const DanhMucPage = () => {
         page,
         limit
       );
+
       const categoryData = res.data;
       const products = categoryData.products;
       setCategory(categoryData);
