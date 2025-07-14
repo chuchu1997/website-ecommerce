@@ -52,7 +52,7 @@ const ProductAPI = {
             data:data
         })
     },
-    removeProduct:async(id:string)=>{
+    removeProduct:async(id:number)=>{
         return await api({
             method:"DELETE",
             url:`${url}/${id}`

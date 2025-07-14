@@ -1,14 +1,11 @@
-/** @format */
-
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
   FormControl,
   FormField,
   FormItem,
   FormMessage,
+  FormLabel,
 } from "@/components/ui/form";
-import ImageUpload from "@/components/ui/ImageUpload/image-upload";
-import { ImageInterface } from "@/types/product";
 import { Package } from "lucide-react";
 import { Input } from "./input";
 
@@ -18,9 +15,13 @@ interface InputProps {
   loading: boolean;
   title: string;
   placeholder: string;
+  disabled?: boolean;
   type?: "text" | "number" | "email" | "password";
-  icon?: React.ComponentType<React.SVGProps<SVGSVGElement>>; // hoặc bất cứ type icon nào bạn dùng
+  icon?: React.ComponentType<React.SVGProps<SVGSVGElement>>;
+  description?: string;
+  showCard?: boolean;
 }
+
 export const InputSectionWithForm: React.FC<InputProps> = ({
   form,
   loading,
@@ -28,36 +29,49 @@ export const InputSectionWithForm: React.FC<InputProps> = ({
   title,
   placeholder,
   type = "text",
+  disabled = false,
   icon: Icon = Package,
-}) => (
-  <Card className="shadow-sm">
-    <CardHeader>
-      <CardTitle className="flex items-center gap-3">
-        <div className="p-2 bg-blue-50 rounded-lg">
-          <Icon className="w-5 h-5 text-blue-600" />
-        </div>
-        {title}
-      </CardTitle>
-    </CardHeader>
-    <CardContent>
-      <FormField
-        control={form.control}
-        name={nameFormField}
-        render={({ field }) => (
-          <FormItem>
-            <FormControl>
-              <Input
-                className={type === "number" ? "appearance-none" : ""}
-                {...field}
-                type={type}
-                pattern={nameFormField === "slug" ? "\\S*" : undefined}
-                disabled={loading}
-                placeholder={placeholder}></Input>
-            </FormControl>
-            <FormMessage />
-          </FormItem>
-        )}
-      />
-    </CardContent>
-  </Card>
-);
+  description,
+  showCard = true,
+}) => {
+  const FormContent = (
+    <FormField
+      control={form.control}
+      name={nameFormField}
+      render={({ field }) => (
+        <FormItem>
+          <FormLabel className="text-sm font-medium text-gray-700 flex items-center gap-2">
+            <Icon className="w-4 h-4 text-blue-600" />
+            {title}
+          </FormLabel>
+          <FormControl>
+            <Input
+              className={`${type === "number" ? "appearance-none" : ""} ${
+                disabled ? "bg-gray-50" : ""
+              }`}
+              {...field}
+              type={type}
+              pattern={nameFormField === "slug" ? "\\S*" : undefined}
+              disabled={disabled ?? loading}
+              placeholder={placeholder}
+            />
+          </FormControl>
+          {description && (
+            <p className="text-xs text-gray-500 mt-1">{description}</p>
+          )}
+          <FormMessage />
+        </FormItem>
+      )}
+    />
+  );
+
+  if (!showCard) {
+    return FormContent;
+  }
+
+  return (
+    <Card className="shadow-sm border-gray-200">
+      <CardContent className="pt-6">{FormContent}</CardContent>
+    </Card>
+  );
+};

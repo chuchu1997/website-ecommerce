@@ -11,59 +11,60 @@ import { useParams, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { BannerInterface } from "@/types/banner";
 import BannerAPI from "@/app/api/banners/banner.api";
+import { BrandInterface } from "@/types/brand";
 import { CardCommon } from "@/components/common/CardCommon";
 import { useAlertDialog } from "@/components/ui/alert-dialog/useAlertDialog";
 import toast from "react-hot-toast";
+import BrandAPI from "@/app/api/brands/brands.api";
 
-export const BannerClient = () => {
+export const BrandClient = () => {
   const { storeId } = useParams();
-  const [banners, setBanners] = useState<BannerInterface[]>([]);
+  const [brands, setBrands] = useState<BrandInterface[]>([]);
 
   const [currentPage, setCurrentPage] = useState(1);
-  const [totalBanner, setTotalBanner] = useState(1);
-  const showDialog = useAlertDialog();
-
+  const [totalBrands, setTotalBrands] = useState(0);
   const router = useRouter();
-
-  const fetchAllBanners = async () => {
+  const showDialog = useAlertDialog();
+  const fetchAllBrands = async () => {
     if (storeId && typeof storeId === "string") {
-      let response = await BannerAPI.getBannerWithStoreID(Number(storeId));
-      if (response.status === 200) {
-        const { banners } = response.data as { banners: BannerInterface[] };
-        setBanners(banners);
+      let res = await BrandAPI.getBrandWithStoreID(Number(storeId));
+      if (res.status === 200) {
+        const { brands } = res.data as { brands: BrandInterface[] };
+        setBrands(brands);
+        setTotalBrands(brands.length);
       }
     }
   };
 
   useEffect(() => {
-    fetchAllBanners();
+    fetchAllBrands();
   }, [currentPage]);
 
   return (
     <>
       <div className="flex items-center justify-between ">
         <Heading
-          title={`Quản lý Banner  (${banners?.length || 0})`}
+          title={`Quản lý Thương hiệu & Đối tác   (${totalBrands || 0})`}
           description={"Hình ảnh trong Store -()- "}
         />
         <Button
           className="cursor-pointer"
-          onClick={() => router.push(`/${storeId}/banners/new`)}>
+          onClick={() => router.push(`/${storeId}/brands/new`)}>
           <Plus className="w-4 h-4"></Plus>
           Tạo mới
         </Button>
       </div>
-      <Separator />
 
+      <Separator />
       <div className="">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {banners.map((banner) => (
+        <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-6">
+          {brands.map((brand) => (
             <CardCommon
-              key={banner.id}
-              title={"Banner"}
-              id={banner.id}
-              image={banner.imageUrl}
-              description={banner.description ?? ""}
+              key={brand.id}
+              title={brand.name}
+              id={brand.id}
+              image={brand.imageUrl}
+              description={brand.description ?? ""}
               variant={""}
               onDelete={(id) => {
                 showDialog({
@@ -74,31 +75,22 @@ export const BannerClient = () => {
                   cancelText: "Hủy",
                   onConfirm: async () => {
                     // Gọi API xóa hoặc logic xử lý
-
-                    const res = await BannerAPI.deleteBanner(id);
+                    const res = await BrandAPI.deleteBrand(id);
                     if (res.status === 200) {
-                      toast.success("Đã xóa banner thành công ");
-                      await fetchAllBanners();
+                      toast.success("Đã xóa brand thành công ");
+                      // await fetchAllBanners();
+                      await fetchAllBrands();
                     }
                   },
                 });
               }}
               onEdit={(id) => {
-                router.push(`/${storeId}/banners/${id}`);
+                router.push(`/${storeId}/brands/${id}`);
               }}
             />
           ))}
         </div>
       </div>
-      {/* <DataTable
-        currentPage={currentPage}
-        onPageChange={async (page: number) => {
-          setCurrentPage(page);
-        }}
-        totalItems={4}
-        searchKey="label"
-        columns={columns}
-        data={banners}></DataTable> */}
     </>
   );
 };

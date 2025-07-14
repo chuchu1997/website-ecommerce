@@ -14,14 +14,20 @@ import { useEffect, useState } from "react";
 
 import { PromotionAPI } from "@/app/api/promotions/promotion.api";
 import { PromotionType } from "@/types/promotions";
+import PaginationCustom from "@/components/common/PaginationCustom";
+import { useAlertDialog } from "@/components/ui/alert-dialog/useAlertDialog";
+import { CardCommon } from "@/components/common/CardCommon";
+import toast from "react-hot-toast";
 
 export const PromotionClient = () => {
   const { storeId } = useParams();
   const [promotions, setPromotions] = useState<PromotionType[]>([]);
   const [totalPromotions, setTotalPromotions] = useState<number>(0);
   const [currentPage, setCurrentPage] = useState<number>(1);
+  const [totalPages, setTotalPages] = useState<number>(0);
 
   const router = useRouter();
+  const showDialog = useAlertDialog();
 
   useEffect(() => {
     fetchPromotions();
@@ -33,7 +39,6 @@ export const PromotionClient = () => {
         currentPage: currentPage,
       });
       if (response.status === 200) {
-        console.log("RESPONSE", response);
         setPromotions(response.data);
       }
     }
@@ -54,18 +59,48 @@ export const PromotionClient = () => {
         </Button>
       </div>
       <Separator />
-      <DataTable
-        searchKey="name"
-        columns={columns}
-        data={promotions}
-        totalItems={totalPromotions}
-        currentPage={currentPage}
-        onPageChange={async (page: number) => {
-          setCurrentPage(page);
-        }}></DataTable>
-      {/* <Heading title={"API"} description={"API Call for products"} />
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        {promotions.map((promotion) => (
+          <CardCommon
+            key={promotion.id}
+            title={promotion.name ?? ""}
+            id={promotion.id}
+            image={"/flash-sale.png"}
+            description={""}
+            variant={"flash-sale"}
+            onDelete={(id) => {
+              showDialog({
+                title: "Xóa sản phẩm?",
+                description:
+                  "Bạn có chắc chắn muốn xóa sản phẩm này không? Hành động này không thể hoàn tác.",
+                confirmText: "Xóa",
+                cancelText: "Hủy",
+                onConfirm: async () => {
+                  const res = await PromotionAPI.deletePromotion(id);
+                  if (res.status === 200) {
+                    toast.success(
+                      "Đã xóa chương trình khuyến mãi thành công !!"
+                    );
+                    await fetchPromotions();
+                  }
+                },
+              });
+            }}
+            onEdit={(id) => {
+              router.push(`/${storeId}/promotions/${id}`);
+            }}
+          />
+        ))}
+      </div>
       <Separator />
-      <ApiList entityName="news" entityIdName="slug" /> */}
+
+      {/* <PaginationCustom
+        totalPages={totalPages}
+        currentPage={currentPage}
+        onPageChange={(page) => {
+          setCurrentPage(page);
+        }}
+      /> */}
     </>
   );
 };

@@ -64,7 +64,7 @@ interface SettingsProps {
 const socialSchema = z.object({
   id: z.number().optional(),
   type: z.nativeEnum(SocialType),
-  url: z.string().url(),
+  url: z.string(),
 });
 const formSchema = z.object({
   name: z

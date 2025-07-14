@@ -1,6 +1,7 @@
 /** @format */
 
 "use client";
+import { useAlertDialog } from "@/components/ui/alert-dialog/useAlertDialog";
 
 import { Button } from "@/components/ui/button";
 import { Heading } from "@/components/ui/heading";
@@ -13,19 +14,27 @@ import { ApiList } from "@/components/ui/api-list";
 import { ProductInterface } from "@/types/product";
 import ProductAPI from "@/app/api/products/products.api";
 import { useEffect, useState } from "react";
+import { CardCommon } from "@/components/common/CardCommon";
+import toast from "react-hot-toast";
+import PaginationCustom from "@/components/common/PaginationCustom";
 
 export const ProductClient = () => {
   const { storeId } = useParams();
   const router = useRouter();
-  const [productColumns, setProductColumns] = useState<ProductInterface[]>([]);
+  const [products, setProducts] = useState<ProductInterface[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
 
-  const [totalProduct, setTotalProduct] = useState<number>(1);
+  const [totalProduct, setTotalProduct] = useState<number>(0);
+  const [totalPages, setTotalPages] = useState<number>(0);
+
+  const showDialog = useAlertDialog();
 
   const getListProductsRelateWithStoreID = async () => {
+    const limit = 8;
     if (storeId) {
       let response = await ProductAPI.getListProducts({
         currentPage: currentPage,
+        limit: limit,
         storeID: Number(storeId),
       });
       if (response.status === 200) {
@@ -33,10 +42,11 @@ export const ProductClient = () => {
           products: ProductInterface[];
           total: number;
         };
-
         if (products) {
-          setProductColumns(products);
+          setProducts(products);
           setTotalProduct(total);
+          const totalPagesCal = Math.ceil(total / limit);
+          setTotalPages(totalPagesCal);
         }
       }
     }
@@ -60,17 +70,46 @@ export const ProductClient = () => {
         </Button>
       </div>
       <Separator />
-      <DataTable
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        {products.map((product) => (
+          <CardCommon
+            key={product.id}
+            title={product.name}
+            id={product.id}
+            image={product.images[0].url}
+            description={product.shortDescription ?? ""}
+            variant={""}
+            onDelete={(id) => {
+              showDialog({
+                title: "Xóa sản phẩm?",
+                description:
+                  "Bạn có chắc chắn muốn xóa sản phẩm này không? Hành động này không thể hoàn tác.",
+                confirmText: "Xóa",
+                cancelText: "Hủy",
+                onConfirm: async () => {
+                  const res = await ProductAPI.removeProduct(id);
+                  if (res.status === 200) {
+                    toast.success("Đã xóa sản phẩm thành công");
+                    await getListProductsRelateWithStoreID();
+                  }
+                },
+              });
+            }}
+            onEdit={(id) => {
+              router.push(`/${storeId}/products/${product.slug}`);
+            }}
+          />
+        ))}
+      </div>
+      <Separator />
+
+      <PaginationCustom
+        totalPages={totalPages}
         currentPage={currentPage}
-        onPageChange={async (page: number) => {
+        onPageChange={(page) => {
           setCurrentPage(page);
         }}
-        totalItems={totalProduct}
-        searchKey="name"
-        columns={columns}
-        data={productColumns}></DataTable>
-
-      <Separator />
+      />
 
       {/* <ApiList entityName="products" entityIdName="slug" /> */}
     </>

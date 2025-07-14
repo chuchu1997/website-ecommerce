@@ -86,12 +86,14 @@ export function AppSidebar() {
         icon: BookMinusIcon,
         active: pathname === `/${params.storeId}/categories`,
       },
+
       {
         href: `/${params.storeId}/products`,
         label: "Sản phẩm",
         icon: PackageSearchIcon,
         active: pathname === `/${params.storeId}/products`,
       },
+
       {
         href: `/${params.storeId}/promotions`,
         label: "Khuyến mãi (Flash Sale)",
@@ -112,11 +114,18 @@ export function AppSidebar() {
         active: pathname === `/${params.storeId}/services`,
       },
       {
+        href: `/${params.storeId}/brands`,
+        label: "Thương hiệu (Đối tác )",
+        icon: BookMinusIcon,
+        active: pathname === `/${params.storeId}/brands`,
+      },
+      {
         href: `/${params.storeId}/fake-comments`,
         label: "Comment giả lập",
         icon: Command,
         active: pathname === `/${params.storeId}/fake-comments`,
       },
+
       // {
       //   href: `/${params.storeId}/services`,
       //   label: "Dịch vụ",

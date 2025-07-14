@@ -5,6 +5,8 @@ import { ModalProvider } from "@/providers/modal-provider";
 import { AppSidebar } from "@/components/app-sidebar";
 
 import { ToastProvider } from "@/providers/toast-provider";
+import { AlertDialogProvider } from "@/components/ui/alert-dialog/AlertDialogProvider";
+import { AlertDialogRoot } from "@/components/ui/alert-dialog/AlertDialogRoot";
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
@@ -32,9 +34,13 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
+          <AlertDialogProvider>
         <ToastProvider />
         <ModalProvider />
         <div className=" w-full overflow-x-hidden">{children}</div>
+          <AlertDialogRoot />
+        </AlertDialogProvider>
+       
       </body>
     </html>
   );

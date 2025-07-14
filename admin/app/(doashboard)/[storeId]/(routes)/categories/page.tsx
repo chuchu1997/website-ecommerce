@@ -78,6 +78,9 @@ const formSchema = z.object({
     .refine((val) => !!val.url, {
       message: "Vui lòng chọn ảnh.",
     }),
+
+  position: z.coerce.number().optional(), // Hợp lệ với cả "2" và 2
+
   parentId: z.string().optional(),
   variant: z.nativeEnum(CategoryVariant).optional(),
   description: z.string().min(3, "Vui lòng nhập mô tả của danh mục"),
@@ -99,7 +102,8 @@ export default function CategoriesManagement() {
       name: "",
       slug: "",
       description: "",
-      parentId: "",
+      parentId: "isParent",
+      position: 1,
       seo: {
         title: "",
         description: "",
@@ -176,6 +180,7 @@ export default function CategoriesManagement() {
     category: UpdateCategoryInterface
   ) => {
     const response = await CategoryAPI.updateCategory(id, category);
+    console.log("UPDATE", category);
     if (response.status === 200) {
       const { message } = response.data as { message: string };
       toast.success(message);
@@ -237,6 +242,9 @@ export default function CategoriesManagement() {
           finalImage.url = imageUrls[0];
         }
       }
+
+      const isParentCategory = data.parentId === "isParent";
+
       if (editingCategoryId) {
         // Update existing category
         const updateData: UpdateCategoryInterface = {
@@ -244,10 +252,10 @@ export default function CategoriesManagement() {
           slug: data.slug,
           description: data.description,
           imageUrl: finalImage.url,
-          parentId:
-            data.parentId === "null" || !data.parentId
-              ? null
-              : Number(data.parentId),
+          parentId: isParentCategory ? null : Number(data.parentId),
+          ...(isParentCategory && {
+            position: data.position, // chỉ thêm field position nếu là category cha
+          }),
           updatedAt: new Date(),
           storeId: Number(storeId),
           variant: data.variant ?? undefined,
@@ -263,10 +271,10 @@ export default function CategoriesManagement() {
           storeId: Number(storeId),
           imageUrl: finalImage.url,
           description: data.description,
-          parentId:
-            data.parentId === "null" || !data.parentId
-              ? null
-              : Number(data.parentId),
+          parentId: isParentCategory ? null : Number(data.parentId),
+          ...(isParentCategory && {
+            position: data.position, // chỉ thêm field position nếu là category cha
+          }),
           variant: data.variant ?? undefined,
           seo: data.seo,
         };
@@ -293,7 +301,8 @@ export default function CategoriesManagement() {
         file: undefined,
         url: category.imageUrl,
       },
-      parentId: category.parentId ? String(category.parentId) : "",
+      position: category.position ?? 1,
+      parentId: category.parentId ? String(category.parentId) : "isParent",
       variant: category.variant ?? undefined,
       seo: category.seo ?? {
         title: "",
@@ -318,6 +327,7 @@ export default function CategoriesManagement() {
       description: "",
       imageUrl: undefined,
       parentId: "",
+      position: 1,
       seo: {
         title: "",
         description: "",
@@ -701,7 +711,7 @@ export default function CategoriesManagement() {
                                 </FormControl>
                                 <SelectContent className="max-h-[300px] overflow-y-auto">
                                   <SelectItem
-                                    value="null"
+                                    value="isParent"
                                     className="font-semibold text-blue-600">
                                     <div className="flex items-center gap-2">
                                       <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
@@ -719,6 +729,15 @@ export default function CategoriesManagement() {
                               </FormDescription>
                             </FormItem>
                           )}
+                        />
+
+                        <InputSectionWithForm
+                          form={form}
+                          nameFormField="position"
+                          disabled={form.watch("parentId") !== "isParent"}
+                          loading={false}
+                          title="Vị trí hiển thị"
+                          placeholder="Nhập vị trí hiển thị (tùy chọn )"
                         />
 
                         <TextAreaSectionWithForm

@@ -30,8 +30,8 @@ export enum discountTypeEnum {
 }
 
 export interface PromotionTypeBase {
-  name: String;
-  slug: String;
+  name: string;
+  slug: string;
   isActive: Boolean;
   promotionProducts: ProductPromotion[];
   startDate: Date;

@@ -20,6 +20,7 @@ interface CategoryBase {
     imageUrl:string;
     description:string;
     parentId?:number|null;
+    position?:number
     variant?:CategoryVariant
     seo?:SeoType
     createdAt?:Date;

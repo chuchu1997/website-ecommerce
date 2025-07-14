@@ -13,23 +13,32 @@ import { ApiList } from "@/components/ui/api-list";
 import { useEffect, useState } from "react";
 import { ArticleInterface } from "@/types/news";
 import ArticleAPI from "@/app/api/articles/article.api";
+import { CardCommon } from "@/components/common/CardCommon";
+import { useAlertDialog } from "@/components/ui/alert-dialog/useAlertDialog";
+import toast from "react-hot-toast";
+import PaginationCustom from "@/components/common/PaginationCustom";
 
 export const NewsClient = () => {
   const { storeId } = useParams();
   const [news, setNews] = useState<ArticleInterface[]>([]);
   const [totalNews, setTotalNews] = useState<number>(1);
   const [currentPage, setCurrentPage] = useState<number>(1);
+  const [totalPages, setTotalPages] = useState<number>(0);
 
   const router = useRouter();
+  const showDialog = useAlertDialog();
 
   useEffect(() => {
     fetchArticles();
-  }, []);
+  }, [currentPage]);
   const fetchArticles = async () => {
+    const limit = 8;
+
     if (storeId) {
       let response = await ArticleAPI.getArticlesWithStoreID({
         storeId: Number(storeId.toString()),
         currentPage: 1,
+        limit,
       });
       if (response.status === 200) {
         const { articles, total } = response.data as {
@@ -39,6 +48,8 @@ export const NewsClient = () => {
         if (articles) {
           setNews(articles);
           setTotalNews(total);
+          const totalPagesCal = Math.ceil(total / limit);
+          setTotalPages(totalPagesCal);
         }
       }
     }
@@ -59,18 +70,48 @@ export const NewsClient = () => {
         </Button>
       </div>
       <Separator />
-      <DataTable
-        searchKey="name"
-        columns={columns}
-        data={news}
-        onPageChange={async (page) => {
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {news.map((newItem) => (
+          <CardCommon
+            key={newItem.id}
+            title={newItem.title}
+            id={newItem.id}
+            image={newItem.imageUrl ?? ""}
+            description={newItem.shortDescription ?? ""}
+            variant={""}
+            onDelete={(id) => {
+              showDialog({
+                title: "Xóa sản phẩm?",
+                description:
+                  "Bạn có chắc chắn muốn xóa sản phẩm này không? Hành động này không thể hoàn tác.",
+                confirmText: "Xóa",
+                cancelText: "Hủy",
+                onConfirm: async () => {
+                  // Gọi API xóa hoặc logic xử lý
+
+                  const res = await ArticleAPI.deleteArticle(id);
+                  if (res.status === 200) {
+                    toast.success("Đã xóa tin tức thành công ");
+                    await fetchArticles();
+                  }
+                },
+              });
+            }}
+            onEdit={(id) => {
+              router.push(`/${storeId}/news/${newItem.slug}`);
+            }}
+          />
+        ))}
+      </div>
+      <Separator />
+
+      <PaginationCustom
+        totalPages={totalPages}
+        currentPage={currentPage}
+        onPageChange={(page) => {
           setCurrentPage(page);
         }}
-        totalItems={totalNews}
-        currentPage={currentPage}></DataTable>
-      {/* <Heading title={"API"} description={"API Call for products"} />
-      <Separator />
-      <ApiList entityName="news" entityIdName="slug" /> */}
+      />
     </>
   );
 };
