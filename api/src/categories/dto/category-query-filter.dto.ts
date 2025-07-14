@@ -22,5 +22,10 @@ export class CategoryQueryFilterDto {
   @IsOptional()
   @IsNumber()
   @Transform(({ value }) => parseInt(value, 10))
+  position: number;
+
+  @IsOptional()
+  @IsNumber()
+  @Transform(({ value }) => parseInt(value, 10))
   limit: number;
 }

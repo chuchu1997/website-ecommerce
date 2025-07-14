@@ -108,8 +108,6 @@ model User {
   wishlist    Wishlist?             /// Danh sách yêu thích
   reviews     Review[]              /// Các đánh giá sản phẩm
   role        Role       @default(CUSTOMER) /// Vai trò người dùng
-  
-
   stores Store[]
   resetToken String? @unique
   resetTokenExpiry DateTime?
@@ -152,7 +150,7 @@ model Store  {
    promotion Promotion[] @relation("StoreToPromotion")
    projects Project[] @relation("StoreToProject")
    services Service[] @relation("StoreToService")
-
+   brands Brand[] @relation("StoreToBrands")
    createdAt DateTime @default(now())
    updatedAt DateTime @updatedAt
 
@@ -241,7 +239,15 @@ model News {
 model Brand  {
     id          Int          @id @default(autoincrement())
     name String @unique
-    products Product[] //Danh sách các sản phẩm thuộc Brand này  
+    description String @db.Text
+    imageUrl String
+    position    Int       @default(1) // Luôn có giá trị, không để mặc định là 0 (Là vị trí đầu tiên khi thêm mới )
+    linkHref String?
+    products Product[] //Danh sách các sản phẩm thuộc Brand này 
+    storeId Int
+    store Store @relation("StoreToBrands",fields: [storeId],references: [id]) 
+
+    @@index([storeId])
 }
 
 model Category {
@@ -258,6 +264,9 @@ model Category {
   project Project[]
   seo          Json?
   variant CategoryVariant?
+    // ✅ Sắp xếp thứ tự hiển thị danh mục
+  position    Int?       @default(1)
+
   storeId Int
   store Store @relation("StoreToCategories",fields: [storeId],references: [id])
   
@@ -551,7 +560,7 @@ model Wishlist {
 
 }
 model WishlistItem  {
-    id         Int           @id @default(autoincrement())
+  id         Int           @id @default(autoincrement())
   wishlist   Wishlist @relation(fields: [wishlistId], references: [id])
   wishlistId Int
   productId  Int

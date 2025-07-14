@@ -26,6 +26,7 @@ import { CartModule } from './cart/cart.module';
 import { FakecommentsModule } from './fakecomments/fakecomments.module';
 import { ProjectsModule } from './projects/projects.module';
 import { ServicesModule } from './services/services.module';
+import { BrandsModule } from './brands/brands.module';
 
 @Module({
   imports: [
@@ -54,6 +55,7 @@ import { ServicesModule } from './services/services.module';
     FakecommentsModule,
     ProjectsModule,
     ServicesModule,
+    BrandsModule,
   ],
   controllers: [AppController],
   providers: [

@@ -46,6 +46,11 @@ export class CreateCategoryDto {
   storeId: number;
 
   @IsOptional()
+  @IsNumber()
+  @Transform(({ value }) => parseFloat(value))
+  position?: number;
+
+  @IsOptional()
   seo?: JSON;
 
   @IsOptional()

@@ -4,14 +4,18 @@ import { UpdateCategoryDto } from './dto/update-category.dto';
 import { PrismaService } from 'src/prisma.service';
 import { CategoryQueryFilterDto } from './dto/category-query-filter.dto';
 import { ProductsService } from 'src/products/products.service';
+import { UploadService } from 'src/upload/upload.service';
+import { Prisma } from '@prisma/client';
 
 @Injectable()
 export class CategoriesService {
-  constructor(private prisma: PrismaService) {}
+  constructor(
+    private prisma: PrismaService,
+    private uploadService: UploadService,
+  ) {}
 
   async create(createCategoryDto: CreateCategoryDto) {
-    const { seo, ...data } = createCategoryDto;
-
+    const { seo, position, ...data } = createCategoryDto;
     try {
       const existingCategory = await this.prisma.category.findUnique({
         where: { slug: data.slug },
@@ -21,16 +25,46 @@ export class CategoriesService {
           '⚠️⚠️⚠️ Slug Category này đã tồn tại ⚠️⚠️⚠️',
         );
       }
-      const category = await this.prisma.category.create({
-        data: {
-          ...data,
-          ...(seo !== undefined && {
-            seo: seo as any, // Cast to 'any' or 'Prisma.InputJsonValue'
-          }),
-        },
-      });
 
-      return category;
+      const isParentCategory =
+        data.parentId === null || data.parentId === undefined;
+
+      const transactionOps: Prisma.PrismaPromise<any>[] = [];
+
+      if (isParentCategory) {
+        transactionOps.push(
+          this.prisma.category.updateMany({
+            where: {
+              position: {
+                gte: position,
+              },
+              storeId: data.storeId,
+              parentId: null, // ❗ chỉ áp dụng cho category cha
+            },
+            data: {
+              position: {
+                increment: 1,
+              },
+            },
+          }),
+        );
+      }
+
+      // ✅ Luôn thêm tạo mới category vào transaction
+      transactionOps.push(
+        this.prisma.category.create({
+          data: {
+            ...data,
+            position,
+            ...(seo !== undefined && { seo: seo as any }),
+          },
+        }),
+      );
+
+      // Chạy transaction
+      const [, newCategory] = await this.prisma.$transaction(transactionOps);
+
+      return newCategory;
     } catch (err) {
       console.log('ERROR', err);
     }
@@ -56,6 +90,9 @@ export class CategoriesService {
       },
       include: {
         subCategories: true, // Lấy cấp con đầu tiên
+      },
+      orderBy: {
+        position: 'asc',
       },
       skip: (currentPage - 1) * limit,
       take: limit,
@@ -101,9 +138,7 @@ export class CategoriesService {
         storeId: storeID,
       },
     });
-
     if (!mainCategory) return null;
-
     // Recursive function to get all descendant category IDs
     const getAllDescendantCategoryIds = async (categoryId) => {
       const categoryIds = [categoryId];
@@ -179,40 +214,127 @@ export class CategoriesService {
   }
 
   async update(id: number, updateCategoryDto: UpdateCategoryDto) {
-    const { seo, ...data } = updateCategoryDto;
-    // Kiểm tra xem slug đã tồn tại hay chưa
-    const existingCategory = await this.prisma.category.findUnique({
+    const { seo, position, ...data } = updateCategoryDto;
+
+    // Kiểm tra slug trùng
+    const existingSlug = await this.prisma.category.findUnique({
       where: { slug: data.slug },
     });
-    if (existingCategory && existingCategory.id !== id) {
+
+    if (existingSlug && existingSlug.id !== id) {
       throw new BadRequestException('⚠️⚠️⚠️ Slug đã tồn tại ⚠️⚠️⚠️');
     }
-    // Cập nhật danh mục
-    const category = await this.prisma.category.update({
-      where: { id, storeId: data.storeId },
+
+    // Lấy thông tin category hiện tại
+    const existCategory = await this.prisma.category.findUnique({
+      where: { id },
+    });
+
+    if (!existCategory) {
+      throw new BadRequestException(`⚠️ Danh mục với ID:${id} không tồn tại`);
+    }
+
+    const isParentCategory = (data.parentId ?? existCategory.parentId) === null;
+
+    // Nếu có thay đổi position & là category cha thì cập nhật lại position các category khác
+    if (
+      position !== undefined &&
+      existCategory.position !== null &&
+      position !== existCategory.position &&
+      isParentCategory
+    ) {
+      if (position < existCategory.position) {
+        // Đẩy lên trên: tăng position của các category nằm giữa [position, currentPosition)
+        await this.prisma.category.updateMany({
+          where: {
+            position: {
+              gte: position,
+              lt: existCategory.position,
+            },
+            storeId: data.storeId ?? existCategory.storeId,
+            parentId: null, // chỉ áp dụng cho category cha
+          },
+          data: {
+            position: { increment: 1 },
+          },
+        });
+      } else {
+        // Đẩy xuống dưới: giảm position của các category nằm giữa (currentPosition, position]
+        await this.prisma.category.updateMany({
+          where: {
+            position: {
+              gt: existCategory.position,
+              lte: position,
+            },
+            storeId: data.storeId ?? existCategory.storeId,
+            parentId: null,
+          },
+          data: {
+            position: { decrement: 1 },
+          },
+        });
+      }
+    }
+
+    // Cập nhật category
+    const updatedCategory = await this.prisma.category.update({
+      where: { id },
       data: {
         ...(seo !== undefined && {
-          seo: seo as any, // Cast to 'any' or 'Prisma.InputJsonValue'
+          seo: seo as any,
         }),
         ...data,
         parentId: data.parentId ?? null,
+        position: position ?? existCategory.position,
       },
     });
 
-    return category;
-
-    // await return `This action updates a #${id} category`;
+    return updatedCategory;
   }
 
   async remove(id: number, storeID: number) {
-    // Xóa danh mục
-    const category = await this.prisma.category.delete({
+    // Lấy thông tin category trước khi xoá
+    const existCategory = await this.prisma.category.findUnique({
+      where: { id },
+      select: {
+        position: true,
+        parentId: true,
+        storeId: true,
+      },
+    });
+
+    if (!existCategory) {
+      throw new BadRequestException(`❌ Danh mục với ID:${id} không tồn tại`);
+    }
+
+    // Xoá category
+    await this.prisma.category.delete({
       where: {
         id,
         storeId: storeID,
       },
     });
 
-    return category;
+    // Chỉ cập nhật lại position nếu là category cha
+    if (existCategory.parentId === null && existCategory.position !== null) {
+      await this.prisma.category.updateMany({
+        where: {
+          position: {
+            gt: existCategory.position,
+          },
+          storeId: storeID,
+          parentId: null, // chỉ cập nhật với các danh mục cha
+        },
+        data: {
+          position: {
+            decrement: 1,
+          },
+        },
+      });
+    }
+
+    return {
+      message: '✅ Xoá danh mục thành công và cập nhật lại position',
+    };
   }
 }

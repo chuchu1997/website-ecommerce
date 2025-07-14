@@ -114,8 +114,14 @@ CREATE TABLE `News` (
 CREATE TABLE `Brand` (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
     `name` VARCHAR(191) NOT NULL,
+    `description` TEXT NOT NULL,
+    `imageUrl` VARCHAR(191) NOT NULL,
+    `position` INTEGER NOT NULL DEFAULT 1,
+    `linkHref` VARCHAR(191) NULL,
+    `storeId` INTEGER NOT NULL,
 
     UNIQUE INDEX `Brand_name_key`(`name`),
+    INDEX `Brand_storeId_idx`(`storeId`),
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
@@ -129,6 +135,7 @@ CREATE TABLE `Category` (
     `imageUrl` VARCHAR(191) NOT NULL,
     `seo` JSON NULL,
     `variant` ENUM('NEWS', 'COURSES', 'SERVICES', 'PROMOTION', 'CONTACT', 'PROJECTS') NULL,
+    `position` INTEGER NULL DEFAULT 1,
     `storeId` INTEGER NOT NULL,
     `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
     `updatedAt` DATETIME(3) NOT NULL,
