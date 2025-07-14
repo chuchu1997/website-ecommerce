@@ -136,7 +136,7 @@ export const ProductImageGallery = ({images}:propsProductImageGaller) => {
           <div className="flex-1">
             <div 
               ref={imageContainerRef}
-              className="aspect-square relative overflow-hidden cursor-grab active:cursor-grabbing select-none rounded-lg"
+              className="aspect-square  relative overflow-hidden cursor-grab active:cursor-grabbing select-none rounded-lg"
               onMouseDown={handleMouseDown}
               onMouseMove={handleMouseMove}
               onMouseUp={handleMouseUp}
@@ -145,7 +145,7 @@ export const ProductImageGallery = ({images}:propsProductImageGaller) => {
               <ImageLoader
                 src={displayImages[currentIndex]?.url}
                 alt="Product image"
-                className="object-cover pointer-events-none"
+                className=" object-cover pointer-events-none"
                 fill
                 priority
               />

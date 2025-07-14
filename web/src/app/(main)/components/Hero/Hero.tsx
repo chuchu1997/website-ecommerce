@@ -39,6 +39,7 @@ export const Hero: React.FC = () => {
         <Image
            fill
            priority
+           quality={40}
           src="https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=1920&h=1080&fit=crop" 
           alt="Beautiful wooden furniture" 
           className="w-full h-full object-cover"
