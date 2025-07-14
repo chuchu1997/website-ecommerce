@@ -8,6 +8,7 @@ import { CartProvider } from "@/context/cart-context";
 import { SidebarProvider } from "@/components/ui/sidebar";
 import { Toaster } from "react-hot-toast";
 import Footer from "@/components/layouts/Footer";
+import { ZaloPhoneWidget } from "@/common/ZaloPhoneFloating";
 export const dynamic = "force-dynamic";
 export const revalidate = 60;
 const geistSans = Geist({ variable: "--font-geist-sans", subsets: ["latin"] });
@@ -32,6 +33,8 @@ export default function RootLayout({
               <Toaster position="top-center" reverseOrder={false} />
               {children}
             </SidebarProvider>
+
+            <ZaloPhoneWidget />
           </CartProvider>
           <Footer />
         </CookiesClientWrapper>
