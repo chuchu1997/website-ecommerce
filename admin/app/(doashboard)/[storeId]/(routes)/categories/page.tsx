@@ -170,7 +170,6 @@ export default function CategoriesManagement() {
         category: CategoryInterface;
       };
       toast.success(message);
-      setCategories([...categories, category]);
       await fetchCategoriesFromAPI(); // Refresh the list
     }
   };
