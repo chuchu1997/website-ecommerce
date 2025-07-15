@@ -68,8 +68,7 @@ export const ZaloPhoneWidget: React.FC = ({}) => {
     </div>
   );
 };
-
-const ZaloIcon = ({ className }: { className?: string }) => (
+export const ZaloIcon = ({ className }: { className?: string }) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     x="0px"

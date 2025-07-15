@@ -1,0 +1,10 @@
+# *
+User-agent: *
+Allow: /
+
+# Host
+Host: https://guitarsaithanh.com
+
+# Sitemaps
+Sitemap: https://guitarsaithanh.com/sitemap.xml
+Sitemap: https://guitarsaithanh.com/server-sitemap.xml

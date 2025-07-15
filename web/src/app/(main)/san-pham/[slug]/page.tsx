@@ -19,13 +19,17 @@ export async function generateMetadata({
   const res = await ProductAPI.getProductBySlug(resolvedParams.slug);
   const product = res.data.product as ProductInterface;
 
-  if (product.seo && typeof product.seo === "object") {
+  if (
+    product.seo &&
+    product.seo.title != "" &&
+    typeof product.seo === "object"
+  ) {
     return generateSeoForPage(product.seo as SeoInterface);
   }
 
   return {
-    title: "Sản phẩm",
-    description: "",
+    title: `Sản phẩm | ${process.env.STORE_NAME}`,
+    description: product.shortDescription,
   };
 }
 

@@ -14,7 +14,6 @@ export const ProductAPI = {
   },
 
   getProductByIDS: async (ids: number[]) => {
-    console.log("IDSSS", ids);
     return await api({
       method: "GET",
       url: `${url}`,
@@ -23,6 +22,17 @@ export const ProductAPI = {
         limit: 10,
         storeID,
         ids: ids.join(","), // <-- CHUYỂN MẢNG THÀNH CHUỖI
+      },
+    });
+  },
+  getAllProducts: async () => {
+    return await api({
+      method: "GET",
+      url: `${url}`,
+      params: {
+        currentPage: 1,
+        limit: 9999,
+        storeID,
       },
     });
   },

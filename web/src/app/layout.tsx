@@ -9,6 +9,11 @@ import { SidebarProvider } from "@/components/ui/sidebar";
 import { Toaster } from "react-hot-toast";
 import Footer from "@/components/layouts/Footer";
 import { ZaloPhoneWidget } from "@/common/ZaloPhoneFloating";
+import { Metadata } from "next";
+import { StoreAPI } from "@/api/stores/store.api";
+import { StoreInterface } from "@/types/store";
+import { generateSeoForPage } from "@/seo-ssr/seo-ssr";
+import { SeoInterface } from "@/types/seo";
 export const dynamic = "force-dynamic";
 export const revalidate = 60;
 const geistSans = Geist({ variable: "--font-geist-sans", subsets: ["latin"] });
@@ -17,6 +22,18 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 const roboto = Roboto({ variable: "--font-roboto", subsets: ["latin"] });
+
+export async function generateMetadata(): Promise<Metadata> {
+  const store = (await StoreAPI.getStoreInfo()).data.store as StoreInterface;
+
+  if (!store) return {};
+
+  if (store.seo && typeof store.seo === "object") {
+    return generateSeoForPage(store.seo as SeoInterface);
+  }
+
+  return {};
+}
 
 export default function RootLayout({
   children,

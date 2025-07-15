@@ -16,5 +16,14 @@ export interface StoreInterface {
   seo: string | null;
   createdAt: string; // hoặc Date nếu bạn muốn dùng kiểu Date
   updatedAt: string; // hoặc Date
-  socials: any[]; // Nếu biết rõ cấu trúc của `socials`, bạn nên định nghĩa rõ hơn thay vì dùng `any[]`
+  socials: SocialInterface[]; // Nếu biết rõ cấu trúc của `socials`, bạn nên định nghĩa rõ hơn thay vì dùng `any[]`
+}
+
+
+export  interface SocialInterface {  
+  id:number;
+  storeId:number;
+  type:"FACEBOOK"|"ZALO"|"YOUTUBE"|"TIKTOK"
+  url:string;
+
 }

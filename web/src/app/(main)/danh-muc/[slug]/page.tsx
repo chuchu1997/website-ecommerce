@@ -18,12 +18,12 @@ export async function generateMetadata({
   const category = res.data;
    
 
-if(category.seo && typeof category.seo ==="object"){
+if(category.seo &&  category.seo.title !="" && typeof category.seo ==="object"){
   return generateSeoForPage(category.seo)
 }
 
   return {
-    title: `${category.name} | Guitar Sài Thành`,
+    title: `${category.name} | ${process.env.STORE_NAME}`,
     description: category.description ?? "",
   };
 }
