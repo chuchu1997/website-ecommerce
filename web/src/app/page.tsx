@@ -34,18 +34,6 @@ import { NewsMasterPage } from "./(main)/components/News/News";
 export const dynamic = "force-dynamic";
 export const revalidate = 60;
 
-export async function generateMetadata(): Promise<Metadata> {
-  const store = (await StoreAPI.getStoreInfo()).data.store as StoreInterface;
-
-  if (!store) return {};
-
-  if (store.seo && typeof store.seo === "object") {
-    return generateSeoForPage(store.seo as SeoInterface);
-  }
-
-  return {};
-}
-
 const MusicStoreLanding: React.FC = () => {
   return (
     <div className=" min-h-screen bg-white w-full">
