@@ -487,39 +487,223 @@ const Navbar: React.FC = () => {
 
           {/* Mobile Menu */}
           {isMobileMenuOpen && (
-            <div className="shadow-md rounded-lg md:hidden border-t border-gray-200 bg-white">
-              <div className="px-4 py-4 space-y-3 max-h-[70vh] overflow-y-auto">
-                <div className="space-y-2">
-                  <RecursiveCategoryTree categories={categories} />
-                </div>
+            <div className="mt-4 shadow-md rounded-lg md:hidden border-t border-gray-200 bg-white">
+              <div className="px-4 py-4 space-y-1 max-h-[80vh] overflow-y-auto">
+                {/* Dynamic Categories for Mobile */}
+                {categories.map((category) => (
+                  <div key={category.id} className="space-y-1">
+                    {hasMegaMenu(category) ? (
+                      // Categories with subcategories - expandable
+                      <div className="space-y-1">
+                        <button
+                          onClick={() =>
+                            handleMobileCategoryToggle(category.id.toString())
+                          }
+                          className="w-full flex items-center justify-between px-4 py-3 text-gray-900 hover:text-blue-600 hover:bg-blue-50 rounded-xl transition-all duration-200 font-medium">
+                          <span>{getCategoryDisplayName(category)}</span>
+                          <ChevronDown
+                            className={`h-4 w-4 transform transition-transform duration-200 ${
+                              expandedMobileCategory === category.id.toString()
+                                ? "rotate-180"
+                                : ""
+                            }`}
+                          />
+                        </button>
 
-                <Link
-                  href="/gioi-thieu"
-                  className="flex items-center px-4 py-3 text-gray-900 hover:text-blue-600 hover:bg-blue-50 rounded-xl transition-all duration-200 font-medium">
-                  Giới thiệu
-                </Link>
+                        {/* Two-column layout for subcategories */}
+                        {expandedMobileCategory === category.id.toString() && (
+                          <div className="bg-gray-50 rounded-xl p-3 mt-2">
+                            <div className="flex gap-1 h-80">
+                              {/* Left Column - Parent Categories */}
+                              <div className="w-2/5 bg-white rounded-lg p-3 border-r border-gray-200 overflow-y-auto">
+                                <h4 className="text-sm font-semibold text-gray-900 mb-3 border-b border-gray-200 pb-2">
+                                  {getCategoryDisplayName(category)}
+                                </h4>
+                                <div className="space-y-1">
+                                  {category.subCategories.map((subcategory) => (
+                                    <div
+                                      key={subcategory.id}
+                                      onClick={() => {
+                                        if (
+                                          subcategory.subCategories &&
+                                          subcategory.subCategories.length > 0
+                                        ) {
+                                          setHoveredParentCategory(
+                                            subcategory.id.toString()
+                                          );
+                                        } else {
+                                          router.push(
+                                            `/danh-muc/${subcategory.slug}`
+                                          );
+                                        }
+                                      }}
+                                      className={`p-2 rounded-lg cursor-pointer transition-all duration-200 ${
+                                        hoveredParentCategory ===
+                                        subcategory.id.toString()
+                                          ? "bg-blue-100 text-blue-700"
+                                          : "hover:bg-gray-100 text-gray-700"
+                                      }`}>
+                                      <div className="text-sm font-medium">
+                                        {subcategory.name}
+                                      </div>
+                                    </div>
+                                  ))}
+                                </div>
+                              </div>
 
-                <Link
-                  href="/lien-he"
-                  className="flex items-center px-4 py-3 text-gray-900 hover:text-blue-600 hover:bg-blue-50 rounded-xl transition-all duration-200 font-medium">
-                  Liên hệ
-                </Link>
-
-                {/* <Link
-                  href="/tin-tuc"
-                  className="flex items-center px-4 py-3 text-gray-900 hover:text-blue-600 hover:bg-blue-50 rounded-xl transition-all duration-200 font-medium">
-                  Tin tức
-                </Link> */}
-
-                <div className="border-t border-gray-200 pt-4 mt-6">
-                  <div className="flex items-center justify-between px-4 py-2">
-                    <span className="text-sm text-gray-500">Need help?</span>
-                    <Link
-                      href="#"
-                      className="text-sm text-blue-600 hover:text-blue-700 font-medium">
-                      Support Center
-                    </Link>
+                              {/* Right Column - Child Categories */}
+                              <div className="w-3/5 bg-white rounded-lg p-3 overflow-y-auto">
+                                {hoveredParentCategory &&
+                                category.subCategories.find(
+                                  (cat) =>
+                                    cat.id.toString() === hoveredParentCategory
+                                ) ? (
+                                  <>
+                                    <h4 className="text-sm font-semibold text-gray-900 mb-3 border-b border-gray-200 pb-2">
+                                      {
+                                        category.subCategories.find(
+                                          (cat) =>
+                                            cat.id.toString() ===
+                                            hoveredParentCategory
+                                        )?.name
+                                      }
+                                    </h4>
+                                    <div className="space-y-2">
+                                      {category.subCategories
+                                        .find(
+                                          (cat) =>
+                                            cat.id.toString() ===
+                                            hoveredParentCategory
+                                        )
+                                        ?.subCategories?.map(
+                                          (childCategory) => (
+                                            <Link
+                                              key={childCategory.id}
+                                              href={`/danh-muc/${childCategory.slug}`}
+                                              className="group flex items-start gap-2 p-2 rounded-lg hover:bg-blue-50 transition-all duration-200 hover:shadow-sm border border-transparent hover:border-blue-200">
+                                              <ImageLoader
+                                                className="rounded-md flex-shrink-0"
+                                                src={childCategory.imageUrl}
+                                                alt={childCategory.name}
+                                                width={24}
+                                                height={24}
+                                              />
+                                              <div className="flex-1 min-w-0">
+                                                <h5 className="text-xs font-medium text-gray-900 mb-1 group-hover:text-blue-600 transition-colors duration-200">
+                                                  {childCategory.name}
+                                                </h5>
+                                                {childCategory.description && (
+                                                  <p className="text-xs text-gray-500 group-hover:text-blue-500 transition-colors duration-200 line-clamp-2">
+                                                    {childCategory.description}
+                                                  </p>
+                                                )}
+                                              </div>
+                                            </Link>
+                                          )
+                                        ) || (
+                                        // If no child categories, show the parent category info
+                                        <div className="text-center py-4">
+                                          <div className="w-12 h-12 bg-gradient-to-br from-blue-50 to-indigo-50 rounded-full flex items-center justify-center mx-auto mb-3">
+                                            <ImageLoader
+                                              className="rounded-md"
+                                              src={
+                                                category.subCategories.find(
+                                                  (cat) =>
+                                                    cat.id.toString() ===
+                                                    hoveredParentCategory
+                                                )?.imageUrl ?? ""
+                                              }
+                                              alt={
+                                                category.subCategories.find(
+                                                  (cat) =>
+                                                    cat.id.toString() ===
+                                                    hoveredParentCategory
+                                                )?.name ?? ""
+                                              }
+                                              width={24}
+                                              height={24}
+                                            />
+                                          </div>
+                                          <h5 className="text-sm font-medium text-gray-900 mb-2">
+                                            {
+                                              category.subCategories.find(
+                                                (cat) =>
+                                                  cat.id.toString() ===
+                                                  hoveredParentCategory
+                                              )?.name
+                                            }
+                                          </h5>
+                                          <p className="text-xs text-gray-500 mb-3">
+                                            {
+                                              category.subCategories.find(
+                                                (cat) =>
+                                                  cat.id.toString() ===
+                                                  hoveredParentCategory
+                                              )?.description
+                                            }
+                                          </p>
+                                          <Link
+                                            href={`/danh-muc/${
+                                              category.subCategories.find(
+                                                (cat) =>
+                                                  cat.id.toString() ===
+                                                  hoveredParentCategory
+                                              )?.slug
+                                            }`}
+                                            className="inline-block px-3 py-1 bg-blue-600 text-white text-xs rounded-lg hover:bg-blue-700 transition-colors duration-200">
+                                            Xem tất cả
+                                          </Link>
+                                        </div>
+                                      )}
+                                    </div>
+                                  </>
+                                ) : (
+                                  <div className="flex items-center justify-center h-full">
+                                    <div className="text-center">
+                                      <div className="w-12 h-12 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-3">
+                                        <ChevronDown className="h-5 w-5 text-gray-400 rotate-90" />
+                                      </div>
+                                      <p className="text-xs text-gray-500">
+                                        Chọn danh mục để xem chi tiết
+                                      </p>
+                                    </div>
+                                  </div>
+                                )}
+                              </div>
+                            </div>
+                          </div>
+                        )}
+                      </div>
+                    ) : (
+                      // Categories without subcategories - direct link
+                      <Link
+                        href={`/danh-muc/${category.slug}`}
+                        className="flex items-center px-4 py-3 text-gray-900 hover:text-blue-600 hover:bg-blue-50 rounded-xl transition-all duration-200 font-medium">
+                        {getCategoryDisplayName(category)}
+                      </Link>
+                    )}
                   </div>
+                ))}
+
+                {/* Static Navigation Links */}
+                <div className="border-t border-gray-200 pt-4 mt-4 space-y-1">
+                  <Link
+                    href="/gioi-thieu"
+                    className="flex items-center px-4 py-3 text-gray-900 hover:text-blue-600 hover:bg-blue-50 rounded-xl transition-all duration-200 font-medium">
+                    Giới thiệu
+                  </Link>
+
+                  <Link
+                    href="/lien-he"
+                    className="flex items-center px-4 py-3 text-gray-900 hover:text-blue-600 hover:bg-blue-50 rounded-xl transition-all duration-200 font-medium">
+                    Liên hệ
+                  </Link>
+
+                  {/* <Link
+          href="/tin-tuc"
+          className="flex items-center px-4 py-3 text-gray-900 hover:text-blue-600 hover:bg-blue-50 rounded-xl transition-all duration-200 font-medium">
+          Tin tức
+        </Link> */}
                 </div>
               </div>
             </div>
