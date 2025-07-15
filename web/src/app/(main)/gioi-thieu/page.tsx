@@ -20,6 +20,8 @@ import {
   Target,
   Globe
 } from 'lucide-react';
+import { StoreAPI } from '@/api/stores/store.api';
+import { StoreInterface } from '@/types/store';
 
 interface TeamMember {
   id: number;
@@ -47,6 +49,8 @@ interface Service {
 const AboutUsPage: React.FC = () => {
   const [activeSection, setActiveSection] = useState(0);
   const [isVideoPlaying, setIsVideoPlaying] = useState(false);
+  const [storeInfo,setStoreInfo] = useState<StoreInterface>();
+
 
   const statistics: Statistic[] = [
     {
@@ -140,11 +144,28 @@ const AboutUsPage: React.FC = () => {
   ];
 
   useEffect(() => {
+
+
+    fetchStoreInfo();
+
     const interval = setInterval(() => {
       setActiveSection((prev) => (prev + 1) % 4);
     }, 5000);
     return () => clearInterval(interval);
   }, []);
+
+  const fetchStoreInfo = async ()=>{
+    let res = await StoreAPI.getStoreInfo();
+    if(res.status === 200){
+      setStoreInfo(res.data.store)
+    }
+
+  }
+
+
+  const storeName = storeInfo?.name || "Happy Furniture";
+const [firstWord, ...restWords] = storeName.split(" ");
+const restOfName = restWords.join(" ");
 
   return (
     <div className="min-h-screen bg-white">
@@ -155,13 +176,13 @@ const AboutUsPage: React.FC = () => {
     <div className="relative z-10 max-w-7xl mx-auto px-6 text-center">
       <div className="mb-8">
         <h1 className="text-6xl md:text-8xl font-bold text-gray-900 mb-6">
-          Happy
-          <span className="text-transparent bg-clip-text bg-gradient-to-r from-amber-600 to-orange-600">
-            Furniture
+          {firstWord}
+          <span className="ml-2 text-transparent bg-clip-text bg-gradient-to-r from-amber-600 to-orange-600">
+            {restOfName}
           </span>
         </h1>
         <p className="text-2xl md:text-3xl text-gray-700 mb-8 max-w-4xl mx-auto">
-          Kiến tạo không gian sống đẹp và tiện nghi cho mọi gia đình Việt
+          {storeInfo?.description}
         </p>
         <div className="flex flex-wrap justify-center gap-4 text-lg text-gray-600">
           <span className="flex items-center"><Sofa className="w-5 h-5 mr-2" />Nội thất cao cấp</span>
@@ -172,7 +193,7 @@ const AboutUsPage: React.FC = () => {
       </div>
 
       {/* Video Section */}
-      <div className="relative max-w-4xl mx-auto">
+      <div className="relative max-w-4xl mx-auto ">
         <div className="relative rounded-2xl overflow-hidden shadow-2xl bg-white/10 backdrop-blur-sm border border-white/20">
           {!isVideoPlaying ? (
             <div className="aspect-video bg-gradient-to-br from-amber-100 to-orange-100 flex items-center justify-center">
@@ -402,25 +423,7 @@ const AboutUsPage: React.FC = () => {
       </section>
 
       {/* CTA Section */}
-      <section className="py-20 bg-gradient-to-r from-amber-600 to-orange-600 text-white">
-        <div className="max-w-7xl mx-auto px-6 text-center">
-          <h2 className="text-5xl font-bold mb-6">Ready to Transform Your Space?</h2>
-          <p className="text-xl mb-8 opacity-90 max-w-3xl mx-auto">
-            Visit one of our 120+ showrooms nationwide or schedule a consultation with our design experts
-          </p>
-          
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <button className="bg-white text-amber-600 px-8 py-4 rounded-xl font-semibold hover:bg-gray-100 transition-colors duration-300 flex items-center justify-center group">
-              Find a Showroom
-              <MapPin className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" />
-            </button>
-            <button className="bg-transparent border-2 border-white text-white px-8 py-4 rounded-xl font-semibold hover:bg-white hover:text-amber-600 transition-all duration-300 flex items-center justify-center group">
-              Schedule Consultation
-              <ArrowRight className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" />
-            </button>
-          </div>
-        </div>
-      </section>
+
     </div>
   );
 };

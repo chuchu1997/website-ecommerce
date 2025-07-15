@@ -1,7 +1,11 @@
 
 "use client"
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Phone, Mail, MapPin, Clock, Send, CheckCircle, Star, Heart } from 'lucide-react';
+import { StoreInterface } from '@/types/store';
+import { StoreAPI } from '@/api/stores/store.api';
+import { FormatUtils } from '@/utils/format';
+import Link from 'next/link';
 
 interface FormData {
   name: string;
@@ -20,6 +24,9 @@ const ContactPage: React.FC = () => {
     message: ''
   });
   const [isSubmitted, setIsSubmitted] = useState(false);
+
+  const [storeInfo,setStoreInfo] = useState<StoreInterface>();
+
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
@@ -40,7 +47,17 @@ const ContactPage: React.FC = () => {
       message: ''
     });
   };
+  useEffect(()=>{
+    fetchStoreInfo();
 
+  },[])
+  const fetchStoreInfo = async ()=>{
+    let res = await StoreAPI.getStoreInfo();
+    if(res.status === 200){
+      setStoreInfo(res.data.store)
+    }
+
+  }
   return (
     <div className="min-h-screen bg-gradient-to-br from-orange-50 via-white to-amber-50">
       {/* Hero Section */}
@@ -55,7 +72,7 @@ const ContactPage: React.FC = () => {
             </div>
             <h1 className="text-4xl md:text-6xl font-bold mb-6 animate-fade-in">
               Liên Hệ Với 
-              <span className="text-yellow-300"> Happy Furniture</span>
+              <span className="text-yellow-300"> {storeInfo?.name}</span>
             </h1>
             <p className="text-xl md:text-2xl mb-8 max-w-3xl mx-auto leading-relaxed">
               Chúng tôi luôn sẵn sàng lắng nghe và hỗ trợ bạn tạo nên ngôi nhà hạnh phúc với những món nội thất đẹp nhất
@@ -92,8 +109,7 @@ const ContactPage: React.FC = () => {
                   </div>
                   <div>
                     <h3 className="font-semibold text-gray-800 mb-1">Điện thoại</h3>
-                    <p className="text-gray-600">(+84) 123 456 789</p>
-                    <p className="text-gray-600">(+84) 987 654 321</p>
+                    <p className="text-gray-600">{FormatUtils.formatPhoneNumber(storeInfo?.phone ??"")}</p>
                     <p className="text-sm text-orange-600 mt-1">Hotline 24/7</p>
                   </div>
                 </div>
@@ -104,8 +120,8 @@ const ContactPage: React.FC = () => {
                   </div>
                   <div>
                     <h3 className="font-semibold text-gray-800 mb-1">Email</h3>
-                    <p className="text-gray-600">info@happyfurniture.vn</p>
-                    <p className="text-gray-600">support@happyfurniture.vn</p>
+                    <p className="text-gray-600">{storeInfo?.email}</p>
+             
                     <p className="text-sm text-orange-600 mt-1">Phản hồi trong 2 giờ</p>
                   </div>
                 </div>
@@ -116,8 +132,8 @@ const ContactPage: React.FC = () => {
                   </div>
                   <div>
                     <h3 className="font-semibold text-gray-800 mb-1">Địa chỉ</h3>
-                    <p className="text-gray-600">123 Đường Lê Văn Việt</p>
-                    <p className="text-gray-600">Quận 9, TP. Hồ Chí Minh</p>
+                    <p className="text-gray-600">{storeInfo?.address}</p>
+          
                     <p className="text-sm text-orange-600 mt-1">Showroom chính</p>
                   </div>
                 </div>
@@ -138,7 +154,7 @@ const ContactPage: React.FC = () => {
 
             {/* Why Choose Us */}
             <div className="bg-gradient-to-r from-orange-600 to-amber-600 rounded-2xl shadow-xl p-8 text-white">
-              <h3 className="text-2xl font-bold mb-6">Tại Sao Chọn Happy Furniture?</h3>
+              <h3 className="text-2xl font-bold mb-6">Tại Sao Chọn {storeInfo?.name}?</h3>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div className="flex items-center">
                   <CheckCircle className="w-5 h-5 mr-3 text-yellow-300" />
@@ -273,7 +289,7 @@ const ContactPage: React.FC = () => {
           </div>
         </div>
       </div>
-
+            
       {/* Map Section */}
       <div className="bg-gray-50 py-16">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -285,9 +301,9 @@ const ContactPage: React.FC = () => {
             <div className="bg-gray-200 rounded-lg h-96 flex items-center justify-center">
               <div className="text-center">
                 <MapPin className="w-16 h-16 text-orange-600 mx-auto mb-4" />
-                <h3 className="text-xl font-semibold text-gray-800 mb-2">Happy Furniture Showroom</h3>
-                <p className="text-gray-600">123 Đường Lê Văn Việt, Quận 9, TP. Hồ Chí Minh</p>
-                <p className="text-sm text-orange-600 mt-2">Click để xem bản đồ chi tiết</p>
+                <h3 className="text-xl font-semibold text-gray-800 mb-2">{storeInfo?.name} Showroom</h3>
+                <p className="text-gray-600">{storeInfo?.address}</p>
+                <Link className="text-sm text-orange-600 mt-2" target='_blank' href  ={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(storeInfo?.address || '')}`}>Click để xem bản đồ chi tiết</Link>
               </div>
             </div>
           </div>

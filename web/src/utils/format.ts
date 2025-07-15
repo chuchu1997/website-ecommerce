@@ -22,4 +22,19 @@ export class FormatUtils {
       minimumFractionDigits: 0,
     });
   }
+
+  static formatPhoneNumber(phone: string): string {
+    // Xoá các ký tự không phải số
+    const cleaned = phone.replace(/\D/g, "");
+
+    // Nếu đủ 10 số, format theo kiểu 4-3-3
+    if (cleaned.length === 10) {
+      return `${cleaned.slice(0, 4)} ${cleaned.slice(4, 7)} ${cleaned.slice(
+        7
+      )}`;
+    }
+
+    // Nếu là số tổng đài hoặc số lẻ khác, trả về nguyên gốc
+    return phone;
+  }
 }

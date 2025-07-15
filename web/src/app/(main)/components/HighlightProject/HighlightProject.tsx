@@ -11,7 +11,7 @@ export const HighlightedProjects = async () => {
 
   const res = await  ProjectAPI.getProjects(
     {
-      limit:3,
+      limit:6,
       currentPage:1
     }
   );
