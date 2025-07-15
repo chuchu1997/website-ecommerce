@@ -73,8 +73,8 @@ const formSchema = z.object({
     .min(3, "Tên store phải có ít nhất 3 ký tự")
     .max(100, "Tên store không được quá 50 ký tự"),
   description: z.string().max(600, "Mô tả không được quá 200 ký tự").optional(),
-
   email: z.string().email().optional(),
+  address: z.string().optional(),
   phone: z
     .string()
     .regex(/^0\d{9}$/i, { message: "Số điện thoại không hợp lệ" })
@@ -189,6 +189,7 @@ export const SettingsForm: React.FC<SettingsProps> = ({ initialData }) => {
       email: initialData?.email || "",
       phone: initialData?.phone || "",
       socials: initialData.socials || undefined,
+      address: initialData.address || "",
       seo: initialData.seo
         ? initialData.seo
         : {
@@ -248,7 +249,6 @@ export const SettingsForm: React.FC<SettingsProps> = ({ initialData }) => {
   // Performance optimization: Memoized callbacks
   const onSubmit = useCallback(
     async (data: SettingsFormValues) => {
-      console.log("DATA", data);
       try {
         setLoading(true);
         if (storeId) {
@@ -258,6 +258,7 @@ export const SettingsForm: React.FC<SettingsProps> = ({ initialData }) => {
             email: data.email,
             phone: data.phone,
             seo: data.seo,
+            address: data.address,
             socials: data.socials?.map((social) => ({
               id: social.id ?? undefined,
               type: social.type,
@@ -401,6 +402,15 @@ export const SettingsForm: React.FC<SettingsProps> = ({ initialData }) => {
                   title="Hotline của cửa hàng"
                   placeholder="Vui lòng nhập số hotline của cửa hàng"
                   icon={PhoneCall}
+                />
+
+                <InputSectionWithForm
+                  form={form}
+                  nameFormField="address"
+                  loading={loading}
+                  title="Địa chỉ cửa hàng"
+                  placeholder="Vui lòng nhập địa chỉ cửa hàng"
+                  icon={Mail}
                 />
 
                 {/* TextArea chiếm toàn bộ chiều ngang */}
