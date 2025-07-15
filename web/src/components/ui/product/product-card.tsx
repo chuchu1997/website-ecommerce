@@ -26,6 +26,7 @@ import { CartItemSSR } from "@/app/(main)/gio-hang/components/cart";
 import { useCartContext } from "@/context/cart-context";
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
+import { FreeshipBadVer2 } from "../Badge/freeship-ver2";
 
 export const RenderGiftItems = ({
   gift,
@@ -311,10 +312,11 @@ export const ProductCard = ({
             </div>
 
             <div className="flex items-center gap-1">
-              <Badge className="bg-blue-100 text-blue-700 text-xs px-2 py-1 rounded-full border-0">
+              {/* <Badge className="bg-blue-100 text-blue-700 text-xs px-2 py-1 rounded-full border-0">
                 <Truck className="w-3 h-3 mr-1" />
                 Free Ship
-              </Badge>
+              </Badge> */}
+              <FreeshipBadVer2 />
             </div>
           </div>
 
@@ -370,7 +372,7 @@ export const ProductCard = ({
           <div className="flex gap-2 mt-auto pt-2">
             <button
               onClick={handleAddToCart}
-              className="flex-1 bg-red-600 hover:bg-red-700 text-white text-sm font-medium py-2.5 rounded-lg transition-colors duration-200 shadow-sm hover:shadow-md">
+              className="cursor-pointer flex-1 bg-red-600 hover:bg-red-700 text-white text-sm font-medium py-2.5 rounded-lg transition-colors duration-200 shadow-sm hover:shadow-md">
               Mua ngay
             </button>
             <button
@@ -379,7 +381,7 @@ export const ProductCard = ({
                 e.stopPropagation();
                 handleAddToCart(e);
               }}
-              className="px-4 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-lg transition-colors duration-200">
+              className="px-4 cursor-pointer bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-lg transition-colors duration-200">
               <ShoppingBasket className="w-4 h-4" />
             </button>
           </div>

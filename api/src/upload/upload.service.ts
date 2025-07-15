@@ -39,7 +39,7 @@ export class UploadService {
       try {
         // 👇 Convert ảnh sang .webp
         const webpBuffer = await sharp(buffers[i])
-          .webp({ quality: 80 }) // bạn có thể điều chỉnh quality tại đây
+          .webp({ quality: 90 }) // bạn có thể điều chỉnh quality tại đây
           .toBuffer();
 
         // 👇 Random file name không dính original name

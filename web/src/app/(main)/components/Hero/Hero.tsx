@@ -65,10 +65,10 @@ export const Hero: React.FC = () => {
           alt={currentBanner.title || "banner"}
           fill
           priority
-          quality={85}
+          quality={90}
           className="object-cover"
         />
-        <div className="absolute inset-0 bg-black/40" />
+<div className="absolute inset-0 bg-black/30 z-50" />
       </div>
 
       {/* Text and CTA */}
