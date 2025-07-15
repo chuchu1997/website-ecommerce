@@ -308,7 +308,7 @@ export const ProductCard = ({
                   className="w-4 h-4 text-yellow-400 fill-current"
                 />
               ))}
-              <span className="text-sm text-gray-500 ml-1">(4.5)</span>
+              <span className="text-sm text-gray-500 ml-1">(5.0)</span>
             </div>
 
             <div className="flex items-center gap-1">
