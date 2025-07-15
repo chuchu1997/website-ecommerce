@@ -48,7 +48,7 @@ export const ProductCategories: FC = async () => {
   const res = await CategoryAPI.getAllCategoriesOfStore({
     justGetParent: false,
     currentPage: 1,
-    limit: 8,
+    limit: 6,
   });
 
   categories = res.data.categories;
