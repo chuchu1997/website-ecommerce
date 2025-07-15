@@ -36,7 +36,7 @@ export const revalidate = 60;
 
 const MusicStoreLanding: React.FC = () => {
   return (
-    <div className=" min-h-screen bg-white w-full z">
+    <div className=" min-h-screen bg-white w-full">
       {/* Banner Section */}
       {/* <Banner /> */}
       <Navbar />
