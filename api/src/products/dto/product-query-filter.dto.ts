@@ -57,6 +57,7 @@ export class ProductQueryFilterDto {
     }
     return [];
   })
+  @IsOptional()
   @IsNumber({}, { each: true })
   ids?: number[];
 }

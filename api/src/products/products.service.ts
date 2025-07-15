@@ -142,12 +142,9 @@ export class ProductsService {
   }
   async findProductsWithQuery(query: ProductQueryFilterDto) {
     const { limit = 4, currentPage = 1, ids, ...data } = query;
-
     const products = await this.prisma.product.findMany({
       where: {
-        id: {
-          in: ids,
-        },
+        ...(ids && ids.length > 0 ? { id: { in: ids } } : {}), // ✅ Bỏ qua nếu không có ids
         name: {
           contains: data.name?.trim(),
         },
