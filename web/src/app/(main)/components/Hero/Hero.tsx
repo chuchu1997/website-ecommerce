@@ -65,7 +65,7 @@ export const Hero: React.FC = () => {
           alt={currentBanner.title || "banner"}
           fill
           priority
-          quality={80}
+          quality={85}
           className="object-cover"
         />
         <div className="absolute inset-0 bg-black/40" />

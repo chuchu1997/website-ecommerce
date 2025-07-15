@@ -59,12 +59,13 @@ export const ImageLoader: React.FC<ImageLoaderInterface> = ({
   priority = false,
   ...props
 }) => {
-  const [imageState, setImageState] = useState<"loading" | "low-quality" | "loaded" | "error">(
+  const [imageState, setImageState] = useState<"loading" | "loaded" | "error">(
     "loading"
   );
   const [imageSrc, setImageSrc] = useState(src);
   const [hasTriedFallback, setHasTriedFallback] = useState(false);
   const [isIntersecting, setIsIntersecting] = useState(false);
+  const [showLowQuality, setShowLowQuality] = useState(true);
   const imgRef = useRef<HTMLDivElement>(null);
 
   // Intersection Observer for lazy loading
@@ -94,14 +95,13 @@ export const ImageLoader: React.FC<ImageLoaderInterface> = ({
     setImageState("loading");
     setImageSrc(src);
     setHasTriedFallback(false);
+    setShowLowQuality(true);
   }, [src]);
-
-  const handleLowQualityLoad = () => {
-    setImageState("low-quality");
-  };
 
   const handleImageLoad = () => {
     setImageState("loaded");
+    // Hide low quality after high quality loads
+    setTimeout(() => setShowLowQuality(false), fadeInDuration);
     if (onLoad) onLoad();
   };
 
@@ -179,32 +179,26 @@ export const ImageLoader: React.FC<ImageLoaderInterface> = ({
         </div>
       )}
 
-      {/* Low quality image (progressive loading) */}
-      {isIntersecting && (
-        <Image
-          src={imageSrc}
-          alt={`${alt} (low quality)`}
-          width={fill ? undefined : width}
-          height={fill ? undefined : height}
-          fill={fill}
-          placeholder="blur"
-          blurDataURL={lowQualityPlaceholder}
-          sizes={sizes}
-          quality={20} // Very low quality for fast loading
-          priority={priority}
-          className={cn(
-            mergedImageClasses,
-            "absolute inset-0 z-10",
-            imageState === "low-quality" || imageState === "loaded" ? "opacity-100" : "opacity-0"
-          )}
-          onLoad={handleLowQualityLoad}
-          onError={handleImageError}
-          {...props}
-        />
+      {/* Low quality placeholder (loads first) */}
+      {isIntersecting && showLowQuality && imageState !== "error" && (
+        <div className="absolute inset-0 z-10">
+          <Image
+            src={lowQualityPlaceholder}
+            alt={`${alt} (loading)`}
+            width={fill ? undefined : width}
+            height={fill ? undefined : height}
+            fill={fill}
+            className={cn(
+              "object-cover transition-opacity duration-300",
+              imageState === "loaded" ? "opacity-50" : "opacity-100"
+            )}
+            priority={priority}
+          />
+        </div>
       )}
 
       {/* High quality image */}
-      {isIntersecting && imageState !== "loading" && (
+      {isIntersecting && (
         <Image
           src={imageSrc}
           alt={alt}
@@ -214,7 +208,7 @@ export const ImageLoader: React.FC<ImageLoaderInterface> = ({
           placeholder="blur"
           blurDataURL={lowQualityPlaceholder}
           sizes={sizes}
-          quality={quality} // Full quality
+          quality={quality}
           priority={priority}
           className={cn(
             mergedImageClasses,
