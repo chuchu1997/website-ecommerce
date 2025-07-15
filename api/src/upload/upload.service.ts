@@ -5,6 +5,7 @@ import {
 } from '@aws-sdk/client-s3';
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { v4 as uuidv4 } from 'uuid';
+import * as sharp from 'sharp';
 
 @Injectable()
 export class UploadService {
@@ -34,31 +35,45 @@ export class UploadService {
   }) {
     const imageUrls: string[] = [];
 
-    // Duyệt qua từng tệp và upload lên S3
     for (let i = 0; i < buffers.length; i++) {
-      const fileKey = `${this.folderS3}/${uuidv4()}-${originalFilenames[i]}`;
-      // Tạo lệnh PutObjectCommand cho mỗi tệp
-      const command = new PutObjectCommand({
-        Bucket: process.env.AWS_S3_BUCKET_NAME!,
-        Key: fileKey,
-        Body: buffers[i],
-        ContentType: mimetypes[i],
-      });
+      try {
+        // 👇 Convert ảnh sang .webp
+        const webpBuffer = await sharp(buffers[i])
+          .webp({ quality: 80 }) // bạn có thể điều chỉnh quality tại đây
+          .toBuffer();
 
-      await this.s3.send(command);
-      // Tạo URL của tệp đã tải lên
-      const imageUrl = `https://${process.env.AWS_S3_BUCKET_NAME}.s3.${process.env.AWS_REGION}.amazonaws.com/${fileKey}`;
-      imageUrls.push(imageUrl);
+        // 👇 Random file name không dính original name
+        const fileKey = `${this.folderS3}/${uuidv4()}.webp`;
+
+        const command = new PutObjectCommand({
+          Bucket: process.env.AWS_S3_BUCKET_NAME!,
+          Key: fileKey,
+          Body: webpBuffer,
+          ContentType: 'image/webp',
+        });
+
+        await this.s3.send(command);
+
+        const imageUrl = `https://${process.env.AWS_S3_BUCKET_NAME}.s3.${process.env.AWS_REGION}.amazonaws.com/${fileKey}`;
+        imageUrls.push(imageUrl);
+      } catch (error) {
+        console.error(
+          `❌ Upload thất bại ở file ${originalFilenames[i]}`,
+          error,
+        );
+        // Optional: tiếp tục hoặc dừng tuỳ bạn
+      }
     }
+
     if (imageUrls.length === 0) {
       throw new BadRequestException(
-        '⚠️⚠️⚠️ Không có tệp nào được tải lên ⚠️⚠️⚠️',
+        '⚠️ Không có tệp nào được tải lên thành công ⚠️',
       );
     }
 
-    // Trả về danh sách các URL của các hình ảnh đã tải lên
     return imageUrls;
   }
+
   async deleteImagesFromS3(imageUrl: string) {
     try {
       const match = imageUrl.match(

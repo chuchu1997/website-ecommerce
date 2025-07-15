@@ -275,8 +275,8 @@ const Navbar: React.FC = () => {
                 priority
                 alt="logo"
                 src="/logo.png"
-                width={35}
-                height={35}
+                width={30}
+                height={30}
                 className=""
               />
             </Link>

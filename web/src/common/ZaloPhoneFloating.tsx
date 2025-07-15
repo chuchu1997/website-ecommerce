@@ -27,7 +27,7 @@ export const ZaloPhoneWidget: React.FC = ({}) => {
   }, []);
   const fetchStoreData = async () => {
     let res = await StoreAPI.getStoreInfo();
-    console.log("res", res);
+
     const store = res.data.store as StoreInterface;
     store.phone;
 

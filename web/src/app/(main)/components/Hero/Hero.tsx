@@ -36,11 +36,12 @@ export const Hero: React.FC = () => {
            <div className="absolute inset-0 z-0">
        
         {/* https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=1920&h=1080&fit=crop */}
-        <Image
-           fill
+       
+        <ImageLoader
+         fill
            priority
-           quality={40}
-          src="https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=1920&h=1080&fit=crop" 
+            quality={60}
+           src="https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=1920&h=1080&fit=crop" 
           alt="Beautiful wooden furniture" 
           className="w-full h-full object-cover"
         />
