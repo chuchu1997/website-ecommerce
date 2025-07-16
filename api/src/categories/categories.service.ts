@@ -116,7 +116,7 @@ export class CategoriesService {
         subCategories: true, // Lấy cấp con đầu tiên
       },
       orderBy: {
-        createdAt: 'desc', // Sắp xếp theo thời gian tạo (có thể tùy chỉnh)
+        createdAt: 'asc', // Sắp xếp theo thời gian tạo (có thể tùy chỉnh)
       },
     });
 
