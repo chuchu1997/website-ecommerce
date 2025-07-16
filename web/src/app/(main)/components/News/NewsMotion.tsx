@@ -27,9 +27,11 @@ const fadeInUp = {
 
 interface Props {
   news: NewsInterface[];
+  industry:string;
+
 }
 
-export const NewsMotion: React.FC<Props> = ({ news }) => {
+export const NewsMotion: React.FC<Props> = ({ news,industry }) => {
   return (
     <section className="order-t border-white/30 shadow-inner relative py-12 sm:py-16 lg:py-24 bg-gradient-to-br from-orange-50 via-white to-rose-50 overflow-hidden">
       {/* Decorative Background */}
@@ -52,7 +54,7 @@ export const NewsMotion: React.FC<Props> = ({ news }) => {
               Tin Tức
             </h2>
             <p className="text-base sm:text-lg md:text-xl text-gray-600 max-w-2xl mx-auto">
-              Cập nhật những xu hướng, bài viết và thông tin mới nhất trong ngành nội thất
+              Cập nhật những xu hướng, bài viết và thông tin mới nhất trong ngành {industry}
             </p>
           </motion.div>
 

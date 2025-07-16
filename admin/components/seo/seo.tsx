@@ -19,6 +19,8 @@ import { Input } from "../ui/input";
 import { Textarea } from "../ui/textarea";
 import { Card, CardHeader, CardTitle, CardContent } from "../ui/card";
 import { Badge } from "../ui/badge";
+import { InputTagsSectionWithForm } from "../ui/inputTagsSectionWithForm";
+import { KeywordsInput } from "./KeywordInput";
 // import { Input, Textarea, Card, CardHeader, CardTitle, CardContent, ProgressBar, Badge } from "."; // Assuming these components are imported correctly
 
 const SEOForm = ({ loading = false, form }: any) => {
@@ -46,7 +48,8 @@ const SEOForm = ({ loading = false, form }: any) => {
     if (seo?.title?.length >= 30 && seo.title.length <= 60) score += 20;
     if (seo?.description?.length >= 120 && seo.description.length <= 160)
       score += 20;
-    if (seo?.keywords?.split(",").length >= 3) score += 15;
+
+    if (seo?.keywords.length >= 3) score += 15;
     if (seo?.slug) score += 10;
     if (seo?.canonicalUrl) score += 10;
     if (seo?.ogTitle && seo?.ogDescription) score += 10;
@@ -242,29 +245,7 @@ const SEOForm = ({ loading = false, form }: any) => {
                 <div className="grid md:grid-cols-2 gap-6">
                   {/* Keywords */}
                   <div className="space-y-2">
-                    <label className="flex items-center gap-2 text-sm font-medium text-gray-700">
-                      <Tag className="w-4 h-4" />
-                      Từ khóa phụ
-                    </label>
-                    <FormField
-                      control={form.control}
-                      name="seo.keywords"
-                      render={({ field }) => (
-                        <Textarea
-                          {...field}
-                          disabled={loading}
-                          placeholder="Các từ khóa phụ, cách nhau bằng dấu phẩy"
-                          rows={2}
-                        />
-                      )}
-                    />
-                    <div className="text-xs text-gray-500">
-                      {form.watch("seo.keywords")
-                        ? `${
-                            form.watch("seo.keywords").split(",").length
-                          } từ khóa`
-                        : "0 từ khóa"}
-                    </div>
+                    <KeywordsInput form={form} loading={loading} />
                   </div>
 
                   {/* URL Slug */}

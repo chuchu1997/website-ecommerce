@@ -18,7 +18,10 @@ import {
   Building,
   Lightbulb,
   Target,
-  Globe
+  Globe,
+  Briefcase,
+  Compass,
+  Tag
 } from 'lucide-react';
 import { StoreAPI } from '@/api/stores/store.api';
 import { StoreInterface } from '@/types/store';
@@ -166,6 +169,7 @@ const AboutUsPage: React.FC = () => {
   const storeName = storeInfo?.name || "Happy Furniture";
 const [firstWord, ...restWords] = storeName.split(" ");
 const restOfName = restWords.join(" ");
+ 
 
   return (
     <div className="min-h-screen bg-white">
@@ -185,10 +189,14 @@ const restOfName = restWords.join(" ");
           {storeInfo?.description}
         </p>
         <div className="flex flex-wrap justify-center gap-4 text-lg text-gray-600">
-          <span className="flex items-center"><Sofa className="w-5 h-5 mr-2" />Nội thất cao cấp</span>
+          {storeInfo?.tags.map((tag,index)=>(
+                    <span key={index} className="flex items-center"><Tag className="w-5 h-5 mr-2" />{tag}</span>
+
+          ))}
+          {/* <span className="flex items-center"><Sofa className="w-5 h-5 mr-2" />Nội thất cao cấp</span>
           <span className="flex items-center"><Palette className="w-5 h-5 mr-2" />Thiết kế nội thất</span>
           <span className="flex items-center"><Home className="w-5 h-5 mr-2" />Thi công dự án</span>
-          <span className="flex items-center"><MapPin className="w-5 h-5 mr-2" />120+ Showroom toàn quốc</span>
+          <span className="flex items-center"><MapPin className="w-5 h-5 mr-2" />120+ Showroom toàn quốc</span> */}
         </div>
       </div>
 

@@ -4,8 +4,10 @@ import { PartnerBrandsMotion } from "./PartnerBrandMotion";
 import { Brand } from "@/types/brand";
 import { BrandInterface } from "@/types/brands";
 
-
-export const PartnerBrands = async  () => {
+interface Props  {
+  industry:string;
+}
+export const PartnerBrands = async  ({industry}:Props) => {
 
 
   const res = await BrandAPI.getAllBrandsFromStore();
@@ -15,7 +17,7 @@ export const PartnerBrands = async  () => {
   return (
     <section className="">
       <div className="">
-        <PartnerBrandsMotion brands={brands} />
+        <PartnerBrandsMotion brands={brands} industry = {industry} />
       </div>
     </section>
   );

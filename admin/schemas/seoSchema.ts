@@ -7,7 +7,7 @@ import { z } from "zod";
 export const seoSchemaZod =z.object({
   title: z.string(),
   description: z.string(),
-  keywords: z.string(),
+ keywords: z.array(z.string()).optional(), // hoặc .default([])
   slug: z.string(),
   canonicalUrl: z.string(),
   altText: z.string(),

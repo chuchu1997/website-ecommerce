@@ -39,6 +39,19 @@ export class CreateStoreDto {
 
   @IsString()
   @IsOptional()
+  @MaxLength(50)
+  industry?: string;
+
+  @IsString()
+  @IsOptional()
+  @MaxLength(30)
+  languages?: string;
+
+  @IsOptional()
+  tags?: JSON;
+
+  @IsString()
+  @IsOptional()
   address?: string;
 
   @IsOptional()

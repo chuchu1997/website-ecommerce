@@ -122,7 +122,7 @@ export default function ServicesManagement() {
       seo: {
         title: "",
         description: "",
-        keywords: "",
+        keywords: [],
         slug: "",
         canonicalUrl: "",
         altText: "",
@@ -336,7 +336,7 @@ export default function ServicesManagement() {
       seo: service.seo ?? {
         title: "",
         description: "",
-        keywords: "",
+        keywords: [],
         slug: "",
         canonicalUrl: "",
         altText: "",
@@ -361,7 +361,7 @@ export default function ServicesManagement() {
       seo: {
         title: "",
         description: "",
-        keywords: "",
+        keywords: [],
         slug: "",
         canonicalUrl: "",
         altText: "",

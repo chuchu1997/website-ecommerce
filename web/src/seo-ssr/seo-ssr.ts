@@ -4,11 +4,18 @@ import { SeoInterface } from "@/types/seo";
 import { Metadata } from "next";
 
 export const generateSeoForPage = (seo: SeoInterface): Metadata => {
+  const keywordsArray = Array.isArray(seo?.keywords)
+    ? seo.keywords
+    : typeof seo?.keywords === "string"
+    ? seo.keywords
+        .split(",")
+        .map((k) => k.trim())
+        .filter(Boolean)
+    : [];
   return {
     title: seo.title,
     description: seo.description,
-
-    keywords: seo.keywords, // <-- dùng trực tiếp chuỗi từ khóa
+    keywords: keywordsArray.join(", "), // <-- dùng trực tiếp chuỗi từ khóa
     robots: {
       index: true,
       follow: true,

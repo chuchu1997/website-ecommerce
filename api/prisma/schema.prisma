@@ -135,6 +135,11 @@ model Store  {
    email String?
    phone String?
    address String?
+   industry  String?  // <-- Ngành nghề
+   languages String?
+
+   tags Json? // nội thất, giá rẻ, cao cấp,...
+
    logo String?
    favicon String?
    seo        Json?     

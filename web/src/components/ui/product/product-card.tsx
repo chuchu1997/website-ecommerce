@@ -275,47 +275,49 @@ export const ProductCard = ({
 
             {/* Promotional badges */}
             {hasPromotion && (
-              <div className="absolute top-3 left-3 z-10">
-                <BadgeFlashSale promotion={promotion} className="shadow-md" />
+              <div className="absolute top-2 left-2 md:top-3 md:left-3 z-10">
+                <BadgeFlashSale
+                  promotion={promotion}
+                  className="shadow-md text-xs md:text-sm"
+                />
               </div>
             )}
 
             {/* Wishlist button */}
-            <button className="absolute top-3 right-3 z-10 p-2 bg-white/90 hover:bg-white rounded-full shadow-sm opacity-0 group-hover:opacity-100 transition-all duration-200">
-              <Heart className="w-4 h-4 text-gray-600 hover:text-red-500" />
+            <button className="absolute top-2 right-2 md:top-3 md:right-3 z-10 p-1.5 md:p-2 bg-white/90 hover:bg-white rounded-full shadow-sm opacity-0 group-hover:opacity-100 transition-all duration-200">
+              <Heart className="w-3 h-3 md:w-4 md:h-4 text-gray-600 hover:text-red-500" />
             </button>
           </div>
         </CardHeader>
 
         {/* Content Section */}
-        <CardContent className="p-4 flex-1 flex flex-col space-y-3">
+        <CardContent className="p-3 md:p-4 flex-1 flex flex-col space-y-2 md:space-y-3">
           {/* Product Title */}
-          <CardTitle className="line-clamp-2 text-base font-semibold text-gray-900 leading-tight min-h-[2.5rem]">
+          <CardTitle className="line-clamp-2 text-sm md:text-base font-semibold text-gray-900 leading-tight min-h-[2.5rem]">
             {product.name}
           </CardTitle>
 
-          {/* Description - Hidden on mobile */}
-          <CardDescription className="hidden sm:block line-clamp-2 text-sm text-gray-600 min-h-[2.5rem]">
+          {/* Description - Hidden on mobile, visible on tablet+ */}
+          <CardDescription className="hidden md:block line-clamp-2 text-xs lg:text-sm text-gray-600 min-h-[2.5rem]">
             {product.shortDescription}
           </CardDescription>
 
           {/* Rating and Badges */}
-          <div className="flex items-center justify-between">
+          <div className="flex items-center justify-between gap-2">
             <div className="flex items-center gap-1">
               {[...Array(5)].map((_, i) => (
                 <Star
                   key={i}
-                  className="w-4 h-4 text-yellow-400 fill-current"
+                  className="w-3 h-3 md:w-4 md:h-4 text-yellow-400 fill-current"
                 />
               ))}
-              <span className="text-sm text-gray-500 ml-1">(5.0)</span>
+              <span className="text-xs md:text-sm text-gray-500 ml-1">
+                (5.0)
+              </span>
             </div>
 
-            <div className="flex items-center gap-1">
-              {/* <Badge className="bg-blue-100 text-blue-700 text-xs px-2 py-1 rounded-full border-0">
-                <Truck className="w-3 h-3 mr-1" />
-                Free Ship
-              </Badge> */}
+            {/* Responsive Free Ship Badge */}
+            <div className="flex items-center">
               <FreeshipBadVer2 />
             </div>
           </div>
@@ -323,11 +325,11 @@ export const ProductCard = ({
           {/* Price Section */}
           <div className="space-y-1">
             <div className="flex items-center justify-between">
-              <span className="text-xl font-bold text-red-600">
+              <span className="text-lg md:text-xl font-bold text-red-600">
                 {FormatUtils.formatPriceVND(discountedPrice)}
               </span>
               {showLineThroughPrice && (
-                <span className="text-sm text-gray-400 line-through">
+                <span className="text-xs md:text-sm text-gray-400 line-through">
                   {FormatUtils.formatPriceVND(showLineThroughPrice)}
                 </span>
               )}
@@ -336,18 +338,18 @@ export const ProductCard = ({
 
           {/* Gift Products Section */}
           {hasGifts && (
-            <div className="bg-gradient-to-r from-emerald-50 to-green-50 rounded-lg p-3 border border-emerald-200">
+            <div className="bg-gradient-to-r from-emerald-50 to-green-50 rounded-lg p-2 md:p-3 border border-emerald-200">
               <div className="flex items-center gap-2 mb-2">
-                <Gift className="w-4 h-4 text-emerald-600" />
-                <span className="text-sm font-medium text-emerald-800">
+                <Gift className="w-3 h-3 md:w-4 md:h-4 text-emerald-600" />
+                <span className="text-xs md:text-sm font-medium text-emerald-800">
                   Quà tặng kèm
                 </span>
               </div>
 
-              <div className="grid grid-cols-3 gap-2">
+              <div className="grid grid-cols-3 gap-1.5 md:gap-2">
                 {product.giftProducts &&
-                  product.giftProducts.slice(0, 3).map((giftContainer: any) => {
-                    const gift: ProductInterface = giftContainer.gift;
+                  product.giftProducts.slice(0, 3).map((giftContainer) => {
+                    const gift = giftContainer.gift;
                     return (
                       <RenderGiftItems
                         key={gift.id}
@@ -359,7 +361,7 @@ export const ProductCard = ({
 
                 {product.giftProducts && product.giftProducts.length > 3 && (
                   <div className="aspect-square bg-gray-100 rounded-lg flex items-center justify-center border border-gray-200">
-                    <span className="text-xs font-medium text-gray-600">
+                    <span className="text-[10px] md:text-xs font-medium text-gray-600">
                       +{product.giftProducts.length - 3}
                     </span>
                   </div>
@@ -372,7 +374,7 @@ export const ProductCard = ({
           <div className="flex gap-2 mt-auto pt-2">
             <button
               onClick={handleAddToCart}
-              className="cursor-pointer flex-1 bg-red-600 hover:bg-red-700 text-white text-sm font-medium py-2.5 rounded-lg transition-colors duration-200 shadow-sm hover:shadow-md">
+              className="cursor-pointer flex-1 bg-red-600 hover:bg-red-700 text-white text-xs md:text-sm font-medium py-2 md:py-2.5 rounded-lg transition-colors duration-200 shadow-sm hover:shadow-md">
               Mua ngay
             </button>
             <button
@@ -381,8 +383,8 @@ export const ProductCard = ({
                 e.stopPropagation();
                 handleAddToCart(e);
               }}
-              className="px-4 cursor-pointer bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-lg transition-colors duration-200">
-              <ShoppingBasket className="w-4 h-4" />
+              className="px-3 md:px-4 cursor-pointer bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-lg transition-colors duration-200">
+              <ShoppingBasket className="w-3 h-3 md:w-4 md:h-4" />
             </button>
           </div>
         </CardContent>

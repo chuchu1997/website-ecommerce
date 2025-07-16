@@ -30,7 +30,12 @@ const cardHover = {
   }
 };
 
-export const InteriorContent: React.FC = () => {
+interface Props  { 
+  industry:string;
+
+}
+
+export const InteriorContent: React.FC<Props> = ({industry}) => {
   const services = [
     {
       title: 'Nội Thất Đặt Làm Riêng',
@@ -78,11 +83,11 @@ export const InteriorContent: React.FC = () => {
             
             <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-extrabold mb-4 sm:mb-6 leading-tight">
               <span className="bg-gradient-to-r from-gray-900 via-gray-800 to-gray-900 bg-clip-text text-transparent">
-                Tinh Hoa Thiết Kế
+                Tinh Hoa Trong Ngành
               </span>
               <br />
               <span className="bg-gradient-to-r from-amber-600 via-orange-600 to-amber-700 bg-clip-text text-transparent">
-                Nội Thất
+                {industry}
               </span>
             </h2>
             

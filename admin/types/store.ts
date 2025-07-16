@@ -37,6 +37,9 @@ interface StoreBase {
     products:[],
     categories:[],
     news:[]
+    industry?:string;// nganh nghe
+    languages?:string;
+    tags?:any;
     description?:string;
     email?:string;
     phone?:string;

@@ -23,9 +23,10 @@ const fadeInUp = {
 
 interface Props {
   brands: BrandInterface[];
+  industry:string;
 }
 
-export const PartnerBrandsMotion: React.FC<Props> = ({ brands }) => {
+export const PartnerBrandsMotion: React.FC<Props> = ({ brands ,industry}) => {
   // Duplicate brands array for seamless looping
   const duplicatedBrands = [...brands, ...brands];
   
@@ -66,7 +67,7 @@ export const PartnerBrandsMotion: React.FC<Props> = ({ brands }) => {
             variants={fadeInUp}
             className="text-xl text-gray-600 max-w-2xl mx-auto leading-relaxed"
           >
-            Hợp tác cùng các thương hiệu hàng đầu trong ngành nội thất
+            Hợp tác cùng các thương hiệu hàng đầu trong ngành {industry}
           </motion.p>
         </motion.div>
 

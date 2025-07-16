@@ -29,9 +29,13 @@ const fadeInUp = {
 
 interface Props {
   projects: ProjectInterface[];
+  industry: string;
 }
 
-export const HighlightedProjectsMotion: React.FC<Props> = ({ projects }) => {
+export const HighlightedProjectsMotion: React.FC<Props> = ({
+  projects,
+  industry,
+}) => {
   return (
     <section className="order-t border-white/30 shadow-inner relative py-12 sm:py-16 lg:py-24 bg-gradient-to-br from-slate-50 via-white to-slate-100 overflow-hidden">
       {/* Background Decorations */}
@@ -70,7 +74,7 @@ export const HighlightedProjectsMotion: React.FC<Props> = ({ projects }) => {
             {/* Description */}
             <p className="text-base sm:text-lg md:text-xl lg:text-2xl text-gray-600 max-w-2xl lg:max-w-4xl mx-auto leading-relaxed">
               Khám phá những dự án tiêu biểu thể hiện tay nghề và sự sáng tạo
-              trong thiết kế nội thất
+              trong ngành {industry}
             </p>
 
             {/* Decorative Line */}

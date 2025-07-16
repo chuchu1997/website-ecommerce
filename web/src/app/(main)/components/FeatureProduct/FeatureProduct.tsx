@@ -4,7 +4,14 @@ import { Brand } from "@/types/brand";
 import { ProductInterface } from "@/types/product";
 import { ProductPromotion, PromotionInterface } from "@/types/promotion";
 
-export const FeatureProducts = async () => {
+
+
+
+interface Props  { 
+  industry:string;
+
+}
+export const FeatureProducts = async ({industry}:Props) => {
   let featureProducts: ProductInterface[] = [];
   let promotions: PromotionInterface[] = [];
 
@@ -61,7 +68,7 @@ export const FeatureProducts = async () => {
 
           {/* Subtitle */}
           <p className="text-base sm:text-lg md:text-xl lg:text-2xl text-gray-600 max-w-2xl lg:max-w-4xl mx-auto leading-relaxed">
-            Khám phá những sản phẩm nội thất được yêu thích nhất, được chế tác tinh xảo và thiết kế hiện đại.
+            Khám phá những sản phẩm trong ngành {industry} được yêu thích nhất, được chế tác tinh xảo và thiết kế hiện đại.
           </p>
 
           {/* Decorative Line */}

@@ -98,7 +98,7 @@ export const ProductForm: React.FC<ProductProps> = ({ initialData }) => {
       seo: {
         title: "",
         description: "",
-        keywords: "",
+        keywords: [],
         slug: "",
         canonicalUrl: "",
         altText: "",
@@ -248,7 +248,12 @@ export const ProductForm: React.FC<ProductProps> = ({ initialData }) => {
         slug,
         stock,
         sku,
-        seo,
+        seo: seo
+          ? {
+              ...seo,
+              keywords: seo.keywords ?? [],
+            }
+          : undefined,
         categoryId: Number(categoryId),
         storeId: Number(storeId),
         images: finalImageUrls,
@@ -319,7 +324,7 @@ export const ProductForm: React.FC<ProductProps> = ({ initialData }) => {
           seo: initialData.seo ?? {
             title: "",
             description: "",
-            keywords: "",
+            keywords: [],
             slug: "",
             canonicalUrl: "",
             altText: "",

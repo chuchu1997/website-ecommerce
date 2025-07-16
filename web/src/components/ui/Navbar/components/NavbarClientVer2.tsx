@@ -345,10 +345,6 @@ const Navbar: React.FC = () => {
                                   <div className="font-medium">
                                     {subcategory.name}
                                   </div>
-                                  <div className="text-xs text-gray-500 mt-1">
-                                    {subcategory.subCategories?.length || 0}{" "}
-                                    items
-                                  </div>
                                 </div>
                               ))}
                             </div>

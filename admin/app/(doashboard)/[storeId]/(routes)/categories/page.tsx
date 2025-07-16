@@ -107,7 +107,7 @@ export default function CategoriesManagement() {
       seo: {
         title: "",
         description: "",
-        keywords: "",
+        keywords: [],
         slug: "",
         canonicalUrl: "",
         altText: "",
@@ -258,7 +258,12 @@ export default function CategoriesManagement() {
           updatedAt: new Date(),
           storeId: Number(storeId),
           variant: data.variant ?? undefined,
-          seo: data.seo,
+          seo: data.seo
+            ? {
+                ...data.seo,
+                keywords: data.seo.keywords ?? [],
+              }
+            : undefined,
         };
 
         await onUpdateCategory(editingCategoryId, updateData);
@@ -275,7 +280,12 @@ export default function CategoriesManagement() {
             position: data.position, // chỉ thêm field position nếu là category cha
           }),
           variant: data.variant ?? undefined,
-          seo: data.seo,
+          seo: data.seo
+            ? {
+                ...data.seo,
+                keywords: data.seo.keywords ?? [],
+              }
+            : undefined,
         };
         await onCreateCategory(newCategory);
       }
@@ -306,7 +316,7 @@ export default function CategoriesManagement() {
       seo: category.seo ?? {
         title: "",
         description: "",
-        keywords: "",
+        keywords: [],
         slug: "",
         canonicalUrl: "",
         altText: "",
@@ -330,7 +340,7 @@ export default function CategoriesManagement() {
       seo: {
         title: "",
         description: "",
-        keywords: "",
+        keywords: [],
         slug: "",
         canonicalUrl: "",
         altText: "",

@@ -103,7 +103,7 @@ export const NewsForm: React.FC<NewsProps> = ({ initialData }) => {
       seo: {
         title: "",
         description: "",
-        keywords: "",
+        keywords: [],
         slug: "",
         canonicalUrl: "",
         altText: "",
@@ -139,7 +139,12 @@ export const NewsForm: React.FC<NewsProps> = ({ initialData }) => {
         imageUrl: finalImage.url,
         title: title,
         slug: slug,
-        seo,
+        seo: seo
+          ? {
+              ...seo,
+              keywords: seo.keywords ?? [],
+            }
+          : undefined,
         shortDescription,
         description: description,
       };
@@ -204,7 +209,7 @@ export const NewsForm: React.FC<NewsProps> = ({ initialData }) => {
         seo: initialData.seo ?? {
           title: "",
           description: "",
-          keywords: "",
+          keywords: [],
           slug: "",
           canonicalUrl: "",
           altText: "",

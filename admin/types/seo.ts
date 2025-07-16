@@ -3,7 +3,7 @@
 export interface SeoType {
   title: string;
   description: string;
-  keywords: string;
+  keywords: string[];
   slug: string;
   canonicalUrl: string;
   altText: string;

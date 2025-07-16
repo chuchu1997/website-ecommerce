@@ -48,7 +48,11 @@ import { NewsAPI } from "@/api/news/news.api";
 //   },
 // ];
 
-export const NewsMasterPage = async () => {
+interface Props  { 
+  industry:string;
+
+}
+export const NewsMasterPage = async ({industry}:Props) => {
   let news:NewsInterface[] = [];
 
   const res = await NewsAPI.getNews({
@@ -60,7 +64,7 @@ export const NewsMasterPage = async () => {
   return (
     <section id="projects">
       <div >
-        <NewsMotion news={news} />
+        <NewsMotion news={news} industry={industry}/>
       </div>
     </section>
   );

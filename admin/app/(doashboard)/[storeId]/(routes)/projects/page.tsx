@@ -126,7 +126,7 @@ export default function ServicesManagement() {
       seo: {
         title: "",
         description: "",
-        keywords: "",
+        keywords: [],
         slug: "",
         canonicalUrl: "",
         altText: "",
@@ -303,7 +303,12 @@ export default function ServicesManagement() {
           type: data.type,
           categoryId: Number(data.categoryId),
           updatedAt: new Date(),
-          seo: data.seo,
+          seo: data.seo
+            ? {
+                ...data.seo,
+                keywords: data.seo.keywords ?? [],
+              }
+            : undefined,
         };
 
         await onUpdateService(editingServiceId, updateData);
@@ -318,7 +323,12 @@ export default function ServicesManagement() {
           imageUrl: finalImage.url,
           type: data.type,
           categoryId: Number(data.categoryId),
-          seo: data.seo,
+          seo: data.seo
+            ? {
+                ...data.seo,
+                keywords: data.seo.keywords ?? [],
+              }
+            : undefined,
         };
         await onCreateProject(newProject);
       }
@@ -349,7 +359,7 @@ export default function ServicesManagement() {
       seo: project.seo ?? {
         title: "",
         description: "",
-        keywords: "",
+        keywords: [],
         slug: "",
         canonicalUrl: "",
         altText: "",
@@ -374,7 +384,7 @@ export default function ServicesManagement() {
       seo: {
         title: "",
         description: "",
-        keywords: "",
+        keywords: [],
         slug: "",
         canonicalUrl: "",
         altText: "",

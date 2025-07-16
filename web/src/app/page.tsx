@@ -34,22 +34,21 @@ import { NewsMasterPage } from "./(main)/components/News/News";
 export const dynamic = "force-dynamic";
 export const revalidate = 60;
 
-const MusicStoreLanding: React.FC = () => {
+const MusicStoreLanding: React.FC = async () => {
+  const storeInfo: StoreInterface = (await StoreAPI.getStoreInfo()).data.store;
+
   return (
     <div className=" min-h-screen bg-white w-full">
       {/* Banner Section */}
       {/* <Banner /> */}
       <Navbar />
       <Hero />
-      <InteriorContent />
-
-      <FeatureProducts />
-
+      <InteriorContent industry={storeInfo.industry ?? ""} />
+      <FeatureProducts industry={storeInfo.industry ?? ""} />
       <ProductCategories />
-      <HighlightedProjects />
-
-      <PartnerBrands />
-      <NewsMasterPage />
+      <HighlightedProjects industry={storeInfo.industry ?? ""} />
+      <PartnerBrands industry={storeInfo.industry ?? ""} />
+      <NewsMasterPage industry={storeInfo.industry ?? ""} />
 
       {/* <Hero />
 

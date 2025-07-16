@@ -25,6 +25,8 @@ import {
   EyeOff,
   Mail,
   PhoneCall,
+  IdCardIcon,
+  TagIcon,
 } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -56,6 +58,7 @@ import { SocialsSection } from "./socials-link-dropdown";
 import S3CloudAPI from "@/app/api/upload/s3-cloud";
 import SEOForm from "@/components/seo/seo";
 import { seoSchemaZod } from "@/schemas/seoSchema";
+import { InputTagsSectionWithForm } from "@/components/ui/inputTagsSectionWithForm";
 
 interface SettingsProps {
   initialData: StoreInterface;
@@ -73,12 +76,18 @@ const formSchema = z.object({
     .min(3, "Tên store phải có ít nhất 3 ký tự")
     .max(100, "Tên store không được quá 50 ký tự"),
   description: z.string().max(600, "Mô tả không được quá 200 ký tự").optional(),
-  email: z.string().email().optional(),
+  // email: z.string().email().optional(),
+  email: z.string().optional(),
   address: z.string().optional(),
-  phone: z
-    .string()
-    .regex(/^0\d{9}$/i, { message: "Số điện thoại không hợp lệ" })
-    .optional(),
+  phone: z.string().optional(),
+  industry: z.string().optional(),
+
+  tags: z.array(z.string()).optional(),
+
+  // phone: z
+  //   .string()
+  //   .regex(/^0\d{9}$/i, { message: "Số điện thoại không hợp lệ" })
+  //   .optional(),
 
   socials: z.array(socialSchema).optional(),
   seo: seoSchemaZod.optional(),
@@ -187,15 +196,17 @@ export const SettingsForm: React.FC<SettingsProps> = ({ initialData }) => {
       name: initialData?.name || "",
       description: initialData?.description || "",
       email: initialData?.email || "",
+      industry: initialData.industry || "",
       phone: initialData?.phone || "",
       socials: initialData.socials || undefined,
       address: initialData.address || "",
+      tags: initialData.tags || [],
       seo: initialData.seo
         ? initialData.seo
         : {
             title: "",
             description: "",
-            keywords: "",
+            keywords: [],
             slug: "",
             canonicalUrl: "",
             altText: "",
@@ -257,7 +268,13 @@ export const SettingsForm: React.FC<SettingsProps> = ({ initialData }) => {
             description: data.description,
             email: data.email,
             phone: data.phone,
-            seo: data.seo,
+            seo: data.seo
+              ? {
+                  ...data.seo,
+                  keywords: data.seo.keywords ?? [],
+                }
+              : undefined,
+            industry: data.industry,
             address: data.address,
             socials: data.socials?.map((social) => ({
               id: social.id ?? undefined,
@@ -265,6 +282,7 @@ export const SettingsForm: React.FC<SettingsProps> = ({ initialData }) => {
               url: social.url,
               storeId: Number(storeId),
             })),
+            tags: data.tags,
             updatedAt: new Date(),
           };
 
@@ -275,7 +293,6 @@ export const SettingsForm: React.FC<SettingsProps> = ({ initialData }) => {
           router.refresh();
           toast.success("Cập nhật thông tin store thành công! 🎉");
 
-          // Reset form dirty state
           form.reset(data);
         }
       } catch (error) {
@@ -411,6 +428,23 @@ export const SettingsForm: React.FC<SettingsProps> = ({ initialData }) => {
                   title="Địa chỉ cửa hàng"
                   placeholder="Vui lòng nhập địa chỉ cửa hàng"
                   icon={Mail}
+                />
+                <InputSectionWithForm
+                  form={form}
+                  nameFormField="industry"
+                  loading={loading}
+                  title="Ngành nghề"
+                  placeholder="Nhập ngành nghề (tùy chọn)"
+                  icon={IdCardIcon}
+                />
+                <InputTagsSectionWithForm
+                  form={form}
+                  nameFormField="tags"
+                  title="Tags Của Store "
+                  placeholder="Nhập tag rồi nhấn Enter"
+                  loading={loading}
+                  description="VD: nội thất, cao cấp, gỗ tự nhiên"
+                  icon={TagIcon}
                 />
 
                 {/* TextArea chiếm toàn bộ chiều ngang */}

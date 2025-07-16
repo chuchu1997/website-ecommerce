@@ -116,7 +116,11 @@ export class StoresService {
         logo: logo,
         favicon: favicon,
         name: dataUpdate.name ?? '',
+
         description: dataUpdate.description ?? '',
+        ...(dataUpdate.tags !== undefined && {
+          tags: dataUpdate.tags as any, // Cast to 'any' or 'Prisma.InputJsonValue'
+        }),
         ...(dataUpdate.seo !== undefined && {
           seo: dataUpdate.seo as any, // Cast to 'any' or 'Prisma.InputJsonValue'
         }),

@@ -5,7 +5,13 @@ import { ProjectAPI } from "@/api/projects/projects.api";
 
 
 
-export const HighlightedProjects = async () => {
+
+interface Props  {
+  industry:string;
+
+}
+
+export const HighlightedProjects = async ({industry}:Props) => {
 
   let projects:ProjectInterface[] = [];
 
@@ -23,7 +29,7 @@ export const HighlightedProjects = async () => {
   return (
     <section id="projects" className="">
       <div className="">
-        <HighlightedProjectsMotion projects={projects} />
+        <HighlightedProjectsMotion projects={projects} industry ={industry} />
       </div>
     </section>
   );
