@@ -12,7 +12,7 @@ export function ProductListMotionWrapper({
   products: ProductInterface[];
 }) {
   return (
-    <div className="grid grid-cols-2 lg:grid-cols-4 gap-6">
+    <div className="columns-2 md:columns-3 lg:columns-4 space-y-4 gap-6">
       {products.map((product) => {
         const endDate = product.promotionProducts[0]?.promotion?.endDate;
         const isExpired = endDate
