@@ -23,7 +23,11 @@ export class UploadController {
   @Post('')
   @HttpCode(200)
   @Roles(Role.ADMIN)
-  @UseInterceptors(FilesInterceptor('files'))
+  @UseInterceptors(
+    FilesInterceptor('files', 10, {
+      limits: { fileSize: 10 * 1024 * 1024 }, // 10MB
+    }),
+  )
   async uploadFiles(@UploadedFiles() files: Express.Multer.File[]) {
     console.log('UPLOAD TO S3 CALLED !!!');
     if (!files || files.length === 0) {
