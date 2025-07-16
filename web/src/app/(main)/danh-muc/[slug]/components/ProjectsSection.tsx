@@ -128,59 +128,6 @@ const ProjectsSection = () => {
           </div>
         </div>
 
-        {/* Controls Section */}
-        {/* <div className="bg-white rounded-2xl shadow-lg border border-gray-100 p-6 mb-12">
-          <div className="flex flex-col lg:flex-row gap-6 items-center justify-between">
-       
-            <div className="relative flex-1 max-w-md">
-              <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
-              <input
-                type="text"
-                placeholder="Tìm kiếm dự án..."
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full pl-12 pr-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
-              />
-            </div>
-
-            <div className="flex items-center space-x-4">
-              <div className="relative">
-                <select
-                  value={selectedCategory}
-                  onChange={(e) => setSelectedCategory(e.target.value)}
-                  className="appearance-none bg-white border border-gray-200 rounded-xl px-4 py-3 pr-10 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200">
-                  <option value="all">Tất cả danh mục</option>
-                  <option value="noi-that">Nội thất</option>
-                  <option value="thiet-ke">Thiết kế</option>
-                  <option value="thi-cong">Thi công</option>
-                </select>
-                <ChevronDown className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5 pointer-events-none" />
-              </div>
-
-              <div className="flex items-center bg-gray-100 rounded-xl p-1">
-                <button
-                  onClick={() => setViewMode("grid")}
-                  className={`p-2 rounded-lg transition-all duration-200 ${
-                    viewMode === "grid"
-                      ? "bg-white shadow-sm text-blue-600"
-                      : "text-gray-500 hover:text-gray-700"
-                  }`}>
-                  <Grid3X3 className="w-5 h-5" />
-                </button>
-                <button
-                  onClick={() => setViewMode("list")}
-                  className={`p-2 rounded-lg transition-all duration-200 ${
-                    viewMode === "list"
-                      ? "bg-white shadow-sm text-blue-600"
-                      : "text-gray-500 hover:text-gray-700"
-                  }`}>
-                  <List className="w-5 h-5" />
-                </button>
-              </div>
-            </div>
-          </div>
-        </div> */}
-
         {/* Content Section */}
         {loading ? (
           <ProjectsSkeletonLoader />

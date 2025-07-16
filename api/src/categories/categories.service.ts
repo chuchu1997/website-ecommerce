@@ -138,6 +138,7 @@ export class CategoriesService {
         storeId: storeID,
       },
     });
+
     if (!mainCategory) return null;
     // Recursive function to get all descendant category IDs
     const getAllDescendantCategoryIds = async (categoryId) => {

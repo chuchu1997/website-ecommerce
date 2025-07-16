@@ -112,12 +112,12 @@ const Footer: React.FC = async () => {
                 <div className="mb-8">
                   <Image
                     src="/logo.png"
-                    height={100}
-                    width={100}
+                    height={120}
+                    width={120}
                     alt="logo"
-                    className="rounded-full"
+                    className=""
                   />
-                  <p className="text-gray-300 mb-8 leading-relaxed text-lg mt-2">
+                  <p className="text-gray-300 mb-8 leading-relaxed text-sm italic mt-2 ">
                     Chất lượng cao cấp kết hợp với thiết kế đặc biệt. Chúng tôi
                     đam mê mang đến những sản phẩm vượt trội mong đợi và nâng
                     tầm phong cách sống của bạn.

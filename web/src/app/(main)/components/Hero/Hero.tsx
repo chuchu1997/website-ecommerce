@@ -73,12 +73,12 @@ export const Hero: React.FC = () => {
 
       {/* Text and CTA */}
       <div className="relative z-10 text-center text-white max-w-4xl mx-auto px-4">
-        <HeroMotion
-          mainTitle={currentBanner.title || "Nâng tầm không gian"}
-          subTitle={currentBanner.description || "với vẻ đẹp từ gỗ"}
-          action={currentBanner.cta?.title || "Xem ngay"}
-          link={currentBanner.cta?.link}
-        />
+ <HeroMotion
+  mainTitle={currentBanner.title || "Máy xây dựng mới "}
+  subTitle={currentBanner.description || "Sản phẩm tiêu chuẩn"}
+  action={currentBanner.cta?.title || "Khám phá"}
+  link={currentBanner.cta?.link}
+/>
       </div>
 
       {/* Dot navigation */}

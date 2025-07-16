@@ -36,30 +36,32 @@ interface Props  {
 }
 
 export const InteriorContent: React.FC<Props> = ({industry}) => {
-  const services = [
-    {
-      title: 'Nội Thất Đặt Làm Riêng',
-      description: 'Những sản phẩm được chế tác theo yêu cầu, phù hợp hoàn hảo với phong cách và không gian sống của bạn.',
-      icon: '🪑',
-      gradient: 'from-amber-500 to-orange-600',
-      bgGradient: 'from-amber-50 to-orange-50',
-    },
-    {
-      title: 'Tư Vấn Bố Trí Không Gian',
-      description: 'Tối ưu hóa từng mét vuông với dịch vụ thiết kế nội thất chuyên nghiệp, khoa học và thẩm mỹ.',
-      icon: '📐',
-      gradient: 'from-blue-500 to-purple-600',
-      bgGradient: 'from-blue-50 to-purple-50',
-    },
-    {
-      title: 'Vật Liệu Bền Vững',
-      description: 'Nguồn gỗ thân thiện với môi trường và quy trình sản xuất hướng đến phát triển bền vững',
-      icon: '🛠️',
-      gradient: 'from-green-500 to-teal-600',
-      bgGradient: 'from-green-50 to-teal-50',
-    },
-  ];
-
+const services = [
+  {
+    title: 'Máy Móc Hiện Đại',
+    description:
+      'Cung cấp đa dạng các loại máy xây dựng như máy trộn bê tông, máy đầm, máy cắt sắt với công nghệ tiên tiến và độ bền cao.',
+    icon: '🚧',
+    gradient: 'from-yellow-500 to-orange-600',
+    bgGradient: 'from-yellow-50 to-orange-50',
+  },
+  {
+    title: 'Tư Vấn Thiết Bị Công Trình',
+    description:
+      'Hỗ trợ lựa chọn thiết bị phù hợp cho từng loại công trình, tối ưu chi phí và hiệu suất thi công.',
+    icon: '📊',
+    gradient: 'from-blue-600 to-indigo-700',
+    bgGradient: 'from-blue-50 to-indigo-50',
+  },
+  {
+    title: 'Vật Tư Cơ Giới Đa Dạng',
+    description:
+      'Phân phối đầy đủ phụ kiện và vật tư cho máy móc công trình như lưỡi cắt, búa đập, ống dẫn… đảm bảo chất lượng và sẵn kho.',
+    icon: '🛠️',
+    gradient: 'from-green-600 to-emerald-700',
+    bgGradient: 'from-green-50 to-emerald-50',
+  },
+];
   return (
     <section className="relative py-12 sm:py-16 lg:py-24 bg-gradient-to-br from-gray-50 via-white to-gray-100 overflow-hidden">
       {/* Background Decorations */}

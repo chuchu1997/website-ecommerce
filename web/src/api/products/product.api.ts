@@ -57,7 +57,7 @@ export const ProductAPI = {
         currentPage,
         limit,
         storeID,
-        isFeature: true,
+        isFeatured: true,
       },
     });
   },

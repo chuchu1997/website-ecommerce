@@ -30,6 +30,7 @@ import { ProductCategories } from "./(main)/components/ProductCategories/Product
 import { HighlightedProjects } from "./(main)/components/HighlightProject/HighlightProject";
 import { PartnerBrands } from "./(main)/components/PartnerBrands/PartnerBrands";
 import { NewsMasterPage } from "./(main)/components/News/News";
+import { ProductWithCategoryType } from "./(main)/components/ProductWithCategoryType/ProductWithCategoryType";
 
 export const dynamic = "force-dynamic";
 export const revalidate = 60;
@@ -45,6 +46,32 @@ const MusicStoreLanding: React.FC = async () => {
       <Hero />
       <InteriorContent industry={storeInfo.industry ?? ""} />
       <FeatureProducts industry={storeInfo.industry ?? ""} />
+
+      <ProductWithCategoryType
+        industry={storeInfo.industry ?? ""}
+        slug="ban-cat-gach"
+      />
+      <ProductWithCategoryType
+        industry={storeInfo.industry ?? ""}
+        slug="dung-cu-dien-cam-tay"
+      />
+      <ProductWithCategoryType
+        industry={storeInfo.industry ?? ""}
+        slug="may-han-dien-tu"
+      />
+      <ProductWithCategoryType
+        industry={storeInfo.industry ?? ""}
+        slug="may-bom-nuoc"
+      />
+      <ProductWithCategoryType
+        industry={storeInfo.industry ?? ""}
+        slug="may-nong-nghiep"
+      />
+
+      <ProductWithCategoryType
+        industry={storeInfo.industry ?? ""}
+        slug="may-phat-dien"
+      />
       <ProductCategories />
       <HighlightedProjects industry={storeInfo.industry ?? ""} />
       <PartnerBrands industry={storeInfo.industry ?? ""} />

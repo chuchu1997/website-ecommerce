@@ -82,32 +82,48 @@ const AboutUsPage: React.FC = () => {
     }
   ];
 
-  const services: Service[] = [
-    {
-      title: "Nội thất cao cấp",
-      description: "Bộ sưu tập nội thất chất lượng cao, phù hợp cho mọi không gian và phong cách.",
-      icon: <Sofa className="w-8 h-8" />,
-      features: ["Phòng khách", "Phòng ngủ", "Phòng ăn", "Nội thất văn phòng"]
-    },
-    {
-      title: "Thiết kế nội thất",
-      description: "Dịch vụ thiết kế nội thất chuyên nghiệp giúp biến không gian thành tổ ấm trong mơ.",
-      icon: <Palette className="w-8 h-8" />,
-      features: ["Bố trí không gian", "Tư vấn màu sắc", "Thiết kế theo yêu cầu", "Mô phỏng 3D"]
-    },
-    {
-      title: "Thi công dự án",
-      description: "Quy trình thi công chuyên nghiệp từ ý tưởng đến hoàn thiện, đảm bảo chất lượng cao.",
-      icon: <Target className="w-8 h-8" />,
-      features: ["Lập kế hoạch", "Lắp đặt", "Kiểm định chất lượng", "Hậu mãi"]
-    },
-    {
-      title: "Hệ thống showroom",
-      description: "Trải nghiệm sản phẩm thực tế tại các showroom của chúng tôi trên toàn quốc.",
-      icon: <Globe className="w-8 h-8" />,
-      features: ["Trưng bày sinh động", "Tư vấn tận tình", "Tham quan ảo", "Giao hàng nhanh"]
-    }
-  ];
+const services = [
+  {
+    title: "Thiết Bị Công Trình",
+    description: "Cung cấp máy móc và thiết bị thi công chất lượng cao, phù hợp với mọi loại công trình.",
+    icon: "🏗️",
+    features: [
+      "Máy trộn bê tông, máy đầm, máy cắt sắt",
+      "Thiết bị cơ giới hạng nặng và dân dụng",
+      "Chính sách bảo hành rõ ràng",
+    ],
+  },
+  {
+    title: "Tư Vấn Kỹ Thuật",
+    description: "Đội ngũ kỹ sư hỗ trợ lựa chọn và sử dụng thiết bị phù hợp cho công trình của bạn.",
+    icon: "📊",
+    features: [
+      "Tư vấn miễn phí",
+      "Giải pháp tối ưu chi phí",
+      "Hỗ trợ kỹ thuật trực tiếp",
+    ],
+  },
+  {
+    title: "Vật Tư Cơ Giới",
+    description: "Cung cấp đầy đủ phụ kiện, vật tư và linh kiện thay thế cho thiết bị thi công.",
+    icon: "🔧",
+    features: [
+      "Phụ tùng máy đầm, máy trộn, máy cắt",
+      "Nguồn hàng luôn sẵn kho",
+      "Giao hàng nhanh toàn quốc",
+    ],
+  },
+  {
+    title: "Bảo Trì & Sửa Chữa",
+    description: "Dịch vụ bảo trì định kỳ và sửa chữa máy móc chuyên nghiệp, nhanh chóng.",
+    icon: "🛠️",
+    features: [
+      "Đội ngũ kỹ thuật viên kinh nghiệm",
+      "Phụ tùng thay thế chính hãng",
+      "Bảo hành sau sửa chữa",
+    ],
+  },
+];
 
   const teamMembers: TeamMember[] = [
     {
@@ -253,68 +269,70 @@ const restOfName = restWords.join(" ");
       </section>
 
       {/* Our Story Section */}
-      <section className="py-20 bg-gradient-to-br from-gray-50 to-gray-100">
-        <div className="max-w-7xl mx-auto px-6">
-          <div className="text-center mb-16">
-            <h2 className="text-5xl font-bold text-gray-900 mb-6">Our Story</h2>
-            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-              From humble beginnings to becoming a nationwide leader in furniture and interior design
-            </p>
+<section className="py-20 bg-gradient-to-br from-gray-50 to-gray-100">
+  <div className="max-w-7xl mx-auto px-6">
+    <div className="text-center mb-16">
+      <h2 className="text-5xl font-bold text-gray-900 mb-6">Câu Chuyện Của Chúng Tôi</h2>
+      <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+        Từ một cửa hàng nhỏ trở thành đơn vị cung cấp thiết bị xây dựng uy tín toàn quốc
+      </p>
+    </div>
+
+    <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+      <div className="space-y-8">
+        <div className="prose prose-lg">
+          <p className="text-gray-700 leading-relaxed">
+            Được thành lập từ năm 1999 với sứ mệnh mang đến giải pháp máy móc xây dựng chất lượng, 
+            giá hợp lý cho mọi công trình. Chúng tôi bắt đầu từ một cửa hàng nhỏ, và đến nay đã phát triển 
+            thành hệ thống phân phối thiết bị phủ rộng toàn quốc, phục vụ hàng chục nghìn khách hàng.
+          </p>
+          <p className="text-gray-700 leading-relaxed">
+            Chúng tôi tin rằng, thiết bị xây dựng không chỉ là công cụ thi công, mà còn là yếu tố quan trọng 
+            góp phần đảm bảo chất lượng, tiến độ và sự an toàn cho công trình. Đội ngũ kỹ thuật và tư vấn viên 
+            của chúng tôi luôn sẵn sàng đồng hành cùng bạn trong mọi dự án.
+          </p>
+        </div>
+
+        <div className="flex items-center space-x-4">
+          <div className="flex items-center space-x-2">
+            <CheckCircle className="w-5 h-5 text-green-500" />
+            <span className="text-gray-700">25+ năm kinh nghiệm</span>
           </div>
+          <div className="flex items-center space-x-2">
+            <CheckCircle className="w-5 h-5 text-green-500" />
+            <span className="text-gray-700">Thiết bị chính hãng, bảo hành rõ ràng</span>
+          </div>
+        </div>
+      </div>
 
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
-            <div className="space-y-8">
-              <div className="prose prose-lg">
-                <p className="text-gray-700 leading-relaxed">
-                  Founded in 1999 with a simple mission: to make beautiful, quality furniture accessible to everyone. 
-                  What started as a small family business has grown into a nationwide network of over 120 showrooms, 
-                  serving more than 50,000 happy customers.
-                </p>
-                <p className="text-gray-700 leading-relaxed">
-                  We believe that furniture is more than just functional pieces – it's about creating spaces that 
-                  reflect your personality and bring joy to your daily life. Our team of expert designers and 
-                  craftsmen work tirelessly to ensure every piece meets our high standards of quality and style.
-                </p>
-              </div>
-              
-              <div className="flex items-center space-x-4">
-                <div className="flex items-center space-x-2">
-                  <CheckCircle className="w-5 h-5 text-green-500" />
-                  <span className="text-gray-700">25+ Years Experience</span>
-                </div>
-                <div className="flex items-center space-x-2">
-                  <CheckCircle className="w-5 h-5 text-green-500" />
-                  <span className="text-gray-700">Quality Guaranteed</span>
-                </div>
-              </div>
+      <div className="relative">
+        <div className="relative rounded-2xl overflow-hidden shadow-2xl">
+          <img
+            src="https://images.unsplash.com/photo-1602303866589-cf1db709f0d8?w=600&h=400&fit=crop"
+            alt="Hình ảnh kho máy móc"
+            className="w-full h-96 object-cover"
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent" />
+        </div>
+
+        {/* Floating Card */}
+        <div className="absolute -bottom-8 -left-8 bg-white rounded-xl p-6 shadow-xl border border-gray-100">
+          <div className="flex items-center space-x-3">
+            <div className="bg-yellow-100 p-3 rounded-full">
+              <Heart className="w-6 h-6 text-yellow-600" />
             </div>
-
-            <div className="relative">
-              <div className="relative rounded-2xl overflow-hidden shadow-2xl">
-                <img
-                  src="https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=600&h=400&fit=crop"
-                  alt="Our showroom"
-                  className="w-full h-96 object-cover"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent" />
-              </div>
-              
-              {/* Floating Card */}
-              <div className="absolute -bottom-8 -left-8 bg-white rounded-xl p-6 shadow-xl border border-gray-100">
-                <div className="flex items-center space-x-3">
-                  <div className="bg-amber-100 p-3 rounded-full">
-                    <Heart className="w-6 h-6 text-amber-600" />
-                  </div>
-                  <div>
-                    <div className="text-2xl font-bold text-gray-900">50K+</div>
-                    <div className="text-sm text-gray-600">Happy Customers</div>
-                  </div>
-                </div>
-              </div>
+            <div>
+              <div className="text-2xl font-bold text-gray-900">50.000+</div>
+              <div className="text-sm text-gray-600">Khách hàng hài lòng</div>
             </div>
           </div>
         </div>
-      </section>
+      </div>
+    </div>
+  </div>
+</section>
+
+
 
       {/* Timeline Section */}
       <section className="py-20 bg-white">
@@ -348,87 +366,88 @@ const restOfName = restWords.join(" ");
       </section>
 
       {/* Services Section */}
-      <section className="py-20 bg-gradient-to-br from-amber-50 to-orange-50">
-        <div className="max-w-7xl mx-auto px-6">
-          <div className="text-center mb-16">
-            <h2 className="text-5xl font-bold text-gray-900 mb-6">What We Do</h2>
-            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-              Comprehensive furniture and interior design solutions for every need
-            </p>
+<section className="py-20 bg-gradient-to-br from-yellow-50 to-orange-50">
+  <div className="max-w-7xl mx-auto px-6">
+    <div className="text-center mb-16">
+      <h2 className="text-5xl font-bold text-gray-900 mb-6">Chúng Tôi Cung Cấp</h2>
+      <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+        Giải pháp thiết bị và máy móc xây dựng toàn diện cho mọi công trình
+      </p>
+    </div>
+
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+      {services.map((service, index) => (
+        <div
+          key={index}
+          className="bg-white rounded-2xl p-8 shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2 group"
+        >
+          <div className="flex items-center mb-6">
+            <div className="bg-gradient-to-br from-yellow-500 to-orange-500 text-white p-3 rounded-xl group-hover:scale-110 transition-transform duration-300">
+              {service.icon}
+            </div>
+            <h3 className="text-2xl font-bold text-gray-900 ml-4">{service.title}</h3>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            {services.map((service, index) => (
-              <div
-                key={index}
-                className="bg-white rounded-2xl p-8 shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2 group"
-              >
-                <div className="flex items-center mb-6">
-                  <div className="bg-gradient-to-br from-amber-500 to-orange-500 text-white p-3 rounded-xl group-hover:scale-110 transition-transform duration-300">
-                    {service.icon}
-                  </div>
-                  <h3 className="text-2xl font-bold text-gray-900 ml-4">{service.title}</h3>
-                </div>
-                
-                <p className="text-gray-600 mb-6">{service.description}</p>
-                
-                <div className="space-y-3">
-                  {service.features.map((feature, featureIndex) => (
-                    <div key={featureIndex} className="flex items-center">
-                      <CheckCircle className="w-5 h-5 text-green-500 mr-3" />
-                      <span className="text-gray-700">{feature}</span>
-                    </div>
-                  ))}
-                </div>
+          <p className="text-gray-600 mb-6">{service.description}</p>
+
+          <div className="space-y-3">
+            {service.features.map((feature, featureIndex) => (
+              <div key={featureIndex} className="flex items-center">
+                <CheckCircle className="w-5 h-5 text-green-500 mr-3" />
+                <span className="text-gray-700">{feature}</span>
               </div>
             ))}
           </div>
         </div>
-      </section>
+      ))}
+    </div>
+  </div>
+</section>
+
 
       {/* Team Section */}
-      <section className="py-20 bg-white">
-        <div className="max-w-7xl mx-auto px-6">
-          <div className="text-center mb-16">
-            <h2 className="text-5xl font-bold text-gray-900 mb-6">Meet Our Team</h2>
-            <p className="text-xl text-gray-600">The passionate people behind Happy Furniture</p>
+<section className="py-20 bg-white">
+  <div className="max-w-7xl mx-auto px-6">
+    <div className="text-center mb-16">
+      <h2 className="text-5xl font-bold text-gray-900 mb-6">Đội Ngũ Của Chúng Tôi</h2>
+      <p className="text-xl text-gray-600">Những chuyên gia tận tâm trong ngành máy móc & xây dựng</p>
+    </div>
+
+    <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+      {teamMembers.map((member, index) => (
+        <div
+          key={member.id}
+          className="text-center group cursor-pointer"
+          style={{ animationDelay: `${index * 0.2}s` }}
+        >
+          <div className="relative mb-6">
+            <img
+              src={member.image}
+              alt={member.name}
+              className="w-48 h-48 rounded-full mx-auto object-cover shadow-lg group-hover:shadow-xl transition-shadow duration-300"
+            />
+            <div className="absolute inset-0 rounded-full bg-gradient-to-br from-yellow-500/20 to-orange-500/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {teamMembers.map((member, index) => (
-              <div
-                key={member.id}
-                className="text-center group cursor-pointer"
-                style={{ animationDelay: `${index * 0.2}s` }}
+          <h3 className="text-2xl font-bold text-gray-900 mb-2">{member.name}</h3>
+          <p className="text-lg text-yellow-600 font-semibold mb-4">{member.position}</p>
+          <p className="text-gray-600 mb-4">{member.bio}</p>
+
+          <div className="flex flex-wrap justify-center gap-2">
+            {member.expertise.map((skill, skillIndex) => (
+              <span
+                key={skillIndex}
+                className="px-3 py-1 bg-yellow-100 text-yellow-800 rounded-full text-sm font-medium"
               >
-                <div className="relative mb-6">
-                  <img
-                    src={member.image}
-                    alt={member.name}
-                    className="w-48 h-48 rounded-full mx-auto object-cover shadow-lg group-hover:shadow-xl transition-shadow duration-300"
-                  />
-                  <div className="absolute inset-0 rounded-full bg-gradient-to-br from-amber-500/20 to-orange-500/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                </div>
-                
-                <h3 className="text-2xl font-bold text-gray-900 mb-2">{member.name}</h3>
-                <p className="text-lg text-amber-600 font-semibold mb-4">{member.position}</p>
-                <p className="text-gray-600 mb-4">{member.bio}</p>
-                
-                <div className="flex flex-wrap justify-center gap-2">
-                  {member.expertise.map((skill, skillIndex) => (
-                    <span
-                      key={skillIndex}
-                      className="px-3 py-1 bg-amber-100 text-amber-800 rounded-full text-sm font-medium"
-                    >
-                      {skill}
-                    </span>
-                  ))}
-                </div>
-              </div>
+                {skill}
+              </span>
             ))}
           </div>
         </div>
-      </section>
+      ))}
+    </div>
+  </div>
+</section>
 
       {/* CTA Section */}
 
