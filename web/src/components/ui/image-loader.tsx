@@ -156,28 +156,19 @@ export const ImageLoader: React.FC<ImageLoaderInterface> = ({
   return (
     <div ref={imgRef} className={containerClasses}>
       {/* Skeleton loading */}
-      {imageState === "loading" && (
-        <div
-          className={`${mergedSkeletonClasses} ${shimmerWrapperClasses} flex items-center justify-center`}
-          style={
-            !fill && width && height
-              ? { width: `${width}px`, height: `${height}px` }
-              : undefined
-          }
-        >
-          <svg
-            className="w-8 h-8 text-gray-400"
-            fill="currentColor"
-            viewBox="0 0 20 20"
-          >
-            <path
-              fillRule="evenodd"
-              d="M4 3a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V5a2 2 0 00-2-2H4zm12 12H4l4-8 3 6 2-4 3 6z"
-              clipRule="evenodd"
-            />
-          </svg>
-        </div>
-      )}
+   {imageState === "loading" && (
+  <div
+    className={`${mergedSkeletonClasses} flex items-center justify-center`}
+    style={
+      !fill && width && height
+        ? { width: `${width}px`, height: `${height}px` }
+        : undefined
+    }
+  >
+    {/* Circle Spinner */}
+    <div className="w-8 h-8 border-4 border-gray-300 border-t-amber-500 rounded-full animate-spin" />
+  </div>
+)}
 
       {/* Low quality placeholder (loads first) */}
       {isIntersecting && showLowQuality && imageState !== "error" && (

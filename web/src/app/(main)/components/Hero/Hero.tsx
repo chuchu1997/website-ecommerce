@@ -1,5 +1,4 @@
 /** @format */
-
 "use client";
 
 import { useEffect, useState } from "react";
@@ -7,7 +6,6 @@ import { HeroMotion } from "./HeroMotion";
 import { BannerAPI } from "@/api/banner/banner.api";
 import { BannerInterface } from "@/types/banner";
 import { ImageLoader } from "@/components/ui/image-loader";
-import Image from "next/image";
 
 export const Hero: React.FC = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
@@ -33,20 +31,31 @@ export const Hero: React.FC = () => {
   }, [banners]);
 
   if (banners.length === 0) {
+    return null;
+
     return (
       <section className="relative h-screen flex items-center justify-center bg-gray-100">
-        <div className="absolute inset-0 z-0">
-          {/* https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=1920&h=1080&fit=crop */}
-
+        {/* <div className="absolute inset-0 z-0">
           <ImageLoader
             fill
             priority
             quality={60}
             src="https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=1920&h=1080&fit=crop"
             alt="Beautiful wooden furniture"
-            className="w-full h-full object-cover"
+            className="w-full h-full"
+            style={{ objectFit: "cover" }}
           />
-          <div className="absolute inset-0 bg-black/40"></div>
+          <div className="absolute inset-0 bg-black/40 z-10"></div>
+        </div> */}
+
+        {/* Loading text */}
+        <div className="relative z-20 text-center text-white">
+          <div className="animate-pulse">
+            <h2 className="text-2xl font-semibold mb-2">Loading...</h2>
+            <p className="text-gray-300">
+              Please wait while we load the content
+            </p>
+          </div>
         </div>
       </section>
     );
@@ -64,15 +73,20 @@ export const Hero: React.FC = () => {
           src={currentBanner.imageUrl}
           alt={currentBanner.title || "banner"}
           fill
-          priority={currentSlide === 0 ? true : false}
+          priority={currentSlide === 0}
           quality={90}
-          className="object-cover"
+          className="w-full h-full"
+          style={{ objectFit: "cover" }}
+          sizes="100vw"
+          fadeInDuration={500}
+          showShimmer={true}
+          skeletonClassName="bg-gray-800"
         />
-        <div className="absolute inset-0 bg-black/30 z-50" />
+        <div className="absolute inset-0 bg-black/30 z-40" />
       </div>
 
       {/* Text and CTA */}
-      <div className="relative z-10 text-center text-white max-w-4xl mx-auto px-4">
+      <div className="relative z-20 text-center text-white max-w-4xl mx-auto px-4">
         <HeroMotion
         // mainTitle={currentBanner.title || "Máy xây dựng mới "}
         // subTitle={currentBanner.description || "Sản phẩm tiêu chuẩn"}
@@ -82,7 +96,7 @@ export const Hero: React.FC = () => {
       </div>
 
       {/* Dot navigation */}
-      <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 z-20 flex space-x-3">
+      <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 z-30 flex space-x-3">
         {banners.map((_, index) => (
           <button
             key={index}
