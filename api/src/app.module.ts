@@ -27,9 +27,15 @@ import { FakecommentsModule } from './fakecomments/fakecomments.module';
 import { ProjectsModule } from './projects/projects.module';
 import { ServicesModule } from './services/services.module';
 import { BrandsModule } from './brands/brands.module';
+import { MulterModule } from '@nestjs/platform-express';
 
 @Module({
   imports: [
+    MulterModule.register({
+      limits: {
+        fileSize: 20 * 1024 * 1024, // 20MB
+      },
+    }),
     ScheduleModule.forRoot(), //
 
     ConfigModule.forRoot({
