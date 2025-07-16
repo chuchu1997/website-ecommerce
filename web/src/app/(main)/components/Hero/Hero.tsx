@@ -1,3 +1,5 @@
+/** @format */
+
 "use client";
 
 import { useEffect, useState } from "react";
@@ -33,20 +35,19 @@ export const Hero: React.FC = () => {
   if (banners.length === 0) {
     return (
       <section className="relative h-screen flex items-center justify-center bg-gray-100">
-           <div className="absolute inset-0 z-0">
-       
-        {/* https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=1920&h=1080&fit=crop */}
-       
-        <ImageLoader
-         fill
-           priority
+        <div className="absolute inset-0 z-0">
+          {/* https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=1920&h=1080&fit=crop */}
+
+          <ImageLoader
+            fill
+            priority
             quality={60}
-           src="https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=1920&h=1080&fit=crop" 
-          alt="Beautiful wooden furniture" 
-          className="w-full h-full object-cover"
-        />
-        <div className="absolute inset-0 bg-black/40"></div>
-      </div>
+            src="https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=1920&h=1080&fit=crop"
+            alt="Beautiful wooden furniture"
+            className="w-full h-full object-cover"
+          />
+          <div className="absolute inset-0 bg-black/40"></div>
+        </div>
       </section>
     );
   }
@@ -56,29 +57,28 @@ export const Hero: React.FC = () => {
   return (
     <section
       id="home"
-      className="relative h-screen flex items-center justify-center overflow-hidden"
-    >
+      className="relative h-screen flex items-center justify-center overflow-hidden">
       {/* Background image */}
       <div className="absolute inset-0 z-0">
         <ImageLoader
           src={currentBanner.imageUrl}
           alt={currentBanner.title || "banner"}
           fill
-          priority
+          priority={currentSlide === 0 ? true : false}
           quality={90}
           className="object-cover"
         />
-<div className="absolute inset-0 bg-black/30 z-50" />
+        <div className="absolute inset-0 bg-black/30 z-50" />
       </div>
 
       {/* Text and CTA */}
       <div className="relative z-10 text-center text-white max-w-4xl mx-auto px-4">
- <HeroMotion
-  mainTitle={currentBanner.title || "Máy xây dựng mới "}
-  subTitle={currentBanner.description || "Sản phẩm tiêu chuẩn"}
-  action={currentBanner.cta?.title || "Khám phá"}
-  link={currentBanner.cta?.link}
-/>
+        <HeroMotion
+          mainTitle={currentBanner.title || "Máy xây dựng mới "}
+          subTitle={currentBanner.description || "Sản phẩm tiêu chuẩn"}
+          action={currentBanner.cta?.title || "Khám phá"}
+          link={currentBanner.cta?.link}
+        />
       </div>
 
       {/* Dot navigation */}
