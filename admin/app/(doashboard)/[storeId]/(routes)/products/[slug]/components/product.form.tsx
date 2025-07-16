@@ -564,7 +564,7 @@ export const ProductForm: React.FC<ProductProps> = ({ initialData }) => {
               </div>
 
               {/* Right Column - Additional Settings */}
-              <div className="lg:col-span-1 space-y-6">
+              <div className="lg:col-span-1 space-y-6 ">
                 {/* Gift Products */}
                 <div className="bg-white rounded-2xl shadow-lg border border-gray-200 p-4 hover:shadow-xl transition-all duration-300 transform hover:scale-[1.02]">
                   <div className="flex items-center mb-6">
@@ -586,11 +586,14 @@ export const ProductForm: React.FC<ProductProps> = ({ initialData }) => {
                       Quà tặng
                     </h3>
                   </div>
-                  <GiftProductSelector
-                    form={form}
-                    loading={loading}
-                    initValue={initialData?.giftProducts ?? []}
-                  />
+
+                  <div className="min-h-[400px] overflow-hidden">
+                    <GiftProductSelector
+                      form={form}
+                      loading={loading}
+                      initValue={initialData?.giftProducts ?? []}
+                    />
+                  </div>
                 </div>
 
                 {/* Settings */}

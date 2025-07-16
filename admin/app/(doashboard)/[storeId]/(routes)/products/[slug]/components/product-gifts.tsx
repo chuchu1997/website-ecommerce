@@ -116,9 +116,7 @@ export const GiftProductSelector: React.FC<GiftProductSelectorProps> = ({
       debouncedSearch.cancel();
     };
   }, [searchTerm, debouncedSearch]);
-  useEffect(() => {
-    console.log("CURRENT ", currentSlugs);
-  }, [currentSlugs]);
+  useEffect(() => {}, [currentSlugs]);
   const handleProductSelect = (product: ProductInterface): void => {
     const currentSelection: GiftProduct[] =
       form.getValues("giftProducts") || [];
@@ -150,11 +148,7 @@ export const GiftProductSelector: React.FC<GiftProductSelectorProps> = ({
   const handleProductRemove = (productId: number): void => {
     const currentSelection: GiftProduct[] =
       form.getValues("giftProducts") || [];
-    console.log("CURRENT S", currentSelection);
-    currentSelection.map((dd) => {
-      console.log("DD", dd.id);
-    });
-    console.log("productID", productId);
+
     const newSelection: GiftProduct[] = currentSelection.filter(
       (gift) => gift.id !== productId
     );
@@ -169,7 +163,6 @@ export const GiftProductSelector: React.FC<GiftProductSelectorProps> = ({
         (s) => s === slug || newSelectWithRemove.some((gift) => gift.slug === s)
       )
     );
-    console.log("NEW", newSelection);
     // setCurrentSlugs((prev) =>
     //   prev.filter((slug) => selectGifts.some((gift) => gift.slug === slug))
     // );
