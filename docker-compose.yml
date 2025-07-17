@@ -54,7 +54,7 @@ services:
     build: ./admin
     container_name: guitarsaithanh-admin
     ports:
-      - "3005:3500"
+      - "3011:3500"
     env_file:
       - ./admin/.env
     environment:
@@ -70,7 +70,7 @@ services:
     build: ./web
     container_name: guitarsaithanh-web
     ports:
-      - "3006:3900"
+      - "3012:3900"
     depends_on:
       gtst-api:
         condition: service_healthy
