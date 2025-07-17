@@ -170,12 +170,11 @@ export function InlineImageComponent({
       }}
       // onClick={handleClick}
     >
-      <ImageLoader
+      <img
         src={url}
         alt={alt}
         width={size.width}
         height={size.height}
-        quality={100}
         className="object-contain "
       />
     </div>

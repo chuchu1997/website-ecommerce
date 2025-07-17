@@ -7,6 +7,7 @@ import { CodeNode, CodeHighlightNode } from "@lexical/code";
 import { AutoLinkNode, LinkNode } from "@lexical/link";
 import { EmojiNode } from "../nodes/EmojiNode";
 import { InlineImageNode } from "../nodes/InlineImageNode";
+import { ImageNode } from "../nodes/ImageNode";
 
 export const editorConfig: InitialConfigType = {
   namespace: "lexical-editor",
@@ -83,6 +84,7 @@ export const editorConfig: InitialConfigType = {
     AutoLinkNode,
     EmojiNode,
     InlineImageNode,
+    ImageNode,
   ],
   onError: (error: Error) => {
     console.error("Lexical Editor Error:", error);

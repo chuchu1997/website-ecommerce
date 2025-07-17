@@ -24,6 +24,7 @@ export type SerializedInlineImageNode = {
 } & SerializedLexicalNode;
 
 export class InlineImageNode extends DecoratorNode<React.JSX.Element> {
+  
   __url: string;
   __altText: string;
   __width: number;
@@ -35,6 +36,7 @@ export class InlineImageNode extends DecoratorNode<React.JSX.Element> {
   }
 
   static clone(node: InlineImageNode): InlineImageNode {
+    
     return new InlineImageNode(
       node.__url,
       node.__altText,
@@ -53,6 +55,7 @@ export class InlineImageNode extends DecoratorNode<React.JSX.Element> {
     position: "left" | "right" | "full",
     key?: string
   ) {
+
     super(key);
     this.__url = url;
     this.__altText = altText;

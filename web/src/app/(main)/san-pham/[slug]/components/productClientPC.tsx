@@ -49,6 +49,7 @@ export const ProductClientPC = ({ product }: propsProductClientPC) => {
   const [quantity, setQuantity] = useState(1);
   const [activeTab, setActiveTab] = useState("description");
   const [isWishlisted, setIsWishlisted] = useState(false);
+  console.log("products", product);
 
   const promotion = product.promotionProducts[0];
 
