@@ -39,7 +39,7 @@ export const Hero: React.FC = () => {
   return (
     <section
       id="home"
-      className="relative mt-[82px] h-[290px] md:h-[700px] flex items-center justify-center overflow-hidden">
+      className="relative mt-[82px] h-[200px] md:h-[700px] flex items-center justify-center overflow-hidden">
       {/* Background image */}
       <div className="absolute inset-0 z-0">
         <ImageLoader
