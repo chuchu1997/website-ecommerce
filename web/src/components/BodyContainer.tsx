@@ -7,7 +7,7 @@ interface BodyContainerProps {
 
 export const BodyContainer = ({ children, className="mt-[10px]" }: BodyContainerProps) => {
   return (
-    <div className={`min-h-[700px] ${className} `}>
+    <div className={`min-h-[700px] w-full ${className} `}>
       {children}
     </div>
   )

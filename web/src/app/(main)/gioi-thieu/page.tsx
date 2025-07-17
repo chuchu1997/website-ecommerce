@@ -205,7 +205,9 @@ const restOfName = restWords.join(" ");
           {storeInfo?.description}
         </p>
         <div className="flex flex-wrap justify-center gap-4 text-lg text-gray-600">
-          {storeInfo?.tags.map((tag,index)=>(
+       
+
+          {storeInfo?.tags && storeInfo.tags.length > 0  && storeInfo?.tags.map((tag,index)=>(
                     <span key={index} className="flex items-center"><Tag className="w-5 h-5 mr-2" />{tag}</span>
 
           ))}

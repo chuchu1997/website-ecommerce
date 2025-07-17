@@ -32,7 +32,7 @@ const Footer: React.FC = async () => {
   const storeInfo = (await StoreAPI.getStoreInfo()).data
     .store as StoreInterface;
   let socials: SocialInterface[] = [];
-  if (storeInfo.socials && storeInfo.socials.length > 0) {
+  if (storeInfo && storeInfo.socials && storeInfo.socials.length > 0) {
     socials = storeInfo.socials;
   }
 

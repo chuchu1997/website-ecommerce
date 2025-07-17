@@ -240,19 +240,24 @@ const Navbar: React.FC = () => {
 
   // Dynamic text color based on scroll state
   const getTextColor = () => {
-    return pathname === "/" && !isScrolled
-      ? "text-white hover:text-blue-200"
-      : "text-gray-900 hover:text-blue-600";
+    //  return pathname === "/" && !isScrolled
+    //   ? "text-white hover:text-blue-200"
+    //   : "text-gray-900 hover:text-blue-600";
+    return "text-gray-900 hover:text-blue-600";
   };
 
   return (
     <>
       <header
-        className={`fixed w-full top-0 z-50 transition-all duration-300 ${
-          isScrolled || pathname !== "/"
-            ? "bg-white/95 backdrop-blur-md shadow-lg"
-            : "bg-transparent"
-        }`}>
+        // className={`fixed w-full top-0 z-50 transition-all duration-300 ${
+        //   isScrolled || pathname !== "/"
+        //     ? "bg-white/95 backdrop-blur-md shadow-lg"
+        //     : "bg-transparent"
+        // }`
+        // }
+        className={`fixed w-full top-0 z-50 transition-all duration-300 
+            bg-white/95 backdrop-blur-md shadow-lg
+           `}>
         <div className="container mx-auto px-1 sm:px-4 py-4 ">
           <div className="flex items-center justify-between">
             {/* Mobile menu button */}
@@ -718,6 +723,7 @@ const Navbar: React.FC = () => {
             </div>
           )}
         </div>
+        {/* <Menubar /> */}
       </header>
 
       {/* Search Dialog/Modal */}

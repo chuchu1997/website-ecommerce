@@ -32,33 +32,6 @@ export const Hero: React.FC = () => {
 
   if (banners.length === 0) {
     return null;
-
-    return (
-      <section className="relative h-screen flex items-center justify-center bg-gray-100">
-        {/* <div className="absolute inset-0 z-0">
-          <ImageLoader
-            fill
-            priority
-            quality={60}
-            src="https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=1920&h=1080&fit=crop"
-            alt="Beautiful wooden furniture"
-            className="w-full h-full"
-            style={{ objectFit: "cover" }}
-          />
-          <div className="absolute inset-0 bg-black/40 z-10"></div>
-        </div> */}
-
-        {/* Loading text */}
-        <div className="relative z-20 text-center text-white">
-          <div className="animate-pulse">
-            <h2 className="text-2xl font-semibold mb-2">Loading...</h2>
-            <p className="text-gray-300">
-              Please wait while we load the content
-            </p>
-          </div>
-        </div>
-      </section>
-    );
   }
 
   const currentBanner = banners[currentSlide];
@@ -66,7 +39,7 @@ export const Hero: React.FC = () => {
   return (
     <section
       id="home"
-      className="relative h-screen flex items-center justify-center overflow-hidden">
+      className="relative mt-[82px] h-[290px] md:h-[700px] flex items-center justify-center overflow-hidden">
       {/* Background image */}
       <div className="absolute inset-0 z-0">
         <ImageLoader
@@ -82,7 +55,7 @@ export const Hero: React.FC = () => {
           showShimmer={true}
           skeletonClassName="bg-gray-800"
         />
-        <div className="absolute inset-0 bg-black/30 z-40" />
+        <div className="absolute inset-0 bg-black/10 z-40" />
       </div>
 
       {/* Text and CTA */}

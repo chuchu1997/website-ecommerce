@@ -14,6 +14,7 @@ import { StoreAPI } from "@/api/stores/store.api";
 import { StoreInterface } from "@/types/store";
 import { generateSeoForPage } from "@/seo-ssr/seo-ssr";
 import { SeoInterface } from "@/types/seo";
+import { BodyContainer } from "@/components/BodyContainer";
 export const dynamic = "force-dynamic";
 export const revalidate = 60;
 const geistSans = Geist({ variable: "--font-geist-sans", subsets: ["latin"] });
@@ -48,7 +49,9 @@ export default function RootLayout({
           <CartProvider>
             <SidebarProvider>
               <Toaster position="top-center" reverseOrder={false} />
-              {children}
+              <BodyContainer className="mt-[10px] md:mt-[20px]">
+                {children}
+              </BodyContainer>
             </SidebarProvider>
 
             <ZaloPhoneWidget />

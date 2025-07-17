@@ -19,6 +19,17 @@ import {
   User2Icon,
   DiamondPercent,
   Command,
+  LayoutDashboard,
+  Newspaper,
+  ShoppingBag,
+  FolderKanban,
+  PackageSearch,
+  PercentCircle,
+  Building2,
+  Hammer,
+  Landmark,
+  MessageCircleMore,
+  Settings,
 } from "lucide-react";
 
 import {
@@ -54,20 +65,20 @@ export function AppSidebar() {
       {
         href: `/${params.storeId}`,
         label: "Tổng quan",
-        icon: ChartSplineIcon,
+        icon: LayoutDashboard,
         active: pathname === `/${params.storeId}`,
       },
       {
         href: `/${params.storeId}/news`,
         label: "Bài viết",
-        icon: NewspaperIcon,
+        icon: Newspaper,
         active: pathname === `/${params.storeId}/news`,
         badge: "12",
       },
       {
         href: `/${params.storeId}/orders`,
         label: "Quản lý đơn hàng",
-        icon: ShoppingBagIcon,
+        icon: ShoppingBag,
         active: pathname === `/${params.storeId}/orders`,
         badge: "3",
       },
@@ -79,92 +90,54 @@ export function AppSidebar() {
         icon: FileImageIcon,
         active: pathname === `/${params.storeId}/banners`,
       },
-
       {
         href: `/${params.storeId}/categories`,
         label: "Danh mục",
-        icon: BookMinusIcon,
+        icon: FolderKanban,
         active: pathname === `/${params.storeId}/categories`,
       },
-
       {
         href: `/${params.storeId}/products`,
         label: "Sản phẩm",
-        icon: PackageSearchIcon,
+        icon: PackageSearch,
         active: pathname === `/${params.storeId}/products`,
       },
-
       {
         href: `/${params.storeId}/promotions`,
         label: "Khuyến mãi (Flash Sale)",
-        icon: DiamondPercent,
+        icon: PercentCircle,
         active: pathname === `/${params.storeId}/promotions`,
       },
       {
         href: `/${params.storeId}/projects`,
         label: "Dự án",
-        icon: Command,
+        icon: Building2,
         active: pathname === `/${params.storeId}/projects`,
       },
-
       {
         href: `/${params.storeId}/services`,
         label: "Dịch vụ",
-        icon: Command,
+        icon: Hammer,
         active: pathname === `/${params.storeId}/services`,
       },
       {
         href: `/${params.storeId}/brands`,
         label: "Thương hiệu (Đối tác )",
-        icon: BookMinusIcon,
+        icon: Landmark,
         active: pathname === `/${params.storeId}/brands`,
       },
       {
         href: `/${params.storeId}/fake-comments`,
         label: "Comment giả lập",
-        icon: Command,
+        icon: MessageCircleMore,
         active: pathname === `/${params.storeId}/fake-comments`,
       },
-
-      // {
-      //   href: `/${params.storeId}/services`,
-      //   label: "Dịch vụ",
-      //   icon: LayersIcon,
-      //   active: pathname === `/${params.storeId}/services`,
-      // },
-
-      // {
-      //   href: `/${params.storeId}/sizes`,
-      //   label: "Kích thước",
-      //   icon: ScalingIcon,
-      //   active: pathname === `/${params.storeId}/sizes`,
-      // },
-      // {
-      //   href: `/${params.storeId}/colors`,
-      //   label: "Màu sắc",
-      //   icon: PaletteIcon,
-      //   active: pathname === `/${params.storeId}/colors`,
-      // },
     ],
-    // catalog: [
-    //   {
-    //     href: `/${params.storeId}/billboards`,
-    //     label: "Hình ảnh",
-    //     icon: FileImageIcon,
-    //     active: pathname === `/${params.storeId}/billboards`,
-    //   },
-    //   {
-    //     href: `/${params.storeId}/categories`,
-    //     label: "Danh mục",
-    //     icon: BookMinusIcon,
-    //     active: pathname === `/${params.storeId}/categories`,
-    //   },
-    // ],
     settings: [
       {
         href: `/${params.storeId}/settings`,
         label: "Cài đặt",
-        icon: SettingsIcon,
+        icon: Settings,
         active: pathname === `/${params.storeId}/settings`,
       },
     ],
