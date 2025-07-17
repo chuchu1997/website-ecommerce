@@ -100,7 +100,7 @@ export const ProductCard = ({
   const hasGifts = product.giftProducts && product.giftProducts.length > 0;
   const discountedPrice = getDiscountedPrice();
 
-  const handleAddToCart = async (e: React.MouseEvent) => {
+  const handleAddToCart = async (e: React.MouseEvent, isCheckout: boolean) => {
     e.preventDefault();
     e.stopPropagation();
 
@@ -153,7 +153,9 @@ export const ProductCard = ({
 
       setCartQuantity(updatedItems.length);
       toast.success("Đã thêm sản phẩm vào giỏ hàng");
-      router.push("/checkout");
+      if (isCheckout) {
+        router.push("/checkout");
+      }
     } catch (error) {
       toast.error("Có lỗi xảy ra khi thêm sản phẩm vào giỏ hàng");
     }
@@ -241,11 +243,17 @@ export const ProductCard = ({
               {/* Action Buttons */}
               <div className="flex items-center gap-2">
                 <button
-                  onClick={handleAddToCart}
+                  onClick={(e: any) => {
+                    handleAddToCart(e, false);
+                  }}
                   className="p-2 bg-gray-100 hover:bg-gray-200 rounded-lg transition-colors duration-200">
                   <ShoppingBasket className="w-4 h-4 text-gray-600" />
                 </button>
-                <button className="px-4 py-2 bg-red-600 hover:bg-red-700 text-white text-sm font-medium rounded-lg transition-colors duration-200">
+                <button
+                  onClick={(e) => {
+                    handleAddToCart(e, true);
+                  }}
+                  className="px-4 py-2 bg-red-600 hover:bg-red-700 text-white text-sm font-medium rounded-lg transition-colors duration-200">
                   Mua
                 </button>
               </div>
@@ -373,7 +381,9 @@ export const ProductCard = ({
           {/* Action Buttons */}
           <div className="flex gap-2 mt-auto pt-2">
             <button
-              onClick={handleAddToCart}
+              onClick={(e) => {
+                handleAddToCart(e, true);
+              }}
               className="cursor-pointer flex-1 bg-red-600 hover:bg-red-700 text-white text-xs md:text-sm font-medium py-2 md:py-2.5 rounded-lg transition-colors duration-200 shadow-sm hover:shadow-md">
               Mua ngay
             </button>
@@ -381,7 +391,7 @@ export const ProductCard = ({
               onClick={(e) => {
                 e.preventDefault();
                 e.stopPropagation();
-                handleAddToCart(e);
+                handleAddToCart(e, false);
               }}
               className="px-3 md:px-4 cursor-pointer bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-lg transition-colors duration-200">
               <ShoppingBasket className="w-3 h-3 md:w-4 md:h-4" />
