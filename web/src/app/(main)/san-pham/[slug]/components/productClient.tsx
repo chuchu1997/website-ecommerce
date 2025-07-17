@@ -24,7 +24,7 @@ export const ProductClient = ({ product }: propsClient) => {
     return () => window.removeEventListener("resize", checkMobile);
   }, []);
   return (
-    <div className="container mx-auto">
+    <div className="container mx-auto ">
       {/* <ProductClientPC product={product} /> */}
       {isMobile ? (
         <ProductMobile product={product} />

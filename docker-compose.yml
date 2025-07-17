@@ -1,8 +1,8 @@
 
 services:
-  mxdm-mysql:
+  gtst-mysql:
     image: mysql:8
-    container_name: mayxaydungmoi-mysql
+    container_name: guitsaithanh-mysql
     restart: always
     environment:
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
@@ -10,9 +10,9 @@ services:
       MYSQL_USER: ${MYSQL_USER}
       MYSQL_PASSWORD: ${MYSQL_PASSWORD}
     ports:
-      - "3309:3306"
+      - "3310:3306"
     volumes:
-      - mysql-data-mayxaydungmoi:/var/lib/mysql
+      - mysql-data-guitarsaithanh:/var/lib/mysql
       - ./init.sql:/docker-entrypoint-initdb.d/init.sql  # Add this line
 
     networks:
@@ -24,13 +24,13 @@ services:
       interval: 10s
       start_period: 40s
 
-  mxdm-api:
+  gtst-api:
     build: ./api
-    container_name: mayxaydungmoi-api
+    container_name: guitarsaithanh-api
     expose:
       - "3000"
     depends_on:
-      mxdm-mysql:
+      gtst-mysql:
         condition: service_healthy
     env_file:
       - ./api/.env
@@ -50,11 +50,11 @@ services:
       retries: 5
       start_period: 20s
 
-  mxdm-admin:
+  gtst-admin:
     build: ./admin
-    container_name: mayxaydungmoi-admin
+    container_name: guitarsaithanh-admin
     ports:
-      - "3004:3500"
+      - "3005:3500"
     env_file:
       - ./admin/.env
     environment:
@@ -66,13 +66,13 @@ services:
       - proxy
     restart: unless-stopped
 
-  mxdm-web:
+  gtst-web:
     build: ./web
-    container_name: mayxaydungmoi-web
+    container_name: guitarsaithanh-web
     ports:
-      - "3005:3900"
+      - "3006:3900"
     depends_on:
-      mxdm-api:
+      gtst-api:
         condition: service_healthy
     env_file:
       - ./web/.env
@@ -93,4 +93,4 @@ networks:
     external: true
 
 volumes:
-  mysql-data-mayxaydungmoi:
+  mysql-data-guitarsaithanh:

@@ -76,13 +76,13 @@ const ProjectsSection = () => {
     <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-gray-50">
       <div className="max-w-7xl mx-auto px-6 py-16">
         {/* Header Section */}
-        <div className="text-center mb-16">
+        <div className="text-center mb-4 md:mb-16">
           <div className="inline-flex items-center justify-center space-x-2 bg-blue-50 text-blue-600 px-4 py-2 rounded-full text-sm font-medium mb-6">
             <Sparkles className="w-4 h-4" />
             <span>Dự án nổi bật</span>
           </div>
 
-          <h1 className="text-6xl md:text-7xl font-bold text-gray-900 mb-6">
+          <h1 className="hidden md:block text-4xl md:text-7xl font-bold text-gray-900 mb-6">
             Dự Án
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-purple-600">
               {" "}
@@ -90,14 +90,12 @@ const ProjectsSection = () => {
             </span>
           </h1>
 
-          <p className="text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed mb-8">
+          <p className="hidden md:block text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed mb-8">
             Khám phá những dự án xuất sắc mà chúng tôi đã thực hiện thành công,
-            từ thiết kế nội thất hiện đại đến các giải pháp không gian sống hoàn
-            hảo
           </p>
 
           {/* Stats */}
-          <div className="flex flex-wrap justify-center gap-8 mb-12">
+          <div className="hidden md:flex flex-wrap justify-center gap-8 mb-12">
             <div className="flex items-center space-x-2 text-gray-600">
               <div className="bg-green-100 p-2 rounded-full">
                 <TrendingUp className="w-5 h-5 text-green-600" />

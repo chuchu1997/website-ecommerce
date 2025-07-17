@@ -52,13 +52,25 @@ export const ProductWithCategoryType = async ({ industry, slug }: Props) => {
         {/* Header Section */}
         <div className="text-center mb-12 sm:mb-16 lg:mb-20">
           {/* Icon Badge */}
-          <div className="overflow-hidden  relative inline-flex items-center justify-center w-16 h-16 sm:w-20 sm:h-20 bg-gradient-to-r from-amber-500 to-orange-600 rounded-2xl mb-6 sm:mb-8 shadow-lg">
+          {/* <div className="overflow-hidden border border-red-500  relative inline-flex items-center justify-center w-16 h-16 sm:w-20 sm:h-20 bg-gradient-to-r from-amber-500 to-orange-600 rounded-2xl mb-6 sm:mb-8 shadow-lg">
             <ImageLoader
               src={category?.imageUrl ?? ""} // 👉 thay bằng đường dẫn hình thật
               alt={category?.name ?? ""}
               fill
               className="p-1 rounded-2xl"
             />
+          </div> */}
+          <div className="relative h-[230px] md:h-[350px] mx-auto overflow-hidden rounded-2xl">
+            <ImageLoader
+              src={category?.imageUrl ?? ""}
+              alt={category?.name ?? ""}
+              fill
+              quality={100}
+              className="p-1 object-contain"
+            />
+
+            {/* Fade out bottom */}
+            <div className="absolute bottom-0 left-0 right-0 h-12 bg-gradient-to-t from-white to-transparent pointer-events-none rounded-b-2xl" />
           </div>
 
           {/* Main Title */}
@@ -73,10 +85,10 @@ export const ProductWithCategoryType = async ({ industry, slug }: Props) => {
           </h2>
 
           {/* Subtitle */}
-          <p className="text-base sm:text-lg md:text-xl lg:text-2xl text-gray-600 max-w-2xl lg:max-w-4xl mx-auto leading-relaxed">
+          {/* <p className="text-base sm:text-lg md:text-xl lg:text-2xl text-gray-600 max-w-2xl lg:max-w-4xl mx-auto leading-relaxed">
             Khám phá những sản phẩm trong ngành {industry} được yêu thích nhất,
             được chế tác tinh xảo và thiết kế hiện đại.
-          </p>
+          </p> */}
 
           {/* Decorative Line */}
           <div className="flex items-center justify-center mt-8 sm:mt-10">
@@ -112,7 +124,7 @@ export const ProductWithCategoryType = async ({ industry, slug }: Props) => {
         </div>
 
         {/* Stats Section (Optional Enhancement) */}
-        {products.length > 0 && (
+        {/* {products.length > 0 && (
           <div className="mt-16 sm:mt-20 lg:mt-24">
             <div className="grid grid-cols-2 md:grid-cols-4 gap-6 sm:gap-8">
               <div className="text-center">
@@ -149,7 +161,7 @@ export const ProductWithCategoryType = async ({ industry, slug }: Props) => {
               </div>
             </div>
           </div>
-        )}
+        )} */}
       </div>
     </section>
   );

@@ -31,6 +31,7 @@ import { HighlightedProjects } from "./(main)/components/HighlightProject/Highli
 import { PartnerBrands } from "./(main)/components/PartnerBrands/PartnerBrands";
 import { NewsMasterPage } from "./(main)/components/News/News";
 import { ProductWithCategoryType } from "./(main)/components/ProductWithCategoryType/ProductWithCategoryType";
+import { FlashSaleComponentView } from "./(main)/components/flash-sale";
 
 export const dynamic = "force-dynamic";
 export const revalidate = 60;
@@ -44,39 +45,30 @@ const MusicStoreLanding: React.FC = async () => {
       {/* <Banner /> */}
       <Navbar />
       <Hero />
-      <InteriorContent industry={storeInfo.industry ?? ""} />
+
+      <FlashSaleComponentView />
+
       <FeatureProducts industry={storeInfo.industry ?? ""} />
 
       <ProductWithCategoryType
         industry={storeInfo.industry ?? ""}
-        slug="ban-cat-gach"
+        slug="guitar"
       />
       <ProductWithCategoryType
         industry={storeInfo.industry ?? ""}
-        slug="dung-cu-dien-cam-tay"
+        slug="phu-kien"
       />
       <ProductWithCategoryType
         industry={storeInfo.industry ?? ""}
-        slug="may-han-dien-tu"
-      />
-      <ProductWithCategoryType
-        industry={storeInfo.industry ?? ""}
-        slug="may-bom-nuoc"
-      />
-      <ProductWithCategoryType
-        industry={storeInfo.industry ?? ""}
-        slug="may-nong-nghiep"
+        slug="trong-ken-sao"
       />
 
-      <ProductWithCategoryType
-        industry={storeInfo.industry ?? ""}
-        slug="may-phat-dien"
-      />
       <ProductCategories />
       <HighlightedProjects industry={storeInfo.industry ?? ""} />
       <PartnerBrands industry={storeInfo.industry ?? ""} />
       <NewsMasterPage industry={storeInfo.industry ?? ""} />
 
+      <InteriorContent industry={storeInfo.industry ?? ""} />
       {/* <Hero />
 
       <InteriorContent />

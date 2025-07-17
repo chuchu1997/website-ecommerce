@@ -1,5 +1,3 @@
-// components/home/interior-content.tsx
-
 'use client';
 
 import { motion } from 'framer-motion';
@@ -30,38 +28,38 @@ const cardHover = {
   }
 };
 
-interface Props  { 
-  industry:string;
-
+interface Props {
+  industry: string;
 }
 
-export const InteriorContent: React.FC<Props> = ({industry}) => {
-const services = [
-  {
-    title: 'Máy Móc Hiện Đại',
-    description:
-      'Cung cấp đa dạng các loại máy xây dựng như máy trộn bê tông, máy đầm, máy cắt sắt với công nghệ tiên tiến và độ bền cao.',
-    icon: '🚧',
-    gradient: 'from-yellow-500 to-orange-600',
-    bgGradient: 'from-yellow-50 to-orange-50',
-  },
-  {
-    title: 'Tư Vấn Thiết Bị Công Trình',
-    description:
-      'Hỗ trợ lựa chọn thiết bị phù hợp cho từng loại công trình, tối ưu chi phí và hiệu suất thi công.',
-    icon: '📊',
-    gradient: 'from-blue-600 to-indigo-700',
-    bgGradient: 'from-blue-50 to-indigo-50',
-  },
-  {
-    title: 'Vật Tư Cơ Giới Đa Dạng',
-    description:
-      'Phân phối đầy đủ phụ kiện và vật tư cho máy móc công trình như lưỡi cắt, búa đập, ống dẫn… đảm bảo chất lượng và sẵn kho.',
-    icon: '🛠️',
-    gradient: 'from-green-600 to-emerald-700',
-    bgGradient: 'from-green-50 to-emerald-50',
-  },
-];
+export const InteriorContent: React.FC<Props> = ({ industry }) => {
+  const services = [
+    {
+      title: 'Đàn Guitar Chất Lượng Cao',
+      description:
+        'Chúng tôi cung cấp nhiều dòng guitar acoustic, classic, và electric chính hãng, phù hợp cho mọi trình độ từ người mới bắt đầu đến nghệ sĩ chuyên nghiệp.',
+      icon: '🎸',
+      gradient: 'from-yellow-600 to-orange-500',
+      bgGradient: 'from-yellow-50 to-orange-50',
+    },
+    {
+      title: 'Phụ Kiện & Bảo Dưỡng',
+      description:
+        'Đa dạng phụ kiện như dây đàn, capos, pick, bao da, pedal... cùng dịch vụ bảo trì, chỉnh dây, set-up action chuyên nghiệp.',
+      icon: '🧰',
+      gradient: 'from-rose-500 to-red-600',
+      bgGradient: 'from-rose-50 to-red-50',
+    },
+    {
+      title: 'Tư Vấn & Hướng Dẫn',
+      description:
+        'Đội ngũ nhân viên thân thiện, có kiến thức âm nhạc giúp bạn chọn lựa đàn phù hợp và chia sẻ cách bảo quản – học đàn hiệu quả.',
+      icon: '🎼',
+      gradient: 'from-blue-500 to-indigo-600',
+      bgGradient: 'from-blue-50 to-indigo-50',
+    },
+  ];
+
   return (
     <section className="relative py-12 sm:py-16 lg:py-24 bg-gradient-to-br from-gray-50 via-white to-gray-100 overflow-hidden">
       {/* Background Decorations */}
@@ -80,21 +78,21 @@ const services = [
           {/* Header Section */}
           <motion.div variants={fadeInUp} className="text-center mb-12 sm:mb-16 lg:mb-20">
             <div className="inline-flex items-center justify-center w-16 h-16 sm:w-20 sm:h-20 bg-gradient-to-r from-amber-500 to-orange-600 rounded-2xl mb-6 sm:mb-8">
-              <span className="text-2xl sm:text-3xl">✨</span>
+              <span className="text-2xl sm:text-3xl">🎶</span>
             </div>
-            
+
             <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-extrabold mb-4 sm:mb-6 leading-tight">
               <span className="bg-gradient-to-r from-gray-900 via-gray-800 to-gray-900 bg-clip-text text-transparent">
-                Tinh Hoa Trong Ngành
+                Khơi Dậy Đam Mê Âm Nhạc
               </span>
               <br />
               <span className="bg-gradient-to-r from-amber-600 via-orange-600 to-amber-700 bg-clip-text text-transparent">
-                {industry}
+                {industry || "Guitar Sài Thành"}
               </span>
             </h2>
-            
+
             <p className="text-base sm:text-lg md:text-xl lg:text-2xl text-gray-600 max-w-2xl lg:max-w-4xl mx-auto leading-relaxed">
-              Biến hóa không gian sống với nội thất thủ công tinh xảo và giải pháp thiết kế chuyên nghiệp.
+              Nơi kết nối người yêu nhạc – từ cây đàn đầu tiên đến hành trình biểu diễn chuyên nghiệp.
             </p>
           </motion.div>
 
@@ -111,10 +109,10 @@ const services = [
                   variants={cardHover}
                   className={`relative bg-gradient-to-br ${item.bgGradient} backdrop-blur-sm rounded-2xl sm:rounded-3xl p-6 sm:p-8 lg:p-10 shadow-lg hover:shadow-2xl transition-all duration-500 border border-white/50 overflow-hidden`}
                 >
-                  {/* Card Background Effect */}
+                  {/* Hover Glow */}
                   <div className="absolute inset-0 bg-gradient-to-br from-white/80 to-white/40 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-                  
-                  {/* Icon Container */}
+
+                  {/* Icon */}
                   <div className="relative z-10 mb-6 sm:mb-8">
                     <div className={`inline-flex items-center justify-center w-16 h-16 sm:w-20 sm:h-20 bg-gradient-to-r ${item.gradient} rounded-2xl shadow-lg group-hover:scale-110 transition-transform duration-300`}>
                       <span className="text-2xl sm:text-3xl lg:text-4xl filter drop-shadow-sm">
@@ -122,8 +120,8 @@ const services = [
                       </span>
                     </div>
                   </div>
-                  
-                  {/* Content */}
+
+                  {/* Title + Description */}
                   <div className="relative z-10">
                     <h3 className="text-lg sm:text-xl lg:text-2xl font-bold text-gray-900 mb-3 sm:mb-4 group-hover:text-gray-800 transition-colors">
                       {item.title}
@@ -133,15 +131,12 @@ const services = [
                     </p>
                   </div>
 
-                  {/* Hover Accent */}
+                  {/* Bottom Accent */}
                   <div className={`absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-r ${item.gradient} opacity-0 group-hover:opacity-100 transition-opacity duration-300`} />
                 </motion.div>
               </motion.div>
             ))}
           </div>
-
-          {/* Call to Action */}
-       
         </motion.div>
       </div>
     </section>

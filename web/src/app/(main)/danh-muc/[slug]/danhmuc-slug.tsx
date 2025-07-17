@@ -208,8 +208,8 @@ const DanhMucPage = () => {
     }
   };
   return (
-    <div className="min-h-screen">
-      <div className="container mx-auto px-4 py-12">
+    <div className="min-h-screen ">
+      <div className="container mx-auto py-2 ">
         {category.variant ? (
           <div className="space-y-8">{renderVariantContent()}</div>
         ) : (

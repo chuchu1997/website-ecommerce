@@ -72,58 +72,59 @@ const AboutUsPage: React.FC = () => {
       label: "Năm kinh nghiệm",
       value: "25+",
       icon: <Award className="w-6 h-6" />,
-      description: "Trong lĩnh vực nội thất & thiết kế"
+      description: "Trong lĩnh vực nhạc cụ"
     },
     {
       label: "Dự án đã hoàn thành",
       value: "15K+",
       icon: <Home className="w-6 h-6" />,
-      description: "Thiết kế và thi công nội thất"
+      description: "Thiết kế và sản xuất nhạc cụ"
     }
   ];
 
 const services = [
   {
-    title: "Thiết Bị Công Trình",
-    description: "Cung cấp máy móc và thiết bị thi công chất lượng cao, phù hợp với mọi loại công trình.",
-    icon: "🏗️",
+    title: "Nhạc Cụ Guitar",
+    description: "Cung cấp đa dạng các loại guitar từ cơ bản đến cao cấp, phù hợp cho mọi đối tượng.",
+    icon: "🎸",
     features: [
-      "Máy trộn bê tông, máy đầm, máy cắt sắt",
-      "Thiết bị cơ giới hạng nặng và dân dụng",
-      "Chính sách bảo hành rõ ràng",
+      "Guitar acoustic, classic, điện",
+      "Sản phẩm chính hãng, bảo hành dài hạn",
+      "Phù hợp cho học sinh, nghệ sĩ, người chơi chuyên nghiệp",
     ],
   },
   {
-    title: "Tư Vấn Kỹ Thuật",
-    description: "Đội ngũ kỹ sư hỗ trợ lựa chọn và sử dụng thiết bị phù hợp cho công trình của bạn.",
-    icon: "📊",
+    title: "Tư Vấn Chọn Nhạc Cụ",
+    description: "Đội ngũ chuyên viên hỗ trợ chọn lựa nhạc cụ phù hợp với nhu cầu và ngân sách của bạn.",
+    icon: "🧑‍🏫",
     features: [
-      "Tư vấn miễn phí",
-      "Giải pháp tối ưu chi phí",
-      "Hỗ trợ kỹ thuật trực tiếp",
+      "Tư vấn miễn phí tại cửa hàng hoặc online",
+      "Lựa chọn phù hợp với trình độ người chơi",
+      "Hỗ trợ test thử trực tiếp",
     ],
   },
   {
-    title: "Vật Tư Cơ Giới",
-    description: "Cung cấp đầy đủ phụ kiện, vật tư và linh kiện thay thế cho thiết bị thi công.",
+    title: "Phụ Kiện & Bảo Dưỡng",
+    description: "Cung cấp phụ kiện và dịch vụ bảo trì, vệ sinh định kỳ cho nhạc cụ.",
+    icon: "🧰",
+    features: [
+      "Dây đàn, capo, tuner, bao đàn, pedal...",
+      "Vệ sinh, thay dây, cân chỉnh cần đàn",
+      "Giá ưu đãi cho khách hàng thân thiết",
+    ],
+  },
+  {
+    title: "Sửa Chữa & Độ Nhạc Cụ",
+    description: "Dịch vụ sửa chữa chuyên sâu và nâng cấp nhạc cụ theo yêu cầu.",
     icon: "🔧",
     features: [
-      "Phụ tùng máy đầm, máy trộn, máy cắt",
-      "Nguồn hàng luôn sẵn kho",
-      "Giao hàng nhanh toàn quốc",
-    ],
-  },
-  {
-    title: "Bảo Trì & Sửa Chữa",
-    description: "Dịch vụ bảo trì định kỳ và sửa chữa máy móc chuyên nghiệp, nhanh chóng.",
-    icon: "🛠️",
-    features: [
-      "Đội ngũ kỹ thuật viên kinh nghiệm",
-      "Phụ tùng thay thế chính hãng",
-      "Bảo hành sau sửa chữa",
+      "Sửa cần đàn, phím đàn, jack cắm, EQ...",
+      "Nâng cấp pickup, chỉnh action, setup lại",
+      "Bảo hành kỹ thuật sau sửa chữa",
     ],
   },
 ];
+
 
   const teamMembers: TeamMember[] = [
     {
@@ -163,10 +164,7 @@ const services = [
   ];
 
   useEffect(() => {
-
-
     fetchStoreInfo();
-
     const interval = setInterval(() => {
       setActiveSection((prev) => (prev + 1) % 4);
     }, 5000);
@@ -270,74 +268,11 @@ const restOfName = restWords.join(" ");
         </div>
       </section>
 
-      {/* Our Story Section */}
-<section className="py-20 bg-gradient-to-br from-gray-50 to-gray-100">
-  <div className="max-w-7xl mx-auto px-6">
-    <div className="text-center mb-16">
-      <h2 className="text-5xl font-bold text-gray-900 mb-6">Câu Chuyện Của Chúng Tôi</h2>
-      <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-        Từ một cửa hàng nhỏ trở thành đơn vị cung cấp thiết bị xây dựng uy tín toàn quốc
-      </p>
-    </div>
-
-    <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
-      <div className="space-y-8">
-        <div className="prose prose-lg">
-          <p className="text-gray-700 leading-relaxed">
-            Được thành lập từ năm 1999 với sứ mệnh mang đến giải pháp máy móc xây dựng chất lượng, 
-            giá hợp lý cho mọi công trình. Chúng tôi bắt đầu từ một cửa hàng nhỏ, và đến nay đã phát triển 
-            thành hệ thống phân phối thiết bị phủ rộng toàn quốc, phục vụ hàng chục nghìn khách hàng.
-          </p>
-          <p className="text-gray-700 leading-relaxed">
-            Chúng tôi tin rằng, thiết bị xây dựng không chỉ là công cụ thi công, mà còn là yếu tố quan trọng 
-            góp phần đảm bảo chất lượng, tiến độ và sự an toàn cho công trình. Đội ngũ kỹ thuật và tư vấn viên 
-            của chúng tôi luôn sẵn sàng đồng hành cùng bạn trong mọi dự án.
-          </p>
-        </div>
-
-        <div className="flex items-center space-x-4">
-          <div className="flex items-center space-x-2">
-            <CheckCircle className="w-5 h-5 text-green-500" />
-            <span className="text-gray-700">25+ năm kinh nghiệm</span>
-          </div>
-          <div className="flex items-center space-x-2">
-            <CheckCircle className="w-5 h-5 text-green-500" />
-            <span className="text-gray-700">Thiết bị chính hãng, bảo hành rõ ràng</span>
-          </div>
-        </div>
-      </div>
-
-      <div className="relative">
-        <div className="relative rounded-2xl overflow-hidden shadow-2xl">
-          <img
-            src="https://images.unsplash.com/photo-1602303866589-cf1db709f0d8?w=600&h=400&fit=crop"
-            alt="Hình ảnh kho máy móc"
-            className="w-full h-96 object-cover"
-          />
-          <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent" />
-        </div>
-
-        {/* Floating Card */}
-        <div className="absolute -bottom-8 -left-8 bg-white rounded-xl p-6 shadow-xl border border-gray-100">
-          <div className="flex items-center space-x-3">
-            <div className="bg-yellow-100 p-3 rounded-full">
-              <Heart className="w-6 h-6 text-yellow-600" />
-            </div>
-            <div>
-              <div className="text-2xl font-bold text-gray-900">50.000+</div>
-              <div className="text-sm text-gray-600">Khách hàng hài lòng</div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
 
 
 
       {/* Timeline Section */}
-      <section className="py-20 bg-white">
+      {/* <section className="py-20 bg-white">
         <div className="max-w-7xl mx-auto px-6">
           <div className="text-center mb-16">
             <h2 className="text-5xl font-bold text-gray-900 mb-6">Our Journey</h2>
@@ -365,7 +300,7 @@ const restOfName = restWords.join(" ");
             ))}
           </div>
         </div>
-      </section>
+      </section> */}
 
       {/* Services Section */}
 <section className="py-20 bg-gradient-to-br from-yellow-50 to-orange-50">
@@ -373,7 +308,7 @@ const restOfName = restWords.join(" ");
     <div className="text-center mb-16">
       <h2 className="text-5xl font-bold text-gray-900 mb-6">Chúng Tôi Cung Cấp</h2>
       <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-        Giải pháp thiết bị và máy móc xây dựng toàn diện cho mọi công trình
+        Các sản phẩm liên quan tới âm nhạc chất lượng nhất
       </p>
     </div>
 
@@ -408,7 +343,7 @@ const restOfName = restWords.join(" ");
 
 
       {/* Team Section */}
-<section className="py-20 bg-white">
+{/* <section className="py-20 bg-white">
   <div className="max-w-7xl mx-auto px-6">
     <div className="text-center mb-16">
       <h2 className="text-5xl font-bold text-gray-900 mb-6">Đội Ngũ Của Chúng Tôi</h2>
@@ -449,7 +384,7 @@ const restOfName = restWords.join(" ");
       ))}
     </div>
   </div>
-</section>
+</section> */}
 
       {/* CTA Section */}
 

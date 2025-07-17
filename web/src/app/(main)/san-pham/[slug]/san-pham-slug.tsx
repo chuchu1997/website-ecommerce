@@ -23,7 +23,7 @@ const SanPhamPageWithSlug = async (props: SanPhamPageWithProps) => {
 
   if (!product) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gray-50">
+      <div className="min-h-screen flex items-center justify-center bg-gray-50 ">
         <div className="text-center">
           <h2 className="text-2xl font-semibold text-gray-700 mb-2">
             Sản phẩm không tồn tại

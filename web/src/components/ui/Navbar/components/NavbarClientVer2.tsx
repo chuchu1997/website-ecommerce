@@ -258,7 +258,7 @@ const Navbar: React.FC = () => {
         className={`fixed w-full top-0 z-50 transition-all duration-300 
             bg-white/95 backdrop-blur-md shadow-lg
            `}>
-        <div className="container mx-auto px-1 sm:px-4 py-4 ">
+        <div className="container mx-auto px-2 sm:px-4 py-4 ">
           <div className="flex items-center justify-between">
             {/* Mobile menu button */}
             <div className="md:hidden mr-2">

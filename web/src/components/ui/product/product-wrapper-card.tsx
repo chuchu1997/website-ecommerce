@@ -77,8 +77,8 @@ const ProductWrapperCard = ({
           <div
             className={
               isGridLayout
-                ? "grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-2 space-y-2"
-                : "grid grid-cols-1 gap-4"
+                ? "columns-2 md:columns-3 lg:columns-4 xl:columns-5 gap-2 space-y-2"
+                : "columns-1 gap-4"
             }>
             {products.map((product, index) => {
               // Get the first promotion if available
