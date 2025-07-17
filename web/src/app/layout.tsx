@@ -49,7 +49,7 @@ export default function RootLayout({
           <CartProvider>
             <SidebarProvider>
               <Toaster position="top-center" reverseOrder={false} />
-              <BodyContainer className="mt-[10px] md:mt-[20px]">
+              <BodyContainer className="mt-[70px] md:mt-[20px]">
                 {children}
               </BodyContainer>
             </SidebarProvider>

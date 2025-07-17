@@ -723,7 +723,7 @@ const Navbar: React.FC = () => {
             </div>
           )}
         </div>
-        {/* <Menubar /> */}
+        <Menubar />
       </header>
 
       {/* Search Dialog/Modal */}

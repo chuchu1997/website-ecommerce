@@ -261,7 +261,7 @@ export const ProductCard = ({
     <Link href={`/san-pham/${product.slug}`} className="block h-full">
       <Card className="group relative h-full overflow-hidden bg-white border border-gray-200 hover:border-gray-300 hover:shadow-lg transition-all duration-300 flex flex-col">
         {/* Image Section */}
-        <CardHeader className="p-0 relative">
+        <CardHeader className="p-0 m-0 relative">
           <div className="relative aspect-square bg-gray-50 overflow-hidden">
             <ImageLoader
               src={product.images[0].url}
@@ -293,12 +293,12 @@ export const ProductCard = ({
         {/* Content Section */}
         <CardContent className="p-3 md:p-4 flex-1 flex flex-col space-y-2 md:space-y-3">
           {/* Product Title */}
-          <CardTitle className="line-clamp-2 text-sm md:text-base font-semibold text-gray-900 leading-tight min-h-[2.5rem]">
+
+          <CardTitle className=" text-sm md:text-base font-semibold text-gray-900 leading-snug line-clamp-2 break-words">
             {product.name}
           </CardTitle>
 
-          {/* Description - Hidden on mobile, visible on tablet+ */}
-          <CardDescription className="hidden md:block line-clamp-2 text-xs lg:text-sm text-gray-600 min-h-[2.5rem]">
+          <CardDescription className="hidden md:block text-xs lg:text-sm text-gray-600 leading-snug line-clamp-2 break-words">
             {product.shortDescription}
           </CardDescription>
 
