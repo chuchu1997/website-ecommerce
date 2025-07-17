@@ -44,8 +44,9 @@ const TintucSlug = async ({ params }: Props) => {
   }
 
   return (
-    <div className="container mx-auto max-w-6xl py-10 px-4 overflow-hidden">
+    <div className="container mx-auto max-w-6xl py-10 px-4 ">
       {/* Header */}
+
       <div className="mb-6">
         <h1 className="text-3xl md:text-4xl font-bold text-gray-900 mb-2">
           {news.title}
@@ -63,8 +64,19 @@ const TintucSlug = async ({ params }: Props) => {
         </div>
       </div>
 
-      {/* Thumbnail */}
       {news.imageUrl && (
+        <div className="mb-6 relative h-[400px] md:h-[500px] w-full">
+          <ImageLoader
+            fill
+            src={news.imageUrl}
+            alt={news.title}
+            className="w-full h-auto object-cover rounded-lg shadow-sm relative z-0"
+          />
+        </div>
+      )}
+
+      {/* Thumbnail */}
+      {/* {news.imageUrl && (
         <div className="mb-6">
           <ImageLoader
             src={news.imageUrl}
@@ -74,10 +86,10 @@ const TintucSlug = async ({ params }: Props) => {
             className="w-full h-auto rounded-lg shadow-sm"
           />
         </div>
-      )}
+      )} */}
 
       {/* Content */}
-      <div className="text-gray-700 leading-relaxed whitespace-pre-line">
+      <div className="relative text-gray-700 leading-relaxed whitespace-pre-line">
         <EditorClientWrapper jsonString={news.description} />
       </div>
     </div>
