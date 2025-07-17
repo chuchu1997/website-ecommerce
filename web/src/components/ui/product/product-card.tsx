@@ -104,7 +104,7 @@ export const ProductCard = ({
     e.preventDefault();
     e.stopPropagation();
 
-    const userID = cookies.userInfo?.id;
+    const userID = cookies.userInfo?.id ?? 999;
     if (!userID) {
       toast.error("Vui lòng đăng nhập để thêm sản phẩm vào giỏ hàng");
       return;
