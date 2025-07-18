@@ -100,7 +100,15 @@ export default function ProductMobile({ product }: propsProductMobile) {
               const currentItems = Array.isArray(res.data?.cart?.items)
                 ? res.data.cart.items
                 : [];
-
+              setCookie(
+                "userInfo",
+                { id: res.data.cart?.userId },
+                {
+                  path: "/",
+                  maxAge: 60 * 60 * 24 * 365 * 5, // 5 năm
+                  sameSite: "lax",
+                }
+              );
               // Tìm xem sản phẩm đã có trong giỏ chưa
               const existingIndex = currentItems.findIndex(
                 (item: any) => item.product.id === product.id
