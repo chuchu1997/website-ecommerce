@@ -104,25 +104,20 @@ export const ProductCard = ({
     e.preventDefault();
     e.stopPropagation();
 
-    const userID = cookies.userInfo?.id ?? 999;
-
-    if (!userID) {
-      toast.error("Vui lòng đăng nhập để thêm sản phẩm vào giỏ hàng");
-      return;
-    }
+    let userID = cookies.userInfo?.id ?? 0;
 
     try {
       const res = await UserCartAPI.getAllCartItemsOfUser(userID);
-
       setCookie(
         "userInfo",
-        { id: res.data.cart.userID },
+        { id: res.data.cart.userId },
         {
           path: "/",
           maxAge: 60 * 60 * 24 * 365 * 5, // 5 năm
           sameSite: "lax",
         }
       );
+      userID = res.data.cart.userId;
       // res.data.userID
 
       const currentItems = Array.isArray(res.data?.cart?.items)

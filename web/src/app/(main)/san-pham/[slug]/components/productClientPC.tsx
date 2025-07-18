@@ -96,11 +96,7 @@ export const ProductClientPC = ({ product }: propsProductClientPC) => {
     e.preventDefault();
     e.stopPropagation();
 
-    const userID = cookies.userInfo?.id ?? 999;
-    if (!userID) {
-      toast.error("Vui lòng đăng nhập để thêm sản phẩm vào giỏ hàng");
-      return;
-    }
+    let userID = (await cookies.userInfo?.id) ?? 0;
 
     try {
       const res = await UserCartAPI.getAllCartItemsOfUser(userID);
@@ -116,6 +112,8 @@ export const ProductClientPC = ({ product }: propsProductClientPC) => {
           sameSite: "lax",
         }
       );
+      userID = res.data.cart.userId;
+
       const existingIndex = currentItems.findIndex(
         (item: any) => item.product.id === product.id
       );

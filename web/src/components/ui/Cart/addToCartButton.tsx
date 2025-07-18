@@ -43,57 +43,50 @@ export const AddToCartButton = ({ product, quantity = 1 }: propsCart) => {
   };
 
   const addNewItemToCart = async () => {
-    const userID = cookies.userInfo.id;
-    if (userID) {
-      const res = await UserCartAPI.getAllCartItemsOfUser(userID);
-      const currentItems = Array.isArray(res.data?.cart?.items)
-        ? res.data.cart.items
-        : [];
+    const userID = (await cookies.userInfo.id) ?? 0;
 
-      // Tìm xem sản phẩm đã có trong giỏ chưa
-      const existingIndex = currentItems.findIndex(
-        (item: any) => item.product.id === product.id
+    const res = await UserCartAPI.getAllCartItemsOfUser(userID);
+    const currentItems = Array.isArray(res.data?.cart?.items)
+      ? res.data.cart.items
+      : [];
+
+    // Tìm xem sản phẩm đã có trong giỏ chưa
+    const existingIndex = currentItems.findIndex(
+      (item: any) => item.product.id === product.id
+    );
+
+    let updatedItems: CartItemSSR[] = [];
+
+    if (existingIndex !== -1) {
+      // ✅ Nếu đã tồn tại, cập nhật quantity
+      updatedItems = currentItems.map((item: any, index: number) =>
+        index === existingIndex
+          ? {
+              ...item,
+              quantity: item.quantity + quantity,
+              isSelect: true,
+            }
+          : item
       );
-
-      let updatedItems: CartItemSSR[] = [];
-
-      if (existingIndex !== -1) {
-        // ✅ Nếu đã tồn tại, cập nhật quantity
-        updatedItems = currentItems.map((item: any, index: number) =>
-          index === existingIndex
-            ? {
-                ...item,
-                quantity: item.quantity + quantity,
-                isSelect: true,
-              }
-            : item
-        );
-      } else {
-        setCartQuantity(cartQuantity + 1);
-        // ✅ Nếu chưa có, thêm mới
-        updatedItems = [
-          ...currentItems,
-          {
-            isSelect: true,
-            product,
-            quantity,
-          },
-        ];
-      }
-
-      try {
-        console.log("CART ID", res.data.cart.id);
-        console.log("UPDATE", updatedItems);
-        await UserCartAPI.updateCartItems(
-          userID,
-          res.data.cart.id,
-          updatedItems
-        );
-      } catch (err) {
-        console.log("err", err);
-      }
-      // Gửi dữ liệu lên server
+    } else {
+      setCartQuantity(cartQuantity + 1);
+      // ✅ Nếu chưa có, thêm mới
+      updatedItems = [
+        ...currentItems,
+        {
+          isSelect: true,
+          product,
+          quantity,
+        },
+      ];
     }
+
+    try {
+      await UserCartAPI.updateCartItems(userID, res.data.cart.id, updatedItems);
+    } catch (err) {
+      console.log("err", err);
+    }
+    // Gửi dữ liệu lên server
   };
   return (
     <button
