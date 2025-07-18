@@ -482,6 +482,7 @@ export const ProductForm: React.FC<ProductProps> = ({ initialData }) => {
                     </h3>
                   </div>
                   <BasicInfoSection
+                    isProductForm={true}
                     form={form}
                     loading={loading}
                     categories={categories}
