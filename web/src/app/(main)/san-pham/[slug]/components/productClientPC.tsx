@@ -103,15 +103,18 @@ export const ProductClientPC = ({ product }: propsProductClientPC) => {
       const currentItems = Array.isArray(res.data?.cart?.items)
         ? res.data.cart.items
         : [];
-      setCookie(
-        "userInfo",
-        { id: res.data.cart?.userId },
-        {
-          path: "/",
-          maxAge: 60 * 60 * 24 * 365 * 5, // 5 năm
-          sameSite: "lax",
-        }
-      );
+      if (userID === 0) {
+        setCookie(
+          "userInfo",
+          { id: res.data.cart?.userId },
+          {
+            path: "/",
+            maxAge: 60 * 60 * 24 * 365 * 5, // 5 năm
+            sameSite: "lax",
+          }
+        );
+      }
+
       userID = res.data.cart.userId;
 
       const existingIndex = currentItems.findIndex(
