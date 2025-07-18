@@ -30,6 +30,12 @@ import { discountTypeEnum } from "@/types/promotion";
 import { AddToCartButton } from "@/components/ui/Cart/addToCartButton";
 import ProductSuggess from "./productSuggest";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { UserCartAPI } from "@/api/cart/cart.api";
+import { useCookies } from "react-cookie";
+import { useRouter } from "next/navigation";
+import { useCartContext } from "@/context/cart-context";
+import toast from "react-hot-toast";
+import { CartItemSSR } from "@/app/(main)/gio-hang/components/cart";
 
 interface propsProductClientPC {
   product: ProductInterface;
@@ -49,7 +55,9 @@ export const ProductClientPC = ({ product }: propsProductClientPC) => {
   const [quantity, setQuantity] = useState(1);
   const [activeTab, setActiveTab] = useState("description");
   const [isWishlisted, setIsWishlisted] = useState(false);
-  console.log("products", product);
+  const [cookies, setCookie] = useCookies(["userInfo"]);
+  const router = useRouter();
+  const { setCartQuantity, cartQuantity } = useCartContext();
 
   const promotion = product.promotionProducts[0];
 
@@ -84,6 +92,75 @@ export const ProductClientPC = ({ product }: propsProductClientPC) => {
     }
   };
 
+  const handleAddToCart = async (e: React.MouseEvent, isCheckout: boolean) => {
+    e.preventDefault();
+    e.stopPropagation();
+
+    const userID = cookies.userInfo?.id ?? 999;
+    if (!userID) {
+      toast.error("Vui lòng đăng nhập để thêm sản phẩm vào giỏ hàng");
+      return;
+    }
+
+    try {
+      const res = await UserCartAPI.getAllCartItemsOfUser(userID);
+      const currentItems = Array.isArray(res.data?.cart?.items)
+        ? res.data.cart.items
+        : [];
+      setCookie(
+        "userInfo",
+        { id: res.data.cart?.userId },
+        {
+          path: "/",
+          maxAge: 60 * 60 * 24 * 365 * 5, // 5 năm
+          sameSite: "lax",
+        }
+      );
+      const existingIndex = currentItems.findIndex(
+        (item: any) => item.product.id === product.id
+      );
+
+      let updatedItems: CartItemSSR[] = [];
+
+      if (existingIndex !== -1) {
+        updatedItems = currentItems.map((item: any, index: number) =>
+          index === existingIndex
+            ? {
+                ...item,
+                quantity: item.quantity + 1,
+                isSelect: true,
+              }
+            : {
+                ...item,
+                isSelect: false,
+              }
+        );
+      } else {
+        updatedItems = [
+          ...currentItems.map((item: any) => ({
+            ...item,
+            isSelect: false,
+          })),
+          {
+            isSelect: true,
+            product,
+            quantity: 1,
+          },
+        ];
+      }
+
+      await UserCartAPI.updateCartItems(userID, res.data.cart.id, updatedItems);
+
+      setCartQuantity(updatedItems.length);
+
+      if (isCheckout) {
+        router.push("/checkout");
+      }
+      toast.success("Đã thêm sản phẩm vào giỏ hàng");
+    } catch (error) {
+      toast.error("Có lỗi xảy ra khi thêm sản phẩm vào giỏ hàng");
+    }
+  };
   const getDiscountedPrice = () => {
     const promotionProductFlashSale = product.promotionProducts[0];
     if (!promotionProductFlashSale) return product.price;
@@ -331,10 +408,22 @@ export const ProductClientPC = ({ product }: propsProductClientPC) => {
                 </div>
 
                 <div className="flex space-x-3">
-                  <AddToCartButton product={product} quantity={quantity} />
-                  <button className="flex-1 bg-blue-600 text-white py-3 px-6 rounded-lg font-semibold hover:bg-blue-700 transition-colors">
-                    Mua ngay
-                  </button>
+                  <div className="flex flex-col sm:flex-row gap-3">
+                    <button
+                      onClick={(e: any) => {
+                        handleAddToCart(e, false);
+                      }}
+                      className="flex-1 bg-white border-2 border-gray-900 text-gray-900 py-3 px-6 rounded-lg font-semibold hover:bg-gray-50 transition-colors text-sm sm:text-base">
+                      Thêm vào giỏ
+                    </button>
+                    <button
+                      onClick={(e) => {
+                        handleAddToCart(e, true);
+                      }}
+                      className="flex-1 bg-gray-900 text-white py-3 px-6 rounded-lg font-semibold hover:bg-gray-800 transition-colors text-sm sm:text-base">
+                      Mua ngay
+                    </button>
+                  </div>
                 </div>
               </div>
             </div>

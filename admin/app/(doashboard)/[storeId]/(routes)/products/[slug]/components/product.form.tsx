@@ -485,6 +485,7 @@ export const ProductForm: React.FC<ProductProps> = ({ initialData }) => {
                     form={form}
                     loading={loading}
                     categories={categories}
+                    isProductForm={true}
                   />
                 </div>
 

@@ -105,6 +105,7 @@ export const ProductCard = ({
     e.stopPropagation();
 
     const userID = cookies.userInfo?.id ?? 999;
+
     if (!userID) {
       toast.error("Vui lòng đăng nhập để thêm sản phẩm vào giỏ hàng");
       return;
@@ -112,6 +113,18 @@ export const ProductCard = ({
 
     try {
       const res = await UserCartAPI.getAllCartItemsOfUser(userID);
+
+      setCookie(
+        "userInfo",
+        { id: res.data.cart.userID },
+        {
+          path: "/",
+          maxAge: 60 * 60 * 24 * 365 * 5, // 5 năm
+          sameSite: "lax",
+        }
+      );
+      // res.data.userID
+
       const currentItems = Array.isArray(res.data?.cart?.items)
         ? res.data.cart.items
         : [];
