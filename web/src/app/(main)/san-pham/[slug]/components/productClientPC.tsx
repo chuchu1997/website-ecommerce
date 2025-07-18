@@ -104,9 +104,6 @@ export const ProductClientPC = ({ product }: propsProductClientPC) => {
 
     try {
       const res = await UserCartAPI.getAllCartItemsOfUser(userID);
-      const currentItems = Array.isArray(res.data?.cart?.items)
-        ? res.data.cart.items
-        : [];
       setCookie(
         "userInfo",
         { id: res.data.cart?.userId },
@@ -116,6 +113,10 @@ export const ProductClientPC = ({ product }: propsProductClientPC) => {
           sameSite: "lax",
         }
       );
+      const currentItems = Array.isArray(res.data?.cart?.items)
+        ? res.data.cart.items
+        : [];
+
       const existingIndex = currentItems.findIndex(
         (item: any) => item.product.id === product.id
       );

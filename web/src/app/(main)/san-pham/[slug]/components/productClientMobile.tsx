@@ -93,10 +93,19 @@ export default function ProductMobile({ product }: propsProductMobile) {
         <button
           className="flex-1 bg-red-500 hover:bg-red-600 text-white font-medium py-3 px-6 rounded-lg transition-colors"
           onClick={async () => {
-            const userID = cookies.userInfo.id;
+            const userID = cookies.userInfo.id ?? 999;
 
             if (userID) {
               const res = await UserCartAPI.getAllCartItemsOfUser(userID);
+              setCookie(
+                "userInfo",
+                { id: res.data.cart?.userId },
+                {
+                  path: "/",
+                  maxAge: 60 * 60 * 24 * 365 * 5, // 5 năm
+                  sameSite: "lax",
+                }
+              );
               const currentItems = Array.isArray(res.data?.cart?.items)
                 ? res.data.cart.items
                 : [];
