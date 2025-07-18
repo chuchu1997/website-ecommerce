@@ -96,19 +96,23 @@ export const ProductClientPC = ({ product }: propsProductClientPC) => {
     e.preventDefault();
     e.stopPropagation();
 
-    const userID = (await cookies.userInfo?.id) ?? 0;
+    let userID = (await cookies.userInfo?.id) ?? 0;
 
     try {
       const res = await UserCartAPI.getAllCartItemsOfUser(userID);
-      setCookie(
-        "userInfo",
-        { id: res.data.cart?.userId },
-        {
-          path: "/",
-          maxAge: 60 * 60 * 24 * 365 * 5, // 5 năm
-          sameSite: "lax",
-        }
-      );
+      if (userID === 0) {
+        setCookie(
+          "userInfo",
+          { id: res.data.cart?.userId },
+          {
+            path: "/",
+            maxAge: 60 * 60 * 24 * 365 * 5, // 5 năm
+            sameSite: "lax",
+          }
+        );
+      }
+      userID = res.data.cart?.userId;
+
       const currentItems = Array.isArray(res.data?.cart?.items)
         ? res.data.cart.items
         : [];
@@ -146,9 +150,11 @@ export const ProductClientPC = ({ product }: propsProductClientPC) => {
         ];
       }
 
-      await UserCartAPI.updateCartItems(userID, res.data.cart.id, updatedItems);
+      if (updatedItems.length > 0) {
+        setCartQuantity(updatedItems.length);
+      }
 
-      setCartQuantity(updatedItems.length);
+      await UserCartAPI.updateCartItems(userID, res.data.cart.id, updatedItems);
 
       if (isCheckout) {
         router.push("/checkout");
