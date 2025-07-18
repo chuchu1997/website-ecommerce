@@ -1,8 +1,8 @@
 
 services:
-  gtst-mysql:
+  hf-mysql:
     image: mysql:8
-    container_name: guitsaithanh-mysql
+    container_name: happyfurniture-mysql
     restart: always
     environment:
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
@@ -10,9 +10,9 @@ services:
       MYSQL_USER: ${MYSQL_USER}
       MYSQL_PASSWORD: ${MYSQL_PASSWORD}
     ports:
-      - "3310:3306"
+      - "3311:3306"
     volumes:
-      - mysql-data-guitarsaithanh:/var/lib/mysql
+      - mysql-data-happyfurniture:/var/lib/mysql
       - ./init.sql:/docker-entrypoint-initdb.d/init.sql  # Add this line
 
     networks:
@@ -24,13 +24,13 @@ services:
       interval: 10s
       start_period: 40s
 
-  gtst-api:
+  hf-api:
     build: ./api
-    container_name: guitarsaithanh-api
+    container_name: happyfurniture-api
     expose:
       - "3000"
     depends_on:
-      gtst-mysql:
+      hf-mysql:
         condition: service_healthy
     env_file:
       - ./api/.env
@@ -50,11 +50,11 @@ services:
       retries: 5
       start_period: 20s
 
-  gtst-admin:
+  hf-admin:
     build: ./admin
-    container_name: guitarsaithanh-admin
+    container_name: happyfurniture-admin
     ports:
-      - "3011:3500"
+      - "3013:3500"
     env_file:
       - ./admin/.env
     environment:
@@ -66,13 +66,13 @@ services:
       - proxy
     restart: unless-stopped
 
-  gtst-web:
+  hf-web:
     build: ./web
-    container_name: guitarsaithanh-web
+    container_name: happyfurniture-web
     ports:
-      - "3012:3900"
+      - "3014:3900"
     depends_on:
-      gtst-api:
+      hf-api:
         condition: service_healthy
     env_file:
       - ./web/.env
@@ -93,4 +93,4 @@ networks:
     external: true
 
 volumes:
-  mysql-data-guitarsaithanh:
+  mysql-data-happyfurniture:
