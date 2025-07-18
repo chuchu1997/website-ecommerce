@@ -280,9 +280,9 @@ const Navbar: React.FC = () => {
                 priority
                 alt="logo"
                 src="/logo.png"
-                width={100}
-                height={100}
-                className="w-[60px] h-[60px] sm:w-[100px] sm:h-[80px] object-contain"
+                width={60}
+                height={60}
+                className="w-[40px] h-[40px] sm:w-[60px] sm:h-[60px] object-contain"
               />
             </Link>
 
@@ -723,7 +723,7 @@ const Navbar: React.FC = () => {
             </div>
           )}
         </div>
-        <Menubar />
+        {/* <Menubar /> */}
       </header>
 
       {/* Search Dialog/Modal */}

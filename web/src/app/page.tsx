@@ -45,30 +45,19 @@ const MusicStoreLanding: React.FC = async () => {
       {/* <Banner /> */}
       <Navbar />
       <Hero />
-
       <FlashSaleComponentView />
-
+      <InteriorContent industry={storeInfo.industry ?? ""} />
       <FeatureProducts industry={storeInfo.industry ?? ""} />
-
-      <ProductWithCategoryType
+      {/* <ProductWithCategoryType
         industry={storeInfo.industry ?? ""}
         slug="guitar"
       />
-      <ProductWithCategoryType
-        industry={storeInfo.industry ?? ""}
-        slug="phu-kien"
-      />
-      <ProductWithCategoryType
-        industry={storeInfo.industry ?? ""}
-        slug="trong-ken-sao"
-      />
-
+      */}
       <ProductCategories />
       <HighlightedProjects industry={storeInfo.industry ?? ""} />
       <PartnerBrands industry={storeInfo.industry ?? ""} />
       <NewsMasterPage industry={storeInfo.industry ?? ""} />
 
-      <InteriorContent industry={storeInfo.industry ?? ""} />
       {/* <Hero />
 
       <InteriorContent />

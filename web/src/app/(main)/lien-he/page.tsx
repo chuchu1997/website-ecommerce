@@ -59,7 +59,7 @@ const ContactPage: React.FC = () => {
 
   }
   return (
-    <div className="min-h-screen bg-gradient-to-br from-orange-50 via-white to-amber-50">
+    <div className="overflow-x-hidden min-h-screen bg-gradient-to-br from-orange-50 via-white to-amber-50">
       {/* Hero Section */}
       <div className="relative bg-gradient-to-r from-orange-600 to-amber-600 text-white overflow-hidden">
         <div className="absolute inset-0 bg-black bg-opacity-20"></div>
