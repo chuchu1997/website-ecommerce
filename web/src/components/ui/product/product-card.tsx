@@ -104,14 +104,22 @@ export const ProductCard = ({
     e.preventDefault();
     e.stopPropagation();
 
-    const userID = cookies.userInfo?.id ?? 999;
-    if (!userID) {
-      toast.error("Vui lòng đăng nhập để thêm sản phẩm vào giỏ hàng");
-      return;
-    }
+    let userID = (await cookies.userInfo?.id) ?? 0;
 
     try {
       const res = await UserCartAPI.getAllCartItemsOfUser(userID);
+
+      userID = res.data.cart.userID;
+
+      setCookie(
+        "userInfo",
+        { id: res.data.cart.userId },
+        {
+          path: "/",
+          maxAge: 60 * 60 * 24 * 365 * 5, // 5 năm
+          sameSite: "lax",
+        }
+      );
       const currentItems = Array.isArray(res.data?.cart?.items)
         ? res.data.cart.items
         : [];
@@ -157,6 +165,7 @@ export const ProductCard = ({
         router.push("/checkout");
       }
     } catch (error) {
+      console.log("ERROR", error);
       toast.error("Có lỗi xảy ra khi thêm sản phẩm vào giỏ hàng");
     }
   };
