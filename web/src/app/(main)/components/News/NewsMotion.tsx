@@ -6,6 +6,7 @@ import { ArrowRight } from "lucide-react";
 import { NewsInterface } from "@/types/news";
 import { NewsCard } from "@/components/ui/NewsCard";
 import Link from "next/link";
+import { useEffect, useState } from "react";
 
 const containerVariants = {
   hidden: {},
@@ -32,6 +33,14 @@ interface Props {
 }
 
 export const NewsMotion: React.FC<Props> = ({ news,industry }) => {
+
+
+     const [isMounted, setIsMounted] = useState(false);
+      useEffect(() => {
+        setIsMounted(true);
+      }, []);
+      if (!isMounted) return null;
+  
   return (
     <section className="order-t border-white/30 shadow-inner relative py-12 sm:py-16 lg:py-24 bg-gradient-to-br from-orange-50 via-white to-rose-50 overflow-hidden">
       {/* Decorative Background */}

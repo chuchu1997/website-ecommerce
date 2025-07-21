@@ -2,6 +2,7 @@
 import { motion } from "framer-motion";
 import { BrandInterface } from "@/types/brands";
 import { ImageLoader } from "@/components/ui/image-loader";
+import { useEffect, useState } from "react";
 
 const containerVariants = {
   hidden: {},
@@ -28,11 +29,16 @@ interface Props {
 
 export const PartnerBrandsMotion: React.FC<Props> = ({ brands ,industry}) => {
   // Duplicate brands array for seamless looping
+  
+    const [isMounted, setIsMounted] = useState(false);
   const duplicatedBrands = [...brands, ...brands];
   
   // Calculate animation duration based on number of brands (adjust speed as needed)
   const animationDuration = brands.length * 4; // 4 seconds per brand
-  
+  useEffect(()=>{
+    setIsMounted(true)
+  },[])
+  if(!isMounted) return null;
   return (
     <div className="relative py-20 bg-gradient-to-br from-slate-50 via-white to-blue-50 overflow-hidden">
       {/* Decorative Background */}

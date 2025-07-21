@@ -27,6 +27,8 @@ import { useCartContext } from "@/context/cart-context";
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
 import { FreeshipBadVer2 } from "../Badge/freeship-ver2";
+import { useAddToCart } from "@/hooks/use-addToCart";
+import { useEffect, useState } from "react";
 
 export const RenderGiftItems = ({
   gift,
@@ -74,9 +76,9 @@ export const ProductCard = ({
   promotion,
   isSingleColumn = false,
 }: ProductCardProps) => {
-  const [cookies, setCookie] = useCookies(["userInfo"]);
-  const { setCartQuantity, cartQuantity } = useCartContext();
-  const router = useRouter();
+  const [isMounted, setIsMounted] = useState(false);
+
+  const { addToCart } = useAddToCart();
 
   const promotionProduct = product.promotionProducts;
   const showLineThroughPrice = promotion
@@ -103,74 +105,15 @@ export const ProductCard = ({
   const handleAddToCart = async (e: React.MouseEvent, isCheckout: boolean) => {
     e.preventDefault();
     e.stopPropagation();
-
-    let userID = (await cookies.userInfo?.id) ?? 0;
-
-    try {
-      const res = await UserCartAPI.getAllCartItemsOfUser(userID);
-      if (userID === 0) {
-        setCookie(
-          "userInfo",
-          { id: res.data.cart.userId },
-          {
-            path: "/",
-            maxAge: 60 * 60 * 24 * 365 * 5, // 5 năm
-            sameSite: "lax",
-          }
-        );
-      }
-      userID = res.data.cart.userId;
-
-      const currentItems = Array.isArray(res.data?.cart?.items)
-        ? res.data.cart.items
-        : [];
-
-      const existingIndex = currentItems.findIndex(
-        (item: any) => item.product.id === product.id
-      );
-
-      let updatedItems: CartItemSSR[] = [];
-
-      if (existingIndex !== -1) {
-        updatedItems = currentItems.map((item: any, index: number) =>
-          index === existingIndex
-            ? {
-                ...item,
-                quantity: item.quantity + 1,
-                isSelect: true,
-              }
-            : {
-                ...item,
-                isSelect: false,
-              }
-        );
-      } else {
-        updatedItems = [
-          ...currentItems.map((item: any) => ({
-            ...item,
-            isSelect: false,
-          })),
-          {
-            isSelect: true,
-            product,
-            quantity: 1,
-          },
-        ];
-      }
-
-      await UserCartAPI.updateCartItems(userID, res.data.cart.id, updatedItems);
-      if (updatedItems.length > 0) {
-        setCartQuantity(updatedItems.length);
-      }
-      toast.success("Đã thêm sản phẩm vào giỏ hàng");
-      if (isCheckout) {
-        router.push("/checkout");
-      }
-    } catch (error) {
-      console.log("ERROR", error);
-      toast.error("Có lỗi xảy ra khi thêm sản phẩm vào giỏ hàng");
-    }
+    await addToCart({
+      product,
+      isCheckout,
+    });
   };
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
+  if (!isMounted) return null;
 
   // Single Column Layout (Mobile-like horizontal layout)
   if (isSingleColumn) {

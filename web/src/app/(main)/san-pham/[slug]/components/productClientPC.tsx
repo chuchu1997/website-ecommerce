@@ -4,7 +4,7 @@
 
 import { ProductInterface } from "@/types/product";
 import ProductImageGallery from "./productImageGallery";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   Star,
   Heart,
@@ -36,6 +36,7 @@ import { UserCartAPI } from "@/api/cart/cart.api";
 import { CartItemSSR } from "@/app/(main)/gio-hang/components/cart";
 import { useRouter } from "next/navigation";
 import { useCartContext } from "@/context/cart-context";
+import { useAddToCart } from "@/hooks/use-addToCart";
 
 interface propsProductClientPC {
   product: ProductInterface;
@@ -51,17 +52,18 @@ export const ProductClientPC = ({ product }: propsProductClientPC) => {
   const [selectedColor, setSelectedColor] = useState(
     product.colors?.[0] || null
   );
+  const [isMount, setIsMount] = useState(false);
+
   const [selectedSize, setSelectedSize] = useState(product.sizes?.[0] || null);
   const [quantity, setQuantity] = useState(1);
   const [activeTab, setActiveTab] = useState("description");
   const [isWishlisted, setIsWishlisted] = useState(false);
-
-  const [cookies, setCookie] = useCookies(["userInfo"]);
-  const router = useRouter();
-  const { setCartQuantity, cartQuantity } = useCartContext();
+  const cart = useAddToCart();
 
   const promotion = product.promotionProducts[0];
-
+  useEffect(() => {
+    setIsMount(true);
+  }, []);
   const discountPercentage = (() => {
     if (promotion) {
       const basePrice = product.price;
@@ -96,73 +98,10 @@ export const ProductClientPC = ({ product }: propsProductClientPC) => {
     e.preventDefault();
     e.stopPropagation();
 
-    let userID = (await cookies.userInfo?.id) ?? 0;
-
-    try {
-      const res = await UserCartAPI.getAllCartItemsOfUser(userID);
-      if (userID === 0) {
-        setCookie(
-          "userInfo",
-          { id: res.data.cart?.userId },
-          {
-            path: "/",
-            maxAge: 60 * 60 * 24 * 365 * 5, // 5 năm
-            sameSite: "lax",
-          }
-        );
-      }
-      userID = res.data.cart?.userId;
-
-      const currentItems = Array.isArray(res.data?.cart?.items)
-        ? res.data.cart.items
-        : [];
-
-      const existingIndex = currentItems.findIndex(
-        (item: any) => item.product.id === product.id
-      );
-
-      let updatedItems: CartItemSSR[] = [];
-
-      if (existingIndex !== -1) {
-        updatedItems = currentItems.map((item: any, index: number) =>
-          index === existingIndex
-            ? {
-                ...item,
-                quantity: item.quantity + 1,
-                isSelect: true,
-              }
-            : {
-                ...item,
-                isSelect: false,
-              }
-        );
-      } else {
-        updatedItems = [
-          ...currentItems.map((item: any) => ({
-            ...item,
-            isSelect: false,
-          })),
-          {
-            isSelect: true,
-            product,
-            quantity: 1,
-          },
-        ];
-      }
-
-      if (updatedItems.length > 0) {
-        setCartQuantity(updatedItems.length);
-      }
-
-      await UserCartAPI.updateCartItems(userID, res.data.cart.id, updatedItems);
-
-      if (isCheckout) {
-        router.push("/checkout");
-      }
-      toast.success("Đã thêm sản phẩm vào giỏ hàng");
-    } catch (error) {
-      toast.error("Có lỗi xảy ra khi thêm sản phẩm vào giỏ hàng");
-    }
+    await cart.addToCart({
+      product,
+      isCheckout,
+    });
   };
   const getDiscountedPrice = () => {
     const promotionProductFlashSale = product.promotionProducts[0];
@@ -183,7 +122,7 @@ export const ProductClientPC = ({ product }: propsProductClientPC) => {
       />
     ));
   };
-
+  if (!isMount) return null;
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Breadcrumb */}
@@ -305,15 +244,15 @@ export const ProductClientPC = ({ product }: propsProductClientPC) => {
             <div className="bg-white rounded-xl border border-gray-200 p-6">
               <div className="flex items-center flex-wrap gap-3 mb-4">
                 <span className="text-3xl lg:text-4xl font-bold text-gray-900">
-                  {FormatUtils.formatPriceVND(product.price)}
+                  {FormatUtils.formatPriceVND(getDiscountedPrice())}
                 </span>
                 {product.originalPrice && (
                   <div className="flex items-center gap-2">
                     <span className="text-lg text-gray-500 line-through">
-                      {FormatUtils.formatPriceVND(product.originalPrice)}
+                      {FormatUtils.formatPriceVND(showLineThroughPrice ?? 0)}
                     </span>
                     <span className="bg-red-500 text-white text-sm font-medium px-2 py-1 rounded-md">
-                      -{product.discount}%
+                      -{discountPercentage}%
                     </span>
                   </div>
                 )}

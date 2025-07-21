@@ -1,5 +1,6 @@
 "use client";
 import { motion } from "framer-motion";
+import { useEffect, useState } from "react";
 
 interface Props {
   mainTitle?: string;
@@ -11,7 +12,11 @@ interface Props {
 
 export const HeroMotion = (props: Props) => {
   const { mainTitle, subTitle, description, action, link } = props;
-
+    const [isMounted, setIsMounted] = useState(false);
+    useEffect(() => {
+      setIsMounted(true);
+    }, []);
+    if (!isMounted) return null;
 
   const staggerContainer = {
     initial: {},

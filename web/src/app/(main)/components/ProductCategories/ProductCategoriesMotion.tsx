@@ -6,6 +6,7 @@ import CategoryCard from "@/components/ui/CategoryCard";
 import { CategoryInterface } from "@/types/category";
 import { motion } from "framer-motion";
 import Link from "next/link";
+import { useEffect, useState } from "react";
 
 interface Props {
   title: string;
@@ -14,6 +15,8 @@ interface Props {
 }
 
 export const ProductCategoriesMotion = (props: Props) => {
+  const [isMounted, setIsMounted] = useState(false);
+
   const { title, description, categories } = props;
 
   const containerVariants = {
@@ -40,6 +43,10 @@ export const ProductCategoriesMotion = (props: Props) => {
       transition: { duration: 0.3, ease: "easeOut" },
     },
   };
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
+  if (!isMounted) return null;
 
   return (
     <section className="order-t border-white/30 shadow-inner relative py-12 sm:py-16 lg:py-24 bg-gradient-to-br from-gray-50 via-white to-gray-100 overflow-hidden">
