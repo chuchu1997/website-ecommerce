@@ -11,6 +11,32 @@ export interface ImageInterface {
 
 }
 
+export enum discountTypeEnum {
+  PERCENT = "PERCENT",
+  FIXED = "FIXED",
+}
+export interface PromotionInterface {
+  id:number;
+  name: String;
+  slug: String;
+  isActive: Boolean;
+  promotionProducts: ProductPromotion[];
+  startDate: Date;
+  endDate: Date;
+  storeId: number;
+  createdAt?: Date;
+}
+
+
+export interface ProductPromotion {
+  promotionId: number;
+  productId: number;
+  promotion?:PromotionInterface;
+  discountType: discountTypeEnum;
+  discount: number;
+  product: ProductInterface;
+}
+
 interface ProductBase { 
     name:string;
     description:string;
@@ -33,8 +59,11 @@ interface ProductBase {
     reviews:[]
     sku:string;
     storeId:number;
-      seo?:SeoType
+    seo?:SeoType
     fakeCommens:FakeComment[]
+    promotionProducts:ProductPromotion[]
+    
+
         //sản phẩm này có tặng quà nào không?
     giftProducts?:any[];
     //sản phẩm này có phải quà tặng của sản phẩm nào không?

@@ -350,46 +350,60 @@ export class ProductsService {
 
   async remove(id: number) {
     //Phải xóa các bản ghi images liên quan ở S3 clound trước khi xóa !!!
-    const existingProduct = await this.prisma.product.findUnique({
-      where: { id },
-      select: { images: true },
-    });
 
-    if (!existingProduct) {
-      throw new NotFoundException(
-        `⚠️⚠️⚠️ Sản phẩm với ID ${id} không tồn tại để xóa  ⚠️⚠️⚠️ `,
-      );
-    }
-    //Phải xóa các bản ghi images liên quan ở S3 clound trước khi xóa !!!
-    if (existingProduct?.images?.length) {
-      try {
-        await Promise.all(
-          existingProduct.images.map((image) => {
-            if (image.url) {
-              return this.uploadService.deleteImagesFromS3(image.url);
-            }
-          }),
-        );
-      } catch (error) {
-        console.error('❌ Xóa ảnh S3 thất bại:', error);
-      }
-    }
-
-    const [, deletedProduct] = await this.prisma.$transaction([
-      this.prisma.product.update({
+    try {
+      const existingProduct = await this.prisma.product.findUnique({
         where: { id },
-        data: {
-          fakeComments: { deleteMany: {} },
-          promotionProducts: { deleteMany: {} },
-          images: { deleteMany: {} },
-          sizes: { deleteMany: {} },
-          colors: { deleteMany: {} },
-          giftProducts: { deleteMany: {} },
-        },
-      }),
-      this.prisma.product.delete({ where: { id } }),
-    ]);
+        select: { images: true },
+      });
 
-    return deletedProduct;
+      if (!existingProduct) {
+        throw new NotFoundException(
+          `⚠️⚠️⚠️ Sản phẩm với ID ${id} không tồn tại để xóa  ⚠️⚠️⚠️ `,
+        );
+      }
+      //Phải xóa các bản ghi images liên quan ở S3 clound trước khi xóa !!!
+      if (existingProduct?.images?.length) {
+        try {
+          await Promise.all(
+            existingProduct.images.map((image) => {
+              if (image.url) {
+                return this.uploadService.deleteImagesFromS3(image.url);
+              }
+            }),
+          );
+        } catch (error) {
+          console.error('❌ Xóa ảnh S3 thất bại:', error);
+        }
+      }
+
+      await this.prisma.giftProduct.deleteMany({
+        where: {
+          OR: [
+            { productId: id }, // Sản phẩm tặng quà
+            { giftId: id }, // Sản phẩm được tặng
+          ],
+        },
+      });
+      await this.prisma.order;
+      const [, deletedProduct] = await this.prisma.$transaction([
+        this.prisma.product.update({
+          where: { id },
+          data: {
+            fakeComments: { deleteMany: {} },
+            promotionProducts: { deleteMany: {} },
+            images: { deleteMany: {} },
+            sizes: { deleteMany: {} },
+            colors: { deleteMany: {} },
+            giftProducts: { deleteMany: {} },
+          },
+        }),
+        this.prisma.product.delete({ where: { id } }),
+      ]);
+
+      return deletedProduct;
+    } catch (err) {
+      throw err;
+    }
   }
 }

@@ -80,7 +80,7 @@ export class ProductsController {
     const product = await this.productsService.remove(id);
 
     return {
-      message: ` Sản phẩm với ID:${product.id} đã được xóa ✅`,
+      message: ` Sản phẩm với ID:${product?.id} đã được xóa ✅`,
       product,
     };
     // return await this.productsService.remove(productId);
