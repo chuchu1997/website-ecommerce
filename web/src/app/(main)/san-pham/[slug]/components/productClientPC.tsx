@@ -27,7 +27,6 @@ import { ImageLoader } from "@/components/ui/image-loader";
 import { ProductWidgets } from "@/components/ui/product/product";
 import EditorClientWrapper from "@/components/editor/editor-wrapper";
 import { discountTypeEnum } from "@/types/promotion";
-import { AddToCartButton } from "@/components/ui/Cart/addToCartButton";
 import ProductSuggess from "./productSuggest";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { useCookies } from "react-cookie";
