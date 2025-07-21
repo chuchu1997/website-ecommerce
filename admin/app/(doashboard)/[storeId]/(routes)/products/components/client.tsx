@@ -17,6 +17,7 @@ import { useEffect, useState } from "react";
 import { CardCommon } from "@/components/common/CardCommon";
 import toast from "react-hot-toast";
 import PaginationCustom from "@/components/common/PaginationCustom";
+import { useDebounce } from "@/hooks/useDebounce";
 
 export const ProductClient = () => {
   const { storeId } = useParams();
@@ -27,6 +28,9 @@ export const ProductClient = () => {
   const [totalProduct, setTotalProduct] = useState<number>(0);
   const [totalPages, setTotalPages] = useState<number>(0);
 
+  const [search, setSearch] = useState("");
+  const debouncedSearch = useDebounce(search, 200); // chờ 500ms sau khi ngưng gõ
+
   const showDialog = useAlertDialog();
 
   const getListProductsRelateWithStoreID = async () => {
@@ -36,6 +40,7 @@ export const ProductClient = () => {
         currentPage: currentPage,
         limit: limit,
         storeID: Number(storeId),
+        name: search,
       });
       if (response.status === 200) {
         const { products, total } = response.data as {
@@ -53,7 +58,7 @@ export const ProductClient = () => {
   };
   useEffect(() => {
     getListProductsRelateWithStoreID();
-  }, [currentPage]);
+  }, [debouncedSearch, currentPage]);
 
   return (
     <>
@@ -62,12 +67,21 @@ export const ProductClient = () => {
           title={`Sản Phẩm (${totalProduct})`}
           description={"Tất cả Product trong Store  "}
         />
-        <Button
-          className="cursor-pointer"
-          onClick={() => router.push(`/${storeId}/products/new`)}>
-          <Plus className="w-4 h-4"></Plus>
-          Tạo mới
-        </Button>
+        <div className="flex gap-2 items-center">
+          <input
+            type="text"
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+            placeholder="Tìm kiếm sản phẩm..."
+            className="border border-gray-300 rounded-md px-3 py-2 text-sm w-[240px] focus:outline-none focus:ring-2 focus:ring-blue-500"
+          />
+          <Button
+            className="cursor-pointer"
+            onClick={() => router.push(`/${storeId}/products/new`)}>
+            <Plus className="w-4 h-4 mr-2" />
+            Tạo mới
+          </Button>
+        </div>
       </div>
       <Separator />
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
