@@ -239,7 +239,7 @@ export const ScrollToLoadProductsWithCategory: React.FC<ScrollToLoadProductsProp
 
 
 
-      <ProductWrapperCard products={products} />
+      <ProductWrapperCard hiddenGridButton={true} products={products} />
 
       {/* Loading More */}
       {loading && products.length > 0 && (
