@@ -148,7 +148,8 @@ const restOfName = restWords.join(" ");
  
 
   return (
-    <div className="min-h-screen bg-white">
+    
+    <div className="min-h-screen bg-white ">
       {/* Hero Section */}
  <section className="relative min-h-screen flex items-center justify-center bg-gradient-to-br from-amber-50 via-orange-50 to-red-50 overflow-hidden">
     <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=1200&h=800&fit=crop')] bg-cover bg-center opacity-10" />

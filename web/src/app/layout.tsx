@@ -49,7 +49,7 @@ export default function RootLayout({
           <CartProvider>
             <SidebarProvider>
               <Toaster position="top-center" reverseOrder={false} />
-              <BodyContainer className="mt-[10px] ">{children}</BodyContainer>
+              <BodyContainer className="">{children}</BodyContainer>
             </SidebarProvider>
 
             <ZaloPhoneWidget />
