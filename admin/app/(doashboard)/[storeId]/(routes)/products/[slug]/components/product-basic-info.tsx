@@ -17,10 +17,25 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import { Tag } from "lucide-react";
+import { Check, ChevronsUpDown, Tag } from "lucide-react";
 import { NumericFormat } from "react-number-format";
 import { Textarea } from "@/components/ui/textarea";
 import { useEffect } from "react";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
+import { Button } from "@/components/ui/button";
+import {
+  Command,
+  CommandEmpty,
+  CommandGroup,
+  CommandInput,
+  CommandItem,
+  CommandList,
+} from "@/components/ui/command";
+import { cn } from "@/lib/utils";
 
 interface BasicInfoSectionProps {
   form: any;
@@ -233,25 +248,56 @@ export const BasicInfoSection: React.FC<BasicInfoSectionProps> = ({
           render={({ field }) => (
             <FormItem>
               <FormLabel>Danh mục *</FormLabel>
-              <Select
-                disabled={loading}
-                onValueChange={field.onChange}
-                value={field.value}>
-                <FormControl>
-                  <SelectTrigger className="focus:ring-2 focus:ring-blue-500">
-                    <SelectValue placeholder="Chọn danh mục" />
-                  </SelectTrigger>
-                </FormControl>
-                <SelectContent>
-                  {categories.map((category) => (
-                    <SelectItem
-                      key={category.id}
-                      value={category.id.toString()}>
-                      {category.name}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
+              <Popover>
+                <PopoverTrigger asChild>
+                  <FormControl>
+                    <Button
+                      variant="outline"
+                      role="combobox"
+                      disabled={loading}
+                      className="flex items-center w-[180px] justify-between  focus:ring-2 focus:ring-blue-500">
+                      <span className="truncate">
+                        {field.value
+                          ? categories.find(
+                              (category) =>
+                                category.id.toString() === field.value
+                            )?.name
+                          : "Chọn danh mục"}
+                      </span>
+
+                      <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                    </Button>
+                  </FormControl>
+                </PopoverTrigger>
+                <PopoverContent className="w-full p-0">
+                  <Command>
+                    <CommandInput placeholder="Tìm kiếm danh mục..." />
+                    <CommandList className="max-h-[300px]">
+                      <CommandEmpty>Không tìm thấy danh mục nào.</CommandEmpty>
+                      <CommandGroup>
+                        {categories.map((category) => (
+                          <CommandItem
+                            key={category.id}
+                            value={category.name}
+                            onSelect={() => {
+                              field.onChange(category.id.toString());
+                            }}>
+                            <Check
+                              className={cn(
+                                "mr-2 h-4 w-4",
+                                field.value === category.id.toString()
+                                  ? "opacity-100"
+                                  : "opacity-0"
+                              )}
+                            />
+                            {category.name}
+                          </CommandItem>
+                        ))}
+                      </CommandGroup>
+                    </CommandList>
+                  </Command>
+                </PopoverContent>
+              </Popover>
               <FormMessage />
             </FormItem>
           )}
