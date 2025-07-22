@@ -1,7 +1,7 @@
 /** @format */
 
 import api from "../interceptor";
-const storeID = process.env.STORE_ID || 1;
+const storeID = process.env.NEXT_PUBLIC_STORE_ID || 1;
 
 const url = `/projects`;
 

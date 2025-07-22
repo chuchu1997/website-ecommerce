@@ -232,10 +232,18 @@ export const ProductClientPC = ({ product }: propsProductClientPC) => {
                   </span>
                 </div>
                 <div className="w-px h-4 bg-gray-300"></div>
-                <span className="text-sm text-emerald-600 font-medium flex items-center">
-                  <span className="w-2 h-2 bg-emerald-500 rounded-full mr-2"></span>
-                  Còn hàng
-                </span>
+
+                {product.stock <= 0 ? (
+                  <span className="text-sm text-red-600 font-medium flex items-center">
+                    <span className="w-2 h-2 bg-red-500 rounded-full mr-2"></span>
+                    Hết hàng
+                  </span>
+                ) : (
+                  <span className="text-sm text-emerald-600 font-medium flex items-center">
+                    <span className="w-2 h-2 bg-emerald-500 rounded-full mr-2"></span>
+                    Còn hàng
+                  </span>
+                )}
               </div>
             </div>
 

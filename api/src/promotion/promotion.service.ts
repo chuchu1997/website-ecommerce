@@ -34,7 +34,7 @@ export class PromotionService {
 
   async findAll(query: PromotionQueryDto) {
     const { currentPage, limit, storeID, promotionType, isActive } = query;
-
+    console.log('STORE ID CALL ', storeID);
     let promotions = await this.prisma.promotion.findMany({
       where: {
         promotionType,

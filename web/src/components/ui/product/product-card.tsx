@@ -290,12 +290,15 @@ export const ProductCard = ({
               <span className="text-lg md:text-xl font-bold text-red-600">
                 {FormatUtils.formatPriceVND(discountedPrice)}
               </span>
-              {showLineThroughPrice && (
-                <span className="text-xs md:text-sm text-gray-400 line-through">
-                  {FormatUtils.formatPriceVND(showLineThroughPrice)}
-                </span>
+              {product.stock <= 0 && (
+                <Badge variant={"destructive"}>Hết hàng</Badge>
               )}
             </div>
+            {showLineThroughPrice && (
+              <span className="text-xs md:text-sm text-gray-400 line-through">
+                {FormatUtils.formatPriceVND(showLineThroughPrice)}
+              </span>
+            )}
           </div>
 
           {/* Gift Products Section */}
