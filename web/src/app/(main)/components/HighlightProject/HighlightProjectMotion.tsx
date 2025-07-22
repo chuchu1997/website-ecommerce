@@ -94,7 +94,7 @@ export const HighlightedProjectsMotion: React.FC<Props> = ({
           </motion.div>
 
           {/* Projects Grid */}
-          <div className="grid grid-cols-1 sm:grid-cols-2  gap-6 sm:gap-8 lg:gap-10">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 sm:gap-8 lg:gap-10">
             {projects.map((project) => (
               <motion.div
                 key={project.id}
