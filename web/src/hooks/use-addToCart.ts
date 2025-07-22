@@ -23,9 +23,7 @@ export function useAddToCart() {
   }) => {
     try {
       let userID = cookies.userInfo?.id ?? 0;
-
       const res = await UserCartAPI.getAllCartItemsOfUser(userID);
-
       if (userID === 0) {
         setCookie(
           "userInfo",
@@ -85,6 +83,7 @@ export function useAddToCart() {
         router.push("/checkout");
       }
     } catch (error) {
+      console.log("ERROR", error);
       toast.error("Có lỗi xảy ra khi thêm sản phẩm vào giỏ hàng");
     }
   };

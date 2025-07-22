@@ -41,10 +41,19 @@ export class CartService {
         });
 
         if (!foundUser) {
-          throw new Error('User not found');
+          user = await this.prisma.user.create({
+            data: {
+              id: userId,
+              cart: {
+                create: {
+                  items: {},
+                },
+              },
+            },
+          });
+        } else {
+          user = foundUser;
         }
-
-        user = foundUser;
       }
 
       return await this.prisma.cart.findUnique({
