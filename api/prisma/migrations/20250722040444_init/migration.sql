@@ -19,11 +19,24 @@ CREATE TABLE `User` (
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- CreateTable
+CREATE TABLE `StoreUser` (
+    `id` INTEGER NOT NULL AUTO_INCREMENT,
+    `userId` INTEGER NOT NULL,
+    `storeId` INTEGER NOT NULL,
+    `role` ENUM('OWNER', 'MANAGER', 'STAFF') NOT NULL DEFAULT 'STAFF',
+    `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
+    `updatedAt` DATETIME(3) NOT NULL,
+
+    INDEX `StoreUser_storeId_idx`(`storeId`),
+    UNIQUE INDEX `StoreUser_userId_storeId_key`(`userId`, `storeId`),
+    PRIMARY KEY (`id`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+-- CreateTable
 CREATE TABLE `Store` (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
     `name` VARCHAR(191) NOT NULL,
     `description` TEXT NULL,
-    `userID` INTEGER NOT NULL,
     `email` VARCHAR(191) NULL,
     `phone` VARCHAR(191) NULL,
     `address` VARCHAR(191) NULL,
@@ -37,7 +50,6 @@ CREATE TABLE `Store` (
     `updatedAt` DATETIME(3) NOT NULL,
 
     UNIQUE INDEX `Store_name_key`(`name`),
-    INDEX `Store_userID_idx`(`userID`),
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
