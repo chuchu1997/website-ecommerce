@@ -355,7 +355,7 @@ export const ProductClientPC = ({ product }: propsProductClientPC) => {
                     <button
                       onClick={() => handleQuantityChange("decrease")}
                       className="p-3 hover:bg-gray-50 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-                      disabled={quantity <= 1}>
+                      disabled={quantity <= 1 || product.stock <= 0}>
                       <Minus className="w-4 h-4" />
                     </button>
                     <span className="px-4 py-3 font-semibold text-gray-900 min-w-[60px] text-center">
@@ -364,7 +364,9 @@ export const ProductClientPC = ({ product }: propsProductClientPC) => {
                     <button
                       onClick={() => handleQuantityChange("increase")}
                       className="p-3 hover:bg-gray-50 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-                      disabled={quantity >= product.stock}>
+                      disabled={
+                        quantity >= product.stock || product.stock <= 0
+                      }>
                       <Plus className="w-4 h-4" />
                     </button>
                   </div>
@@ -379,17 +381,15 @@ export const ProductClientPC = ({ product }: propsProductClientPC) => {
                 {/* Mobile-optimized buttons */}
                 <div className="flex flex-col sm:flex-row gap-3">
                   <button
-                    onClick={(e: any) => {
-                      handleAddToCart(e, false);
-                    }}
-                    className="flex-1 bg-white border-2 border-gray-900 text-gray-900 py-3 px-6 rounded-lg font-semibold hover:bg-gray-50 transition-colors text-sm sm:text-base">
+                    onClick={(e: any) => handleAddToCart(e, false)}
+                    disabled={product.stock <= 0}
+                    className="flex-1 bg-white border-2 border-gray-900 text-gray-900 py-3 px-6 rounded-lg font-semibold hover:bg-gray-50 transition-colors text-sm sm:text-base disabled:opacity-50 disabled:cursor-not-allowed">
                     Thêm vào giỏ
                   </button>
                   <button
-                    onClick={(e) => {
-                      handleAddToCart(e, true);
-                    }}
-                    className="flex-1 bg-gray-900 text-white py-3 px-6 rounded-lg font-semibold hover:bg-gray-800 transition-colors text-sm sm:text-base">
+                    onClick={(e) => handleAddToCart(e, true)}
+                    disabled={product.stock <= 0}
+                    className="flex-1 bg-gray-900 text-white py-3 px-6 rounded-lg font-semibold hover:bg-gray-800 transition-colors text-sm sm:text-base disabled:opacity-50 disabled:cursor-not-allowed">
                     Mua ngay
                   </button>
                 </div>
