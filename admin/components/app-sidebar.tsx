@@ -48,6 +48,7 @@ import { useParams, usePathname } from "next/navigation";
 import { useState } from "react";
 import AvatarButton from "./avatar-button";
 import { cn } from "@/lib/utils";
+import { useAlertDialog } from "./ui/alert-dialog/useAlertDialog";
 
 interface RouteItem {
   href: string;
@@ -145,6 +146,7 @@ export function AppSidebar() {
 
   const [openProductGroup, setOpenProductGroup] = useState(true);
   const [openCatalogGroup, setOpenCatalogGroup] = useState(true);
+  const showDialog = useAlertDialog();
 
   const renderMenuItems = (items: RouteItem[]) => (
     <>
@@ -298,7 +300,28 @@ export function AppSidebar() {
 
         {/* Footer Section */}
         <div className="mt-auto p-4 border-t border-slate-200/60 bg-gradient-to-r from-slate-50/50 to-transparent">
-          <AvatarButton className="w-full bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-600 hover:to-teal-700 text-white shadow-lg hover:shadow-xl transition-all duration-200 hover:scale-[1.02]" />
+          <button
+            onClick={() => {
+              showDialog({
+                title: "Đăng xuất ?",
+                description: "Bạn có chắc chắn muốn thoát không ? .",
+                confirmText: "Xóa",
+                cancelText: "Hủy",
+                onConfirm: async () => {
+                  localStorage.removeItem("access_token");
+                  window.location.href = "/"; // hoặc router.push nếu dùng `next/router`
+
+                  // const res = await ProductAPI.removeProduct(id);
+                  // if (res.status === 200) {
+                  //   toast.success("Đã xóa sản phẩm thành công");
+                  //   await getListProductsRelateWithStoreID();
+                  // }
+                },
+              });
+            }}
+            className="mt-3 w-full px-4 py-2 text-sm text-white bg-gradient-to-r from-red-500 to-pink-500 rounded-xl shadow-md hover:shadow-lg hover:from-red-600 hover:to-pink-600 transition-all duration-200 hover:scale-[1.02]">
+            Đăng xuất
+          </button>
         </div>
       </SidebarContent>
     </Sidebar>
