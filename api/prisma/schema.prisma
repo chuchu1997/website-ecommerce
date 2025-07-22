@@ -522,7 +522,7 @@ model OrderItem {
 model OrderGiftItem {
   id          Int      @id @default(autoincrement())
   orderItemId Int
-  orderItem   OrderItem @relation(fields: [orderItemId], references: [id])
+  orderItem   OrderItem  @relation(fields: [orderItemId], references: [id], onDelete: Cascade)
   giftName    String      // Tên quà tặng
   giftImage   String      // Ảnh quà tặng
   giftQuantity Int   @default(1)     // Số lượng quà tặng

@@ -391,6 +391,7 @@ export class ProductsService {
           productId: id,
         },
       });
+
       const [, deletedProduct] = await this.prisma.$transaction([
         this.prisma.product.update({
           where: { id },

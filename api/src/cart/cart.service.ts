@@ -9,15 +9,15 @@ import { User } from '@prisma/client';
 export class CartService {
   constructor(private prisma: PrismaService) {}
   async create(createCartDto: CreateCartDto) {
-    // return await this.prisma.user.create({
-    //   data: {
-    //     cart: {
-    //       create: {
-    //         items: {},
-    //       },
-    //     },
-    //   },
-    // });
+    return await this.prisma.user.create({
+      data: {
+        cart: {
+          create: {
+            items: {},
+          },
+        },
+      },
+    });
   }
 
   async findAll(query: FilterCartDto) {
