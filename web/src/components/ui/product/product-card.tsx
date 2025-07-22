@@ -338,6 +338,7 @@ export const ProductCard = ({
           {/* Action Buttons */}
           <div className="flex gap-2 mt-auto pt-2">
             <button
+              disabled={product.stock <= 0}
               onClick={(e) => {
                 handleAddToCart(e, true);
               }}
@@ -345,6 +346,7 @@ export const ProductCard = ({
               Mua ngay
             </button>
             <button
+              disabled={product.stock <= 0}
               onClick={(e) => {
                 e.preventDefault();
                 e.stopPropagation();
