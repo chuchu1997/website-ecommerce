@@ -80,6 +80,14 @@ type NewsFormValues = z.infer<typeof formSchema>;
 
 export const NewsForm: React.FC<NewsProps> = ({ initialData }) => {
   const { slug, storeId } = useParams();
+  const generateSlug = (str: string): string =>
+    str
+      .toLowerCase()
+      .normalize("NFD") // tách dấu
+      .replace(/[\u0300-\u036f]/g, "") // xoá dấu
+      .replace(/[^a-z0-9\s-]/g, "") // xoá ký tự đặc biệt
+      .trim()
+      .replace(/\s+/g, "-"); // khoảng trắng -> -
 
   const router = useRouter();
   const title = initialData ? "Chỉnh sửa bài viết" : "Tạo bài viết mới";
@@ -113,6 +121,17 @@ export const NewsForm: React.FC<NewsProps> = ({ initialData }) => {
       },
     },
   });
+  useEffect(() => {
+    const subscription = form.watch((values: any, { name }: any) => {
+      if (name === "title") {
+        const nameValue = values.name || "";
+        const slug = generateSlug(nameValue);
+        form.setValue("slug", slug);
+      }
+    });
+
+    return () => subscription.unsubscribe();
+  }, [form]);
 
   const onSubmit = async (data: NewsFormValues) => {
     try {
@@ -304,15 +323,6 @@ export const NewsForm: React.FC<NewsProps> = ({ initialData }) => {
                     nameFormField="title"
                     placeholder="Ví dụ: Hướng dẫn sử dụng React Hook Form"
                     title="Tiêu đề bài viết"
-                    loading={loading}
-                  />
-                </div>
-                <div className="space-y-2">
-                  <InputSectionWithForm
-                    form={form}
-                    nameFormField="slug"
-                    placeholder="vi-du-huong-dan-su-dung-react-hook-form"
-                    title="Slug (URL thân thiện)"
                     loading={loading}
                   />
                 </div>

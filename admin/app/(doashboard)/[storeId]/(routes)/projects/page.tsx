@@ -113,6 +113,14 @@ type ProjectFormValues = z.infer<typeof formSchema>;
 
 export default function ServicesManagement() {
   const { storeId } = useParams();
+  const generateSlug = (str: string): string =>
+    str
+      .toLowerCase()
+      .normalize("NFD") // tách dấu
+      .replace(/[\u0300-\u036f]/g, "") // xoá dấu
+      .replace(/[^a-z0-9\s-]/g, "") // xoá ký tự đặc biệt
+      .trim()
+      .replace(/\s+/g, "-"); // khoảng trắng -> -
 
   const form = useForm<ProjectFormValues>({
     resolver: zodResolver(formSchema),
@@ -152,6 +160,17 @@ export default function ServicesManagement() {
   useEffect(() => {
     setIsMounted(true);
   }, []);
+  useEffect(() => {
+    const subscription = form.watch((values: any, { name }: any) => {
+      if (name === "title") {
+        const nameValue = values.name || "";
+        const slug = generateSlug(nameValue);
+        form.setValue("slug", slug);
+      }
+    });
+
+    return () => subscription.unsubscribe();
+  }, [form]);
 
   useEffect(() => {
     if (isMounted) {
@@ -614,13 +633,6 @@ export default function ServicesManagement() {
                           loading={false}
                           title="Mô tả ngắn của dự án  "
                           placeholder="Vui lòng nhập mô tả ngắn "
-                        />
-                        <InputSectionWithForm
-                          form={form}
-                          nameFormField="slug"
-                          loading={false}
-                          title="Slug"
-                          placeholder="Vui lòng nhập slug"
                         />
 
                         <ImageUploadSection
