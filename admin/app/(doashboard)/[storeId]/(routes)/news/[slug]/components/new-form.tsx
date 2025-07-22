@@ -124,7 +124,7 @@ export const NewsForm: React.FC<NewsProps> = ({ initialData }) => {
   useEffect(() => {
     const subscription = form.watch((values: any, { name }: any) => {
       if (name === "title") {
-        const nameValue = values.name || "";
+        const nameValue = values.title || "";
         const slug = generateSlug(nameValue);
         form.setValue("slug", slug);
       }
@@ -135,6 +135,7 @@ export const NewsForm: React.FC<NewsProps> = ({ initialData }) => {
 
   const onSubmit = async (data: NewsFormValues) => {
     try {
+      console.log("submit", data);
       setLoading(true);
 
       let finalImage = data.images;

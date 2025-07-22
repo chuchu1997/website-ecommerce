@@ -159,7 +159,7 @@ export default function ServicesManagement() {
   useEffect(() => {
     const subscription = form.watch((values: any, { name }: any) => {
       if (name === "title") {
-        const nameValue = values.name || "";
+        const nameValue = values.title || "";
         const slug = generateSlug(nameValue);
         form.setValue("slug", slug);
       }
