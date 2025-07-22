@@ -385,7 +385,12 @@ export class ProductsService {
           ],
         },
       });
-      await this.prisma.order;
+
+      await this.prisma.orderItem.deleteMany({
+        where: {
+          productId: id,
+        },
+      });
       const [, deletedProduct] = await this.prisma.$transaction([
         this.prisma.product.update({
           where: { id },
@@ -403,6 +408,7 @@ export class ProductsService {
 
       return deletedProduct;
     } catch (err) {
+      console.log('ERR', err);
       throw err;
     }
   }
