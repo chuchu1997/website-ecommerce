@@ -24,7 +24,6 @@ const authApi =  {
     },
     getUserProfile:async()=>{
         return await api({
-
             method:'GET',
             url:"/auth/profile"
         })

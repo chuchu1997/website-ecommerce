@@ -50,7 +50,7 @@ export class StoresController {
   }
 
   // LẤY TẤT CẢ STORES THUỘC USER ID !!!!
-  @Roles(Role.ADMIN)
+  @Roles(Role.ADMIN, Role.SELLER)
   @HttpCode(200)
   @Get('user/:userId')
   async findAllStoreByUserId(@Param('userId', ParseIntPipe) userId: number) {

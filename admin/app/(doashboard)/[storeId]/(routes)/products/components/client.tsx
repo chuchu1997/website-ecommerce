@@ -62,7 +62,7 @@ export const ProductClient = () => {
 
   return (
     <>
-      <div className="flex items-center justify-between ">
+      <div className="flex flex-col gap-y-2 md:flex-row items-center justify-between  overflow-hidden ">
         <Heading
           title={`Sản Phẩm (${totalProduct})`}
           description={"Tất cả Product trong Store  "}

@@ -97,7 +97,7 @@ export class OrdersService {
           },
         },
       });
-      this.discord.sendOrderNotification(order);
+      // this.discord.sendOrderNotification(order);
       return order;
     } catch (err) {
       console.log('ERROR ', err);
