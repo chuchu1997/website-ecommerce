@@ -107,6 +107,7 @@ export class DiscordService {
     const orderDetails = `
 📦 **CHI TIẾT ĐƠN HÀNG**
 ${this.formatDetailedItems(order.items)}
+📝 Note: ${order.note || 'N/A'}
 
 💰 **TỔNG CỘNG: ${this.formatCurrency(order.total)}**`;
 
