@@ -133,7 +133,9 @@ export default function ProductMobile({ product }: propsProductMobile) {
           <div className="mb-4">
             <div className="flex items-center gap-2 mb-2 flex-wrap">
               <p className="text-2xl font-bold text-red-500 order-1">
-                {FormatUtils.formatPriceVND(getDiscountedPrice())}
+                {getDiscountedPrice() === 0
+                  ? "Liên hệ"
+                  : FormatUtils.formatPriceVND(getDiscountedPrice())}
               </p>
               <BadgePercent size={18} className="text-red-500 order-3" />
 
