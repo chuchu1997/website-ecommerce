@@ -38,14 +38,10 @@ const ContactListPage: React.FC = () => {
       limit,
       storeID,
     });
-
     const total = res.data.total; // tổng số bình luận
-
     const totalPagesCal = Math.ceil(total / limit);
     setTotalPages(totalPagesCal);
-
     setContacts(res.data.contacts);
-
     setLoading(false);
   };
 

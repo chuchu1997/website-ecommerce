@@ -14,12 +14,16 @@ export class ContactsService {
   async create(createContactDto: CreateContactDto) {
     // await this.emailService.sendMail('', '', '');
     // this.prisma.con
-    let contact = await this.prisma.contact.create({
-      data: createContactDto,
-    });
-    // await this.emailService.sendMail("",contact.subject,"")
+    try {
+      let contact = await this.prisma.contact.create({
+        data: createContactDto,
+      });
+      return contact;
+    } catch (err) {
+      console.log('ERR', err);
+    }
 
-    return contact;
+    // await this.emailService.sendMail("",contact.subject,"")
   }
 
   async findAll(query: ContactQueryFilterDto) {
