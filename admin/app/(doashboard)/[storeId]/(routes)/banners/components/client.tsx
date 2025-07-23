@@ -41,7 +41,7 @@ export const BannerClient = () => {
 
   return (
     <>
-      <div className="flex items-center justify-between ">
+      <div className="flex flex-col sm:flex-row gap-2 items-center justify-between ">
         <Heading
           title={`Quản lý Banner  (${banners?.length || 0})`}
           description={"Hình ảnh trong Store -()- "}

@@ -37,11 +37,12 @@ const CommentCard: React.FC<{
               ) : (
                 <User className="w-6 h-6 text-white" />
               )} */}
-            <Avatar>
-              <AvatarImage src={comment.avatarUrl} />
-              <AvatarFallback>{comment.authorName.charAt(0)}</AvatarFallback>
-            </Avatar>
-
+            {comment.avatarUrl !== "" && (
+              <Avatar>
+                <AvatarImage src={comment.avatarUrl} />
+                <AvatarFallback>{comment.authorName.charAt(0)}</AvatarFallback>
+              </Avatar>
+            )}
             <div>
               <p className="font-semibold text-gray-900 text-lg">
                 {comment.authorName}

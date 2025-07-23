@@ -59,7 +59,7 @@ const ContactPage: React.FC = () => {
 
   }
   return (
-    <div className="overflow-x-hidden min-h-screen bg-gradient-to-br from-orange-50 via-white to-amber-50">
+    <div className="overflow-x-hidden *:min-h-screen bg-gradient-to-br from-orange-50 via-white to-amber-50">
       {/* Hero Section */}
       <div className="relative bg-gradient-to-r from-orange-600 to-amber-600 text-white overflow-hidden">
         <div className="absolute inset-0 bg-black bg-opacity-20"></div>
@@ -92,7 +92,7 @@ const ContactPage: React.FC = () => {
       </div>
 
       {/* Main Content */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+      <div className="max-w-7xl mx-auto px-2 sm:px-6 lg:px-8 py-16">
         <div className="grid lg:grid-cols-2 gap-12">
           {/* Contact Information */}
           <div className="space-y-8">

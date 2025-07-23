@@ -15,6 +15,8 @@ import { StoreInterface } from "@/types/store";
 import { generateSeoForPage } from "@/seo-ssr/seo-ssr";
 import { SeoInterface } from "@/types/seo";
 import { BodyContainer } from "@/components/BodyContainer";
+import { LoadingProvider } from "@/context/loading-context";
+import { LoadingOverlay } from "@/components/loading-overlay";
 export const dynamic = "force-dynamic";
 export const revalidate = 60;
 const geistSans = Geist({ variable: "--font-geist-sans", subsets: ["latin"] });
@@ -45,17 +47,20 @@ export default function RootLayout({
     <html lang="en">
       <body
         className={`${geistSans.variable} ${geistMono.variable} ${roboto.variable} antialiased relative min-h-screen`}>
-        <CookiesClientWrapper>
-          <CartProvider>
-            <SidebarProvider>
-              <Toaster position="top-center" reverseOrder={false} />
-              <BodyContainer className="">{children}</BodyContainer>
-            </SidebarProvider>
+        <LoadingProvider>
+          <LoadingOverlay />
+          <CookiesClientWrapper>
+            <CartProvider>
+              <SidebarProvider>
+                <Toaster position="top-center" reverseOrder={false} />
+                <BodyContainer className="">{children}</BodyContainer>
+              </SidebarProvider>
 
-            <ZaloPhoneWidget />
-          </CartProvider>
-          <Footer />
-        </CookiesClientWrapper>
+              <ZaloPhoneWidget />
+            </CartProvider>
+            <Footer />
+          </CookiesClientWrapper>
+        </LoadingProvider>
       </body>
     </html>
   );

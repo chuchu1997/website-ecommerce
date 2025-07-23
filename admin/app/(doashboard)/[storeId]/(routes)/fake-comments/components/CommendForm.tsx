@@ -1,10 +1,8 @@
-"use client";
-
 /** @format */
 
-import FormFieldCustom from "@/components/common/Formfield";
-import Header from "@/components/common/Header";
+"use client";
 
+import Header from "@/components/common/Header";
 import {
   Form,
   FormControl,
@@ -14,25 +12,27 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 import { commentFormSchema, CommentFormSchema } from "@/schemas/commentSchema";
 import { FakeComment } from "@/types/fake-comments";
 import { ProductInterface } from "@/types/product";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Star } from "lucide-react";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 
-// Comment Form Component
+import {
+  Command,
+  CommandEmpty,
+  CommandGroup,
+  CommandInput,
+  CommandItem,
+  CommandList,
+} from "@/components/ui/command";
+import { Combobox } from "@/components/ui/combobox";
+
 interface CommentFormProps {
   mode: "create" | "edit";
   products: ProductInterface[];
@@ -49,6 +49,13 @@ const CommentForm: React.FC<CommentFormProps> = ({
   onCancel,
 }) => {
   const router = useRouter();
+  const [search, setSearch] = useState("");
+
+  const filteredProducts = useMemo(() => {
+    return products.filter((product) =>
+      product.name.toLowerCase().includes(search.toLowerCase())
+    );
+  }, [products, search]);
 
   const form = useForm<CommentFormSchema>({
     resolver: zodResolver(commentFormSchema),
@@ -60,7 +67,9 @@ const CommentForm: React.FC<CommentFormProps> = ({
       avatarUrl: initialData?.avatarUrl || "",
     },
   });
+
   const action = mode === "create" ? "Tạo comment mới " : "Chỉnh sửa comment";
+
   return (
     <div className="space-y-6">
       <Header
@@ -76,47 +85,38 @@ const CommentForm: React.FC<CommentFormProps> = ({
 
       <div className="bg-white rounded-xl border border-gray-100 shadow-sm overflow-hidden">
         <div className="p-8 space-y-6">
-          {/* Product Selection */}
           <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+              {/* Product Selection */}
               <FormField
                 control={form.control}
                 name="productId"
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>Sản phẩm *</FormLabel>
-                    <Select
-                      disabled={false}
-                      onValueChange={field.onChange}
-                      value={field.value.toString()}>
-                      <FormControl>
-                        <SelectTrigger className="focus:ring-2 focus:ring-blue-500">
-                          <SelectValue placeholder="Chọn danh mục" />
-                        </SelectTrigger>
-                      </FormControl>
-                      <SelectContent>
-                        {products.map((product) => (
-                          <SelectItem
-                            key={product.id}
-                            value={product.id.toString()}>
-                            {product.name}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
+                    <Combobox
+                      value={field.value?.toString() || ""}
+                      onChange={(val) => field.onChange(Number(val))}
+                      options={products.map((p) => ({
+                        label: p.name,
+                        value: p.id.toString(),
+                      }))}
+                      placeholder="Chọn sản phẩm..."
+                    />
+
                     <FormMessage />
                   </FormItem>
                 )}
               />
-              {/* Rating */}
 
+              {/* Rating */}
               <FormField
                 control={form.control}
                 name="ratingCount"
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>Sao của sản phẩm *</FormLabel>
-                    <div className="flex ">
+                    <div className="flex">
                       {Array.from({ length: 5 }, (_, i) => (
                         <button
                           key={i}
@@ -133,7 +133,6 @@ const CommentForm: React.FC<CommentFormProps> = ({
                         </button>
                       ))}
                     </div>
-
                     <FormMessage />
                   </FormItem>
                 )}
@@ -199,18 +198,16 @@ const CommentForm: React.FC<CommentFormProps> = ({
               <div className="flex items-center justify-center gap-4 pt-8 border-t border-gray-200">
                 <Button
                   type="submit"
-                  disabled={false}
                   className="min-w-[150px] bg-gradient-to-r from-blue-600 to-purple-600 
-                                      hover:from-blue-700 hover:to-purple-700 text-white font-medium
-                                      shadow-lg hover:shadow-xl transition-all duration-200"
+                    hover:from-blue-700 hover:to-purple-700 text-white font-medium
+                    shadow-lg hover:shadow-xl transition-all duration-200"
                   size="lg">
-                  {false ? "Đang xử lý..." : action}
+                  {action}
                 </Button>
                 <Button
                   type="button"
                   variant="outline"
                   onClick={() => router.back()}
-                  disabled={false}
                   size="lg"
                   className="min-w-[100px] border-gray-300 hover:bg-gray-50">
                   Hủy bỏ
@@ -218,11 +215,10 @@ const CommentForm: React.FC<CommentFormProps> = ({
               </div>
             </form>
           </Form>
-
-          {/* Author Name */}
         </div>
       </div>
     </div>
   );
 };
+
 export default CommentForm;

@@ -149,14 +149,14 @@ const restOfName = restWords.join(" ");
 
   return (
     
-    <div className="min-h-screen bg-white ">
+    <div className="min-h-screen bg-white overflow-hidden  ">
       {/* Hero Section */}
- <section className="relative min-h-screen flex items-center justify-center bg-gradient-to-br from-amber-50 via-orange-50 to-red-50 overflow-hidden">
+ <section className="relative  min-h-screen flex items-center justify-center bg-gradient-to-br from-amber-50 via-orange-50 to-red-50 overflow-hidden">
     <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=1200&h=800&fit=crop')] bg-cover bg-center opacity-10" />
 
-    <div className="relative z-10 max-w-7xl mx-auto px-6 text-center">
+    <div className="relative z-10 mx-auto px-6 text-center">
       <div className="mb-8">
-        <h1 className="text-6xl md:text-8xl font-bold text-gray-900 mb-6">
+        <h1 className="text-4xl md:text-6xl font-bold text-gray-900 mb-6">
           {firstWord}
           <span className="ml-2 text-transparent bg-clip-text bg-gradient-to-r from-amber-600 to-orange-600">
             {restOfName}
@@ -166,8 +166,6 @@ const restOfName = restWords.join(" ");
           {storeInfo?.description}
         </p>
         <div className="flex flex-wrap justify-center gap-4 text-lg text-gray-600">
-       
-
           {storeInfo?.tags && storeInfo.tags.length > 0  && storeInfo?.tags.map((tag,index)=>(
                     <span key={index} className="flex items-center"><Tag className="w-5 h-5 mr-2" />{tag}</span>
 

@@ -42,7 +42,7 @@ export const BrandClient = () => {
 
   return (
     <>
-      <div className="flex items-center justify-between ">
+      <div className="flex flex-col sm:flex-row gap-2 items-center justify-between ">
         <Heading
           title={`Quản lý Thương hiệu & Đối tác   (${totalBrands || 0})`}
           description={"Hình ảnh trong Store -()- "}

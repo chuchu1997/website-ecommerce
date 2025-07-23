@@ -37,7 +37,7 @@ export const ProductClient = () => {
     const limit = 8;
     if (storeId) {
       let response = await ProductAPI.getListProducts({
-        currentPage: currentPage,
+        currentPage: search !== "" ? 1 : currentPage,
         limit: limit,
         storeID: Number(storeId),
         name: search,
@@ -67,14 +67,14 @@ export const ProductClient = () => {
           title={`Sản Phẩm (${totalProduct})`}
           description={"Tất cả Product trong Store  "}
         />
+        <input
+          type="text"
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+          placeholder="Tìm kiếm sản phẩm..."
+          className="border border-gray-300 rounded-md px-3 py-2 text-sm w-[240px] focus:outline-none focus:ring-2 focus:ring-blue-500"
+        />
         <div className="flex gap-2 items-center">
-          <input
-            type="text"
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-            placeholder="Tìm kiếm sản phẩm..."
-            className="border border-gray-300 rounded-md px-3 py-2 text-sm w-[240px] focus:outline-none focus:ring-2 focus:ring-blue-500"
-          />
           <Button
             className="cursor-pointer"
             onClick={() => router.push(`/${storeId}/products/new`)}>

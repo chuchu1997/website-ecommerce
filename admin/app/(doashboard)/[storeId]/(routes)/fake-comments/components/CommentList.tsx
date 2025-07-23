@@ -67,10 +67,10 @@ const CommentList: React.FC<CommentListProps> = ({
   });
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 ">
       <Header
-        title="Quản lý bình luận giả"
-        subtitle="Quản lý bình luận giả cho sản phẩm của bạn"
+        title="Fake CMT"
+        subtitle=""
         actions={
           <Button
             disabled={!products.length}
