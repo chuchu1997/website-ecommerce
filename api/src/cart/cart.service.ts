@@ -8,8 +8,16 @@ import { User } from '@prisma/client';
 @Injectable()
 export class CartService {
   constructor(private prisma: PrismaService) {}
-  create(createCartDto: CreateCartDto) {
-    return 'This action adds a new cart';
+  async create(createCartDto: CreateCartDto) {
+    return await this.prisma.user.create({
+      data: {
+        cart: {
+          create: {
+            items: {},
+          },
+        },
+      },
+    });
   }
 
   async findAll(query: FilterCartDto) {
@@ -33,10 +41,26 @@ export class CartService {
         });
 
         if (!foundUser) {
+<<<<<<< HEAD
           throw new Error('User not found');
         }
 
         user = foundUser;
+=======
+          user = await this.prisma.user.create({
+            data: {
+              id: userId,
+              cart: {
+                create: {
+                  items: {},
+                },
+              },
+            },
+          });
+        } else {
+          user = foundUser;
+        }
+>>>>>>> master
       }
 
       return await this.prisma.cart.findUnique({
@@ -78,6 +102,7 @@ export class CartService {
     } catch (err) {
       console.log('ERR', err);
     }
+<<<<<<< HEAD
   }
 
   async update(id: number, updateCartDto: UpdateCartDto) {
@@ -107,12 +132,46 @@ export class CartService {
     } catch (err) {
       console.log('ERROR UPDATE', err);
     }
+=======
+>>>>>>> master
   }
 
   findOne(id: number) {
     return `This action returns a #${id} cart`;
   }
 
+<<<<<<< HEAD
+=======
+  async update(id: number, updateCartDto: UpdateCartDto) {
+    const { userId, items } = updateCartDto;
+    try {
+      return await this.prisma.cart.update({
+        where: {
+          id: id,
+          userId: userId,
+        },
+        data: {
+          items: {
+            deleteMany: {},
+            createMany: {
+              data: (items ?? []).map((item) => ({
+                productId: item.productId,
+                quantity: item.quantity,
+                isSelect: item.isSelect,
+              })),
+            },
+          },
+        },
+        include: {
+          items: true,
+        },
+      });
+    } catch (err) {
+      console.log('ERROR UPDATE', err);
+    }
+  }
+
+>>>>>>> master
   remove(id: number) {
     return `This action removes a #${id} cart`;
   }

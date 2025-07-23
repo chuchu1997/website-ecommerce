@@ -128,6 +128,28 @@ export default function CategoriesManagement() {
     new Set()
   );
 
+  const generateSlug = (str: string): string =>
+    str
+      .toLowerCase()
+      .normalize("NFD") // tách dấu
+      .replace(/[\u0300-\u036f]/g, "") // xoá dấu
+      .replace(/[^a-z0-9\s-]/g, "") // xoá ký tự đặc biệt
+      .trim()
+      .replace(/\s+/g, "-"); // khoảng trắng -> -
+
+  // Theo dõi thay đổi của name → cập nhật slug nếu là Product Form
+  useEffect(() => {
+    const subscription = form.watch((values: any, { name }: any) => {
+      if (name === "name") {
+        const nameValue = values.name || "";
+        const slug = generateSlug(nameValue);
+        form.setValue("slug", slug);
+      }
+    });
+
+    return () => subscription.unsubscribe();
+  }, [form]);
+
   useEffect(() => {
     setIsMounted(true);
   }, []);
@@ -655,14 +677,6 @@ export default function CategoriesManagement() {
                           loading={false}
                           title="Tên danh mục"
                           placeholder="Vui lòng nhập tên danh mục"
-                        />
-
-                        <InputSectionWithForm
-                          form={form}
-                          nameFormField="slug"
-                          loading={false}
-                          title="Slug"
-                          placeholder="Vui lòng nhập slug"
                         />
 
                         <ImageUploadSection

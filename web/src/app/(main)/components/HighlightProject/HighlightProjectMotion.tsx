@@ -8,6 +8,7 @@ import { ArrowRight } from "lucide-react";
 import { ProjectCard } from "@/components/ui/ProjectCard";
 import { ProjectInterface } from "@/types/project";
 import Link from "next/link";
+import { useEffect, useState } from "react";
 
 const containerVariants = {
   hidden: {},
@@ -36,6 +37,11 @@ export const HighlightedProjectsMotion: React.FC<Props> = ({
   projects,
   industry,
 }) => {
+  const [isMounted, setIsMounted] = useState(false);
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
+  if (!isMounted) return null;
   return (
     <section className="order-t border-white/30 shadow-inner relative py-12 sm:py-16 lg:py-24 bg-gradient-to-br from-slate-50 via-white to-slate-100 overflow-hidden">
       {/* Background Decorations */}
@@ -88,7 +94,7 @@ export const HighlightedProjectsMotion: React.FC<Props> = ({
           </motion.div>
 
           {/* Projects Grid */}
-          <div className="grid grid-cols-1 sm:grid-cols-2  gap-6 sm:gap-8 lg:gap-10">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 sm:gap-8 lg:gap-10">
             {projects.map((project) => (
               <motion.div
                 key={project.id}

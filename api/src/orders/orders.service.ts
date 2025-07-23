@@ -2,6 +2,8 @@ import { BadRequestException, Injectable } from '@nestjs/common';
 import { CreateOrderDTO } from './dto/create-order.dto';
 import { UpdateOrderDto } from './dto/update-order.dto';
 import { PrismaService } from 'src/prisma.service';
+import { v4 as uuidv4 } from 'uuid';
+
 import {
   Order,
   OrderStatus,
@@ -9,10 +11,14 @@ import {
   PaymentStatus,
 } from '@prisma/client';
 import { OrderFilterDto } from './dto/order-filter.dto';
+import { DiscordService } from 'src/utils/discord.service';
 
 @Injectable()
 export class OrdersService {
-  constructor(private prisma: PrismaService) {}
+  constructor(
+    private prisma: PrismaService,
+    private discord: DiscordService,
+  ) {}
   async create(createOrderDto: CreateOrderDTO) {
     const { items, payment, ...orderData } = createOrderDto;
 
@@ -20,6 +26,7 @@ export class OrdersService {
       const order = await this.prisma.order.create({
         data: {
           ...orderData,
+          trackingCode: uuidv4(),
           status: OrderStatus.ORDERED,
           items: {
             create: items.map((item) => ({
@@ -54,7 +61,18 @@ export class OrdersService {
         },
 
         include: {
-          items: true,
+          items: {
+            include: {
+              giftItems: true,
+              product: {
+                include: {
+                  images: true,
+                },
+              },
+            },
+          },
+
+          user: true,
         },
       });
       //CREATE PAYMENT AFTER CREATE ORDER
@@ -79,7 +97,7 @@ export class OrdersService {
           },
         },
       });
-
+      this.discord.sendOrderNotification(order);
       return order;
     } catch (err) {
       console.log('ERROR ', err);
@@ -108,11 +126,9 @@ export class OrdersService {
     });
 
     if (existingOrder?.status !== 'CANCELED' && status === 'CANCELED') {
-      console.log('CO NHAY VAO ');
       for (const item of order.items) {
         const quantity = item.quantity;
         const productId = item.productId;
-        console.log('quantity', quantity);
 
         if (quantity > 0) {
           await this.prisma.product.update({
@@ -177,12 +193,12 @@ export class OrdersService {
               giftItems: true,
               product: {
                 include: {
+                  images: true,
                   promotionProducts: {
                     select: {
                       promotion: true,
                     },
                   },
-                  images: true,
                 },
               },
             },
@@ -207,6 +223,13 @@ export class OrdersService {
     // DELETE FROM "OrderItem";
     // DELETE FROM "Order";
     try {
+      await this.prisma.orderGiftItem.deleteMany({
+        where: {
+          orderItem: {
+            orderId: id,
+          },
+        },
+      });
       await this.prisma.order.update({
         where: { id },
         data: {

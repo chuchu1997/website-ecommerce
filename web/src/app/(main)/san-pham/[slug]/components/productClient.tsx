@@ -14,8 +14,11 @@ interface propsClient {
 }
 export const ProductClient = ({ product }: propsClient) => {
   const [isMobile, setIsMobile] = useState(false);
+  const [isMount, setIsMount] = useState(false);
 
   useEffect(() => {
+    setIsMount(true);
+
     const checkMobile = () => {
       setIsMobile(window.innerWidth < 768); // 768px is md breakpoint in Tailwind
     };
@@ -23,14 +26,17 @@ export const ProductClient = ({ product }: propsClient) => {
     window.addEventListener("resize", checkMobile);
     return () => window.removeEventListener("resize", checkMobile);
   }, []);
+  if (!isMount) return null;
   return (
     <div className="container mx-auto ">
       {/* <ProductClientPC product={product} /> */}
+      <ProductClientPC product={product} />
+      {/*       
       {isMobile ? (
         <ProductMobile product={product} />
       ) : (
         <ProductClientPC product={product} />
-      )}
+      )} */}
     </div>
   );
 };

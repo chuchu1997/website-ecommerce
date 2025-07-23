@@ -66,6 +66,7 @@ export default function StoreSwitcher({
       <PopoverTrigger asChild>
         <Button
           variant={"outline"}
+          disabled={true}
           size="sm"
           role="combobox"
           aria-expanded={open}

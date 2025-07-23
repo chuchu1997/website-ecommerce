@@ -46,7 +46,7 @@ export const PromotionClient = () => {
 
   return (
     <>
-      <div className="flex items-center justify-between ">
+      <div className="flex flex-col sm:flex-row gap-2 items-center justify-between ">
         <Heading
           title={`Các chương trình khuyến mãi   (${totalPromotions})`}
           description={"Tất cả chương trình khuyến mãi trong STORE  "}

@@ -60,23 +60,6 @@ const Footer: React.FC = async () => {
         { label: "Chính sách đổi trả hàng", href: "/chinh-sach-doi-tra" },
       ],
     },
-    {
-      title: "Hỗ Trợ Mua Hàng",
-      links: [
-        {
-          label: "Mua hàng: 0973 926 139 (8:00 - 22:00)",
-          href: "tel:0973926139",
-        },
-        {
-          label: "Sửa chữa: 0869 757 585 (8:00 - 22:00)",
-          href: "tel:0869757585",
-        },
-        {
-          label: "Bảo hành: 0973 976 139 (8:00 - 22:00)",
-          href: "tel:0973976139",
-        },
-      ],
-    },
   ];
 
   function formatPhoneNumber(phone: string): string {
@@ -155,7 +138,7 @@ const Footer: React.FC = async () => {
 
               {/* Footer Links */}
               {footerSections.map((section, index) => (
-                <div key={index} className="lg:col-span-1px-2 ">
+                <div key={index} className="lg:col-span-2 px-2 ">
                   <h3 className="text-yellow-400 font-bold text-xl mb-6 relative">
                     {section.title}
                     <div className="absolute bottom-0 left-0 w-8 h-0.5 bg-gradient-to-r from-yellow-400 to-transparent"></div>

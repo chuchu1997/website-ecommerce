@@ -1,4 +1,4 @@
-import { ProductInterface } from "./product";
+import { discountTypeEnum, ProductInterface } from "./product";
 
 
  export enum OrderStatus { 
@@ -33,15 +33,36 @@ export enum PaymentStatus {
   CANCELED  ="CANCELED"   // Đã hủy thanh toán
 }
 
+interface OrderGiftItemDto {
+  giftName: string;
+  giftImage: string;
+  giftQuantity: number;
+}
 
+  // id: number;
+  // productId: number;
+  // quantity: number;
+  // unitPrice: number;
+  // subtotal: number;
+
+  // promotionName?: string;
+  // discountType?: discountTypeEnum;
+  // discountValue?: number;
+
+  // giftItems?: OrderGiftItemDto[];
+
+  // product: ProductInterface;
 export interface OrderItemBase  { 
   
   quantity:number;
   unitPrice:number;
   subtotal:number;
   productId:number;
+  promotionName?: string;
+  discountType?: discountTypeEnum;
+  discountValue?: number;
   product:ProductInterface;
-
+  giftItems?: OrderGiftItemDto[];
   orderId:number;
 }
 export interface CreateOrderItem extends Omit<OrderItemBase,"createdAt"|"updatedAt">{};

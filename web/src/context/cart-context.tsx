@@ -14,7 +14,7 @@ const CartContext = createContext<CartContextProps | undefined>(undefined);
 
 export const CartProvider = ({ children }: { children: React.ReactNode }) => {
   const [cartQuantity, setCartQuantity] = useState(0);
-     const [cookies] = useCookies(["userInfo"]);
+    const [cookies] = useCookies(["userInfo"]);
   useEffect(() => {
     const user = cookies["userInfo"];
     if (!user?.id) return;
@@ -29,14 +29,20 @@ export const CartProvider = ({ children }: { children: React.ReactNode }) => {
               item.isSelect ? acc + item.quantity : acc,
             0
           );
+
+           console.log("CALL THIS ",total)
           setCartQuantity(total);
         }
+
+
+
       } catch (err) {
         console.error("Failed to fetch cart:", err);
       }
     };
-
+   
     fetchCart();
+    
   }, [cookies]);
   return (
     <CartContext.Provider value={{ cartQuantity, setCartQuantity }}>

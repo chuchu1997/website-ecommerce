@@ -25,6 +25,7 @@ import { OrderAPI } from "@/app/api/orders/orders.api";
 import { OrderInterface, OrderStatus } from "@/types/order";
 import { FormatUtils } from "@/utils/format";
 import toast from "react-hot-toast";
+import { discountTypeEnum } from "@/types/promotions";
 
 export const OrderClient = () => {
   const { storeId } = useParams();
@@ -387,15 +388,75 @@ export const OrderClient = () => {
                   <div className="mt-4 pt-4 border-t border-gray-200">
                     <h4 className="font-medium text-gray-900 mb-2">Sản phẩm</h4>
                     <div className="space-y-2">
-                      {order.items.map((item) => (
-                        <div
-                          key={item.id}
-                          className="flex justify-between items-center text-sm">
-                          <span className="text-gray-900">
-                            {item.product.name} × {item.quantity}
-                          </span>
-                        </div>
-                      ))}
+                      {order.items.map((item) => {
+                        const {
+                          product,
+                          giftItems,
+                          promotionName,
+                          discountType,
+                          discountValue,
+                          unitPrice,
+                        } = item;
+                        console.log("GIFT ITEMS", giftItems);
+
+                        const getDiscountText = () => {
+                          if (!discountValue || discountValue === 0)
+                            return null;
+
+                          return discountType === discountTypeEnum.PERCENT
+                            ? `Giảm ${Math.round(
+                                (discountValue / unitPrice) * 100
+                              )}%`
+                            : `Giảm ${FormatUtils.formatPriceVND(
+                                discountValue
+                              )}₫`;
+                        };
+
+                        return (
+                          <div
+                            key={item.id}
+                            className="border border-gray-100 rounded-lg p-3 bg-gray-50 space-y-1">
+                            {/* Tên sản phẩm chính */}
+                            <div className="flex justify-between text-sm text-gray-900 font-medium">
+                              <span>
+                                {product.name} × {item.quantity}
+                              </span>
+                            </div>
+
+                            {/* Khuyến mãi */}
+                            {promotionName && (
+                              <div className="text-xs text-green-600">
+                                🎁 Khuyến mãi: <strong>{promotionName}</strong>
+                                {getDiscountText() && ` - ${getDiscountText()}`}
+                              </div>
+                            )}
+
+                            {/* Quà tặng kèm */}
+                            {giftItems && giftItems.length > 0 && (
+                              <div className="text-xs text-blue-600 mt-2">
+                                🎁 Quà tặng:
+                                <ul className="list-disc list-inside ml-2 space-y-1">
+                                  {giftItems.map((gift: any, index: number) => (
+                                    <li
+                                      key={index}
+                                      className="flex items-center gap-2">
+                                      <img
+                                        src={gift.giftImage}
+                                        alt={gift.giftName}
+                                        className="w-8 h-8 object-cover rounded border"
+                                      />
+                                      <span>
+                                        {gift.giftName} ×{" "}
+                                        {gift.giftQuantity || 1}
+                                      </span>
+                                    </li>
+                                  ))}
+                                </ul>
+                              </div>
+                            )}
+                          </div>
+                        );
+                      })}
                     </div>
                   </div>
                 </div>

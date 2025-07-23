@@ -15,6 +15,7 @@ import { ProductAPI } from "@/api/products/product.api";
 import { ProductInterface } from "@/types/product";
 import { FormatUtils } from "@/utils/format";
 import Image from "next/image";
+import { cn } from "@/lib/utils";
 
 // TypeScript interfaces
 interface SearchResult {
@@ -275,14 +276,14 @@ const Navbar: React.FC = () => {
             </div>
 
             {/* Logo */}
-            <Link href="/">
+            <Link href="/" prefetch={true}>
               <Image
                 priority
                 alt="logo"
                 src="/logo.png"
-                width={100}
-                height={100}
-                className="w-[60px] h-[60px] sm:w-[100px] sm:h-[80px] object-contain"
+                width={60}
+                height={60}
+                className="w-[40px] h-[40px] sm:w-[60px] sm:h-[60px] object-contain"
               />
             </Link>
 
@@ -309,6 +310,7 @@ const Navbar: React.FC = () => {
                     ) : (
                       // Categories without megamenu (direct links)
                       <Link
+                        prefetch={true}
                         href={`/danh-muc/${category.slug}`}
                         className={`${getTextColor()} px-3 py-2 text-sm font-medium transition-colors duration-200`}>
                         {getCategoryDisplayName(category)}
@@ -366,6 +368,7 @@ const Navbar: React.FC = () => {
                                   {getActiveParentCategory()?.subCategories?.map(
                                     (childCategory) => (
                                       <Link
+                                        prefetch={true}
                                         key={childCategory.id}
                                         href={`/danh-muc/${childCategory.slug}`}
                                         className="group p-4 rounded-xl hover:bg-blue-50 transition-all duration-200 hover:shadow-md border border-transparent hover:border-blue-200">
@@ -445,11 +448,13 @@ const Navbar: React.FC = () => {
 
                 {/* Static Navigation Links */}
                 <Link
+                  prefetch={true}
                   href="/gioi-thieu"
                   className={`${getTextColor()} px-3 py-2 text-sm font-medium transition-colors duration-200`}>
                   Giới thiệu
                 </Link>
                 <Link
+                  prefetch={true}
                   href="/lien-he"
                   className={`${getTextColor()} px-3 py-2 text-sm font-medium transition-colors duration-200`}>
                   Liên hệ
@@ -482,14 +487,19 @@ const Navbar: React.FC = () => {
                 <Search className="h-5 w-5" />
               </button>
 
-              <button
-                onClick={() => router.push("/gio-hang")}
-                className={`${getTextColor()} px-3 py-2 text-sm font-medium transition-colors duration-200 relative`}>
+              <Link
+                href="/gio-hang"
+                passHref
+                prefetch={true}
+                className={cn(
+                  getTextColor(),
+                  "relative px-3 py-2 text-sm font-medium transition-colors duration-200 inline-flex items-center"
+                )}>
                 <ShoppingCart className="h-5 w-5" />
                 <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
                   {cartQuantity}
                 </span>
-              </button>
+              </Link>
             </div>
           </div>
 
@@ -723,7 +733,7 @@ const Navbar: React.FC = () => {
             </div>
           )}
         </div>
-        <Menubar />
+        {/* <Menubar /> */}
       </header>
 
       {/* Search Dialog/Modal */}

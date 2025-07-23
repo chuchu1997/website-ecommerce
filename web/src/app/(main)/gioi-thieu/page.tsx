@@ -55,114 +55,76 @@ const AboutUsPage: React.FC = () => {
   const [storeInfo,setStoreInfo] = useState<StoreInterface>();
 
 
-  const statistics: Statistic[] = [
-    {
-      label: "Khách hàng hài lòng",
-      value: "50K+",
-      icon: <Heart className="w-6 h-6" />,
-      description: "Khách hàng trên toàn quốc"
-    },
-    {
-      label: "Showroom",
-      value: "120+",
-      icon: <Building className="w-6 h-6" />,
-      description: "Phủ sóng toàn quốc"
-    },
-    {
-      label: "Năm kinh nghiệm",
-      value: "25+",
-      icon: <Award className="w-6 h-6" />,
-      description: "Trong lĩnh vực nhạc cụ"
-    },
-    {
-      label: "Dự án đã hoàn thành",
-      value: "15K+",
-      icon: <Home className="w-6 h-6" />,
-      description: "Thiết kế và sản xuất nhạc cụ"
-    }
-  ];
+const statistics: Statistic[] = [
+  {
+    label: "Khách hàng hài lòng",
+    value: "100K+",
+    icon: <Heart className="w-6 h-6" />,
+    description: "Phục vụ trên toàn quốc"
+  },
+  {
+    label: "Showroom & Đại lý",
+    value: "200+",
+    icon: <Building className="w-6 h-6" />,
+    description: "Phủ sóng khắp các tỉnh thành"
+  },
+  {
+    label: "Năm kinh nghiệm",
+    value: "15+",
+    icon: <Award className="w-6 h-6" />,
+    description: "Trong lĩnh vực nội thất"
+  },
+  {
+    label: "Dự án đã hoàn thành",
+    value: "30K+",
+    icon: <Home className="w-6 h-6" />,
+    description: "Căn hộ, nhà ở, văn phòng, showroom"
+  }
+];
 
 const services = [
   {
-    title: "Nhạc Cụ Guitar",
-    description: "Cung cấp đa dạng các loại guitar từ cơ bản đến cao cấp, phù hợp cho mọi đối tượng.",
-    icon: "🎸",
+    title: "Nội Thất Gia Đình",
+    description: "Cung cấp đa dạng nội thất cho phòng khách, phòng ngủ, bếp với thiết kế hiện đại và tinh tế.",
+    icon: "🛋️",
     features: [
-      "Guitar acoustic, classic, điện",
-      "Sản phẩm chính hãng, bảo hành dài hạn",
-      "Phù hợp cho học sinh, nghệ sĩ, người chơi chuyên nghiệp",
+      "Sofa, bàn ghế, tủ, kệ TV...",
+      "Chất liệu cao cấp, bền đẹp theo thời gian",
+      "Phù hợp nhiều phong cách: hiện đại, cổ điển, Bắc Âu",
     ],
   },
   {
-    title: "Tư Vấn Chọn Nhạc Cụ",
-    description: "Đội ngũ chuyên viên hỗ trợ chọn lựa nhạc cụ phù hợp với nhu cầu và ngân sách của bạn.",
-    icon: "🧑‍🏫",
+    title: "Tư Vấn Thiết Kế Nội Thất",
+    description: "Đội ngũ chuyên gia tư vấn & thiết kế không gian sống phù hợp với phong cách cá nhân và ngân sách.",
+    icon: "🧑‍🎨",
     features: [
-      "Tư vấn miễn phí tại cửa hàng hoặc online",
-      "Lựa chọn phù hợp với trình độ người chơi",
-      "Hỗ trợ test thử trực tiếp",
+      "Tư vấn tận nơi hoặc online",
+      "Thiết kế 2D/3D miễn phí cho khách hàng đặt trọn bộ",
+      "Đồng hành từ ý tưởng đến hoàn thiện",
     ],
   },
   {
-    title: "Phụ Kiện & Bảo Dưỡng",
-    description: "Cung cấp phụ kiện và dịch vụ bảo trì, vệ sinh định kỳ cho nhạc cụ.",
-    icon: "🧰",
+    title: "Thi Công & Lắp Đặt",
+    description: "Cung cấp dịch vụ vận chuyển, lắp đặt nội thất nhanh chóng, an toàn và đúng kỹ thuật.",
+    icon: "🔨",
     features: [
-      "Dây đàn, capo, tuner, bao đàn, pedal...",
-      "Vệ sinh, thay dây, cân chỉnh cần đàn",
-      "Giá ưu đãi cho khách hàng thân thiết",
+      "Đội ngũ kỹ thuật chuyên nghiệp",
+      "Miễn phí lắp đặt tại nội thành",
+      "Bảo hành sau thi công",
     ],
   },
   {
-    title: "Sửa Chữa & Độ Nhạc Cụ",
-    description: "Dịch vụ sửa chữa chuyên sâu và nâng cấp nhạc cụ theo yêu cầu.",
-    icon: "🔧",
+    title: "Bảo Hành & Chăm Sóc",
+    description: "Chính sách bảo hành rõ ràng, hỗ trợ bảo trì và chăm sóc sản phẩm lâu dài.",
+    icon: "🛠️",
     features: [
-      "Sửa cần đàn, phím đàn, jack cắm, EQ...",
-      "Nâng cấp pickup, chỉnh action, setup lại",
-      "Bảo hành kỹ thuật sau sửa chữa",
+      "Bảo hành từ 12–36 tháng",
+      "Hỗ trợ thay thế phụ kiện, sửa chữa sản phẩm",
+      "Dịch vụ chăm sóc khách hàng tận tâm",
     ],
   },
 ];
-
-
-  const teamMembers: TeamMember[] = [
-    {
-      id: 1,
-      name: "Nguyễn Thị Mai",
-      position: "Người sáng lập & Giám đốc điều hành",
-      image: "https://images.unsplash.com/photo-1494790108755-2616b60c1b7e?w=300&h=300&fit=crop&crop=face",
-      bio: "Hơn 25 năm kinh nghiệm trong ngành nội thất, đam mê kiến tạo không gian sống đẹp.",
-      expertise: ["Chiến lược kinh doanh", "Thiết kế nội thất", "Chăm sóc khách hàng"]
-    },
-    {
-      id: 2,
-      name: "Trần Minh Quân",
-      position: "Trưởng bộ phận thiết kế",
-      image: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=300&h=300&fit=crop&crop=face",
-      bio: "Nhà thiết kế từng đoạt giải với phong cách hiện đại và tối giản.",
-      expertise: ["Thiết kế nội thất", "Bố cục không gian", "Phối màu"]
-    },
-    {
-      id: 3,
-      name: "Lê Thùy Linh",
-      position: "Giám đốc vận hành",
-      image: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=300&h=300&fit=crop&crop=face",
-      bio: "Đảm bảo vận hành trơn tru các showroom và dự án thi công.",
-      expertise: ["Quản lý vận hành", "Quản lý dự án", "Kiểm soát chất lượng"]
-    }
-  ];
-
-
-  const milestones = [
-    { year: "1999", title: "Thành lập", description: "Khởi đầu là một cửa hàng nội thất nhỏ" },
-    { year: "2005", title: "Showroom đầu tiên", description: "Khai trương showroom chủ lực" },
-    { year: "2010", title: "Mở rộng dịch vụ", description: "Ra mắt dịch vụ thiết kế nội thất" },
-    { year: "2015", title: "Phát triển toàn quốc", description: "Đạt mốc 50 showroom trên toàn quốc" },
-    { year: "2020", title: "Chuyển đổi số", description: "Triển khai tư vấn thiết kế trực tuyến" },
-    { year: "2024", title: "Dẫn đầu ngành", description: "120+ showroom, 50K+ khách hàng hài lòng" }
-  ];
-
+  
   useEffect(() => {
     fetchStoreInfo();
     const interval = setInterval(() => {
@@ -186,14 +148,15 @@ const restOfName = restWords.join(" ");
  
 
   return (
-    <div className="min-h-screen bg-white">
+    
+    <div className="min-h-screen bg-white overflow-hidden  ">
       {/* Hero Section */}
- <section className="relative min-h-screen flex items-center justify-center bg-gradient-to-br from-amber-50 via-orange-50 to-red-50 overflow-hidden">
+ <section className="relative  min-h-screen flex items-center justify-center bg-gradient-to-br from-amber-50 via-orange-50 to-red-50 overflow-hidden">
     <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=1200&h=800&fit=crop')] bg-cover bg-center opacity-10" />
 
-    <div className="relative z-10 max-w-7xl mx-auto px-6 text-center">
+    <div className="relative z-10 mx-auto px-6 text-center">
       <div className="mb-8">
-        <h1 className="text-6xl md:text-8xl font-bold text-gray-900 mb-6">
+        <h1 className="text-4xl md:text-6xl font-bold text-gray-900 mb-6">
           {firstWord}
           <span className="ml-2 text-transparent bg-clip-text bg-gradient-to-r from-amber-600 to-orange-600">
             {restOfName}
@@ -203,8 +166,6 @@ const restOfName = restWords.join(" ");
           {storeInfo?.description}
         </p>
         <div className="flex flex-wrap justify-center gap-4 text-lg text-gray-600">
-       
-
           {storeInfo?.tags && storeInfo.tags.length > 0  && storeInfo?.tags.map((tag,index)=>(
                     <span key={index} className="flex items-center"><Tag className="w-5 h-5 mr-2" />{tag}</span>
 

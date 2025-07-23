@@ -62,6 +62,11 @@ enum SocialType {
   TIKI
   LAZADA
 }
+enum StoreUserRole {
+  OWNER   // Chủ store
+  MANAGER // Quản lý
+  STAFF   // Nhân viên
+}
 enum ProjectType {
   HOME             // Nhà ở
   APARTMENT  // Chung cư
@@ -108,7 +113,8 @@ model User {
   wishlist    Wishlist?             /// Danh sách yêu thích
   reviews     Review[]              /// Các đánh giá sản phẩm
   role        Role       @default(CUSTOMER) /// Vai trò người dùng
-  stores Store[]
+  storeUsers StoreUser[]
+
   resetToken String? @unique
   resetTokenExpiry DateTime?
   
@@ -117,6 +123,24 @@ model User {
 
 
 }
+
+model StoreUser { 
+  id       Int     @id @default(autoincrement())
+  user     User    @relation(fields: [userId], references: [id])
+  userId   Int
+
+  store    Store   @relation(fields: [storeId], references: [id])
+  storeId  Int
+
+  role     StoreUserRole @default(STAFF) // Quyền cụ thể trong store
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([userId, storeId]) // Một user không được lặp lại trong cùng 1 store
+  @@index([storeId])
+}
+
+
 // =============================================================================
 // STORE MANAGEMENT
 // =============================================================================
@@ -129,8 +153,7 @@ model Store  {
    name String @unique
 
    description   String?   @db.Text
-   userID Int
-   user User @relation(fields: [userID],references: [id])
+   storeUsers StoreUser[]
 
    email String?
    phone String?
@@ -159,7 +182,7 @@ model Store  {
    createdAt DateTime @default(now())
    updatedAt DateTime @updatedAt
 
-   @@index([userID])
+ 
 }
 model Service {
   id             Int           @id @default(autoincrement())
@@ -499,7 +522,7 @@ model OrderItem {
 model OrderGiftItem {
   id          Int      @id @default(autoincrement())
   orderItemId Int
-  orderItem   OrderItem @relation(fields: [orderItemId], references: [id])
+  orderItem   OrderItem  @relation(fields: [orderItemId], references: [id], onDelete: Cascade)
   giftName    String      // Tên quà tặng
   giftImage   String      // Ảnh quà tặng
   giftQuantity Int   @default(1)     // Số lượng quà tặng

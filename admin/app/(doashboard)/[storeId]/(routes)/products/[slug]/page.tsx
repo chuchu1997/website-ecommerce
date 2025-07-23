@@ -25,7 +25,7 @@ const ProductPage =  () => {
 
        if(response.status === 200){
         const {product} = response.data as {product:ProductInterface}
-        console.log("PORODUCT",product)
+       
         setProductData(product)
        }
     }

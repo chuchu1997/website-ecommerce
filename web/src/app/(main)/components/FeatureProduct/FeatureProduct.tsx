@@ -7,14 +7,15 @@ import { ProductPromotion, PromotionInterface } from "@/types/promotion";
 
 
 
+
 interface Props  { 
   industry:string;
-
 }
 export const FeatureProducts = async ({industry}:Props) => {
   let featureProducts: ProductInterface[] = [];
   let promotions: PromotionInterface[] = [];
 
+    
   try {
     const response = await ProductAPI.getFeatureProducts({
       limit: 5,

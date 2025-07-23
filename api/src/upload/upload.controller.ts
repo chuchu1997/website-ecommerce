@@ -15,7 +15,8 @@ import { UploadService } from './upload.service';
 import { Role } from '@prisma/client';
 import { Roles } from 'src/auth/decorators/roles.decorator';
 import { v4 as uuidv4 } from 'uuid';
-
+import { SkipThrottle } from '@nestjs/throttler';
+@SkipThrottle()
 @Controller('upload')
 export class UploadController {
   constructor(private readonly uploadService: UploadService) {}

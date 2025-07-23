@@ -1,9 +1,16 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  ForbiddenException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { CreateStoreDto } from './dto/create-store.dto';
 import { UpdateStoreDto } from './dto/update-store.dto';
 import { UsersService } from 'src/users/users.service';
 import { PrismaService } from 'src/prisma.service';
 import { UploadService } from 'src/upload/upload.service';
+import { Role, StoreUserRole } from '@prisma/client';
+import { CreateSellerWithStoreDto } from './dto/create-seller.dto';
+import * as bcrypt from 'bcrypt';
 
 @Injectable()
 export class StoresService {
@@ -18,7 +25,12 @@ export class StoresService {
 
     return await this.prisma.store.create({
       data: {
-        userID: userID,
+        storeUsers: {
+          create: {
+            userId: userID,
+            role: StoreUserRole.OWNER,
+          },
+        },
         name: name,
         socials:
           socials && socials.length > 0
@@ -35,6 +47,28 @@ export class StoresService {
     });
   }
 
+  async createSellerWithStore(dto: CreateSellerWithStoreDto) {
+    const { email, name, password, storeId } = dto;
+
+    const hashedPassword = await bcrypt.hash(password, 10);
+    const user = await this.prisma.user.create({
+      data: {
+        email,
+        password: hashedPassword,
+        name,
+        role: Role.SELLER,
+        storeUsers: {
+          create: {
+            storeId,
+            role: 'STAFF', //
+          },
+        },
+      },
+    });
+
+    return user;
+  }
+
   findAll() {
     return `This action returns all stores`;
   }
@@ -42,7 +76,11 @@ export class StoresService {
   async findAllStoresWithUserID(userID: number) {
     return await this.prisma.store.findMany({
       where: {
-        userID: userID,
+        storeUsers: {
+          some: {
+            userId: userID,
+          },
+        },
       },
       include: {
         socials: true,
@@ -66,7 +104,16 @@ export class StoresService {
   async update(id: number, updateStoreDto: UpdateStoreDto) {
     // Exclude userID from dataUpdate to avoid Prisma type errors
     const { logo, favicon, socials, userID, ...dataUpdate } = updateStoreDto;
+    const storeUser = await this.prisma.storeUser.findFirst({
+      where: {
+        userId: userID,
+        storeId: id,
+      },
+    });
 
+    if (!storeUser || storeUser.role !== StoreUserRole.OWNER) {
+      throw new ForbiddenException('Bạn không có quyền chỉnh sửa store này');
+    }
     const existStore = await this.prisma.store.findUnique({
       where: {
         id,

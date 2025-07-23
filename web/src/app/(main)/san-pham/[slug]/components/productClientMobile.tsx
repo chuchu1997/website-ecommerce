@@ -11,6 +11,7 @@ import {
   ShieldCheck,
   ChevronRight,
   ChevronDown,
+  ShoppingCart,
 } from "lucide-react";
 import { Separator } from "@/components/ui/separator";
 import { ProductImageGallery } from "./productImageGallery";
@@ -19,7 +20,6 @@ import { ProductWidgets } from "@/components/ui/product/product";
 import EditorClientWrapper from "@/components/editor/editor-wrapper";
 import { discountTypeEnum } from "@/types/promotion";
 import { useRouter } from "next/navigation";
-import { AddToCartButton } from "@/components/ui/Cart/addToCartButton";
 import { UserCartAPI } from "@/api/cart/cart.api";
 import { CartItemSSR } from "@/app/(main)/gio-hang/components/cart";
 import toast from "react-hot-toast";
@@ -27,13 +27,12 @@ import { useCookies } from "react-cookie";
 import ProductSuggess from "./productSuggest";
 import { useCartContext } from "@/context/cart-context";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { useAddToCart } from "@/hooks/use-addToCart";
 interface propsProductMobile {
   product: ProductInterface;
 }
 export default function ProductMobile({ product }: propsProductMobile) {
-  const router = useRouter();
-  const [cookies, setCookie] = useCookies(["userInfo"]);
-  const { setCartQuantity, cartQuantity } = useCartContext();
+  const cart = useAddToCart();
 
   const promotion = product.promotionProducts[0];
   const discountPercentage = (() => {
@@ -87,12 +86,33 @@ export default function ProductMobile({ product }: propsProductMobile) {
           <div className="w-5 h-5 bg-gray-300 rounded mb-1"></div>
           <span className="text-xs text-gray-600">Thêm vào giỏ hàng</span>
         </button> */}
-        <AddToCartButton product={product} quantity={1} />
 
+        <button
+          className="
+    flex-1                      
+    bg-black text-white 
+    py-0 px-0                   
+    sm:py-3 sm:px-6             
+    rounded-lg font-semibold 
+    text-sm sm:text-base        // nhỏ hơn ở mobile, bình thường ở sm trở lên
+    hover:bg-gray-800 transition-colors 
+    flex flex-col sm:flex-row items-center justify-center space-x-2
+
+  "
+          onClick={async () => {
+            await cart.addToCart({
+              product,
+              isCheckout: false,
+            });
+          }}>
+          <ShoppingCart className="w-4 h-4 sm:w-5 sm:h-5" />
+          <span>Thêm vào giỏ hàng</span>
+        </button>
         {/* Buy Now Button */}
         <button
           className="flex-1 bg-red-500 hover:bg-red-600 text-white font-medium py-3 px-6 rounded-lg transition-colors"
           onClick={async () => {
+<<<<<<< HEAD
             const userID = cookies.userInfo.id;
 
             if (userID) {
@@ -161,6 +181,12 @@ export default function ProductMobile({ product }: propsProductMobile) {
 
             // cart.addItem(product, 1);
             router.push("/checkout");
+=======
+            await cart.addToCart({
+              product,
+              isCheckout: true,
+            });
+>>>>>>> master
           }}>
           Mua Ngay
         </button>

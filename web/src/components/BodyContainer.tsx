@@ -5,9 +5,9 @@ interface BodyContainerProps {
   className?: string
 }
 
-export const BodyContainer = ({ children, className="mt-[10px]" }: BodyContainerProps) => {
+export const BodyContainer = ({ children, className="" }: BodyContainerProps) => {
   return (
-    <div className={`min-h-[700px] w-full ${className} `}>
+    <div className={`w-full ${className} `}>
       {children}
     </div>
   )

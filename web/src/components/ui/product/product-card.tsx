@@ -27,6 +27,8 @@ import { useCartContext } from "@/context/cart-context";
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
 import { FreeshipBadVer2 } from "../Badge/freeship-ver2";
+import { useAddToCart } from "@/hooks/use-addToCart";
+import { useEffect, useState } from "react";
 
 export const RenderGiftItems = ({
   gift,
@@ -74,9 +76,9 @@ export const ProductCard = ({
   promotion,
   isSingleColumn = false,
 }: ProductCardProps) => {
-  const [cookies, setCookie] = useCookies(["userInfo"]);
-  const { setCartQuantity, cartQuantity } = useCartContext();
-  const router = useRouter();
+  const [isMounted, setIsMounted] = useState(false);
+
+  const { addToCart } = useAddToCart();
 
   const promotionProduct = product.promotionProducts;
   const showLineThroughPrice = promotion
@@ -103,6 +105,7 @@ export const ProductCard = ({
   const handleAddToCart = async (e: React.MouseEvent, isCheckout: boolean) => {
     e.preventDefault();
     e.stopPropagation();
+<<<<<<< HEAD
 
     let userID = cookies.userInfo?.id ?? 0;
 
@@ -171,7 +174,17 @@ export const ProductCard = ({
     } catch (error) {
       toast.error("Có lỗi xảy ra khi thêm sản phẩm vào giỏ hàng");
     }
+=======
+    await addToCart({
+      product,
+      isCheckout,
+    });
+>>>>>>> master
   };
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
+  if (!isMounted) return null;
 
   // Single Column Layout (Mobile-like horizontal layout)
   if (isSingleColumn) {
@@ -348,12 +361,15 @@ export const ProductCard = ({
               <span className="text-lg md:text-xl font-bold text-red-600">
                 {FormatUtils.formatPriceVND(discountedPrice)}
               </span>
-              {showLineThroughPrice && (
-                <span className="text-xs md:text-sm text-gray-400 line-through">
-                  {FormatUtils.formatPriceVND(showLineThroughPrice)}
-                </span>
+              {product.stock <= 0 && (
+                <Badge variant={"destructive"}>Hết hàng</Badge>
               )}
             </div>
+            {showLineThroughPrice && (
+              <span className="text-xs md:text-sm text-gray-400 line-through">
+                {FormatUtils.formatPriceVND(showLineThroughPrice)}
+              </span>
+            )}
           </div>
 
           {/* Gift Products Section */}
@@ -393,6 +409,7 @@ export const ProductCard = ({
           {/* Action Buttons */}
           <div className="flex gap-2 mt-auto pt-2">
             <button
+              disabled={product.stock <= 0}
               onClick={(e) => {
                 handleAddToCart(e, true);
               }}
@@ -400,6 +417,7 @@ export const ProductCard = ({
               Mua ngay
             </button>
             <button
+              disabled={product.stock <= 0}
               onClick={(e) => {
                 e.preventDefault();
                 e.stopPropagation();

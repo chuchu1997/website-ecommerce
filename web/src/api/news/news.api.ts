@@ -3,7 +3,7 @@
 import api from "../interceptor";
 
 const url = "/articles";
-const storeID = process.env.STORE_ID || 1;
+const storeID = process.env.NEXT_PUBLIC_STORE_ID || 1;
 
 export const NewsAPI = {
   getNewsWithSlug: ({ slug }: { slug: string }) => {

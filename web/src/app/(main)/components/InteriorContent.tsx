@@ -35,26 +35,26 @@ interface Props {
 export const InteriorContent: React.FC<Props> = ({ industry }) => {
   const services = [
     {
-      title: 'Đàn Guitar Chất Lượng Cao',
+      title: 'Nội Thất Gia Đình',
       description:
-        'Chúng tôi cung cấp nhiều dòng guitar acoustic, classic, và electric chính hãng, phù hợp cho mọi trình độ từ người mới bắt đầu đến nghệ sĩ chuyên nghiệp.',
-      icon: '🎸',
+        'Mang đến giải pháp nội thất hoàn hảo cho phòng khách, phòng ngủ, phòng bếp với thiết kế hiện đại và tinh tế.',
+      icon: '🛋️',
       gradient: 'from-yellow-600 to-orange-500',
       bgGradient: 'from-yellow-50 to-orange-50',
     },
     {
-      title: 'Phụ Kiện & Bảo Dưỡng',
+      title: 'Thiết Kế & Thi Công Trọn Gói',
       description:
-        'Đa dạng phụ kiện như dây đàn, capos, pick, bao da, pedal... cùng dịch vụ bảo trì, chỉnh dây, set-up action chuyên nghiệp.',
-      icon: '🧰',
+        'Đội ngũ kiến trúc sư và thợ lành nghề sẽ đồng hành từ thiết kế 3D đến thi công hoàn thiện nội thất cho không gian sống của bạn.',
+      icon: '📐',
       gradient: 'from-rose-500 to-red-600',
       bgGradient: 'from-rose-50 to-red-50',
     },
     {
-      title: 'Tư Vấn & Hướng Dẫn',
+      title: 'Bảo Hành & Dịch Vụ Hậu Mãi',
       description:
-        'Đội ngũ nhân viên thân thiện, có kiến thức âm nhạc giúp bạn chọn lựa đàn phù hợp và chia sẻ cách bảo quản – học đàn hiệu quả.',
-      icon: '🎼',
+        'Chính sách bảo hành rõ ràng, hỗ trợ bảo trì – sửa chữa tận nơi nhằm đảm bảo chất lượng sản phẩm bền lâu.',
+      icon: '🛠️',
       gradient: 'from-blue-500 to-indigo-600',
       bgGradient: 'from-blue-50 to-indigo-50',
     },
@@ -78,21 +78,21 @@ export const InteriorContent: React.FC<Props> = ({ industry }) => {
           {/* Header Section */}
           <motion.div variants={fadeInUp} className="text-center mb-12 sm:mb-16 lg:mb-20">
             <div className="inline-flex items-center justify-center w-16 h-16 sm:w-20 sm:h-20 bg-gradient-to-r from-amber-500 to-orange-600 rounded-2xl mb-6 sm:mb-8">
-              <span className="text-2xl sm:text-3xl">🎶</span>
+              <span className="text-2xl sm:text-3xl">🏠</span>
             </div>
 
             <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-extrabold mb-4 sm:mb-6 leading-tight">
               <span className="bg-gradient-to-r from-gray-900 via-gray-800 to-gray-900 bg-clip-text text-transparent">
-                Khơi Dậy Đam Mê Âm Nhạc
+                Kiến Tạo Không Gian Sống Đẳng Cấp
               </span>
               <br />
               <span className="bg-gradient-to-r from-amber-600 via-orange-600 to-amber-700 bg-clip-text text-transparent">
-                {industry || "Guitar Sài Thành"}
+                {industry || "Happy Furniture"}
               </span>
             </h2>
 
             <p className="text-base sm:text-lg md:text-xl lg:text-2xl text-gray-600 max-w-2xl lg:max-w-4xl mx-auto leading-relaxed">
-              Nơi kết nối người yêu nhạc – từ cây đàn đầu tiên đến hành trình biểu diễn chuyên nghiệp.
+              Từ nội thất gia đình đến giải pháp thiết kế thi công trọn gói – Happy Furniture đồng hành cùng bạn.
             </p>
           </motion.div>
 

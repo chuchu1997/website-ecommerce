@@ -99,3 +99,6 @@ pids/
 *.pid
 *.pid.lock
 *.seed
+
+
+db.sql

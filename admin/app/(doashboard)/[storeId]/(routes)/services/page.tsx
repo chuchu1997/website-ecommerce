@@ -141,6 +141,14 @@ export default function ServicesManagement() {
   const [expandedServices, setExpandedServices] = useState<Set<number>>(
     new Set()
   );
+  const generateSlug = (str: string): string =>
+    str
+      .toLowerCase()
+      .normalize("NFD") // tách dấu
+      .replace(/[\u0300-\u036f]/g, "") // xoá dấu
+      .replace(/[^a-z0-9\s-]/g, "") // xoá ký tự đặc biệt
+      .trim()
+      .replace(/\s+/g, "-"); // khoảng trắng -> -
 
   const [totalPage, setTotalPage] = useState(0);
   const [currentPage, setCurrentPage] = useState(1);
@@ -148,6 +156,17 @@ export default function ServicesManagement() {
   useEffect(() => {
     setIsMounted(true);
   }, []);
+  useEffect(() => {
+    const subscription = form.watch((values: any, { name }: any) => {
+      if (name === "title") {
+        const nameValue = values.title || "";
+        const slug = generateSlug(nameValue);
+        form.setValue("slug", slug);
+      }
+    });
+
+    return () => subscription.unsubscribe();
+  }, [form]);
 
   useEffect(() => {
     if (isMounted) {
@@ -605,14 +624,6 @@ export default function ServicesManagement() {
                           loading={false}
                           title="Tiêu đề dịch vụ"
                           placeholder="Vui lòng nhập tiêu đề dịch vụ"
-                        />
-
-                        <InputSectionWithForm
-                          form={form}
-                          nameFormField="slug"
-                          loading={false}
-                          title="Slug"
-                          placeholder="Vui lòng nhập slug"
                         />
 
                         <ImageUploadSection
