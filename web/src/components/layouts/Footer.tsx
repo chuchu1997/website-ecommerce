@@ -95,8 +95,8 @@ const Footer: React.FC = async () => {
                 <div className="mb-8">
                   <Image
                     src="/logo.png"
-                    height={120}
-                    width={120}
+                    height={70}
+                    width={70}
                     alt="logo"
                     className=""
                   />

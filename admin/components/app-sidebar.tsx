@@ -133,6 +133,12 @@ export function AppSidebar() {
         icon: MessageCircleMore,
         active: pathname === `/${params.storeId}/fake-comments`,
       },
+      {
+        href: `/${params.storeId}/forms`,
+        label: "Liên hệ form",
+        icon: FileImageIcon,
+        active: pathname === `/${params.storeId}/forms`,
+      },
     ],
     settings: [
       {

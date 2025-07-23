@@ -28,6 +28,9 @@ import { ProjectsModule } from './projects/projects.module';
 import { ServicesModule } from './services/services.module';
 import { BrandsModule } from './brands/brands.module';
 import { MulterModule } from '@nestjs/platform-express';
+import { RecaptchaModule } from './recaptcha/recaptcha.module';
+import { ContactsModule } from './contacts/contacts.module';
+import { EmailService } from './utils/email.service';
 
 @Module({
   imports: [
@@ -62,6 +65,8 @@ import { MulterModule } from '@nestjs/platform-express';
     ProjectsModule,
     ServicesModule,
     BrandsModule,
+    RecaptchaModule,
+    ContactsModule,
   ],
   controllers: [AppController],
   providers: [
