@@ -44,7 +44,7 @@ const formSchema = z.object({
   name: z.string().min(1, "Tên sản phẩm là bắt buộc"),
   categoryId: z.string().min(1, "Vui lòng chọn danh mục"),
   originalPrice: z.coerce.number().optional(),
-  price: z.coerce.number().min(1, "Giá phải lớn hơn 0"),
+  price: z.coerce.number(),
   images: z
     .array(
       z.object({
