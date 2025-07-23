@@ -57,70 +57,70 @@ const AboutUsPage: React.FC = () => {
 
 const statistics: Statistic[] = [
   {
-    label: "Khách hàng hài lòng",
-    value: "100K+",
+    label: "Khách hàng tin tưởng",
+    value: "50K+",
     icon: <Heart className="w-6 h-6" />,
-    description: "Phục vụ trên toàn quốc"
+    description: "Phục vụ người yêu nhạc trên toàn quốc",
   },
   {
-    label: "Showroom & Đại lý",
-    value: "200+",
+    label: "Đại lý & Cửa hàng",
+    value: "100+",
     icon: <Building className="w-6 h-6" />,
-    description: "Phủ sóng khắp các tỉnh thành"
+    description: "Hệ thống phân phối toàn quốc",
   },
   {
-    label: "Năm kinh nghiệm",
-    value: "15+",
+    label: "Năm hoạt động",
+    value: "10+",
     icon: <Award className="w-6 h-6" />,
-    description: "Trong lĩnh vực nội thất"
+    description: "Gắn bó cùng cộng đồng guitar Việt Nam",
   },
   {
-    label: "Dự án đã hoàn thành",
-    value: "30K+",
+    label: "Sản phẩm bán ra",
+    value: "80K+",
     icon: <Home className="w-6 h-6" />,
-    description: "Căn hộ, nhà ở, văn phòng, showroom"
-  }
+    description: "Guitar, phụ kiện & thiết bị âm thanh",
+  },
 ];
 
 const services = [
   {
-    title: "Nội Thất Gia Đình",
-    description: "Cung cấp đa dạng nội thất cho phòng khách, phòng ngủ, bếp với thiết kế hiện đại và tinh tế.",
-    icon: "🛋️",
+    title: "Cung Cấp Nhạc Cụ",
+    description: "Phân phối đa dạng các dòng guitar acoustic, classic, electric và ukulele chính hãng.",
+    icon: "🎸",
     features: [
-      "Sofa, bàn ghế, tủ, kệ TV...",
-      "Chất liệu cao cấp, bền đẹp theo thời gian",
-      "Phù hợp nhiều phong cách: hiện đại, cổ điển, Bắc Âu",
+      "Thương hiệu: Yamaha, Fender, Takamine...",
+      "Guitar cho mọi cấp độ: từ người mới đến chuyên nghiệp",
+      "Cam kết chính hãng, bảo hành rõ ràng",
     ],
   },
   {
-    title: "Tư Vấn Thiết Kế Nội Thất",
-    description: "Đội ngũ chuyên gia tư vấn & thiết kế không gian sống phù hợp với phong cách cá nhân và ngân sách.",
-    icon: "🧑‍🎨",
+    title: "Tư Vấn & Dạy Guitar",
+    description: "Hướng dẫn chọn đàn phù hợp và cung cấp khóa học guitar cho mọi lứa tuổi.",
+    icon: "👨‍🏫",
     features: [
-      "Tư vấn tận nơi hoặc online",
-      "Thiết kế 2D/3D miễn phí cho khách hàng đặt trọn bộ",
-      "Đồng hành từ ý tưởng đến hoàn thiện",
+      "Tư vấn cá nhân theo mục tiêu chơi nhạc",
+      "Khóa học cơ bản đến nâng cao",
+      "Hỗ trợ online & offline",
     ],
   },
   {
-    title: "Thi Công & Lắp Đặt",
-    description: "Cung cấp dịch vụ vận chuyển, lắp đặt nội thất nhanh chóng, an toàn và đúng kỹ thuật.",
-    icon: "🔨",
-    features: [
-      "Đội ngũ kỹ thuật chuyên nghiệp",
-      "Miễn phí lắp đặt tại nội thành",
-      "Bảo hành sau thi công",
-    ],
-  },
-  {
-    title: "Bảo Hành & Chăm Sóc",
-    description: "Chính sách bảo hành rõ ràng, hỗ trợ bảo trì và chăm sóc sản phẩm lâu dài.",
+    title: "Bảo Trì & Sửa Chữa",
+    description: "Dịch vụ bảo dưỡng, lên dây, thay dây và sửa chữa đàn guitar chuyên nghiệp.",
     icon: "🛠️",
     features: [
-      "Bảo hành từ 12–36 tháng",
-      "Hỗ trợ thay thế phụ kiện, sửa chữa sản phẩm",
-      "Dịch vụ chăm sóc khách hàng tận tâm",
+      "Kỹ thuật viên lành nghề",
+      "Thay dây, chỉnh action, làm lại phím",
+      "Bảo dưỡng định kỳ – giữ đàn luôn mới",
+    ],
+  },
+  {
+    title: "Phụ Kiện & Thiết Bị Âm Nhạc",
+    description: "Cung cấp phụ kiện và thiết bị hỗ trợ chơi nhạc từ cơ bản đến chuyên nghiệp.",
+    icon: "🎧",
+    features: [
+      "Bao đàn, dây, pick, tuner, capo...",
+      "Thiết bị thu âm & khuếch đại âm thanh",
+      "Giao hàng nhanh toàn quốc",
     ],
   },
 ];

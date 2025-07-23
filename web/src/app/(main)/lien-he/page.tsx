@@ -67,7 +67,7 @@ const ContactPage: React.FC = () => {
           <div className="text-center">
             <div className="flex justify-center mb-6">
               <div className="bg-white bg-opacity-20 rounded-full p-4 backdrop-blur-sm">
-                <Heart className="w-12 h-12 text-white animate-pulse" />
+                <Heart className="w-12 h-12 text-orange-600 animate-pulse" />
               </div>
             </div>
             <h1 className="text-4xl md:text-6xl font-bold mb-6 animate-fade-in">
@@ -79,12 +79,12 @@ const ContactPage: React.FC = () => {
             </p>
             <div className="flex flex-wrap justify-center gap-4">
               <div className="flex items-center bg-white bg-opacity-20 rounded-full px-6 py-2 backdrop-blur-sm">
-                <Star className="w-5 h-5 mr-2 text-yellow-300" />
-                <span className="text-sm font-medium">Tư vấn miễn phí</span>
+                <Star className="w-5 h-5 mr-2 text-black" />
+                <span className="text-sm font-medium text-black">Tư vấn miễn phí</span>
               </div>
               <div className="flex items-center bg-white bg-opacity-20 rounded-full px-6 py-2 backdrop-blur-sm">
-                <CheckCircle className="w-5 h-5 mr-2 text-green-300" />
-                <span className="text-sm font-medium">Phản hồi trong 24h</span>
+                <CheckCircle className="w-5 h-5 mr-2 text-black" />
+                <span className="text-sm font-medium text-black">Phản hồi trong 24h</span>
               </div>
             </div>
           </div>

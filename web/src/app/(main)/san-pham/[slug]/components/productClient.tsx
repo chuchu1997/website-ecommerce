@@ -30,13 +30,13 @@ export const ProductClient = ({ product }: propsClient) => {
   return (
     <div className="container mx-auto ">
       {/* <ProductClientPC product={product} /> */}
-      <ProductClientPC product={product} />
-      {/*       
+      {/* <ProductClientPC product={product} /> */}
+
       {isMobile ? (
         <ProductMobile product={product} />
       ) : (
         <ProductClientPC product={product} />
-      )} */}
+      )}
     </div>
   );
 };
