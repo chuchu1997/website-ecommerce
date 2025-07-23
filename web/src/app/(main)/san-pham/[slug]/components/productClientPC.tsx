@@ -251,7 +251,9 @@ export const ProductClientPC = ({ product }: propsProductClientPC) => {
             <div className="bg-white rounded-xl border border-gray-200 p-6">
               <div className="flex items-center flex-wrap gap-3 mb-4">
                 <span className="text-3xl lg:text-4xl font-bold text-gray-900">
-                  {FormatUtils.formatPriceVND(getDiscountedPrice())}
+                  {getDiscountedPrice() === 0
+                    ? "Liên hệ"
+                    : FormatUtils.formatPriceVND(getDiscountedPrice())}
                 </span>
                 {product.originalPrice && (
                   <div className="flex items-center gap-2">

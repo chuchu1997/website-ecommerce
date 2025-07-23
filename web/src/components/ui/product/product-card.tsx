@@ -185,7 +185,9 @@ export const ProductCard = ({
             <div className="flex items-center justify-between gap-2 mt-3">
               <div className="flex flex-col">
                 <span className="text-lg font-bold text-red-600">
-                  {FormatUtils.formatPriceVND(discountedPrice)}
+                  {discountedPrice === 0
+                    ? "Liên hệ"
+                    : FormatUtils.formatPriceVND(discountedPrice)}
                 </span>
                 {showLineThroughPrice && (
                   <span className="text-sm text-gray-400 line-through">
@@ -288,7 +290,9 @@ export const ProductCard = ({
           <div className="space-y-1">
             <div className="flex items-center justify-between">
               <span className="text-lg md:text-xl font-bold text-red-600">
-                {FormatUtils.formatPriceVND(discountedPrice)}
+                {discountedPrice === 0
+                  ? "Liên hệ"
+                  : FormatUtils.formatPriceVND(discountedPrice)}
               </span>
               {product.stock <= 0 && (
                 <Badge variant={"destructive"}>Hết hàng</Badge>
