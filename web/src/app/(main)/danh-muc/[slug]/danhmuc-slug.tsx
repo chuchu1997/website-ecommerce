@@ -213,7 +213,7 @@ const DanhMucPage = () => {
         {category.variant ? (
           <div className="space-y-8">{renderVariantContent()}</div>
         ) : (
-          <div className="space-y-8">
+          <div className="space-y-8 mt-[30px]">
             <ScrollToLoadProductsWithCategory
               categoryName={category.name}
               fetchProducts={fetchProductsFromCategory}
