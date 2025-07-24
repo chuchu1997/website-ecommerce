@@ -55,6 +55,10 @@ const SEOForm = ({ loading = false, form }: any) => {
     if (seo?.ogTitle && seo?.ogDescription) score += 10;
     return score;
   };
+
+  useEffect(() => {
+    setSeoScore(getSEOScore());
+  }, []);
   useEffect(() => {
     const subscription = form.watch((_: any, { name }: any) => {
       if (name?.startsWith("seo")) {
