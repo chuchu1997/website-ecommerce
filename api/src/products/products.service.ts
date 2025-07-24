@@ -141,50 +141,55 @@ export class ProductsService {
     }
   }
   async findProductsWithQuery(query: ProductQueryFilterDto) {
-    const { limit = 4, currentPage = 1, ids, ...data } = query;
-    const products = await this.prisma.product.findMany({
-      where: {
-        ...(ids && ids.length > 0 ? { id: { in: ids } } : {}), // ✅ Bỏ qua nếu không có ids
-        name: {
-          contains: data.name?.trim(),
-        },
-        slug: data.slug,
-        //THIS
-        categoryId: data.categoryId,
-        isFeatured: data.isFeatured ? true : undefined,
-        storeId: data.storeID,
-      },
-      include: {
-        fakeComments: true,
-        promotionProducts: {
-          include: {
-            promotion: true,
+    try {
+      const { limit = 4, currentPage = 1, ids, ...data } = query;
+      const products = await this.prisma.product.findMany({
+        where: {
+          ...(ids && ids.length > 0 ? { id: { in: ids } } : {}), // ✅ Bỏ qua nếu không có ids
+          name: {
+            contains: data.name?.trim(),
           },
+          slug: data.slug,
+          //THIS
+          categoryId: data.categoryId,
+          isFeatured: data.isFeatured ? true : undefined,
+          storeId: data.storeID,
         },
-        giftProducts: {
-          include: {
-            gift: {
-              include: {
-                images: true,
+        include: {
+          fakeComments: true,
+          promotionProducts: {
+            include: {
+              promotion: true,
+            },
+          },
+          giftProducts: {
+            include: {
+              gift: {
+                include: {
+                  images: true,
+                },
               },
             },
           },
+
+          images: true,
+          category: true,
+          colors: true,
+          sizes: true,
         },
 
-        images: true,
-        category: true,
-        colors: true,
-        sizes: true,
-      },
+        orderBy: {
+          createdAt: 'desc',
+        },
+        take: limit, // Đảm bảo kiểu số và giá trị mặc định
+        skip: (currentPage - 1) * limit, // Đảm bảo kiểu số và giá trị mặc định
+      });
 
-      orderBy: {
-        createdAt: 'desc',
-      },
-      take: limit, // Đảm bảo kiểu số và giá trị mặc định
-      skip: (currentPage - 1) * limit, // Đảm bảo kiểu số và giá trị mặc định
-    });
-
-    return products;
+      return products;
+    } catch (err) {
+      console.log('ERR', err);
+      throw err;
+    }
   }
 
   async findOne(id: number) {

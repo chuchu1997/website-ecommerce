@@ -124,6 +124,8 @@ model User {
 
 }
 
+
+
 model StoreUser { 
   id       Int     @id @default(autoincrement())
   user     User    @relation(fields: [userId], references: [id])
@@ -174,7 +176,7 @@ model Store  {
    socials Social[] @relation("StoreToSocial")
    orders Order[] @relation("StoreToOrders")
   
-
+   contacts Contact[] @relation("StoreToContact")
    promotion Promotion[] @relation("StoreToPromotion")
    projects Project[] @relation("StoreToProject")
    services Service[] @relation("StoreToService")
@@ -183,6 +185,19 @@ model Store  {
    updatedAt DateTime @updatedAt
 
  
+}
+model Contact {
+  id             Int           @id @default(autoincrement())
+  name String
+  phone String
+  email String
+  subject String
+  content String @db.Text
+  storeId        Int
+  store    Store  @relation("StoreToContact",fields: [storeId], references: [id])
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  @@index([storeId])
 }
 model Service {
   id             Int           @id @default(autoincrement())
@@ -366,6 +381,7 @@ model Product {
   shortDescription String
   description String  @db.Text
   originalPrice Float?
+  saleCount Float?
   price       Float
   isFeatured Boolean @default(false)
   slug String @unique

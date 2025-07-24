@@ -51,7 +51,7 @@ export const ZaloPhoneWidget: React.FC = ({}) => {
         rel="noopener noreferrer"
         animate={bounce}
         transition={transition}
-        className="flex items-center gap-2 bg-white border border-blue-500 text-blue-600 px-4 py-2 rounded-full shadow-xl hover:shadow-2xl hover:scale-105 transition-all">
+        className="flex items-center gap-2 bg-white border border-blue-500 text-blue-600 px-1 py-1 rounded-full shadow-xl hover:shadow-2xl hover:scale-105 transition-all">
         <ZaloIcon className="w-6 h-6" />
         <span className="hidden sm:inline font-semibold">Chat Zalo</span>
       </motion.a>
@@ -73,8 +73,8 @@ export const ZaloIcon = ({ className }: { className?: string }) => (
     xmlns="http://www.w3.org/2000/svg"
     x="0px"
     y="0px"
-    width="30"
-    height="30"
+    width="50"
+    height="50"
     viewBox="0 0 100 100">
     <path
       fill="#c7ede6"

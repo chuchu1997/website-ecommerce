@@ -1,6 +1,6 @@
-/** @format */
-
-import { Edit, Trash2 } from "lucide-react";
+import { Edit, Trash2, Copy } from "lucide-react";
+import React from "react";
+import toast from "react-hot-toast";
 
 interface CardItem {
   id: number;
@@ -14,6 +14,15 @@ interface CardItem {
 
 export const CardCommon = (props: CardItem) => {
   const { onDelete, onEdit, ...data } = props;
+
+  const handleCopyImageLink = () => {
+    if (data.image) {
+      navigator.clipboard.writeText(data.image);
+      // Optional: thông báo khi copy xong
+      
+      toast.success("Đã sao chép link hình ảnh ")
+    }
+  };
 
   const getVariantColor = (variant: string) => {
     const colors = {
@@ -68,6 +77,11 @@ export const CardCommon = (props: CardItem) => {
             onClick={() => onDelete(data.id)}
             className="p-2 bg-red-600 text-white rounded-full hover:bg-red-700 transition-colors duration-200 shadow-lg">
             <Trash2 className="w-4 h-4" />
+          </button>
+          <button
+            onClick={handleCopyImageLink}
+            className="p-2 bg-gray-600 text-white rounded-full hover:bg-gray-700 transition-colors duration-200 shadow-lg">
+            <Copy className="w-4 h-4" />
           </button>
         </div>
 

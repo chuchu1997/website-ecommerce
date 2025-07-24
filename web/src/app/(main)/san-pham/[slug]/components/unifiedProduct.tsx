@@ -36,7 +36,6 @@ import { CartItemSSR } from "@/app/(main)/gio-hang/components/cart";
 import { useRouter } from "next/navigation";
 import { useCartContext } from "@/context/cart-context";
 import { useAddToCart } from "@/hooks/use-addToCart";
-import SoldInfo from "@/components/ui/soldInfo";
 
 interface propsProductClientPC {
   product: ProductInterface;
@@ -128,46 +127,20 @@ export const ProductClientPC = ({ product }: propsProductClientPC) => {
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Breadcrumb */}
-      <div className="bg-white border-b border-gray-200 sticky top-2 z-10">
-        <div className="px-3 sm:px-4 lg:px-8 py-2.5 sm:py-3">
-          <nav
-            className="flex items-center text-xs sm:text-sm"
-            aria-label="Breadcrumb">
-            <div className="flex items-center space-x-1 sm:space-x-2 min-w-0 flex-1">
-              <span className="text-gray-600 hover:text-gray-900 cursor-pointer transition-colors duration-200 whitespace-nowrap">
-                Trang chủ
-              </span>
-              <span className="text-gray-400 flex-shrink-0">/</span>
-
-              <span className="text-gray-600 hover:text-gray-900 cursor-pointer transition-colors duration-200 whitespace-nowrap">
-                Sản phẩm
-              </span>
-              <span className="text-gray-400 flex-shrink-0">/</span>
-
-              <span
-                className="text-gray-900 font-medium min-w-0 flex-1"
-                title={product.name}>
-                <span className="block truncate sm:hidden">
-                  {product.name.length > 20
-                    ? `${product.name.slice(0, 20)}...`
-                    : product.name}
-                </span>
-                <span className="hidden sm:block truncate">{product.name}</span>
-              </span>
-            </div>
-
-            {/* Optional: Show full product name on mobile when truncated */}
-            {product.name.length > 20 && (
-              <div className="sm:hidden ml-2 flex-shrink-0">
-                <button
-                  className="text-blue-600 text-xs hover:text-blue-800 transition-colors"
-                  onClick={() => {
-                    /* Handle showing full name in modal/tooltip */
-                  }}>
-                  ...
-                </button>
-              </div>
-            )}
+      <div className="bg-white border-b border-gray-200 sticky top-0 z-10">
+        <div className=" px-4 sm:px-6 lg:px-8 py-3">
+          <nav className="flex items-center space-x-2 text-sm mt-[5px] md:mt-[20px]">
+            <span className="text-gray-600 hover:text-gray-900 cursor-pointer transition-colors">
+              Trang chủ
+            </span>
+            <span className="text-gray-400">/</span>
+            <span className="text-gray-600 hover:text-gray-900 cursor-pointer transition-colors">
+              Sản phẩm
+            </span>
+            <span className="text-gray-400">/</span>
+            <span className="text-gray-900 font-medium truncate">
+              {product.name}
+            </span>
           </nav>
         </div>
       </div>
@@ -214,7 +187,7 @@ export const ProductClientPC = ({ product }: propsProductClientPC) => {
                     d="M.458 10C1.732 5.943 5.522 3 10 3s8.268 2.943 9.542 7c-1.274 4.057-5.064 7-9.542 7S1.732 14.057.458 10zM14 10a4 4 0 11-8 0 4 4 0 018 0z"
                   />
                 </svg>
-                {/* <span>{product.viewCount.toLocaleString()} lượt xem</span> */}
+                <span>{product.viewCount.toLocaleString()} lượt xem</span>
               </div>
               <div className="flex items-center space-x-2">
                 <button
@@ -254,17 +227,11 @@ export const ProductClientPC = ({ product }: propsProductClientPC) => {
               <div className="flex items-center flex-wrap gap-4">
                 <div className="flex items-center space-x-2">
                   <div className="flex items-center space-x-1">
-                    {renderRatingStars(Math.floor(5))}
-
-                    {/* {renderRatingStars(Math.floor(product.ratingCount))} */}
+                    {renderRatingStars(Math.floor(product.ratingCount))}
                   </div>
-
-                  <div className="">
-                    <SoldInfo sold={product.saleCount ?? 10000} />
-                  </div>
-                  {/* <span className="text-sm text-gray-600">
+                  <span className="text-sm text-gray-600">
                     {product.ratingCount} ({product.reviews} đánh giá)
-                  </span> */}
+                  </span>
                 </div>
                 <div className="w-px h-4 bg-gray-300"></div>
 
@@ -390,53 +357,51 @@ export const ProductClientPC = ({ product }: propsProductClientPC) => {
               )}
 
               {/* Quantity & Actions */}
-              {product.price > 0 && (
-                <div className="space-y-4">
-                  <div className="flex items-center space-x-4">
-                    <div className="flex items-center border border-gray-300 rounded-lg overflow-hidden">
-                      <button
-                        onClick={() => handleQuantityChange("decrease")}
-                        className="p-3 hover:bg-gray-50 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-                        disabled={quantity <= 1 || product.stock <= 0}>
-                        <Minus className="w-4 h-4" />
-                      </button>
-                      <span className="px-4 py-3 font-semibold text-gray-900 min-w-[60px] text-center">
-                        {quantity}
-                      </span>
-                      <button
-                        onClick={() => handleQuantityChange("increase")}
-                        className="p-3 hover:bg-gray-50 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-                        disabled={
-                          quantity >= product.stock || product.stock <= 0
-                        }>
-                        <Plus className="w-4 h-4" />
-                      </button>
-                    </div>
-                    <span className="text-sm text-gray-600">
-                      Còn lại:{" "}
-                      <span className="font-medium text-emerald-600">
-                        {product.stock}
-                      </span>
+              <div className="space-y-4">
+                <div className="flex items-center space-x-4">
+                  <div className="flex items-center border border-gray-300 rounded-lg overflow-hidden">
+                    <button
+                      onClick={() => handleQuantityChange("decrease")}
+                      className="p-3 hover:bg-gray-50 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                      disabled={quantity <= 1 || product.stock <= 0}>
+                      <Minus className="w-4 h-4" />
+                    </button>
+                    <span className="px-4 py-3 font-semibold text-gray-900 min-w-[60px] text-center">
+                      {quantity}
                     </span>
-                  </div>
-
-                  {/* Mobile-optimized buttons */}
-                  <div className="flex flex-col sm:flex-row gap-3">
                     <button
-                      onClick={(e: any) => handleAddToCart(e, false)}
-                      disabled={product.stock <= 0}
-                      className="flex-1 bg-white border-2 border-gray-900 text-gray-900 py-3 px-6 rounded-lg font-semibold hover:bg-gray-50 transition-colors text-sm sm:text-base disabled:opacity-50 disabled:cursor-not-allowed">
-                      Thêm vào giỏ
-                    </button>
-                    <button
-                      onClick={(e) => handleAddToCart(e, true)}
-                      disabled={product.stock <= 0}
-                      className="flex-1 bg-gray-900 text-white py-3 px-6 rounded-lg font-semibold hover:bg-gray-800 transition-colors text-sm sm:text-base disabled:opacity-50 disabled:cursor-not-allowed">
-                      Mua ngay
+                      onClick={() => handleQuantityChange("increase")}
+                      className="p-3 hover:bg-gray-50 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                      disabled={
+                        quantity >= product.stock || product.stock <= 0
+                      }>
+                      <Plus className="w-4 h-4" />
                     </button>
                   </div>
+                  <span className="text-sm text-gray-600">
+                    Còn lại:{" "}
+                    <span className="font-medium text-emerald-600">
+                      {product.stock}
+                    </span>
+                  </span>
                 </div>
-              )}
+
+                {/* Mobile-optimized buttons */}
+                <div className="flex flex-col sm:flex-row gap-3">
+                  <button
+                    onClick={(e: any) => handleAddToCart(e, false)}
+                    disabled={product.stock <= 0}
+                    className="flex-1 bg-white border-2 border-gray-900 text-gray-900 py-3 px-6 rounded-lg font-semibold hover:bg-gray-50 transition-colors text-sm sm:text-base disabled:opacity-50 disabled:cursor-not-allowed">
+                    Thêm vào giỏ
+                  </button>
+                  <button
+                    onClick={(e) => handleAddToCart(e, true)}
+                    disabled={product.stock <= 0}
+                    className="flex-1 bg-gray-900 text-white py-3 px-6 rounded-lg font-semibold hover:bg-gray-800 transition-colors text-sm sm:text-base disabled:opacity-50 disabled:cursor-not-allowed">
+                    Mua ngay
+                  </button>
+                </div>
+              </div>
             </div>
 
             {/* Gift Products */}
@@ -688,7 +653,6 @@ export const ProductClientPC = ({ product }: propsProductClientPC) => {
             )}
           </div>
         </div>
-        <ProductSuggess product={product} />
       </div>
     </div>
   );

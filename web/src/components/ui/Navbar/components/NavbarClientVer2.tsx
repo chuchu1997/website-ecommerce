@@ -262,7 +262,7 @@ const Navbar: React.FC = () => {
         <div className="container mx-auto px-2 sm:px-4 py-4 ">
           <div className="flex items-center justify-between">
             {/* Mobile menu button */}
-            <div className="md:hidden mr-2">
+            <div className="lg:hidden mr-2">
               <button
                 onClick={handleMobileMenuToggle}
                 className={`${getTextColor()} px-3 py-2 text-sm font-medium transition-colors duration-200`}
@@ -288,7 +288,7 @@ const Navbar: React.FC = () => {
             </Link>
 
             {/* Desktop Navigation */}
-            <div className="hidden md:block">
+            <div className="hidden md:hidden lg:block">
               <div className="ml-10 flex items-baseline space-x-8">
                 {/* Dynamic Categories with Megamenus */}
                 {categories.map((category) => (

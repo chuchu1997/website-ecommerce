@@ -50,6 +50,11 @@ export class CreateProductDto {
   @Transform(({ value }) => parseFloat(value))
   price: number;
 
+  @IsNumber()
+  @IsOptional()
+  @Transform(({ value }) => parseFloat(value))
+  saleCount: number;
+
   // Store ID
   @IsNumber()
   @IsNotEmpty()

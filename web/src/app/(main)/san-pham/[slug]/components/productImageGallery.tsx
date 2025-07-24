@@ -279,7 +279,7 @@ export const ProductImageGallery = ({images}:propsProductImageGaller) => {
           )}
 
           {/* Badges - Mobile */}
-          <div className="absolute bottom-0 left-0 z-10">
+          <div className="absolute bottom-0 left-0 z-40">
             <div className="flex rounded-r-4xl overflow-hidden">
               <div className="flex flex-col justify-center p-2 bg-gradient-to-r from-cyan-400 via-cyan-300 to-cyan-600 text-white scale-80 -translate-x-2 translate-y-3">
                 <span className="text-xs font-bold italic">XTRA</span>

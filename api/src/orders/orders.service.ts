@@ -12,12 +12,14 @@ import {
 } from '@prisma/client';
 import { OrderFilterDto } from './dto/order-filter.dto';
 import { DiscordService } from 'src/utils/discord.service';
+import { ZaloOAService } from 'src/utils/zaloOA.service';
 
 @Injectable()
 export class OrdersService {
   constructor(
     private prisma: PrismaService,
     private discord: DiscordService,
+    private zaloOA: ZaloOAService,
   ) {}
   async create(createOrderDto: CreateOrderDTO) {
     const { items, payment, ...orderData } = createOrderDto;
@@ -77,10 +79,26 @@ export class OrdersService {
       });
       //CREATE PAYMENT AFTER CREATE ORDER
       // CẬP NHẬT LẠI STOCK CỦA SẢN PHẨM
+
+      // const product = await this.prisma.product.findUnique({
+      //   where: { id: item.productId },
+      //   select: { saleCount: true },
+      // });
+
+      // const saleCount = product?.saleCount ?? 0;
       for (const item of items) {
+        const product = await this.prisma.product.findUnique({
+          where: { id: item.productId },
+          select: { saleCount: true },
+        });
+
+        const currentSaleCount = product?.saleCount ?? 0;
+
         await this.prisma.product.update({
           where: { id: item.productId },
           data: {
+            saleCount: currentSaleCount + item.quantity, // fallback nếu là null
+
             stock: {
               decrement: item.quantity, // Trừ đi số lượng đã đặt
             },
@@ -98,6 +116,7 @@ export class OrdersService {
         },
       });
       this.discord.sendOrderNotification(order);
+      // this.zaloOA.sendOrderNotification(order);
       return order;
     } catch (err) {
       console.log('ERROR ', err);

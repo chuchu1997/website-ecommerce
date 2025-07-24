@@ -35,6 +35,7 @@ interface ProductBase {
     images:ImageInterface[],
     categoryId:number;
     category?:CategoryInterface
+    saleCount?:number;
     reviews:[];
     fakeComments:FakeComment[]
     
