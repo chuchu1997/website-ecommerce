@@ -127,10 +127,9 @@ ${this.formatDetailedItems(order.items)}
   };
   async sendOrderNotification(order: OrderWithItems) {
     // // ${itemsTex   t}   l
-    const webhookUrl = process.env.DISCORD_WEB_HOOK || '';
     let message = this.generateOrderMessage(order);
 
-    await axios.post(webhookUrl, {
+    await axios.post(this.webhookUrl, {
       content: message,
     });
     // await axios.post(this.webhookUrl, {
