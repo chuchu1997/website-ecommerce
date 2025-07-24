@@ -44,6 +44,7 @@ const SEOForm = ({ loading = false, form }: any) => {
   const getSEOScore = () => {
     let score = 0;
     const seo = form.watch("seo");
+    console.log("CALL NE ", seo);
 
     if (seo?.title?.length >= 30 && seo.title.length <= 60) score += 20;
     if (seo?.description?.length >= 120 && seo.description.length <= 160)
@@ -55,6 +56,9 @@ const SEOForm = ({ loading = false, form }: any) => {
     if (seo?.ogTitle && seo?.ogDescription) score += 10;
     return score;
   };
+  useEffect(() => {
+    setSeoScore(getSEOScore());
+  }, []);
   useEffect(() => {
     const subscription = form.watch((_: any, { name }: any) => {
       if (name?.startsWith("seo")) {
