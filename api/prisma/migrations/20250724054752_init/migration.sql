@@ -54,6 +54,22 @@ CREATE TABLE `Store` (
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- CreateTable
+CREATE TABLE `Contact` (
+    `id` INTEGER NOT NULL AUTO_INCREMENT,
+    `name` VARCHAR(191) NOT NULL,
+    `phone` VARCHAR(191) NOT NULL,
+    `email` VARCHAR(191) NOT NULL,
+    `subject` VARCHAR(191) NOT NULL,
+    `content` TEXT NOT NULL,
+    `storeId` INTEGER NOT NULL,
+    `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
+    `updatedAt` DATETIME(3) NOT NULL,
+
+    INDEX `Contact_storeId_idx`(`storeId`),
+    PRIMARY KEY (`id`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+-- CreateTable
 CREATE TABLE `Service` (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
     `title` VARCHAR(191) NOT NULL,
@@ -211,6 +227,7 @@ CREATE TABLE `Product` (
     `shortDescription` VARCHAR(191) NOT NULL,
     `description` TEXT NOT NULL,
     `originalPrice` DOUBLE NULL,
+    `saleCount` DOUBLE NULL,
     `price` DOUBLE NOT NULL,
     `isFeatured` BOOLEAN NOT NULL DEFAULT false,
     `slug` VARCHAR(191) NOT NULL,

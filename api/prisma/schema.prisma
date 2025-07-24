@@ -381,6 +381,7 @@ model Product {
   shortDescription String
   description String  @db.Text
   originalPrice Float?
+  saleCount Float?
   price       Float
   isFeatured Boolean @default(false)
   slug String @unique
