@@ -39,6 +39,7 @@ const ProductAPI = {
         })
     },
     createProduct:async(data:CreateProductInterface)=>{
+        
         return await api({
             method:"POST",
             url:`${url}`,

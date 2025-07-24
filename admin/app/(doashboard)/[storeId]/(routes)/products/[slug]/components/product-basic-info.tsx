@@ -222,7 +222,27 @@ export const BasicInfoSection: React.FC<BasicInfoSectionProps> = ({
             </FormItem>
           )}
         />
-
+        {isProductForm && (
+          <FormField
+            control={form.control}
+            name="saleCount"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Số lượt bán sản phẩm *</FormLabel>
+                <FormControl>
+                  <Input
+                    type="number"
+                    disabled={loading}
+                    {...field}
+                    placeholder="số lượt bán"
+                    className="focus:ring-2 focus:ring-blue-500"
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+        )}
         <FormField
           control={form.control}
           name="stock"

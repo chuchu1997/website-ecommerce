@@ -167,7 +167,7 @@ const DangerZone = ({
       <Button
         variant="destructive"
         onClick={onDelete}
-        disabled={loading}
+        disabled={true}
         className="w-full sm:w-auto hover:bg-red-600 transition-colors">
         {loading ? (
           <Loader2 className="w-4 h-4 mr-2 animate-spin" />

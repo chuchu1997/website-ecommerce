@@ -16,17 +16,10 @@ import {
 import { Badge } from "../badge";
 import { Star, Gift, Truck, ShoppingBasket, Heart } from "lucide-react";
 import { FormatUtils } from "@/utils/format";
-import { BadgeFreeship } from "../Badge/freeship";
-import { DiscountComponent } from "../Discount/discount";
+import { FreeshipBadVer2 } from "../Badge/freeship-ver2";
 import { BadgeFlashSale } from "../Badge/flashsale";
 import { discountTypeEnum, PromotionInterface } from "@/types/promotion";
-import { useCookies } from "react-cookie";
-import { UserCartAPI } from "@/api/cart/cart.api";
-import { CartItemSSR } from "@/app/(main)/gio-hang/components/cart";
-import { useCartContext } from "@/context/cart-context";
 import { useRouter } from "next/navigation";
-import toast from "react-hot-toast";
-import { FreeshipBadVer2 } from "../Badge/freeship-ver2";
 import { useAddToCart } from "@/hooks/use-addToCart";
 import { useEffect, useState } from "react";
 
@@ -77,10 +70,13 @@ export const ProductCard = ({
   isSingleColumn = false,
 }: ProductCardProps) => {
   const [isMounted, setIsMounted] = useState(false);
-
+  const router = useRouter();
   const { addToCart } = useAddToCart();
 
   const promotionProduct = product.promotionProducts;
+  const hasPromotion = promotionProduct.length > 0 && promotion;
+  const hasGifts = product.giftProducts && product.giftProducts.length > 0;
+
   const showLineThroughPrice = promotion
     ? product.price
     : product.originalPrice && product.originalPrice > product.price
@@ -98,9 +94,8 @@ export const ProductCard = ({
     return product.price - promotionProductFlashSale.discount;
   };
 
-  const hasPromotion = promotionProduct.length > 0 && promotion;
-  const hasGifts = product.giftProducts && product.giftProducts.length > 0;
   const discountedPrice = getDiscountedPrice();
+  const isOutOfStock = product.stock <= 0;
 
   const handleAddToCart = async (e: React.MouseEvent, isCheckout: boolean) => {
     e.preventDefault();
@@ -110,9 +105,166 @@ export const ProductCard = ({
       isCheckout,
     });
   };
+
+  const handleContactClick = (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    router.push("/lien-he");
+  };
+
+  const renderStars = (size: "sm" | "md" = "md") => {
+    const starSize = size === "sm" ? "w-3 h-3" : "w-3 h-3 md:w-4 md:h-4";
+    return (
+      <div className="flex items-center gap-0.5">
+        {[...Array(5)].map((_, i) => (
+          <Star
+            key={i}
+            className={`${starSize} text-yellow-400 fill-current`}
+          />
+        ))}
+      </div>
+    );
+  };
+
+  const renderPrice = () => {
+    const priceText =
+      discountedPrice === 0
+        ? "Liên hệ"
+        : FormatUtils.formatPriceVND(discountedPrice);
+    const priceClass = isSingleColumn
+      ? "text-lg font-bold text-red-600"
+      : "text-lg md:text-xl font-bold text-red-600";
+
+    return (
+      <div className={isSingleColumn ? "flex flex-col" : "space-y-1"}>
+        <div
+          className={isSingleColumn ? "" : "flex items-center justify-between"}>
+          <span className={priceClass}>{priceText}</span>
+          {!isSingleColumn && isOutOfStock && (
+            <Badge variant="destructive">Hết hàng</Badge>
+          )}
+        </div>
+        {showLineThroughPrice && (
+          <span
+            className={
+              isSingleColumn
+                ? "text-sm text-gray-400 line-through"
+                : "text-xs md:text-sm text-gray-400 line-through"
+            }>
+            {FormatUtils.formatPriceVND(showLineThroughPrice)}
+          </span>
+        )}
+      </div>
+    );
+  };
+
+  const renderActionButtons = () => {
+    if (product.price === 0) {
+      return (
+        <button
+          onClick={handleContactClick}
+          className={cn(
+            "cursor-pointer bg-red-600 hover:bg-red-700 text-white font-medium rounded-lg transition-colors duration-200 shadow-sm hover:shadow-md",
+            isSingleColumn
+              ? "w-full flex-1 text-xs md:text-sm py-2 md:py-2.5"
+              : "w-full text-xs md:text-sm py-2 md:py-2.5"
+          )}>
+          Liên hệ ngay
+        </button>
+      );
+    }
+
+    if (isSingleColumn) {
+      return (
+        <div className="flex items-center gap-2">
+          <button
+            disabled={isOutOfStock}
+            onClick={(e) => handleAddToCart(e, false)}
+            className="p-2 bg-gray-100 hover:bg-gray-200 rounded-lg transition-colors duration-200 disabled:opacity-50">
+            <ShoppingBasket className="w-4 h-4 text-gray-600" />
+          </button>
+          <button
+            disabled={isOutOfStock}
+            onClick={(e) => handleAddToCart(e, true)}
+            className="px-4 py-2 bg-red-600 hover:bg-red-700 text-white text-sm font-medium rounded-lg transition-colors duration-200 disabled:opacity-50">
+            Mua
+          </button>
+        </div>
+      );
+    }
+
+    return (
+      <div className="flex gap-2 mt-auto pt-2">
+        <button
+          disabled={isOutOfStock}
+          onClick={(e) => handleAddToCart(e, true)}
+          className="cursor-pointer flex-1 bg-red-600 hover:bg-red-700 text-white text-xs md:text-sm font-medium py-2 md:py-2.5 rounded-lg transition-colors duration-200 shadow-sm hover:shadow-md disabled:opacity-50">
+          Mua ngay
+        </button>
+        <button
+          disabled={isOutOfStock}
+          onClick={(e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            handleAddToCart(e, false);
+          }}
+          className="px-3 md:px-4 cursor-pointer bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-lg transition-colors duration-200 disabled:opacity-50">
+          <ShoppingBasket className="w-3 h-3 md:w-4 md:h-4" />
+        </button>
+      </div>
+    );
+  };
+
+  const renderGiftSection = () => {
+    if (!hasGifts) return null;
+
+    if (isSingleColumn) {
+      return (
+        <div className="flex items-center gap-1 text-xs text-emerald-600">
+          <Gift className="w-3 h-3" />
+          <span>Có quà tặng</span>
+        </div>
+      );
+    }
+
+    return (
+      <div className="bg-gradient-to-r from-emerald-50 to-green-50 rounded-lg p-2 md:p-3 border border-emerald-200">
+        <div className="flex items-center gap-2 mb-2">
+          <Gift className="w-3 h-3 md:w-4 md:h-4 text-emerald-600" />
+          <span className="text-xs md:text-sm font-medium text-emerald-800">
+            Quà tặng kèm
+          </span>
+        </div>
+
+        <div className="grid grid-cols-3 gap-1.5 md:gap-2">
+          {product.giftProducts &&
+            product.giftProducts.slice(0, 3).map((giftContainer) => {
+              const gift = giftContainer.gift;
+              return (
+                <RenderGiftItems
+                  key={gift.id}
+                  gift={gift}
+                  className="aspect-square"
+                />
+              );
+            })}
+
+          {product.giftProducts && product.giftProducts.length > 3 && (
+            <div className="aspect-square bg-gray-100 rounded-lg flex items-center justify-center border border-gray-200">
+              <span className="text-[10px] md:text-xs font-medium text-gray-600">
+                +{product.giftProducts.length - 3}
+              </span>
+            </div>
+          )}
+        </div>
+      </div>
+    );
+  };
+
   useEffect(() => {
     setIsMounted(true);
   }, []);
+
   if (!isMounted) return null;
 
   // Single Column Layout (Mobile-like horizontal layout)
@@ -161,58 +313,18 @@ export const ProductCard = ({
 
               {/* Rating */}
               <div className="flex items-center gap-2">
-                <div className="flex items-center gap-0.5">
-                  {[...Array(5)].map((_, i) => (
-                    <Star
-                      key={i}
-                      className="w-3 h-3 text-yellow-400 fill-current"
-                    />
-                  ))}
-                </div>
+                {renderStars("sm")}
                 <span className="text-gray-500 text-xs">5.0 (19.3k)</span>
               </div>
 
               {/* Gift indicator */}
-              {hasGifts && (
-                <div className="flex items-center gap-1 text-xs text-emerald-600">
-                  <Gift className="w-3 h-3" />
-                  <span>Có quà tặng</span>
-                </div>
-              )}
+              {renderGiftSection()}
             </div>
 
             {/* Bottom Section */}
             <div className="flex items-center justify-between gap-2 mt-3">
-              <div className="flex flex-col">
-                <span className="text-lg font-bold text-red-600">
-                  {getDiscountedPrice() === 0
-                    ? "Liên hệ"
-                    : FormatUtils.formatPriceVND(getDiscountedPrice())}
-                </span>
-                {showLineThroughPrice && (
-                  <span className="text-sm text-gray-400 line-through">
-                    {FormatUtils.formatPriceVND(showLineThroughPrice)}
-                  </span>
-                )}
-              </div>
-
-              {/* Action Buttons */}
-              <div className="flex items-center gap-2">
-                <button
-                  onClick={(e: any) => {
-                    handleAddToCart(e, false);
-                  }}
-                  className="p-2 bg-gray-100 hover:bg-gray-200 rounded-lg transition-colors duration-200">
-                  <ShoppingBasket className="w-4 h-4 text-gray-600" />
-                </button>
-                <button
-                  onClick={(e) => {
-                    handleAddToCart(e, true);
-                  }}
-                  className="px-4 py-2 bg-red-600 hover:bg-red-700 text-white text-sm font-medium rounded-lg transition-colors duration-200">
-                  Mua
-                </button>
-              </div>
+              {renderPrice()}
+              {renderActionButtons()}
             </div>
           </div>
         </div>
@@ -257,8 +369,7 @@ export const ProductCard = ({
         {/* Content Section */}
         <CardContent className="p-3 md:p-4 flex-1 flex flex-col space-y-2 md:space-y-3">
           {/* Product Title */}
-
-          <CardTitle className=" text-sm md:text-base font-semibold text-gray-900 leading-snug line-clamp-2 break-words">
+          <CardTitle className="text-sm md:text-base font-semibold text-gray-900 leading-snug line-clamp-2 break-words">
             {product.name}
           </CardTitle>
 
@@ -269,12 +380,7 @@ export const ProductCard = ({
           {/* Rating and Badges */}
           <div className="flex items-center justify-between gap-2">
             <div className="flex items-center gap-1">
-              {[...Array(5)].map((_, i) => (
-                <Star
-                  key={i}
-                  className="w-3 h-3 md:w-4 md:h-4 text-yellow-400 fill-current"
-                />
-              ))}
+              {renderStars("md")}
               <span className="text-xs md:text-sm text-gray-500 ml-1">
                 (5.0)
               </span>
@@ -287,79 +393,13 @@ export const ProductCard = ({
           </div>
 
           {/* Price Section */}
-          <div className="space-y-1">
-            <div className="flex items-center justify-between">
-              <span className="text-lg md:text-xl font-bold text-red-600">
-                {getDiscountedPrice() === 0
-                  ? "Liên hệ"
-                  : FormatUtils.formatPriceVND(getDiscountedPrice())}
-              </span>
-              {product.stock <= 0 && (
-                <Badge variant={"destructive"}>Hết hàng</Badge>
-              )}
-            </div>
-            {showLineThroughPrice && (
-              <span className="text-xs md:text-sm text-gray-400 line-through">
-                {FormatUtils.formatPriceVND(showLineThroughPrice)}
-              </span>
-            )}
-          </div>
+          {renderPrice()}
 
           {/* Gift Products Section */}
-          {hasGifts && (
-            <div className="bg-gradient-to-r from-emerald-50 to-green-50 rounded-lg p-2 md:p-3 border border-emerald-200">
-              <div className="flex items-center gap-2 mb-2">
-                <Gift className="w-3 h-3 md:w-4 md:h-4 text-emerald-600" />
-                <span className="text-xs md:text-sm font-medium text-emerald-800">
-                  Quà tặng kèm
-                </span>
-              </div>
-
-              <div className="grid grid-cols-3 gap-1.5 md:gap-2">
-                {product.giftProducts &&
-                  product.giftProducts.slice(0, 3).map((giftContainer) => {
-                    const gift = giftContainer.gift;
-                    return (
-                      <RenderGiftItems
-                        key={gift.id}
-                        gift={gift}
-                        className="aspect-square"
-                      />
-                    );
-                  })}
-
-                {product.giftProducts && product.giftProducts.length > 3 && (
-                  <div className="aspect-square bg-gray-100 rounded-lg flex items-center justify-center border border-gray-200">
-                    <span className="text-[10px] md:text-xs font-medium text-gray-600">
-                      +{product.giftProducts.length - 3}
-                    </span>
-                  </div>
-                )}
-              </div>
-            </div>
-          )}
+          {renderGiftSection()}
 
           {/* Action Buttons */}
-          <div className="flex gap-2 mt-auto pt-2">
-            <button
-              disabled={product.stock <= 0}
-              onClick={(e) => {
-                handleAddToCart(e, true);
-              }}
-              className="cursor-pointer flex-1 bg-red-600 hover:bg-red-700 text-white text-xs md:text-sm font-medium py-2 md:py-2.5 rounded-lg transition-colors duration-200 shadow-sm hover:shadow-md">
-              Mua ngay
-            </button>
-            <button
-              disabled={product.stock <= 0}
-              onClick={(e) => {
-                e.preventDefault();
-                e.stopPropagation();
-                handleAddToCart(e, false);
-              }}
-              className="px-3 md:px-4 cursor-pointer bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-lg transition-colors duration-200">
-              <ShoppingBasket className="w-3 h-3 md:w-4 md:h-4" />
-            </button>
-          </div>
+          <div>{renderActionButtons()}</div>
         </CardContent>
       </Card>
     </Link>

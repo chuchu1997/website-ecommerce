@@ -62,7 +62,8 @@ interface ProductBase {
     seo?:SeoType
     fakeCommens:FakeComment[]
     promotionProducts:ProductPromotion[]
-    
+    saleCount?:number;
+
 
         //sản phẩm này có tặng quà nào không?
     giftProducts?:any[];

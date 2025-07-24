@@ -29,10 +29,8 @@ export const ProductClient = ({ product }: propsClient) => {
   if (!isMount) return null;
   return (
     <div className="container mx-auto ">
-      {/* <ProductClientPC product={product} /> */}
       <ProductClientPC product={product} />
-      {/*       
-      {isMobile ? (
+      {/* {isMobile ? (
         <ProductMobile product={product} />
       ) : (
         <ProductClientPC product={product} />

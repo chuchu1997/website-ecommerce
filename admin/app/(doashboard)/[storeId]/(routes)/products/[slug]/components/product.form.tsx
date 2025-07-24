@@ -59,6 +59,7 @@ const formSchema = z.object({
   slug: z.string().min(1, "Slug là bắt buộc"),
   sku: z.string().min(1, "SKU là bắt buộc"),
   stock: z.coerce.number().min(0, "Số lượng không được âm"),
+  saleCount: z.coerce.number().optional(),
   // Required colors selection
   viewCount: z.coerce.number().default(0).optional(),
   ratingCount: z.coerce.number().default(5).optional(),
@@ -84,6 +85,7 @@ export const ProductForm: React.FC<ProductProps> = ({ initialData }) => {
     defaultValues: {
       name: "",
       categoryId: "",
+      saleCount: 0,
       originalPrice: 0,
       price: 0,
       images: [],
@@ -217,6 +219,7 @@ export const ProductForm: React.FC<ProductProps> = ({ initialData }) => {
         categoryId,
         shortDescription,
         seo,
+        saleCount,
       } = data;
 
       const cleanedColors = selectedColors.map((color) => {
@@ -248,6 +251,7 @@ export const ProductForm: React.FC<ProductProps> = ({ initialData }) => {
         slug,
         stock,
         sku,
+        saleCount,
         seo: seo
           ? {
               ...seo,
@@ -323,6 +327,7 @@ export const ProductForm: React.FC<ProductProps> = ({ initialData }) => {
           ...initialData,
           seo: initialData.seo ?? {
             title: "",
+
             description: "",
             keywords: [],
             slug: "",
@@ -332,6 +337,7 @@ export const ProductForm: React.FC<ProductProps> = ({ initialData }) => {
             ogDescription: "",
             ogImage: "",
           },
+          saleCount: initialData.saleCount ?? 0,
           categoryId: initialData.categoryId.toString(),
           originalPrice: initialData.originalPrice ?? 0,
         };

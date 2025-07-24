@@ -28,6 +28,7 @@ import ProductSuggess from "./productSuggest";
 import { useCartContext } from "@/context/cart-context";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { useAddToCart } from "@/hooks/use-addToCart";
+import SoldInfo from "@/components/ui/soldInfo";
 interface propsProductMobile {
   product: ProductInterface;
 }
@@ -58,7 +59,9 @@ export default function ProductMobile({ product }: propsProductMobile) {
   })();
   const showLineThroughPrice = promotion
     ? product.price
-    : product.originalPrice && product.originalPrice > product.price
+    : product.originalPrice &&
+      product.originalPrice > 0 &&
+      product.originalPrice > product.price
     ? product.originalPrice
     : null;
   const getDiscountedPrice = () => {
@@ -72,23 +75,13 @@ export default function ProductMobile({ product }: propsProductMobile) {
     return product.price - promotionProductFlashSale.discount;
   };
 
-  const StickyBottomActions = () => (
-    <div className="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 p-4 z-50">
-      <div className="flex gap-3">
-        {/* Store Button */}
-
-        {/* Chat Button */}
-        {/* <button
-          className="flex-shrink-0 flex flex-col items-center justify-center w-16 h-12 border border-gray-300 rounded-lg"
-          onClick={() => {
-            cart.addItem(product, 1);
-          }}>
-          <div className="w-5 h-5 bg-gray-300 rounded mb-1"></div>
-          <span className="text-xs text-gray-600">Thêm vào giỏ hàng</span>
-        </button> */}
-
-        <button
-          className="
+  const StickyBottomActions = () => {
+    if (product.price === 0) return null;
+    return (
+      <div className="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 p-4 z-50">
+        <div className="flex gap-3">
+          <button
+            className="
     flex-1                      
     bg-black text-white 
     py-0 px-0                   
@@ -99,29 +92,30 @@ export default function ProductMobile({ product }: propsProductMobile) {
     flex flex-col sm:flex-row items-center justify-center space-x-2
 
   "
-          onClick={async () => {
-            await cart.addToCart({
-              product,
-              isCheckout: false,
-            });
-          }}>
-          <ShoppingCart className="w-4 h-4 sm:w-5 sm:h-5" />
-          <span>Thêm vào giỏ hàng</span>
-        </button>
-        {/* Buy Now Button */}
-        <button
-          className="flex-1 bg-red-500 hover:bg-red-600 text-white font-medium py-3 px-6 rounded-lg transition-colors"
-          onClick={async () => {
-            await cart.addToCart({
-              product,
-              isCheckout: true,
-            });
-          }}>
-          Mua Ngay
-        </button>
+            onClick={async () => {
+              await cart.addToCart({
+                product,
+                isCheckout: false,
+              });
+            }}>
+            <ShoppingCart className="w-4 h-4 sm:w-5 sm:h-5" />
+            <span>Thêm vào giỏ hàng</span>
+          </button>
+          {/* Buy Now Button */}
+          <button
+            className="flex-1 bg-red-500 hover:bg-red-600 text-white font-medium py-3 px-6 rounded-lg transition-colors"
+            onClick={async () => {
+              await cart.addToCart({
+                product,
+                isCheckout: true,
+              });
+            }}>
+            Mua Ngay
+          </button>
+        </div>
       </div>
-    </div>
-  );
+    );
+  };
 
   return (
     <div className="min-h-screen bg-gray-50 ">
@@ -139,16 +133,19 @@ export default function ProductMobile({ product }: propsProductMobile) {
               </p>
               <BadgePercent size={18} className="text-red-500 order-3" />
 
-              {showLineThroughPrice && (
-                <p className="text-base font-medium text-gray-400 line-through order-2">
-                  {FormatUtils.formatPriceVND(showLineThroughPrice)}
-                </p>
-              )}
-
-              {product.originalPrice &&
+              {product.originalPrice != null &&
+                product.originalPrice > 0 &&
                 product.originalPrice > product.price && (
-                  <div className="bg-red-100 text-red-600 rounded-md px-2 py-1 text-xs font-semibold order-4">
-                    -{discountPercentage}%
+                  <div>
+                    {showLineThroughPrice != null &&
+                      showLineThroughPrice > 0 && (
+                        <span className="text-lg text-gray-500 line-through">
+                          {FormatUtils.formatPriceVND(showLineThroughPrice)}
+                        </span>
+                      )}
+                    <div className="bg-red-100 text-red-600 rounded-md px-2 py-1 text-xs font-semibold order-4">
+                      -{discountPercentage}%
+                    </div>
                   </div>
                 )}
             </div>
@@ -168,20 +165,22 @@ export default function ProductMobile({ product }: propsProductMobile) {
 
           {/* Rating & Reviews */}
           <div className="flex items-center gap-3 mb-4 text-sm">
-            <div className="flex items-center gap-1">
+            {/* <div className="flex items-center gap-1">
               <Star className="w-4 h-4 fill-yellow-400 text-yellow-400" />
               <span className="font-medium text-gray-700">
                 {product.ratingCount}
               </span>
               <span className="text-blue-500">(100K)</span>
-            </div>
+            </div> */}
             <span className="text-gray-300">|</span>
-            <div className="text-gray-600 flex items-center gap-1">
+
+            <SoldInfo sold={product.saleCount ?? 10000} />
+            {/* <div className="text-gray-600 flex items-center gap-1">
               <span>Bán</span>
               <span className="text-gray-900 font-semibold">200K</span>
               <span>trực tuyến</span>
               <Info size={14} className="text-gray-400" />
-            </div>
+            </div> */}
           </div>
 
           <Separator />
