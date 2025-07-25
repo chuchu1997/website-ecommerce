@@ -96,11 +96,11 @@ export function Slider<T>({
           {items.map((item, index) => (
             <div
               key={index}
-              className={`flex-shrink-0 ${onItemClick ? 'cursor-pointer' : ''}`}
+              className={`h-full flex-shrink-0 ${onItemClick ? 'cursor-pointer' : ''}`}
               style={{ width: itemWidth }}
               onClick={() => handleItemClick(item, index)}
             >
-              <div className="h-full transform transition-all duration-200 hover:scale-105 hover:shadow-lg rounded-lg overflow-hidden bg-white border border-slate-200/60">
+              <div className="h-full transform transition-all duration-200 hover:scale-105 hover:shadow-lg rounded-lg overflow-hidden  border border-slate-200/60">
                 {renderItem(item, index)}
               </div>
             </div>

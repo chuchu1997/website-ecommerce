@@ -342,7 +342,7 @@ const ProfessionalNavbar: React.FC = () => {
 
         {/* MIDDLE SECTION - Main Categories & Cart */}
         <div className="hidden sm:block bg-white border-b border-gray-100">
-          <div className="max-w-7xl mx-auto px-4 py-0">
+          <div className="max-w-7xl mx-auto px-4 py-1">
             <div className="flex items-center justify-between">
               {/* Desktop Navigation */}
               <nav className="hidden lg:flex items-center space-x-1 flex-1">
@@ -382,7 +382,7 @@ const ProfessionalNavbar: React.FC = () => {
                     {hasMegaMenu(category) &&
                       activeMegaMenu === category.id.toString() && (
                         <div
-                          className="absolute left-0 top-full mt-2 w-[800px] h-[500px] bg-white rounded-2xl shadow-2xl border border-gray-100 z-50 flex overflow-hidden"
+                          className="absolute left-0 top-full  w-[800px] h-[750px] bg-white rounded-2xl shadow-2xl border border-gray-100 z-50 flex "
                           onMouseEnter={handleMenuEnter}
                           onMouseLeave={handleMenuLeave}>
                           {/* Left Column */}
@@ -390,7 +390,7 @@ const ProfessionalNavbar: React.FC = () => {
                             <h3 className="text-lg font-bold text-gray-900 mb-4 pb-2 border-b border-gray-300">
                               {getCategoryDisplayName(category)}
                             </h3>
-                            <div className="space-y-2 max-h-[400px] overflow-y-auto">
+                            <div className="space-y-2 max-h-[750px] overflow-y-auto">
                               {category.subCategories.map((subcategory) => (
                                 <div
                                   key={subcategory.id}
@@ -563,21 +563,15 @@ const ProfessionalNavbar: React.FC = () => {
         </div>
 
         {/* BOTTOM SECTION - Subcategories */}
-        <div className="bg-gradient-to-r from-gray-50 via-blue-50 to-purple-50 border-b border-gray-200">
+        <div className="hidden md:block bg-gradient-to-r from-gray-50 via-blue-50 to-purple-50 border-b border-gray-200">
           <div className="max-w-7xl mx-auto px-4 py-2">
             <div className="flex items-center justify-between">
-              <div className="flex items-center space-x-1 flex-wrap">
-                {subCate.slice(0, 12).map((category, index) => (
+              <div className="flex items-center space-x-1 space-y-1 flex-wrap">
+                {subCate.slice(0, 8).map((category, index) => (
                   <Link
                     href={`/danh-muc/${category.slug}`}
                     key={category.id}
-                    className={`flex-shrink-0 px-3 py-1.5 text-sm font-medium rounded-full transition-all duration-200 hover:scale-105 ${
-                      index % 3 === 0
-                        ? "bg-blue-100 text-blue-700 hover:bg-blue-200"
-                        : index % 3 === 1
-                        ? "bg-purple-100 text-purple-700 hover:bg-purple-200"
-                        : "bg-green-100 text-green-700 hover:bg-green-200"
-                    }`}>
+                    className={`px-3 py-1.5 text-sm font-medium rounded-full bg-blue-100 text-blue-700 hover:bg-blue-200 transition-all hover:scale-105`}>
                     {category.name}
                   </Link>
                 ))}
@@ -831,7 +825,7 @@ const ProfessionalNavbar: React.FC = () => {
                   <div className="flex items-center space-x-2">
                     <Phone className="w-4 h-4 text-blue-600" />
                     <span className="text-sm font-medium text-blue-700">
-                      1800-1234
+                      {storeInfo?.phone}
                     </span>
                   </div>
                   <div className="w-px h-4 bg-gray-300"></div>
@@ -849,7 +843,7 @@ const ProfessionalNavbar: React.FC = () => {
       </header>
 
       {/* Spacer for fixed header - Adjusted for three sections */}
-      <div className="h-[180px] lg:h-[160px]"></div>
+      {/* <div className="h-[180px] lg:h-[160px]"></div> */}
 
       {/* Search Modal - Enhanced with beautiful design */}
       {isSearchOpen && (

@@ -57,72 +57,72 @@ const AboutUsPage: React.FC = () => {
 
 const statistics: Statistic[] = [
   {
-    label: "Khách hàng hài lòng",
-    value: "100K+",
+    label: "Khách hàng tin tưởng",
+    value: "50K+",
     icon: <Heart className="w-6 h-6" />,
-    description: "Phục vụ trên toàn quốc"
+    description: "Trên toàn quốc và khu vực Đông Nam Á"
   },
   {
-    label: "Showroom & Đại lý",
-    value: "200+",
+    label: "Đại lý & đối tác",
+    value: "300+",
     icon: <Building className="w-6 h-6" />,
-    description: "Phủ sóng khắp các tỉnh thành"
+    description: "Hệ thống phân phối phủ rộng"
   },
   {
-    label: "Năm kinh nghiệm",
-    value: "15+",
+    label: "Kinh nghiệm thị trường",
+    value: "10+",
     icon: <Award className="w-6 h-6" />,
-    description: "Trong lĩnh vực nội thất"
+    description: "Trong lĩnh vực máy xây dựng"
   },
   {
-    label: "Dự án đã hoàn thành",
-    value: "30K+",
+    label: "Dự án cung cấp thiết bị",
+    value: "20K+",
     icon: <Home className="w-6 h-6" />,
-    description: "Căn hộ, nhà ở, văn phòng, showroom"
+    description: "Công trình dân dụng, công nghiệp, hạ tầng"
   }
 ];
 
 const services = [
   {
-    title: "Nội Thất Gia Đình",
-    description: "Cung cấp đa dạng nội thất cho phòng khách, phòng ngủ, bếp với thiết kế hiện đại và tinh tế.",
-    icon: "🛋️",
+    title: "Cung Cấp Máy Xây Dựng Mới",
+    description: "Phân phối các dòng máy xây dựng chính hãng, chất lượng cao, đa dạng chủng loại.",
+    icon: "🏗️",
     features: [
-      "Sofa, bàn ghế, tủ, kệ TV...",
-      "Chất liệu cao cấp, bền đẹp theo thời gian",
-      "Phù hợp nhiều phong cách: hiện đại, cổ điển, Bắc Âu",
+      "Xe xúc, xe lu, máy ủi, máy trộn bê tông,...",
+      "Hàng mới 100%, bảo hành chính hãng",
+      "Nguồn gốc rõ ràng, chứng từ đầy đủ"
     ],
   },
   {
-    title: "Tư Vấn Thiết Kế Nội Thất",
-    description: "Đội ngũ chuyên gia tư vấn & thiết kế không gian sống phù hợp với phong cách cá nhân và ngân sách.",
-    icon: "🧑‍🎨",
+    title: "Tư Vấn Lựa Chọn Thiết Bị",
+    description: "Đội ngũ kỹ sư giàu kinh nghiệm hỗ trợ lựa chọn thiết bị phù hợp nhu cầu và ngân sách.",
+    icon: "📐",
     features: [
-      "Tư vấn tận nơi hoặc online",
-      "Thiết kế 2D/3D miễn phí cho khách hàng đặt trọn bộ",
-      "Đồng hành từ ý tưởng đến hoàn thiện",
+      "Tư vấn tận nơi hoặc online miễn phí",
+      "Đề xuất thiết bị theo loại công trình",
+      "Phân tích chi phí – hiệu suất sử dụng"
     ],
   },
   {
-    title: "Thi Công & Lắp Đặt",
-    description: "Cung cấp dịch vụ vận chuyển, lắp đặt nội thất nhanh chóng, an toàn và đúng kỹ thuật.",
-    icon: "🔨",
+    title: "Giao Hàng & Bàn Giao Máy",
+    description: "Dịch vụ vận chuyển toàn quốc, lắp đặt tận nơi và hướng dẫn vận hành chi tiết.",
+    icon: "🚚",
     features: [
-      "Đội ngũ kỹ thuật chuyên nghiệp",
-      "Miễn phí lắp đặt tại nội thành",
-      "Bảo hành sau thi công",
+      "Giao hàng đúng tiến độ, an toàn",
+      "Hướng dẫn kỹ thuật vận hành tại công trình",
+      "Miễn phí vận chuyển tại các khu vực chính"
     ],
   },
   {
-    title: "Bảo Hành & Chăm Sóc",
-    description: "Chính sách bảo hành rõ ràng, hỗ trợ bảo trì và chăm sóc sản phẩm lâu dài.",
-    icon: "🛠️",
+    title: "Bảo Hành & Hậu Mãi",
+    description: "Chính sách bảo hành minh bạch, dịch vụ hậu mãi tận tâm và linh kiện thay thế sẵn có.",
+    icon: "🔧",
     features: [
-      "Bảo hành từ 12–36 tháng",
-      "Hỗ trợ thay thế phụ kiện, sửa chữa sản phẩm",
-      "Dịch vụ chăm sóc khách hàng tận tâm",
+      "Bảo hành từ 6–24 tháng tuỳ dòng máy",
+      "Sửa chữa nhanh, có máy thay thế tạm thời",
+      "Hỗ trợ kỹ thuật 24/7"
     ],
-  },
+  }
 ];
   
   useEffect(() => {

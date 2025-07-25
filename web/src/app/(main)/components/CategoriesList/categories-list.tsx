@@ -50,9 +50,9 @@ const CategoriesList = () => {
     <Link
       href={`/danh-muc/${category.slug}`}
       key={category.id}
-      className="group flex flex-col items-center justify-start p-3 rounded-lg border hover:shadow-lg transition duration-300 bg-white">
+      className="border group flex flex-col items-center justify-start p-3 rounded-lg hover:shadow-lg transition duration-300 bg-white">
       <div className="w-24 h-24 relative mb-2 rounded-full overflow-hidden border">
-        {category.imageUrl ? (
+        {category.imageUrl && (
           <ImageLoader
             priority={true}
             src={category.imageUrl}
@@ -60,10 +60,6 @@ const CategoriesList = () => {
             fill
             className="object-cover group-hover:scale-105 transition-transform duration-300"
           />
-        ) : (
-          <div className="w-full h-full flex items-center justify-center text-sm text-gray-400 bg-gray-100">
-            No Image
-          </div>
         )}
       </div>
       <div className="text-center">

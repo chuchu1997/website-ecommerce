@@ -64,7 +64,7 @@ const MusicStoreLanding: React.FC = async () => {
       />
       <ProductWithCategoryType
         industry={storeInfo.industry ?? ""}
-        slug="dung-cu-dien-cam-tay"
+        slug="thiet-bi-xay-dung"
       />
       <ProductWithCategoryType
         industry={storeInfo.industry ?? ""}
@@ -72,11 +72,11 @@ const MusicStoreLanding: React.FC = async () => {
       />
       <ProductWithCategoryType
         industry={storeInfo.industry ?? ""}
-        slug="may-can-bang-laser"
+        slug="dung-cu-dien-cam-tay"
       />
       <ProductWithCategoryType
         industry={storeInfo.industry ?? ""}
-        slug="may-xit-rua-ap-luc-cao"
+        slug="dong-co-no"
       />
       <ProductWithCategoryType
         industry={storeInfo.industry ?? ""}
@@ -84,7 +84,7 @@ const MusicStoreLanding: React.FC = async () => {
       />
       <ProductWithCategoryType
         industry={storeInfo.industry ?? ""}
-        slug="may-phat-dien"
+        slug="vat-tu-co-khi"
       />
       <ProductWithCategoryType
         industry={storeInfo.industry ?? ""}

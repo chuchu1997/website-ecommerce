@@ -33,39 +33,38 @@ interface Props {
 }
 
 export const InteriorContent: React.FC<Props> = ({ industry }) => {
-  const services = [
+   const services = [
     {
-      title: 'Nội Thất Gia Đình',
+      title: 'Phân Phối Máy Móc Công Trình',
       description:
-        'Mang đến giải pháp nội thất hoàn hảo cho phòng khách, phòng ngủ, phòng bếp với thiết kế hiện đại và tinh tế.',
-      icon: '🛋️',
-      gradient: 'from-yellow-600 to-orange-500',
-      bgGradient: 'from-yellow-50 to-orange-50',
+        'Cung cấp các dòng máy xây dựng chất lượng cao như máy xúc, máy ủi, máy trộn bê tông... từ các thương hiệu uy tín.',
+      icon: '🚜',
+      gradient: 'from-yellow-600 to-yellow-800',
+      bgGradient: 'from-yellow-50 to-yellow-100',
     },
     {
-      title: 'Thiết Kế & Thi Công Trọn Gói',
+      title: 'Bảo Trì & Sửa Chữa Nhanh Chóng',
       description:
-        'Đội ngũ kiến trúc sư và thợ lành nghề sẽ đồng hành từ thiết kế 3D đến thi công hoàn thiện nội thất cho không gian sống của bạn.',
-      icon: '📐',
-      gradient: 'from-rose-500 to-red-600',
-      bgGradient: 'from-rose-50 to-red-50',
-    },
-    {
-      title: 'Bảo Hành & Dịch Vụ Hậu Mãi',
-      description:
-        'Chính sách bảo hành rõ ràng, hỗ trợ bảo trì – sửa chữa tận nơi nhằm đảm bảo chất lượng sản phẩm bền lâu.',
-      icon: '🛠️',
-      gradient: 'from-blue-500 to-indigo-600',
+        'Dịch vụ bảo dưỡng và sửa chữa tận nơi, giúp máy móc hoạt động ổn định, giảm thời gian ngưng trệ thi công.',
+      icon: '🔧',
+      gradient: 'from-blue-600 to-indigo-700',
       bgGradient: 'from-blue-50 to-indigo-50',
+    },
+    {
+      title: 'Cho Thuê Máy Xây Dựng',
+      description:
+        'Giải pháp thuê máy xây dựng linh hoạt theo ngày, tuần hoặc dự án. Tiết kiệm chi phí đầu tư ban đầu.',
+      icon: '📦',
+      gradient: 'from-orange-600 to-red-500',
+      bgGradient: 'from-orange-50 to-red-50',
     },
   ];
 
-  return (
+  return  (
     <section className="relative py-12 sm:py-16 lg:py-24 bg-gradient-to-br from-gray-50 via-white to-gray-100 overflow-hidden">
-      {/* Background Decorations */}
       <div className="absolute inset-0 overflow-hidden">
-        <div className="absolute -top-40 -right-40 w-80 h-80 bg-gradient-to-br from-amber-200/30 to-orange-300/30 rounded-full blur-3xl" />
-        <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-gradient-to-br from-blue-200/30 to-purple-300/30 rounded-full blur-3xl" />
+        <div className="absolute -top-40 -right-40 w-80 h-80 bg-gradient-to-br from-yellow-300/30 to-orange-400/30 rounded-full blur-3xl" />
+        <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-gradient-to-br from-blue-200/30 to-indigo-300/30 rounded-full blur-3xl" />
       </div>
 
       <div className="relative container mx-auto px-4 sm:px-6 lg:px-8">
@@ -75,28 +74,27 @@ export const InteriorContent: React.FC<Props> = ({ industry }) => {
           whileInView="show"
           viewport={{ once: true, margin: "-100px" }}
         >
-          {/* Header Section */}
           <motion.div variants={fadeInUp} className="text-center mb-12 sm:mb-16 lg:mb-20">
-            <div className="inline-flex items-center justify-center w-16 h-16 sm:w-20 sm:h-20 bg-gradient-to-r from-amber-500 to-orange-600 rounded-2xl mb-6 sm:mb-8">
-              <span className="text-2xl sm:text-3xl">🏠</span>
+            <div className="inline-flex items-center justify-center w-16 h-16 sm:w-20 sm:h-20 bg-gradient-to-r from-yellow-600 to-orange-600 rounded-2xl mb-6 sm:mb-8">
+              <span className="text-2xl sm:text-3xl">🏗️</span>
             </div>
 
             <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-extrabold mb-4 sm:mb-6 leading-tight">
               <span className="bg-gradient-to-r from-gray-900 via-gray-800 to-gray-900 bg-clip-text text-transparent">
-                Kiến Tạo Không Gian Sống Đẳng Cấp
+                Giải Pháp Máy Móc Công Trình
               </span>
               <br />
-              <span className="bg-gradient-to-r from-amber-600 via-orange-600 to-amber-700 bg-clip-text text-transparent">
-                {industry || "Happy Furniture"}
+              <span className="bg-gradient-to-r from-yellow-700 via-orange-600 to-red-600 bg-clip-text text-transparent">
+                {industry || "Máy Xây Dựng Mới"}
               </span>
             </h2>
 
             <p className="text-base sm:text-lg md:text-xl lg:text-2xl text-gray-600 max-w-2xl lg:max-w-4xl mx-auto leading-relaxed">
-              Từ nội thất gia đình đến giải pháp thiết kế thi công trọn gói – Happy Furniture đồng hành cùng bạn.
+              Cung cấp – bảo trì – cho thuê máy móc công trình hiện đại cho mọi dự án xây dựng tại Việt Nam.
             </p>
           </motion.div>
 
-          {/* Services Grid */}
+          {/* Grid Services */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8 lg:gap-10">
             {services.map((item, index) => (
               <motion.div
@@ -109,10 +107,8 @@ export const InteriorContent: React.FC<Props> = ({ industry }) => {
                   variants={cardHover}
                   className={`relative bg-gradient-to-br ${item.bgGradient} backdrop-blur-sm rounded-2xl sm:rounded-3xl p-6 sm:p-8 lg:p-10 shadow-lg hover:shadow-2xl transition-all duration-500 border border-white/50 overflow-hidden`}
                 >
-                  {/* Hover Glow */}
                   <div className="absolute inset-0 bg-gradient-to-br from-white/80 to-white/40 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
 
-                  {/* Icon */}
                   <div className="relative z-10 mb-6 sm:mb-8">
                     <div className={`inline-flex items-center justify-center w-16 h-16 sm:w-20 sm:h-20 bg-gradient-to-r ${item.gradient} rounded-2xl shadow-lg group-hover:scale-110 transition-transform duration-300`}>
                       <span className="text-2xl sm:text-3xl lg:text-4xl filter drop-shadow-sm">
@@ -121,7 +117,6 @@ export const InteriorContent: React.FC<Props> = ({ industry }) => {
                     </div>
                   </div>
 
-                  {/* Title + Description */}
                   <div className="relative z-10">
                     <h3 className="text-lg sm:text-xl lg:text-2xl font-bold text-gray-900 mb-3 sm:mb-4 group-hover:text-gray-800 transition-colors">
                       {item.title}
@@ -131,7 +126,6 @@ export const InteriorContent: React.FC<Props> = ({ industry }) => {
                     </p>
                   </div>
 
-                  {/* Bottom Accent */}
                   <div className={`absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-r ${item.gradient} opacity-0 group-hover:opacity-100 transition-opacity duration-300`} />
                 </motion.div>
               </motion.div>
