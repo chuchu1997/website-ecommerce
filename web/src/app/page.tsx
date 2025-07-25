@@ -22,7 +22,7 @@ import { SeoInterface } from "@/types/seo";
 // import { HighlightedProjects } from "./components/HighlightProject/HighlightProject";
 // import { PartnerBrands } from "./components/PartnerBrands/PartnerBrands";
 // import { NewsMasterPage } from "./components/News/News";
-import Navbar from "@/components/ui/Navbar/components/NavbarClientVer2";
+import NavbarComponent from "@/components/ui/Navbar";
 import { Hero } from "./(main)/components/Hero/Hero";
 import { InteriorContent } from "./(main)/components/InteriorContent";
 import { FeatureProducts } from "./(main)/components/FeatureProduct/FeatureProduct";
@@ -32,6 +32,7 @@ import { PartnerBrands } from "./(main)/components/PartnerBrands/PartnerBrands";
 import { NewsMasterPage } from "./(main)/components/News/News";
 import { ProductWithCategoryType } from "./(main)/components/ProductWithCategoryType/ProductWithCategoryType";
 import { FlashSaleComponentView } from "./(main)/components/flash-sale";
+import CategoriesList from "./(main)/components/CategoriesList/categories-list";
 
 export const dynamic = "force-dynamic";
 export const revalidate = 60;
@@ -40,13 +41,16 @@ const MusicStoreLanding: React.FC = async () => {
   const storeInfo: StoreInterface = (await StoreAPI.getStoreInfo()).data.store;
 
   return (
-    <div className=" min-h-screen bg-white w-full">
+    <div className=" min-h-screen bg-gray-100 w-full">
       {/* Banner Section */}
       {/* <Banner /> */}
-      <Navbar />
+      <NavbarComponent />
+
       <Hero />
+      <CategoriesList />
+
       <FlashSaleComponentView />
-      <InteriorContent industry={storeInfo.industry ?? ""} />
+
       <FeatureProducts industry={storeInfo.industry ?? ""} />
       {/* <ProductWithCategoryType
         industry={storeInfo.industry ?? ""}
@@ -54,9 +58,43 @@ const MusicStoreLanding: React.FC = async () => {
       />
       */}
       <ProductCategories />
+      <ProductWithCategoryType
+        industry={storeInfo.industry ?? ""}
+        slug="ban-cat-gach"
+      />
+      <ProductWithCategoryType
+        industry={storeInfo.industry ?? ""}
+        slug="dung-cu-dien-cam-tay"
+      />
+      <ProductWithCategoryType
+        industry={storeInfo.industry ?? ""}
+        slug="may-han-dien-tu"
+      />
+      <ProductWithCategoryType
+        industry={storeInfo.industry ?? ""}
+        slug="may-can-bang-laser"
+      />
+      <ProductWithCategoryType
+        industry={storeInfo.industry ?? ""}
+        slug="may-xit-rua-ap-luc-cao"
+      />
+      <ProductWithCategoryType
+        industry={storeInfo.industry ?? ""}
+        slug="may-bom-nuoc"
+      />
+      <ProductWithCategoryType
+        industry={storeInfo.industry ?? ""}
+        slug="may-phat-dien"
+      />
+      <ProductWithCategoryType
+        industry={storeInfo.industry ?? ""}
+        slug="may-nong-nghiep"
+      />
       <HighlightedProjects industry={storeInfo.industry ?? ""} />
+
       <PartnerBrands industry={storeInfo.industry ?? ""} />
       <NewsMasterPage industry={storeInfo.industry ?? ""} />
+      <InteriorContent industry={storeInfo.industry ?? ""} />
 
       {/* <Hero />
 

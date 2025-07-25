@@ -1,6 +1,6 @@
 /** @format */
 
-import Navbar from "@/components/ui/Navbar";
+import NavbarComponent from "@/components/ui/Navbar";
 import { BodyContainer } from "@/components/BodyContainer";
 import Footer from "@/components/layouts/Footer";
 import { SidebarProvider } from "@/components/ui/sidebar";
@@ -18,7 +18,7 @@ export default async function MainLayout({
 }>) {
   return (
     <div className="w-full">
-      <Navbar />
+      <NavbarComponent />
       <BodyContainer className="mt-[90px] sm:mt-[80px]">
         {children}
       </BodyContainer>

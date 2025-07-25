@@ -39,7 +39,7 @@ export const Hero: React.FC = () => {
   return (
     <section
       id="home"
-      className="relative mt-[82px] h-[300px] md:h-[700px] flex items-center justify-center overflow-hidden">
+      className="relative mt-[20px] h-[300px] md:h-[700px] flex items-center justify-center overflow-hidden">
       {/* Background image */}
       <div className="absolute inset-0 z-0">
         <ImageLoader
@@ -55,7 +55,7 @@ export const Hero: React.FC = () => {
           showShimmer={true}
           skeletonClassName="bg-gray-800"
         />
-        <div className="absolute inset-0 bg-black/10 z-40" />
+        <div className="absolute inset-0 bg-black/5 z-40" />
       </div>
 
       {/* Text and CTA */}
