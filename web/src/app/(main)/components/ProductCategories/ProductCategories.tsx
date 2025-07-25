@@ -61,7 +61,7 @@ export const ProductCategories: FC = async () => {
     <ProductCategoriesMotion
       categories={categories}
       title="Các danh mục nổi bật  "
-      description="Tìm nội thất đẹp cho ngôi nhà của bạn "
+      description="Tìm các sản phẩm nhạc cụ phù hợp với bạn "
     />
   );
 };
