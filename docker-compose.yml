@@ -72,7 +72,7 @@ services:
     ports:
       - "3019:3900"
     depends_on:
-      hf-api:
+      mxdm-api:
         condition: service_healthy
     env_file:
       - ./web/.env
