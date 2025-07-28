@@ -339,7 +339,7 @@ export const ProductCard = ({
 
   // Grid Layout (Card design)
   return (
-    <Link href={`/san-pham/${product.slug}`} className="block h-full">
+    <Link href={`/san-pham/${product.slug}`} className="block h-full" prefetch={true} >
       <Card className="group relative h-full overflow-hidden bg-white border border-gray-200 hover:border-gray-300 hover:shadow-lg transition-all duration-300 flex flex-col">
         {/* Image Section */}
         <CardHeader className="p-0 m-0 relative">
