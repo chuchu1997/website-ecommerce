@@ -113,7 +113,7 @@ const LoginPage = () => {
               <div className="w-10 h-10 bg-white rounded-full flex items-center justify-center">
                 <Image
                   className="rounded-full"
-                  src="/logo.jpg"
+                  src="/logo.png"
                   width={40}
                   height={40}
                   alt="logo"
@@ -121,7 +121,7 @@ const LoginPage = () => {
               </div>
             </div>
             <h1 className="text-3xl font-bold text-gray-800 mb-2 italic">
-              <p>Nmh Furniture </p>
+              <p>Guitar Sài Thành </p>
               <p className="text-lg"> (Đăng Nhập)</p>
             </h1>
           </div>
