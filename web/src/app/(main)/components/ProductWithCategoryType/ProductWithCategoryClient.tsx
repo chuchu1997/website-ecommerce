@@ -168,7 +168,7 @@ export const ProductWithCategoryClient = ({
             <Link
               href={`/danh-muc/${slug}`}
               className="flex items-center justify-center gap-2 bg-blue-600 hover:bg-blue-700 text-white px-4 py-3 rounded-lg font-medium transition-colors w-full">
-              Xem tất cả {products.length} sản phẩm
+              Xem tất cả sản phẩm
               <ArrowRight className="w-4 h-4" />
             </Link>
           </div>
