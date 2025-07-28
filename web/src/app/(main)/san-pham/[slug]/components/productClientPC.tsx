@@ -3,7 +3,6 @@
 "use client";
 
 import { ProductInterface } from "@/types/product";
-import ProductImageGallery from "./productImageGallery";
 import { useEffect, useState } from "react";
 import {
   Star,
@@ -37,6 +36,7 @@ import { useRouter } from "next/navigation";
 import { useCartContext } from "@/context/cart-context";
 import { useAddToCart } from "@/hooks/use-addToCart";
 import SoldInfo from "@/components/ui/soldInfo";
+import ProductImageGallery from "./productImageGallery";
 
 interface propsProductClientPC {
   product: ProductInterface;
@@ -175,65 +175,7 @@ export const ProductClientPC = ({ product }: propsProductClientPC) => {
       <div className=" px-4 sm:px-6 lg:px-8 py-6 lg:py-8">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12">
           {/* Product Images */}
-          <div className="space-y-4">
-            <div className="aspect-square responsive bg-white rounded-xl border border-gray-200 overflow-hidden">
-              <ImageLoader
-                src={product.images[0].url ?? ""}
-                alt={product.name}
-                fill
-                className="w-full h-full object-cover"
-              />
-            </div>
-
-            {/* Image thumbnails */}
-            <div className="flex space-x-2 overflow-x-auto pb-2">
-              {product.images.map((image, index) => (
-                <div
-                  key={index}
-                  className="responsive flex-shrink-0 w-16 h-16 bg-white rounded-lg border border-gray-200 overflow-hidden">
-                  <ImageLoader
-                    src={image.url}
-                    fill
-                    alt={`${product.name} ${index + 1}`}
-                    className="w-full h-full object-cover"
-                  />
-                </div>
-              ))}
-            </div>
-
-            {/* Image Actions */}
-            <div className="flex items-center justify-between bg-white rounded-xl border border-gray-200 p-4">
-              <div className="flex items-center space-x-2 text-sm text-gray-600">
-                <svg
-                  className="w-4 h-4"
-                  fill="currentColor"
-                  viewBox="0 0 20 20">
-                  <path d="M10 12a2 2 0 100-4 2 2 0 000 4z" />
-                  <path
-                    fillRule="evenodd"
-                    d="M.458 10C1.732 5.943 5.522 3 10 3s8.268 2.943 9.542 7c-1.274 4.057-5.064 7-9.542 7S1.732 14.057.458 10zM14 10a4 4 0 11-8 0 4 4 0 018 0z"
-                  />
-                </svg>
-                {/* <span>{product.viewCount.toLocaleString()} lượt xem</span> */}
-              </div>
-              <div className="flex items-center space-x-2">
-                <button
-                  onClick={() => setIsWishlisted(!isWishlisted)}
-                  className={`p-2 rounded-lg transition-colors ${
-                    isWishlisted
-                      ? "bg-red-50 text-red-600 hover:bg-red-100"
-                      : "bg-gray-50 text-gray-600 hover:bg-gray-100"
-                  }`}>
-                  <Heart
-                    className={`w-5 h-5 ${isWishlisted ? "fill-current" : ""}`}
-                  />
-                </button>
-                <button className="p-2 rounded-lg bg-gray-50 text-gray-600 hover:bg-gray-100 transition-colors">
-                  <Share2 className="w-5 h-5" />
-                </button>
-              </div>
-            </div>
-          </div>
+          <ProductImageGallery images={product.images} />
 
           {/* Product Information */}
           <div className="space-y-6">

@@ -46,7 +46,7 @@ export const Hero: React.FC = () => {
           src={currentBanner.imageUrl}
           alt={currentBanner.title || "banner"}
           fill
-          priority={currentSlide === 0}
+          priority={true}
           quality={90}
           className="w-full h-full"
           style={{ objectFit: "cover" }}
