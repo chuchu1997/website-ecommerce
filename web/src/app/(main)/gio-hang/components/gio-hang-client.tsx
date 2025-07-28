@@ -22,7 +22,7 @@ const GioHangClient = () => {
   if (!isMounted) return null;
 
   return (
-    <div className="container mx-auto px-4 py-8 max-w-screen-xl">
+    <div className="container mx-auto px-4 py-8 max-w-screen-xl mt-[120px]">
       <Tabs defaultValue="cart" className="w-full">
         <div className="flex flex-col gap-6">
           <div className="w-full flex justify-center md:justify-start">

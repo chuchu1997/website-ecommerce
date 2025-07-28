@@ -291,7 +291,6 @@ export default function CategoriesManagement() {
               }
             : undefined,
         };
-
         await onUpdateCategory(editingCategoryId, updateData);
       } else {
         // Create new category
