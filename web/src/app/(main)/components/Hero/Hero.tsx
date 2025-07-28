@@ -46,7 +46,7 @@ export const Hero: React.FC = () => {
           src={currentBanner.imageUrl}
           alt={currentBanner.title || "banner"}
           fill
-          priority={currentSlide === 0}
+          priority={true}
           quality={90}
           className="w-full h-full"
           style={{ objectFit: "cover" }}
@@ -59,17 +59,17 @@ export const Hero: React.FC = () => {
       </div>
 
       {/* Text and CTA */}
-      <div className="relative z-20 text-center text-white max-w-4xl mx-auto px-4">
+      {/* <div className="relative z-20 text-center text-white max-w-4xl mx-auto px-4">
         <HeroMotion
         // mainTitle={currentBanner.title || "Máy xây dựng mới "}
         // subTitle={currentBanner.description || "Sản phẩm tiêu chuẩn"}
         // action={currentBanner.cta?.title || "Khám phá"}
         // link={currentBanner.cta?.link}
         />
-      </div>
+      </div> */}
 
       {/* Dot navigation */}
-      <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 z-30 flex space-x-3">
+      <div className="scale-80 absolute bottom-8 left-1/2 transform -translate-x-1/2 z-30 flex space-x-3">
         {banners.map((_, index) => (
           <button
             key={index}

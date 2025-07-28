@@ -22,6 +22,7 @@ import { discountTypeEnum, PromotionInterface } from "@/types/promotion";
 import { useRouter } from "next/navigation";
 import { useAddToCart } from "@/hooks/use-addToCart";
 import { useEffect, useState } from "react";
+import { useWindowSize } from "@/hooks/useWindowSize";
 
 export const RenderGiftItems = ({
   gift,
@@ -72,6 +73,8 @@ export const ProductCard = ({
   const [isMounted, setIsMounted] = useState(false);
   const router = useRouter();
   const { addToCart } = useAddToCart();
+
+  const windowSize = useWindowSize();
 
   const promotionProduct = product.promotionProducts;
   const hasPromotion = promotionProduct.length > 0 && promotion;
@@ -141,7 +144,9 @@ export const ProductCard = ({
           className={isSingleColumn ? "" : "flex items-center justify-between"}>
           <span className={priceClass}>{priceText}</span>
           {!isSingleColumn && isOutOfStock && (
-            <Badge variant="destructive">Hết hàng</Badge>
+            <Badge variant="destructive" className="scale-80">
+              Hết hàng
+            </Badge>
           )}
         </div>
         {showLineThroughPrice && (
@@ -273,12 +278,12 @@ export const ProductCard = ({
       <Link href={`/san-pham/${product.slug}`} className="block group">
         <div className="flex bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden transition-all duration-300 hover:shadow-md hover:border-gray-300">
           {/* Product Image Container */}
-          <div className="relative w-28 h-28 sm:w-32 sm:h-32 bg-gray-50 flex-shrink-0">
+          <div className="relative w-40 h-48 sm:w-32 sm:h-32 bg-gray-50 flex-shrink-0">
             <ImageLoader
               src={product.images[0].url}
               alt={product.name}
               fill
-              className="object-cover"
+              className=" object-cover"
             />
 
             {/* Promotional badges */}
