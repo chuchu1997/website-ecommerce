@@ -97,7 +97,7 @@ export function Slider<T>({
   return (
     <div className={`relative w-full ${className}`}>
       {/* Main slider container */}
-      <div className="relative overflow-hidden rounded-xl bg-gradient-to-br from-slate-50 to-slate-100 shadow-lg">
+      <div className="relative overflow-hidden rounded-xl ">
         {/* Slider track */}
         <div
           ref={sliderRef}

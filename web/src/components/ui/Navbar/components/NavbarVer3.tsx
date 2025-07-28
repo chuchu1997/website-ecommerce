@@ -563,11 +563,14 @@ const ProfessionalNavbar: React.FC = () => {
         </div>
 
         {/* BOTTOM SECTION - Subcategories */}
-        <div className="hidden md:block bg-gradient-to-r from-gray-50 via-blue-50 to-purple-50 border-b border-gray-200">
+        <div
+          className={`hidden ${
+            isScrolled ? "hidden" : "md:block"
+          } bg-gradient-to-r from-gray-50 via-blue-50 to-purple-50 border-b border-gray-200`}>
           <div className="max-w-7xl mx-auto px-4 py-2">
             <div className="flex items-center justify-between">
               <div className="flex items-center space-x-1 space-y-1 flex-wrap">
-                {subCate.slice(0, 8).map((category, index) => (
+                {subCate.slice(0, 7).map((category, index) => (
                   <Link
                     href={`/danh-muc/${category.slug}`}
                     key={category.id}
