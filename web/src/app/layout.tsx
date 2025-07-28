@@ -1,6 +1,6 @@
 /** @format */
 
-import { Geist, Geist_Mono, Roboto } from "next/font/google";
+import { Geist, Geist_Mono, Inter, Roboto } from "next/font/google";
 
 import "./globals.css";
 import CookiesClientWrapper from "@/provider/cookie-provider-wrapper";
@@ -24,6 +24,11 @@ const geistMono = Geist_Mono({
   variable: "--font-geist-mono",
   subsets: ["latin"],
 });
+
+const inter = Inter({
+  variable: "--font-inter",
+  subsets: ["latin", "vietnamese"],
+});
 const roboto = Roboto({ variable: "--font-roboto", subsets: ["latin"] });
 
 export async function generateMetadata(): Promise<Metadata> {
@@ -46,7 +51,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} ${roboto.variable} antialiased relative min-h-screen`}>
+        className={`${geistSans.variable} ${inter.variable}  ${geistMono.variable} ${roboto.variable} antialiased relative min-h-screen`}>
         <LoadingProvider>
           <LoadingOverlay />
           <CookiesClientWrapper>
