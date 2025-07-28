@@ -20,7 +20,7 @@ const CategoriesList = () => {
 
     const data = res.data.categories as CategoryInterface[];
 
-    setCategories(data.filter((item) => item.parentId !== null).slice(0, 8));
+    setCategories(data.filter((item) => item.parentId !== null).slice(0, 16));
   };
 
   useEffect(() => {

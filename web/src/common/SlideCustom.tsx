@@ -32,15 +32,17 @@ export function Slider<T>({
   const [isTransitioning, setIsTransitioning] = useState(false);
   const sliderRef = useRef<HTMLDivElement>(null);
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
-  const [isMounted,setIsMounted] = useState(false)
+  const [isMounted, setIsMounted] = useState(false);
 
+  // Calculate max index - this represents the last possible starting position
   const maxIndex = Math.max(0, items.length - itemsPerView);
- useEffect(()=>{
-    setIsMounted(true)
- },[])
 
   useEffect(() => {
-    if (autoPlay) {
+    setIsMounted(true);
+  }, []);
+
+  useEffect(() => {
+    if (autoPlay && maxIndex > 0) {
       intervalRef.current = setInterval(() => {
         setCurrentIndex(prev => prev >= maxIndex ? 0 : prev + 1);
       }, autoPlayInterval);
@@ -52,7 +54,9 @@ export function Slider<T>({
       };
     }
   }, [autoPlay, autoPlayInterval, maxIndex]);
-  if(!isMounted) return null;
+
+  if (!isMounted) return null;
+
   const goToSlide = (index: number) => {
     if (isTransitioning) return;
     
@@ -63,11 +67,15 @@ export function Slider<T>({
   };
 
   const goToPrevious = () => {
-    goToSlide(currentIndex - 1);
+    if (currentIndex > 0) {
+      goToSlide(currentIndex - 1);
+    }
   };
 
   const goToNext = () => {
-    goToSlide(currentIndex + 1);
+    if (currentIndex < maxIndex) {
+      goToSlide(currentIndex + 1);
+    }
   };
 
   const handleItemClick = (item: T, index: number) => {
@@ -76,8 +84,15 @@ export function Slider<T>({
     }
   };
   
+  // Calculate item width accounting for gaps
   const itemWidth = `calc((100% - ${(itemsPerView - 1) * gap}px) / ${itemsPerView})`;
-  const translateX = -(currentIndex * (100 / itemsPerView + gap * currentIndex / itemsPerView));
+  
+  // Fixed translation calculation
+  // Each slide moves by: (item width + gap) * currentIndex
+  // But we need to calculate this as a percentage of the total container width
+  const slideWidth = 100 / itemsPerView; // Each item takes this percentage of container
+  const gapPercentage = (gap / (sliderRef.current?.offsetWidth || 1)) * 100; // Convert gap to percentage
+  const translateX = -(currentIndex * (slideWidth + gapPercentage));
   
   return (
     <div className={`relative w-full ${className}`}>
@@ -100,7 +115,7 @@ export function Slider<T>({
               style={{ width: itemWidth }}
               onClick={() => handleItemClick(item, index)}
             >
-              <div className="h-full transform transition-all duration-200 hover:scale-105 hover:shadow-lg rounded-lg overflow-hidden  border border-slate-200/60">
+              <div className="h-full transform transition-all duration-200 hover:scale-105 hover:shadow-lg rounded-lg overflow-hidden border border-slate-200/60">
                 {renderItem(item, index)}
               </div>
             </div>
@@ -112,7 +127,7 @@ export function Slider<T>({
           <>
             <button
               onClick={goToPrevious}
-              disabled={currentIndex === 0}
+              disabled={currentIndex === 0 || isTransitioning}
               className="absolute left-4 top-1/2 -translate-y-1/2 z-10 p-3 rounded-full bg-white/90 backdrop-blur-sm shadow-lg border border-slate-200/60 text-slate-700 hover:bg-white hover:text-slate-900 disabled:opacity-40 disabled:cursor-not-allowed transition-all duration-200 hover:scale-110"
             >
               <ChevronLeft size={20} />
@@ -120,7 +135,7 @@ export function Slider<T>({
             
             <button
               onClick={goToNext}
-              disabled={currentIndex >= maxIndex}
+              disabled={currentIndex >= maxIndex || isTransitioning}
               className="absolute right-4 top-1/2 -translate-y-1/2 z-10 p-3 rounded-full bg-white/90 backdrop-blur-sm shadow-lg border border-slate-200/60 text-slate-700 hover:bg-white hover:text-slate-900 disabled:opacity-40 disabled:cursor-not-allowed transition-all duration-200 hover:scale-110"
             >
               <ChevronRight size={20} />
@@ -136,6 +151,7 @@ export function Slider<T>({
             <button
               key={index}
               onClick={() => goToSlide(index)}
+              disabled={isTransitioning}
               className={`w-3 h-3 rounded-full transition-all duration-200 ${
                 currentIndex === index
                   ? 'bg-blue-500 scale-125 shadow-md'
