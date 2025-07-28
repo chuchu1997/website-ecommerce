@@ -92,7 +92,6 @@ export const NewsForm: React.FC<NewsProps> = ({ initialData }) => {
       .trim()
       .replace(/\s+/g, "-") // khoảng trắng -> dấu -
       .replace(/-+/g, "-"); // gộp nhiều dấu - liên tiếp
-
   const router = useRouter();
   const title = initialData ? "Chỉnh sửa bài viết" : "Tạo bài viết mới";
   const description = initialData

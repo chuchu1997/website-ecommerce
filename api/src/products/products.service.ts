@@ -407,7 +407,9 @@ export class ProductsService {
             sizes: { deleteMany: {} },
             colors: { deleteMany: {} },
             giftProducts: { deleteMany: {} },
-            cartItems: { deleteMany: {} },
+            cartItems: {
+              deleteMany: {},
+            },
           },
         }),
         this.prisma.product.delete({ where: { id } }),

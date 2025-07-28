@@ -140,7 +140,6 @@ export default function CategoriesManagement() {
       .trim()
       .replace(/\s+/g, "-") // khoảng trắng -> dấu -
       .replace(/-+/g, "-"); // gộp nhiều dấu - liên tiếp
-
   // Theo dõi thay đổi của name → cập nhật slug nếu là Product Form
   useEffect(() => {
     const subscription = form.watch((values: any, { name }: any) => {
