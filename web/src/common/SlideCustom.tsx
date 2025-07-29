@@ -105,7 +105,7 @@ export function Slider<T>({
           style={{
             transform: `translateX(${translateX}%)`,
             gap: `${gap}px`,
-            padding: '24px'
+            padding: ''
           }}
         >
           {items.map((item, index) => (
@@ -115,7 +115,7 @@ export function Slider<T>({
               style={{ width: itemWidth }}
               onClick={() => handleItemClick(item, index)}
             >
-              <div className="h-full transform transition-all duration-200 hover:scale-105 hover:shadow-lg rounded-lg overflow-hidden border border-slate-200/60">
+              <div className="h-full transform transition-all duration-200 hover:scale-105 hover:shadow-lg rounded-lg overflow-hidden ">
                 {renderItem(item, index)}
               </div>
             </div>

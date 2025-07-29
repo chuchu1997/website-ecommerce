@@ -359,7 +359,7 @@ const ProfessionalNavbar: React.FC = () => {
                     {hasMegaMenu(category) ? (
                       <button className="flex items-center space-x-1 px-4 py-3 text-gray-700 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-all duration-200 font-medium group">
                         <div className="flex items-center gap-2">
-                          {category.slug === "san-pham" && (
+                          {category.slug === "danh-muc-san-pham" && (
                             <MenuIcon
                               size={18}
                               className="group-hover:text-blue-600"

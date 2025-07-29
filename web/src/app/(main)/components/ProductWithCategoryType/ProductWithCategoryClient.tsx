@@ -31,7 +31,7 @@ export const ProductWithCategoryClient = ({
 
   return (
     <section className={`py-3 sm:py-6 lg:py-8 ${isGrayBg ? "bg-none" :"bg-white"}`}>
-      <div className="container mx-auto px-3 sm:px-6 lg:px-8">
+      <div className="container mx-auto px-2">
         
         {/* Category Header - Simplified */}
         <div className="mb-4 sm:mb-6">
@@ -123,7 +123,7 @@ export const ProductWithCategoryClient = ({
 
           {/* Product Grid/Slider - Clean Background */}
           {products.length > 0 ? (
-            <div className="border border-gray-200 rounded-xl p-0 sm:p-4">
+            <div className="rounded-xl ">
               <Slider
                 items={products}
                 renderItem={(product) => <ProductCard product={product}  />}
@@ -135,7 +135,7 @@ export const ProductWithCategoryClient = ({
                   windowSize.width < 768 ? 3 :
                   windowSize.width < 1024 ? 3 : 4
                 }
-                gap={8}
+                gap={4}
                 showArrows={windowSize.width >= 768}
                 showDots={true}
                 autoPlay={true}
@@ -144,7 +144,7 @@ export const ProductWithCategoryClient = ({
               />
             </div>
           ) : (
-            <div className="border border-gray-200 rounded-xl p-6 sm:p-8">
+            <div className="border border-gray-200 rounded-xl p-2 sm:p-8">
               <div className="text-center space-y-3">
                 <div className="w-12 h-12 bg-gray-100 rounded-full flex items-center justify-center mx-auto">
                   <Package className="w-6 h-6 text-gray-400" />

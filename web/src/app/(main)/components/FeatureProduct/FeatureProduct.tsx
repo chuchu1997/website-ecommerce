@@ -66,7 +66,7 @@ export const FeatureProducts = async ({ industry }: Props) => {
   ];
 
   return (
-    <section className="relative py-20 lg:py-28 bg-gradient-to-br from-gray-50 via-white to-blue-50/30 overflow-hidden">
+    <section className="relative py-20 px-2 lg:py-28 bg-gradient-to-br from-gray-50 via-white to-blue-50/30 overflow-hidden">
       {/* Elegant Background Elements */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         {/* Floating geometric shapes */}
@@ -116,7 +116,7 @@ export const FeatureProducts = async ({ industry }: Props) => {
           </div>
 
           {/* Professional Title */}
-          <h2 className="text-3xl sm:text-4xl lg:text-5xl xl:text-6xl font-black mb-6 leading-tight tracking-tight gap-x-2 flex items-center justify-center">
+          <h2 className="text-2xl sm:text-4xl lg:text-5xl xl:text-6xl font-black mb-6 leading-tight tracking-tight gap-x-2 flex items-center justify-center">
             <span className="block text-gray-900 ">Sản Phẩm</span>
             <span className="block bg-gradient-to-r from-blue-600 via-purple-600 to-emerald-600 bg-clip-text text-transparent">
               Nổi Bật
@@ -124,7 +124,7 @@ export const FeatureProducts = async ({ industry }: Props) => {
           </h2>
 
           {/* Elegant Description */}
-          <p className="text-lg sm:text-xl lg:text-2xl text-gray-600 max-w-4xl mx-auto leading-relaxed font-light">
+          <p className="text-base sm:text-xl lg:text-2xl text-gray-600 max-w-4xl mx-auto leading-relaxed font-light">
             Khám phá những sản phẩm <span className="font-semibold text-blue-700">{industry}</span> được chế tác tinh xảo, 
             thiết kế hiện đại và được yêu thích nhất từ bộ sưu tập của chúng tôi
           </p>
@@ -157,10 +157,10 @@ export const FeatureProducts = async ({ industry }: Props) => {
           <div className="relative">
             {/* Stats Header */}
             <div className="text-center mb-12">
-              <h3 className="text-2xl lg:text-3xl font-bold text-gray-900 mb-4">
+              <h3 className="text-xl lg:text-3xl font-bold text-gray-900 mb-4">
                 Tại Sao Chọn Chúng Tôi?
               </h3>
-              <p className="text-gray-600 max-w-2xl mx-auto">
+              <p className="text-sm text-gray-600 max-w-2xl mx-auto">
                 Những con số minh chứng cho chất lượng và uy tín của chúng tôi
               </p>
             </div>
@@ -178,12 +178,12 @@ export const FeatureProducts = async ({ industry }: Props) => {
                   {/* Content */}
                   <div className="relative text-center">
                     {/* Icon */}
-                    <div className="text-3xl lg:text-4xl mb-4 transform group-hover:scale-110 transition-transform duration-300">
+                    <div className="text-xl lg:text-4xl mb-4 transform group-hover:scale-110 transition-transform duration-300">
                       {stat.icon}
                     </div>
                     
                     {/* Value */}
-                    <div className={`text-3xl lg:text-4xl xl:text-5xl font-black mb-3 bg-gradient-to-r ${stat.color} bg-clip-text text-transparent`}>
+                    <div className={`text-xl lg:text-4xl xl:text-5xl font-black mb-3 bg-gradient-to-r ${stat.color} bg-clip-text text-transparent`}>
                       {stat.value}
                     </div>
                     
@@ -214,7 +214,7 @@ export const FeatureProducts = async ({ industry }: Props) => {
                   <div className="w-3 h-3 bg-emerald-500 rounded-full animate-pulse" />
                   <div className="w-2 h-2 bg-blue-500 rounded-full animate-pulse" style={{ animationDelay: "0.5s" }} />
                 </div>
-                <span className="text-lg text-gray-700 font-medium">
+                <span className="text-base text-gray-700 font-medium">
                   Được tin tưởng bởi <span className="font-bold text-blue-600">1000+</span> khách hàng
                 </span>
               </div>
