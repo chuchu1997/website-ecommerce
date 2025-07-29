@@ -277,9 +277,10 @@ export default function CategoriesManagement() {
           description: data.description,
           imageUrl: finalImage.url,
           parentId: isParentCategory ? null : Number(data.parentId),
-          ...(isParentCategory && {
-            position: data.position, // chỉ thêm field position nếu là category cha
-          }),
+          position: data.position,
+          // ...(isParentCategory && {
+          //   position: data.position, // chỉ thêm field position nếu là category cha
+          // }),
           updatedAt: new Date(),
           storeId: Number(storeId),
           variant: data.variant ?? undefined,
@@ -301,9 +302,8 @@ export default function CategoriesManagement() {
           imageUrl: finalImage.url,
           description: data.description,
           parentId: isParentCategory ? null : Number(data.parentId),
-          ...(isParentCategory && {
-            position: data.position, // chỉ thêm field position nếu là category cha
-          }),
+
+          position: data.position,
           variant: data.variant ?? undefined,
           seo: data.seo
             ? {
@@ -760,7 +760,8 @@ export default function CategoriesManagement() {
                         <InputSectionWithForm
                           form={form}
                           nameFormField="position"
-                          disabled={form.watch("parentId") !== "isParent"}
+                          // disabled={form.watch("parentId") !== "isParent"}
+
                           loading={false}
                           title="Vị trí hiển thị"
                           placeholder="Nhập vị trí hiển thị (tùy chọn )"
