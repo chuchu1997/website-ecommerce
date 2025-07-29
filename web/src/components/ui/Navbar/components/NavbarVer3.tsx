@@ -382,118 +382,128 @@ const ProfessionalNavbar: React.FC = () => {
                     {hasMegaMenu(category) &&
                       activeMegaMenu === category.id.toString() && (
                         <div
-                          className="absolute left-0 top-full  w-[800px] h-[750px] bg-white rounded-2xl shadow-2xl border border-gray-100 z-50 flex "
+                          className="absolute left-0 top-full w-[800px] h-[616px] bg-white rounded-2xl shadow-2xl border border-gray-100 z-50 flex overflow-hidden"
                           onMouseEnter={handleMenuEnter}
                           onMouseLeave={handleMenuLeave}>
-                          {/* Left Column */}
-                          <div className="w-1/3 bg-gradient-to-br from-gray-50 to-blue-50 p-6 border-r border-gray-200">
-                            <h3 className="text-lg font-bold text-gray-900 mb-4 pb-2 border-b border-gray-300">
-                              {getCategoryDisplayName(category)}
-                            </h3>
-                            <div className="space-y-2 max-h-[750px] overflow-y-auto">
-                              {category.subCategories.map((subcategory) => (
-                                <div
-                                  key={subcategory.id}
-                                  onClick={() => {
-                                    router.push(
-                                      `/danh-muc/${subcategory.slug}`
-                                    );
-                                  }}
-                                  onMouseEnter={() =>
-                                    handleParentCategoryHover(
+                          {/* Left Column - Scrollable */}
+                          <div className="w-1/3 bg-gradient-to-br from-gray-50 to-blue-50 border-r border-gray-200 flex flex-col">
+                            <div className="p-6 border-b border-gray-300 flex-shrink-0">
+                              <h3 className="text-lg font-bold text-gray-900 truncate">
+                                {getCategoryDisplayName(category)}
+                              </h3>
+                            </div>
+                            <div className="flex-1 p-6 pt-4 overflow-y-auto scrollbar-thin scrollbar-thumb-blue-300 scrollbar-track-transparent hover:scrollbar-thumb-blue-400">
+                              <div className="space-y-2">
+                                {category.subCategories.map((subcategory) => (
+                                  <div
+                                    key={subcategory.id}
+                                    onClick={() => {
+                                      router.push(
+                                        `/danh-muc/${subcategory.slug}`
+                                      );
+                                    }}
+                                    onMouseEnter={() =>
+                                      handleParentCategoryHover(
+                                        subcategory.id.toString()
+                                      )
+                                    }
+                                    className={`p-3 rounded-xl cursor-pointer transition-all duration-200 ${
+                                      hoveredParentCategory ===
                                       subcategory.id.toString()
-                                    )
-                                  }
-                                  className={`p-3 rounded-xl cursor-pointer transition-all duration-200 ${
-                                    hoveredParentCategory ===
-                                    subcategory.id.toString()
-                                      ? "bg-white text-blue-700 shadow-md border border-blue-200"
-                                      : "hover:bg-white/70 text-gray-700"
-                                  }`}>
-                                  <div className="font-medium">
-                                    {subcategory.name}
+                                        ? "bg-white text-blue-700 shadow-md border border-blue-200"
+                                        : "hover:bg-white/70 text-gray-700"
+                                    }`}>
+                                    <div className="font-medium line-clamp-2">
+                                      {subcategory.name}
+                                    </div>
                                   </div>
-                                </div>
-                              ))}
+                                ))}
+                              </div>
                             </div>
                           </div>
 
-                          {/* Right Column */}
-                          <div className="w-2/3 p-6 bg-white">
+                          {/* Right Column - Scrollable */}
+                          <div className="w-2/3 bg-white flex flex-col">
                             {getActiveParentCategory() ? (
                               <>
-                                <h3 className="text-lg font-bold text-gray-900 mb-4 pb-2 border-b border-gray-200">
-                                  {getActiveParentCategory()?.name}
-                                </h3>
-                                <div className="grid grid-cols-2 gap-4  overflow-y-auto">
-                                  {getActiveParentCategory()?.subCategories?.map(
-                                    (childCategory) => (
-                                      <Link
-                                        prefetch={true}
-                                        key={childCategory.id}
-                                        href={`/danh-muc/${childCategory.slug}`}
-                                        className="group p-4 rounded-xl hover:bg-gradient-to-br hover:from-blue-50 hover:to-purple-50 transition-all duration-200 border border-transparent hover:border-blue-200 hover:shadow-lg">
-                                        <div className="flex items-start space-x-3">
-                                          <div className="relative w-12 h-12 ">
-                                            <ImageLoader
-                                              priority
-                                              fill
-                                              className=" rounded-lg object-cover shadow-sm"
-                                              src={childCategory.imageUrl}
-                                              alt={childCategory.name}
-                                            />
+                                <div className="p-6 border-b border-gray-200 flex-shrink-0">
+                                  <h3 className="text-lg font-bold text-gray-900 truncate">
+                                    {getActiveParentCategory()?.name}
+                                  </h3>
+                                </div>
+                                <div className="flex-1 p-6 pt-4 overflow-y-auto scrollbar-thin scrollbar-thumb-blue-300 scrollbar-track-transparent hover:scrollbar-thumb-blue-400">
+                                  <div className="grid grid-cols-2 gap-4">
+                                    {getActiveParentCategory()?.subCategories?.map(
+                                      (childCategory) => (
+                                        <Link
+                                          prefetch={true}
+                                          key={childCategory.id}
+                                          href={`/danh-muc/${childCategory.slug}`}
+                                          className="group p-4 rounded-xl hover:bg-gradient-to-br hover:from-blue-50 hover:to-purple-50 transition-all duration-200 border border-transparent hover:border-blue-200 hover:shadow-lg">
+                                          <div className="flex items-start space-x-3">
+                                            <div className="relative w-12 h-12 flex-shrink-0">
+                                              <ImageLoader
+                                                priority
+                                                fill
+                                                className="rounded-lg object-cover shadow-sm"
+                                                src={childCategory.imageUrl}
+                                                alt={childCategory.name}
+                                              />
+                                            </div>
+                                            <div className="flex-1 min-w-0">
+                                              <h4 className="font-semibold text-gray-900 group-hover:text-blue-600 transition-colors duration-200 line-clamp-2">
+                                                {childCategory.name}
+                                              </h4>
+                                              {childCategory.description && (
+                                                <p className="text-xs text-gray-500 group-hover:text-blue-500 transition-colors duration-200 line-clamp-2 mt-1">
+                                                  {childCategory.description}
+                                                </p>
+                                              )}
+                                            </div>
                                           </div>
-
-                                          <div className="flex-1 min-w-0">
-                                            <h4 className="font-semibold text-gray-900 group-hover:text-blue-600 transition-colors duration-200">
-                                              {childCategory.name}
-                                            </h4>
-                                            {childCategory.description && (
-                                              <p className="text-sm text-gray-500 group-hover:text-blue-500 transition-colors duration-200 line-clamp-2">
-                                                {childCategory.description}
-                                              </p>
-                                            )}
-                                          </div>
+                                        </Link>
+                                      )
+                                    ) || (
+                                      // If no child categories, show parent category info
+                                      <div className="col-span-2 text-center py-8">
+                                        <div className="w-16 h-16 bg-gradient-to-br from-blue-50 to-indigo-50 rounded-full flex items-center justify-center mx-auto mb-4">
+                                          <Image
+                                            className="rounded-lg flex-shrink-0"
+                                            src={
+                                              getActiveParentCategory()
+                                                ?.imageUrl ?? ""
+                                            }
+                                            alt={
+                                              getActiveParentCategory()?.name ??
+                                              ""
+                                            }
+                                            width={32}
+                                            height={32}
+                                          />
                                         </div>
-                                      </Link>
-                                    )
-                                  ) || (
-                                    // If no child categories, show parent category info
-                                    <div className="col-span-2 text-center py-8">
-                                      <div className="w-16 h-16 bg-gradient-to-br from-blue-50 to-indigo-50 rounded-full flex items-center justify-center mx-auto mb-4">
-                                        <Image
-                                          className="rounded-lg flex-shrink-0"
-                                          src={
+                                        <h4 className="font-medium text-gray-900 mb-2">
+                                          {getActiveParentCategory()?.name}
+                                        </h4>
+                                        <p className="text-sm text-gray-500 line-clamp-3">
+                                          {
                                             getActiveParentCategory()
-                                              ?.imageUrl ?? ""
+                                              ?.description
                                           }
-                                          alt={
-                                            getActiveParentCategory()?.name ??
-                                            ""
-                                          }
-                                          width={32}
-                                          height={32}
-                                        />
+                                        </p>
+                                        <Link
+                                          href={`/danh-muc/${
+                                            getActiveParentCategory()?.slug
+                                          }`}
+                                          className="inline-block mt-4 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors duration-200">
+                                          Xem tất cả
+                                        </Link>
                                       </div>
-                                      <h4 className="font-medium text-gray-900 mb-2">
-                                        {getActiveParentCategory()?.name}
-                                      </h4>
-                                      <p className="text-sm text-gray-500">
-                                        {getActiveParentCategory()?.description}
-                                      </p>
-                                      <Link
-                                        href={`/danh-muc/${
-                                          getActiveParentCategory()?.slug
-                                        }`}
-                                        className="inline-block mt-4 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors duration-200">
-                                        Xem tất cả
-                                      </Link>
-                                    </div>
-                                  )}
+                                    )}
+                                  </div>
                                 </div>
                               </>
                             ) : (
-                              <div className="flex items-center justify-center h-64">
+                              <div className="flex items-center justify-center h-full">
                                 <div className="text-center">
                                   <div className="w-16 h-16 bg-gradient-to-br from-blue-100 to-purple-100 rounded-full flex items-center justify-center mx-auto mb-4">
                                     <ChevronDown className="h-6 w-6 text-blue-500 rotate-90" />
