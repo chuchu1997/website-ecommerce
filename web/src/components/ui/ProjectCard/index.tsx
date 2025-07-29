@@ -43,6 +43,7 @@ export const ProjectCard: React.FC<{ project: ProjectInterface }> = ({
         </h3>
         <p className="text-gray-600 mb-4">{project.shortDescription}</p>
         <Link
+          prefetch={true}
           href={`/du-an/${project.slug}`}
           className="text-amber-600 hover:text-amber-700 font-semibold inline-flex items-center">
           Xem dự án

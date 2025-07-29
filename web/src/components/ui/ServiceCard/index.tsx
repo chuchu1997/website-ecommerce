@@ -42,6 +42,7 @@ export const ServiceCard: React.FC<ServiceCardProps> = ({
 
   return (
     <Link 
+      prefetch={true}
     href={`/dich-vu/${service.slug}`}
       className={`group relative bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-500 ease-out transform hover:-translate-y-2 cursor-pointer overflow-hidden border border-gray-100 ${className}`}
       onMouseEnter={() => setIsHovered(true)}
