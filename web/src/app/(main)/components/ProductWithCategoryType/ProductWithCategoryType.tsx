@@ -9,10 +9,15 @@ import { ProductWithCategoryClient } from "./ProductWithCategoryClient";
 interface Props {
   industry: string;
   slug: string;
+  isGrayBg?: boolean;
 }
 
 // Server-side data fetching component
-export const ProductWithCategoryType = async ({ industry, slug }: Props) => {
+export const ProductWithCategoryType = async ({
+  industry,
+  slug,
+  isGrayBg = false,
+}: Props) => {
   let products: ProductInterface[] = [];
   let promotions: PromotionInterface[] = [];
   let category: CategoryInterface | undefined;
@@ -48,6 +53,7 @@ export const ProductWithCategoryType = async ({ industry, slug }: Props) => {
       promotions={promotions}
       slug={slug}
       industry={industry}
+      isGrayBg={isGrayBg}
     />
   );
 };

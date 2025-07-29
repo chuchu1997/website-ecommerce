@@ -16,6 +16,7 @@ interface ClientProps {
   promotions: PromotionInterface[];
   slug: string;
   industry: string;
+  isGrayBg?:boolean;
 }
 
 export const ProductWithCategoryClient = ({
@@ -23,12 +24,13 @@ export const ProductWithCategoryClient = ({
   products,
   promotions,
   slug,
-  industry
+  industry,
+  isGrayBg
 }: ClientProps) => {
   const windowSize = useWindowSize();
 
   return (
-    <section className="py-3 sm:py-6 lg:py-8 mb-20">
+    <section className={`py-3 sm:py-6 lg:py-8 ${isGrayBg ? "bg-none" :"bg-white"}`}>
       <div className="container mx-auto px-3 sm:px-6 lg:px-8">
         
         {/* Category Header - Simplified */}

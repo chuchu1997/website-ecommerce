@@ -64,7 +64,7 @@ const Footer: React.FC = async () => {
   }
 
   return (
-    <footer className="bg-gradient-to-br from-slate-900 via-gray-900 to-slate-800 text-white relative overflow-hidden">
+    <footer className=" bg-gradient-to-br from-slate-900 via-gray-900 to-slate-800 text-white overflow-hidden border-t border-slate-700/50 relative">
       {/* Subtle Background Elements */}
       <div className="absolute inset-0 opacity-5">
         <div className="absolute top-0 left-1/4 w-64 h-64 bg-amber-400 rounded-full blur-3xl transform -translate-y-1/2"></div>

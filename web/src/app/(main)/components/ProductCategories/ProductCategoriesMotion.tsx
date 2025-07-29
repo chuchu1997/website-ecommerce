@@ -16,140 +16,246 @@ interface Props {
 
 export const ProductCategoriesMotion = (props: Props) => {
   const [isMounted, setIsMounted] = useState(false);
-
   const { title, description, categories } = props;
 
   const containerVariants = {
-    hidden: {},
+    hidden: { opacity: 0 },
     show: {
+      opacity: 1,
       transition: {
-        staggerChildren: 0.12,
+        duration: 0.6,
+        staggerChildren: 0.15,
       },
     },
   };
 
-  const fadeInUp = {
-    hidden: { opacity: 0, y: 50 },
+  const itemVariants = {
+    hidden: {
+      opacity: 0,
+      y: 30,
+      scale: 0.95,
+    },
     show: {
       opacity: 1,
       y: 0,
-      transition: { duration: 0.7, ease: [0.25, 0.25, 0.25, 0.75] },
+      scale: 1,
+      transition: {
+        duration: 0.8,
+        ease: [0.4, 0, 0.2, 1],
+      },
     },
   };
 
-  const cardHover = {
-    hover: {
-      y: -12,
-      transition: { duration: 0.3, ease: "easeOut" },
+  const floatingVariants = {
+    animate: {
+      y: [-10, 10, -10],
+      rotate: [0, 2, -2, 0],
+      transition: {
+        duration: 6,
+        repeat: Infinity,
+        ease: "easeInOut",
+      },
     },
   };
+
   useEffect(() => {
     setIsMounted(true);
   }, []);
+
   if (!isMounted) return null;
 
   return (
-    <section className="order-t border-white/30 shadow-inner relative py-12 sm:py-16 lg:py-24 bg-gradient-to-br from-gray-50 via-white to-gray-100 overflow-hidden">
-      {/* Background Decorations */}
+    <section className="relative min-h-screen py-20 lg:py-32 overflow-hidden bg-gradient-to-br from-slate-50 via-blue-50/30 to-indigo-50/50">
+      {/* Dynamic Background Elements */}
       <div className="absolute inset-0 overflow-hidden">
-        <div className="absolute -top-40 -right-40 w-80 h-80 bg-gradient-to-br from-purple-200/30 to-pink-300/30 rounded-full blur-3xl" />
-        <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-gradient-to-br from-blue-200/30 to-cyan-300/30 rounded-full blur-3xl" />
-        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-gradient-to-br from-amber-200/20 to-orange-300/20 rounded-full blur-3xl" />
+        {/* Animated gradient orbs */}
+        <motion.div
+          variants={floatingVariants}
+          animate="animate"
+          className="absolute -top-32 -right-32 w-64 h-64 bg-gradient-to-br from-violet-400/20 to-purple-600/20 rounded-full blur-3xl"
+        />
+        <motion.div
+          variants={floatingVariants}
+          animate="animate"
+          style={{ animationDelay: "2s" }}
+          className="absolute -bottom-32 -left-32 w-80 h-80 bg-gradient-to-tr from-cyan-400/20 to-blue-600/20 rounded-full blur-3xl"
+        />
+        <motion.div
+          variants={floatingVariants}
+          animate="animate"
+          style={{ animationDelay: "4s" }}
+          className="absolute top-1/3 right-1/4 w-48 h-48 bg-gradient-to-bl from-emerald-400/15 to-teal-600/15 rounded-full blur-2xl"
+        />
+
+        {/* Subtle grid pattern */}
+        <div className="absolute inset-0 bg-[linear-gradient(rgba(0,0,0,0.02)_1px,transparent_1px),linear-gradient(90deg,rgba(0,0,0,0.02)_1px,transparent_1px)] bg-[size:64px_64px]" />
       </div>
 
-      <div className="relative container mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="relative container mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl">
         <motion.div
           variants={containerVariants}
           initial="hidden"
           whileInView="show"
-          viewport={{ once: true, margin: "-100px" }}>
-          {/* Header Section */}
+          viewport={{ once: true, margin: "-50px" }}>
+          {/* Hero Header */}
           <motion.div
-            variants={fadeInUp}
-            className="text-center mb-12 sm:mb-16 lg:mb-20">
-            {/* Icon Badge */}
-            <div className="inline-flex items-center justify-center w-16 h-16 sm:w-20 sm:h-20 bg-gradient-to-r from-purple-500 to-pink-600 rounded-2xl mb-6 sm:mb-8 shadow-lg">
-              <span className="text-2xl sm:text-3xl">🏷️</span>
-            </div>
+            variants={itemVariants}
+            className="text-center mb-16 lg:mb-24">
+            {/* Floating icon badge */}
+            <motion.div
+              className="inline-flex items-center justify-center w-20 h-20 lg:w-24 lg:h-24 mb-8"
+              whileHover={{ scale: 1.1, rotate: 5 }}
+              transition={{ type: "spring", stiffness: 300 }}>
+              <div className="relative">
+                <div className="absolute inset-0 bg-gradient-to-r from-violet-500 to-purple-600 rounded-3xl blur-lg opacity-75" />
+                <div className="relative bg-gradient-to-r from-violet-500 to-purple-600 rounded-3xl p-4 lg:p-5 shadow-2xl">
+                  <span className="text-3xl lg:text-4xl">🎯</span>
+                </div>
+              </div>
+            </motion.div>
 
-            {/* Main Title */}
-            <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-extrabold mb-4 sm:mb-6 leading-tight">
-              <span className="bg-gradient-to-r from-gray-900 via-gray-800 to-gray-900 bg-clip-text text-transparent">
+            {/* Main title with enhanced typography */}
+            <h1 className="text-3xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-black mb-6 lg:mb-8 leading-[0.9] tracking-tight">
+              <span className="block bg-gradient-to-r from-slate-900 via-violet-900 py-2 to-slate-900 bg-clip-text text-transparent">
                 {title}
               </span>
-            </h2>
+            </h1>
 
-            {/* Description */}
-            <p className="text-base sm:text-lg md:text-xl lg:text-2xl text-gray-600 max-w-2xl lg:max-w-4xl mx-auto leading-relaxed">
+            {/* Enhanced description */}
+            <motion.p
+              variants={itemVariants}
+              className="text-base sm:text-lg lg:text-xl xl:text-2xl text-slate-600 max-w-4xl mx-auto leading-relaxed font-light">
               {description}
-            </p>
+            </motion.p>
 
-            {/* Decorative Line */}
-            <div className="flex items-center justify-center mt-8 sm:mt-10">
-              <div className="flex space-x-2">
-                <div className="w-2 h-2 bg-purple-500 rounded-full animate-pulse" />
-                <div className="w-2 h-2 bg-pink-500 rounded-full animate-pulse delay-150" />
-                <div className="w-2 h-2 bg-purple-500 rounded-full animate-pulse delay-300" />
+            {/* Animated divider */}
+            <motion.div
+              variants={itemVariants}
+              className="flex items-center justify-center mt-10 lg:mt-12">
+              <div className="flex items-center space-x-4">
+                <motion.div
+                  className="w-16 h-0.5 bg-gradient-to-r from-transparent via-violet-500 to-transparent"
+                  animate={{ scaleX: [0, 1, 0] }}
+                  transition={{ duration: 3, repeat: Infinity }}
+                />
+                <div className="flex space-x-1.5">
+                  {[0, 1, 2].map((i) => (
+                    <motion.div
+                      key={i}
+                      className="w-2 h-2 bg-violet-500 rounded-full"
+                      animate={{
+                        scale: [1, 1.3, 1],
+                        opacity: [0.5, 1, 0.5],
+                      }}
+                      transition={{
+                        duration: 2,
+                        repeat: Infinity,
+                        delay: i * 0.3,
+                      }}
+                    />
+                  ))}
+                </div>
+                <motion.div
+                  className="w-16 h-0.5 bg-gradient-to-r from-transparent via-violet-500 to-transparent"
+                  animate={{ scaleX: [0, 1, 0] }}
+                  transition={{ duration: 3, repeat: Infinity, delay: 1.5 }}
+                />
               </div>
+            </motion.div>
+          </motion.div>
+
+          {/* Categories Grid with enhanced layout */}
+          <motion.div variants={itemVariants} className="mb-16 lg:mb-24">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 lg:gap-8">
+              {categories.map((category, index) => (
+                <motion.div
+                  key={category.id}
+                  variants={itemVariants}
+                  whileHover={{
+                    y: -8,
+                    transition: { duration: 0.3, ease: "easeOut" },
+                  }}
+                  className="group">
+                  <CategoryCard category={category} />
+                </motion.div>
+              ))}
             </div>
           </motion.div>
 
-          {/* Categories Grid */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8 lg:gap-10">
-            {categories.map((category) => (
-              <CategoryCard category={category} key={category.id} />
-            ))}
-          </div>
-
-          {/* Call to Action */}
-          <Link href={`/danh-muc`}>
-            <motion.div
-              variants={fadeInUp}
-              className="text-center mt-12 sm:mt-16 lg:mt-20">
+          {/* Enhanced CTA Section */}
+          <motion.div
+            variants={itemVariants}
+            className="text-center mb-16 lg:mb-20">
+            <Link href="/danh-muc">
               <motion.button
                 whileHover={{
                   scale: 1.05,
-                  boxShadow: "0 20px 40px rgba(168, 85, 247, 0.4)",
+                  boxShadow: "0 25px 50px rgba(139, 92, 246, 0.3)",
                 }}
-                whileTap={{ scale: 0.98 }}
-                className="group relative bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white px-6 sm:px-8 lg:px-10 py-3 sm:py-4 lg:py-5 rounded-xl sm:rounded-2xl text-sm sm:text-base lg:text-lg font-semibold transition-all duration-300 shadow-lg hover:shadow-2xl overflow-hidden">
-                <span className="relative z-10 flex items-center justify-center gap-2">
+                whileTap={{ scale: 0.95 }}
+                className="group relative inline-flex items-center gap-3 bg-gradient-to-r from-violet-600 via-purple-600 to-indigo-600 hover:from-violet-700 hover:via-purple-700 hover:to-indigo-700 text-white px-8 py-4 lg:px-12 lg:py-6 rounded-2xl text-base lg:text-xl font-bold transition-all duration-500 shadow-2xl hover:shadow-violet-500/25 overflow-hidden">
+                {/* Animated background overlay */}
+                <div className="absolute inset-0 bg-gradient-to-r from-white/10 to-white/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+
+                {/* Shimmer effect */}
+                <div className="absolute inset-0 -translate-x-full group-hover:translate-x-full transition-transform duration-1000 bg-gradient-to-r from-transparent via-white/20 to-transparent skew-x-12" />
+
+                <span className="relative z-10 flex items-center gap-3">
                   Khám Phá Tất Cả Danh Mục
                   <motion.span
-                    animate={{ x: [0, 5, 0] }}
-                    transition={{ duration: 1.5, repeat: Infinity }}>
+                    animate={{ x: [0, 4, 0] }}
+                    transition={{ duration: 2, repeat: Infinity }}
+                    className="text-xl">
                     →
                   </motion.span>
                 </span>
-                <div className="absolute inset-0 bg-gradient-to-r from-white/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
               </motion.button>
-            </motion.div>
-          </Link>
+            </Link>
+          </motion.div>
 
-          {/* Stats Section */}
+          {/* Enhanced Stats Section */}
           {categories.length > 0 && (
-            <motion.div
-              variants={fadeInUp}
-              className="mt-16 sm:mt-20 lg:mt-24 text-center">
-              <div className="inline-flex items-center gap-8 sm:gap-12 px-6 py-4 bg-white/60 backdrop-blur-sm rounded-2xl border border-white/60 shadow-lg">
-                <div className="text-center">
-                  <div className="text-2xl sm:text-3xl font-bold text-gray-900 mb-1">
-                    {categories.length}
-                  </div>
-                  <div className="text-xs sm:text-sm text-gray-600">
-                    Danh mục
-                  </div>
-                </div>
-                <div className="w-px h-8 bg-gray-300" />
-                <div className="text-center">
-                  <div className="text-2xl sm:text-3xl font-bold text-gray-900 mb-1">
-                    {categories.reduce(
-                      (total, cat) => total + (cat.products?.length || 0),
-                      0
-                    )}
-                  </div>
-                  <div className="text-xs sm:text-sm text-gray-600">
-                    Sản phẩm
+            <motion.div variants={itemVariants} className="flex justify-center">
+              <div className="relative group">
+                {/* Glow effect */}
+                <div className="absolute -inset-1 bg-gradient-to-r from-violet-600 to-purple-600 rounded-3xl blur opacity-25 group-hover:opacity-40 transition duration-500" />
+
+                <div className="relative bg-white/80 backdrop-blur-xl rounded-3xl border border-white/60 shadow-2xl p-8 lg:p-10">
+                  <div className="flex items-center gap-8 lg:gap-16">
+                    {/* Categories count */}
+                    <div className="text-center">
+                      <motion.div
+                        className="text-4xl lg:text-5xl font-black bg-gradient-to-r from-violet-600 to-purple-600 bg-clip-text text-transparent mb-2"
+                        whileHover={{ scale: 1.1 }}>
+                        {categories.length}
+                      </motion.div>
+                      <div className="text-sm lg:text-base text-slate-600 font-medium uppercase tracking-wider">
+                        Danh mục
+                      </div>
+                    </div>
+
+                    {/* Animated separator */}
+                    <motion.div
+                      className="w-px h-16 bg-gradient-to-b from-transparent via-slate-300 to-transparent"
+                      animate={{ opacity: [0.3, 1, 0.3] }}
+                      transition={{ duration: 2, repeat: Infinity }}
+                    />
+
+                    {/* Products count */}
+                    <div className="text-center">
+                      <motion.div
+                        className="text-4xl lg:text-5xl font-black bg-gradient-to-r from-purple-600 to-indigo-600 bg-clip-text text-transparent mb-2"
+                        whileHover={{ scale: 1.1 }}>
+                        500
+                        {/* {categories.reduce(
+                          (total, cat) => total + (cat.products?.length || 0),
+                          0
+                        )} */}
+                      </motion.div>
+                      <div className="text-sm lg:text-base text-slate-600 font-medium uppercase tracking-wider">
+                        Sản phẩm
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>

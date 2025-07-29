@@ -345,7 +345,7 @@ const ProfessionalNavbar: React.FC = () => {
           <div className="max-w-7xl mx-auto px-4 py-1">
             <div className="flex items-center justify-between">
               {/* Desktop Navigation */}
-              <nav className="hidden lg:flex items-center space-x-1 flex-1">
+              <nav className="hidden lg:flex items-center text-sm space-x-1 flex-1">
                 {/* Dynamic Categories with Megamenus */}
                 {categories.map((category) => (
                   <div
@@ -425,7 +425,7 @@ const ProfessionalNavbar: React.FC = () => {
                                 <h3 className="text-lg font-bold text-gray-900 mb-4 pb-2 border-b border-gray-200">
                                   {getActiveParentCategory()?.name}
                                 </h3>
-                                <div className="grid grid-cols-2 gap-4 max-h-[400px] overflow-y-auto">
+                                <div className="grid grid-cols-2 gap-4  overflow-y-auto">
                                   {getActiveParentCategory()?.subCategories?.map(
                                     (childCategory) => (
                                       <Link

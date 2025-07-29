@@ -30,7 +30,7 @@ export const NewsCard: React.FC<{ news: NewsInterface }> = ({ news }) => {
         <h3 className="text-xl font-bold text-gray-900 mb-3">{news.title}</h3>
         <p className="text-gray-600 mb-4">{news.shortDescription}</p>
 
-        <Link href = {`/tin-tuc/${news.slug}`} aria-label={news.title}  className="text-amber-600 hover:text-amber-700 font-semibold inline-flex items-center">
+        <Link prefetch={true} href = {`/tin-tuc/${news.slug}`} aria-label={news.title}  className="text-amber-600 hover:text-amber-700 font-semibold inline-flex items-center">
           Xem bài viết 
           <ArrowRight className="ml-2 w-4 h-4" />
         </Link>

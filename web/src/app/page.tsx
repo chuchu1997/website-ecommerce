@@ -41,7 +41,7 @@ const MusicStoreLanding: React.FC = async () => {
   const storeInfo: StoreInterface = (await StoreAPI.getStoreInfo()).data.store;
 
   return (
-    <div className=" min-h-screen bg-gray-100 w-full">
+    <div className=" min-h-screen bg-gray-50 w-full">
       {/* Banner Section */}
       {/* <Banner /> */}
       <NavbarComponent />
@@ -61,6 +61,7 @@ const MusicStoreLanding: React.FC = async () => {
       <ProductWithCategoryType
         industry={storeInfo.industry ?? ""}
         slug="ban-cat-gach"
+        isGrayBg={true}
       />
       <ProductWithCategoryType
         industry={storeInfo.industry ?? ""}
@@ -69,6 +70,7 @@ const MusicStoreLanding: React.FC = async () => {
       <ProductWithCategoryType
         industry={storeInfo.industry ?? ""}
         slug="may-han-dien-tu"
+        isGrayBg={true}
       />
       <ProductWithCategoryType
         industry={storeInfo.industry ?? ""}
@@ -77,6 +79,7 @@ const MusicStoreLanding: React.FC = async () => {
       <ProductWithCategoryType
         industry={storeInfo.industry ?? ""}
         slug="dong-co-no"
+        isGrayBg={true}
       />
       <ProductWithCategoryType
         industry={storeInfo.industry ?? ""}
@@ -85,6 +88,7 @@ const MusicStoreLanding: React.FC = async () => {
       <ProductWithCategoryType
         industry={storeInfo.industry ?? ""}
         slug="vat-tu-co-khi"
+        isGrayBg={true}
       />
       <ProductWithCategoryType
         industry={storeInfo.industry ?? ""}

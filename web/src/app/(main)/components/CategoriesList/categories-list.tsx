@@ -50,8 +50,8 @@ const CategoriesList = () => {
     <Link
       href={`/danh-muc/${category.slug}`}
       key={category.id}
-      className="border group flex flex-col items-center justify-start p-3 rounded-lg hover:shadow-lg transition duration-300 bg-white">
-      <div className="w-24 h-24 relative mb-2 rounded-full overflow-hidden border">
+      className="border min-h-[170px] group flex flex-col items-center justify-start p-3 rounded-lg hover:shadow-lg transition duration-300 bg-white">
+      <div className="w-24 h-24  relative mb-2 rounded-full overflow-hidden border">
         {category.imageUrl && (
           <ImageLoader
             priority={true}

@@ -34,105 +34,192 @@ export const FeatureProducts = async ({ industry }: Props) => {
     console.error("Failed to fetch featured products:", error);
   }
 
+  const stats = [
+    {
+      value: featureProducts.length,
+      label: "Sản phẩm nổi bật",
+      color: "from-blue-600 to-blue-700",
+      bgColor: "from-blue-50 to-blue-100",
+      icon: "🌟"
+    },
+    {
+      value: "100%",
+      label: "Chất lượng cao cấp",
+      color: "from-emerald-600 to-emerald-700", 
+      bgColor: "from-emerald-50 to-emerald-100",
+      icon: "✨"
+    },
+    {
+      value: "24/7",
+      label: "Hỗ trợ tận tâm",
+      color: "from-purple-600 to-purple-700",
+      bgColor: "from-purple-50 to-purple-100", 
+      icon: "🤝"
+    },
+    {
+      value: promotions.length || 0,
+      label: "Ưu đãi độc quyền",
+      color: "from-pink-600 to-pink-700",
+      bgColor: "from-pink-50 to-pink-100",
+      icon: "🎁"
+    }
+  ];
+
   return (
-    <section className="relative py-16 sm:py-24 lg:py-32 bg-white overflow-hidden">
-      {/* Subtle background gradient and shapes for depth */}
-      <div className="absolute inset-0 z-0 opacity-30">
-        <div className="absolute -top-40 -left-40 w-96 h-96 bg-gradient-to-br from-blue-100 to-indigo-200 rounded-full mix-blend-multiply filter blur-xl animate-blob" />
-        <div className="absolute -bottom-40 -right-40 w-96 h-96 bg-gradient-to-br from-purple-100 to-pink-200 rounded-full mix-blend-multiply filter blur-xl animate-blob animation-delay-2000" />
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-80 h-80 bg-gradient-to-br from-green-100 to-teal-200 rounded-full mix-blend-multiply filter blur-xl animate-blob animation-delay-4000" />
+    <section className="relative py-20 lg:py-28 bg-gradient-to-br from-gray-50 via-white to-blue-50/30 overflow-hidden">
+      {/* Elegant Background Elements */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        {/* Floating geometric shapes */}
+        <div className="absolute -top-40 -left-40 w-80 h-80 bg-gradient-to-br from-blue-100/40 to-indigo-200/30 rounded-full blur-3xl animate-pulse" />
+        <div className="absolute -bottom-40 -right-40 w-96 h-96 bg-gradient-to-br from-purple-100/30 to-pink-200/20 rounded-full blur-3xl animate-pulse animation-delay-2000" />
+        <div className="absolute top-1/3 left-1/2 transform -translate-x-1/2 w-64 h-64 bg-gradient-to-br from-emerald-100/25 to-teal-200/15 rounded-full blur-2xl animate-pulse animation-delay-4000" />
+        
+        {/* Subtle grid pattern */}
+        <div className="absolute inset-0 bg-[linear-gradient(rgba(0,0,0,0.015)_1px,transparent_1px),linear-gradient(90deg,rgba(0,0,0,0.015)_1px,transparent_1px)] bg-[size:60px_60px]" />
+        
+        {/* Elegant curves */}
+        <svg className="absolute inset-0 w-full h-full opacity-20" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <linearGradient id="elegantGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stopColor="rgba(59, 130, 246, 0.1)" />
+              <stop offset="50%" stopColor="rgba(139, 92, 246, 0.08)" />
+              <stop offset="100%" stopColor="rgba(16, 185, 129, 0.06)" />
+            </linearGradient>
+          </defs>
+          <path
+            d="M0,100 Q400,50 800,120 T1600,100"
+            stroke="url(#elegantGradient)"
+            strokeWidth="2"
+            fill="none"
+            className="animate-pulse"
+          />
+          <path
+            d="M0,200 Q600,150 1200,180 T2400,200"
+            stroke="url(#elegantGradient)"
+            strokeWidth="1.5"
+            fill="none"
+            className="animate-pulse"
+            style={{ animationDelay: "1s" }}
+          />
+        </svg>
       </div>
 
-      <div className="relative container mx-auto px-4 sm:px-6 lg:px-8 z-10">
-        {/* Header Section */}
-        <div className="text-center mb-16 sm:mb-20 lg:mb-24">
-          {/* Main Title */}
-          <h2 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-gray-900 mb-6 leading-tight tracking-tight">
-            <span className="block">Sản Phẩm</span>
-            <span className="block bg-clip-text text-transparent bg-gradient-to-r from-indigo-600 to-purple-700">
+      <div className="relative container mx-auto">
+        {/* Premium Header Section */}
+        <div className="text-center mb-16 lg:mb-24">
+          {/* Floating Icon */}
+          <div className="inline-flex items-center justify-center w-20 h-20 lg:w-24 lg:h-24 mb-8 relative">
+            <div className="absolute inset-0 bg-gradient-to-r from-blue-500 to-purple-600 rounded-2xl blur-lg opacity-30 animate-pulse" />
+            <div className="relative bg-white rounded-2xl p-5 lg:p-6 shadow-xl border border-gray-100">
+              <span className="text-3xl lg:text-4xl">⭐</span>
+            </div>
+          </div>
+
+          {/* Professional Title */}
+          <h2 className="text-3xl sm:text-4xl lg:text-5xl xl:text-6xl font-black mb-6 leading-tight tracking-tight gap-x-2 flex items-center justify-center">
+            <span className="block text-gray-900 ">Sản Phẩm</span>
+            <span className="block bg-gradient-to-r from-blue-600 via-purple-600 to-emerald-600 bg-clip-text text-transparent">
               Nổi Bật
             </span>
           </h2>
 
-          {/* Subtitle */}
-          <p className="text-lg sm:text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
-            Khám phá những sản phẩm **{industry}** được chế tác tinh xảo, thiết
-            kế hiện đại và được yêu thích nhất từ bộ sưu tập của chúng tôi.
+          {/* Elegant Description */}
+          <p className="text-lg sm:text-xl lg:text-2xl text-gray-600 max-w-4xl mx-auto leading-relaxed font-light">
+            Khám phá những sản phẩm <span className="font-semibold text-blue-700">{industry}</span> được chế tác tinh xảo, 
+            thiết kế hiện đại và được yêu thích nhất từ bộ sưu tập của chúng tôi
           </p>
 
-          {/* Decorative Separator */}
-          <div className="flex justify-center mt-8">
-            <div className="h-1 w-24 bg-gradient-to-r from-indigo-500 to-purple-600 rounded-full" />
+          {/* Modern Divider */}
+          <div className="flex items-center justify-center mt-10 lg:mt-12">
+            <div className="flex items-center space-x-4">
+              <div className="w-20 h-px bg-gradient-to-r from-transparent via-blue-400 to-transparent"></div>
+              <div className="flex space-x-2">
+                {[0, 1, 2].map((i) => (
+                  <div
+                    key={i}
+                    className="w-2 h-2 bg-blue-400 rounded-full animate-pulse"
+                    style={{ animationDelay: `${i * 0.4}s` }}
+                  />
+                ))}
+              </div>
+              <div className="w-20 h-px bg-gradient-to-r from-transparent via-blue-400 to-transparent"></div>
+            </div>
           </div>
         </div>
 
-        {/* Products Section */}
-        <div className="relative">
+        {/* Products Section with Enhanced Styling */}
+        <div className="relative mb-20 lg:mb-28">
           <ProductListMotionWrapper products={featureProducts} />
         </div>
 
-        {/* Stats Section */}
+        {/* Premium Stats Section */}
         {featureProducts.length > 0 && (
-          <div className="mt-20 sm:mt-24 lg:mt-32 border-t border-gray-200 pt-12">
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
-              <div className="text-center bg-gray-50 p-6 rounded-lg shadow-sm transform hover:scale-105 transition duration-300 ease-in-out">
-                <div className="text-4xl font-bold text-indigo-700 mb-2">
-                  {featureProducts.length}
+          <div className="relative">
+            {/* Stats Header */}
+            <div className="text-center mb-12">
+              <h3 className="text-2xl lg:text-3xl font-bold text-gray-900 mb-4">
+                Tại Sao Chọn Chúng Tôi?
+              </h3>
+              <p className="text-gray-600 max-w-2xl mx-auto">
+                Những con số minh chứng cho chất lượng và uy tín của chúng tôi
+              </p>
+            </div>
+
+            {/* Modern Stats Grid */}
+            <div className="grid grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-8">
+              {stats.map((stat, index) => (
+                <div
+                  key={index}
+                  className="group relative bg-white rounded-2xl p-6 lg:p-8 shadow-lg hover:shadow-2xl transition-all duration-500 hover:-translate-y-2 border border-gray-100"
+                >
+                  {/* Background Gradient */}
+                  <div className={`absolute inset-0 bg-gradient-to-br ${stat.bgColor} rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500`} />
+                  
+                  {/* Content */}
+                  <div className="relative text-center">
+                    {/* Icon */}
+                    <div className="text-3xl lg:text-4xl mb-4 transform group-hover:scale-110 transition-transform duration-300">
+                      {stat.icon}
+                    </div>
+                    
+                    {/* Value */}
+                    <div className={`text-3xl lg:text-4xl xl:text-5xl font-black mb-3 bg-gradient-to-r ${stat.color} bg-clip-text text-transparent`}>
+                      {stat.value}
+                    </div>
+                    
+                    {/* Label */}
+                    <div className="text-sm lg:text-base text-gray-600 font-medium leading-relaxed">
+                      {stat.label}
+                    </div>
+                  </div>
+
+                  {/* Hover Effect */}
+                  <div className="absolute inset-0 rounded-2xl bg-gradient-to-r from-blue-500/10 to-purple-500/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
                 </div>
-                <div className="text-md text-gray-600 font-medium">
-                  Sản phẩm nổi bật
-                </div>
-              </div>
-              <div className="text-center bg-gray-50 p-6 rounded-lg shadow-sm transform hover:scale-105 transition duration-300 ease-in-out">
-                <div className="text-4xl font-bold text-purple-700 mb-2">
-                  100%
-                </div>
-                <div className="text-md text-gray-600 font-medium">
-                  Chất lượng cao cấp
-                </div>
-              </div>
-              <div className="text-center bg-gray-50 p-6 rounded-lg shadow-sm transform hover:scale-105 transition duration-300 ease-in-out">
-                <div className="text-4xl font-bold text-teal-700 mb-2">
-                  24/7
-                </div>
-                <div className="text-md text-gray-600 font-medium">
-                  Hỗ trợ tận tâm
-                </div>
-              </div>
-              <div className="text-center bg-gray-50 p-6 rounded-lg shadow-sm transform hover:scale-105 transition duration-300 ease-in-out">
-                <div className="text-4xl font-bold text-pink-700 mb-2">
-                  {promotions.length || 0}
-                </div>
-                <div className="text-md text-gray-600 font-medium">
-                  Ưu đãi độc quyền
-                </div>
-              </div>
+              ))}
             </div>
           </div>
         )}
 
-        {/* Optional Call to Action */}
-        <div className="text-center mt-20">
-          <button className="group relative inline-flex items-center justify-center px-8 py-4 text-lg font-semibold text-white bg-gradient-to-r from-indigo-600 to-purple-700 rounded-full shadow-lg hover:shadow-xl transition-all duration-300 ease-in-out transform hover:-translate-y-1 hover:scale-105 overflow-hidden">
-            <span className="relative z-10 flex items-center gap-2">
-              Xem Tất Cả Sản Phẩm
-              <svg
-                className="w-5 h-5 ml-1 transition-transform duration-300 group-hover:translate-x-1"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth="2"
-                  d="M14 5l7 7m0 0l-7 7m7-7H3"
-                ></path>
-              </svg>
-            </span>
-            <div className="absolute inset-0 bg-white opacity-20 transform scale-0 group-hover:scale-100 rounded-full transition-all duration-500 ease-out" />
-          </button>
+        {/* Premium Call to Action */}
+     
+
+        {/* Trust Badge */}
+        <div className="flex justify-center mt-16 lg:mt-20">
+          <div className="relative group">
+            <div className="absolute -inset-1 bg-gradient-to-r from-blue-600 to-emerald-600 rounded-full blur opacity-25 group-hover:opacity-40 transition duration-500" />
+            <div className="relative bg-white/90 backdrop-blur-sm rounded-full border border-gray-200 shadow-lg px-8 py-4 lg:px-12 lg:py-5">
+              <div className="flex items-center gap-4">
+                <div className="flex items-center gap-2">
+                  <div className="w-3 h-3 bg-emerald-500 rounded-full animate-pulse" />
+                  <div className="w-2 h-2 bg-blue-500 rounded-full animate-pulse" style={{ animationDelay: "0.5s" }} />
+                </div>
+                <span className="text-lg text-gray-700 font-medium">
+                  Được tin tưởng bởi <span className="font-bold text-blue-600">1000+</span> khách hàng
+                </span>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </section>
