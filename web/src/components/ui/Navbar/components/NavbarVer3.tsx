@@ -433,14 +433,17 @@ const ProfessionalNavbar: React.FC = () => {
                                         key={childCategory.id}
                                         href={`/danh-muc/${childCategory.slug}`}
                                         className="group p-4 rounded-xl hover:bg-gradient-to-br hover:from-blue-50 hover:to-purple-50 transition-all duration-200 border border-transparent hover:border-blue-200 hover:shadow-lg">
-                                        <div className="flex items-center space-x-3">
-                                          <Image
-                                            className="w-12 h-12 rounded-lg object-cover shadow-sm flex-shrink-0"
-                                            src={childCategory.imageUrl}
-                                            alt={childCategory.name}
-                                            width={48}
-                                            height={48}
-                                          />
+                                        <div className="flex items-start space-x-3">
+                                          <div className="relative w-12 h-12 ">
+                                            <ImageLoader
+                                              priority
+                                              fill
+                                              className=" rounded-lg object-cover shadow-sm"
+                                              src={childCategory.imageUrl}
+                                              alt={childCategory.name}
+                                            />
+                                          </div>
+
                                           <div className="flex-1 min-w-0">
                                             <h4 className="font-semibold text-gray-900 group-hover:text-blue-600 transition-colors duration-200">
                                               {childCategory.name}
@@ -566,10 +569,10 @@ const ProfessionalNavbar: React.FC = () => {
         <div
           className={`hidden ${
             isScrolled ? "hidden" : "md:block"
-          } bg-gradient-to-r from-gray-50 via-blue-50 to-purple-50 border-b border-gray-200`}>
+          } bg-gradient-to-r from-gray-50 via-blue-50 to-purple-50 border-b border-gray-200 overflow-hidden max-h-[48px] `}>
           <div className="max-w-7xl mx-auto px-4 py-2">
             <div className="flex items-center justify-between">
-              <div className="flex items-center space-x-1 space-y-1 flex-wrap">
+              <div className="flex items-center space-x-1 space-y-2 flex-wrap">
                 {subCate.slice(0, 7).map((category, index) => (
                   <Link
                     href={`/danh-muc/${category.slug}`}
