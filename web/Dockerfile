@@ -7,7 +7,6 @@ COPY package*.json ./
 RUN npm install
 
 COPY . .
-ENV SKIP_BUILD_STATIC_GENERATION=true
 
 
 
