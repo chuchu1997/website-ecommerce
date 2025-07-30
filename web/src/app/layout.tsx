@@ -22,6 +22,7 @@ import { CategoryAPI } from "@/api/categories/category.api";
 import { CategoryInterface } from "@/types/category";
 import Navbar from "@/components/ui/Navbar/components/NavbarClientVer2";
 import NavbarComponent from "@/components/ui/Navbar";
+export const dynamic = "force-dynamic";
 
 export const revalidate = 300; // 1 hour
 const geistSans = Geist({ variable: "--font-geist-sans", subsets: ["latin"] });
