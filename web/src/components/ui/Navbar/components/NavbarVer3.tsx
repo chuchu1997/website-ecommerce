@@ -32,6 +32,7 @@ import { ImageLoader } from "../../image-loader";
 import { cn } from "@/lib/utils";
 import { StoreInterface } from "@/types/store";
 import { StoreAPI } from "@/api/stores/store.api";
+import { useBreakpoint } from "@/hooks/use-breakpoint";
 
 const useDebounce = (value: string, delay: number) => {
   const [debouncedValue, setDebouncedValue] = useState(value);
@@ -48,8 +49,14 @@ const useDebounce = (value: string, delay: number) => {
 
   return debouncedValue;
 };
-
-const ProfessionalNavbar: React.FC = () => {
+interface NavbarProps {
+  categoriesProps: CategoryInterface[];
+  storeInfoProps: StoreInterface;
+}
+const ProfessionalNavbar: React.FC<NavbarProps> = ({
+  categoriesProps,
+  storeInfoProps,
+}) => {
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
@@ -57,15 +64,13 @@ const ProfessionalNavbar: React.FC = () => {
   const [isSearching, setIsSearching] = useState(false);
   const [activeMegaMenu, setActiveMegaMenu] = useState<string | null>(null);
   const [isScrolled, setIsScrolled] = useState(false);
-  const [storeInfo, setStoreInfo] = useState<StoreInterface>();
+
   const [hoveredParentCategory, setHoveredParentCategory] = useState<
     string | null
   >(null);
   const [expandedMobileCategory, setExpandedMobileCategory] = useState<
     string | null
   >(null);
-  const [categories, setCategories] = useState<CategoryInterface[]>([]);
-  const [subCate, setSubCate] = useState<CategoryInterface[]>([]);
 
   const searchInputRef = useRef<HTMLInputElement>(null);
   const categoryTimeoutRef = useRef<NodeJS.Timeout | null>(null);
@@ -122,32 +127,36 @@ const ProfessionalNavbar: React.FC = () => {
   }, [isSearchOpen]);
 
   // Fetch categories
-  const fetchCategories = async () => {
-    try {
-      let res = await CategoryAPI.getAllCategoriesOfStore({
-        justGetParent: true,
-      });
-      let resSub = await CategoryAPI.getAllCategoriesOfStore({
-        justGetParent: false,
-      });
-      let storeRes = await (await StoreAPI.getStoreInfo()).data;
+  // const fetchCategories = async () => {
+  //   try {
+  //     let res = await CategoryAPI.getAllCategoriesOfStore({
+  //       justGetParent: true,
+  //     });
+  //     let resSub = await CategoryAPI.getAllCategoriesOfStore({
+  //       justGetParent: false,
+  //     });
+  //     let storeRes = await (await StoreAPI.getStoreInfo()).data;
 
-      setStoreInfo(storeRes.store);
+  //     setStoreInfo(storeRes.store);
 
-      const sub = resSub.data.categories as CategoryInterface[];
+  //     const sub = resSub.data.categories as CategoryInterface[];
 
-      setSubCate(sub.filter((item) => item.parentId !== null));
+  //     setSubCate(sub.filter((item) => item.parentId !== null));
 
-      const cate = res.data.categories as CategoryInterface[];
-      setCategories(cate || []);
-    } catch (error) {
-      console.error("Error fetching categories:", error);
-    }
-  };
+  //     const cate = res.data.categories as CategoryInterface[];
+  //     setCategories(cate || []);
+  //   } catch (error) {
+  //     console.error("Error fetching categories:", error);
+  //   }
+  // };
 
-  useEffect(() => {
-    fetchCategories();
-  }, []);
+  if (!categoriesProps || categoriesProps.length === 0 || !storeInfoProps) {
+    return null; // hoặc Loading UI
+  }
+  const storeInfo = storeInfoProps;
+
+  const categories = categoriesProps.filter((item) => item.parentId === null);
+  const subCate = categoriesProps.filter((item) => item.parentId !== null);
 
   // Handler functions
   const handleSearchOpen = () => setIsSearchOpen(true);
@@ -158,7 +167,34 @@ const ProfessionalNavbar: React.FC = () => {
     setSearchResults([]);
   };
 
-  const handleMobileMenuToggle = () => setIsMobileMenuOpen(!isMobileMenuOpen);
+  const handleMobileMenuToggle = () => {
+    // Nếu đang mở thì chỉ đóng menu thôi, không cần expand mặc định
+    if (isMobileMenuOpen) {
+      setExpandedMobileCategory(null);
+      setIsMobileMenuOpen(false);
+      return;
+    }
+
+    // Đang đóng => mở menu + auto expand category mặc định
+    const categorySelect = categories?.find(
+      (item) => item.slug === "danh-muc-san-pham"
+    );
+    const subCateSelect = subCate.find(
+      (item) => item.slug === "thiet-bi-xay-dung"
+    );
+
+    if (subCateSelect) {
+      setHoveredParentCategory(subCateSelect.id.toString());
+    }
+
+    if (categorySelect) {
+      setExpandedMobileCategory(categorySelect.id.toString());
+    } else {
+      setExpandedMobileCategory(null); // Nếu không có category phù hợp
+    }
+
+    setIsMobileMenuOpen(true);
+  };
 
   const handleMegaMenuHover = (categoryId: string) => {
     if (categoryTimeoutRef.current) {
@@ -378,22 +414,22 @@ const ProfessionalNavbar: React.FC = () => {
                       </Link>
                     )}
 
-                    {/* Mega Menu */}
+                    {/* Mega Menu - Made wider and more compact */}
                     {hasMegaMenu(category) &&
                       activeMegaMenu === category.id.toString() && (
                         <div
-                          className="absolute left-0 top-full w-[800px] h-[616px] bg-white rounded-2xl shadow-2xl border border-gray-100 z-50 flex overflow-hidden"
+                          className="absolute left-0 top-full w-[1000px] h-[500px] bg-white rounded-2xl shadow-2xl border border-gray-100 z-50 flex overflow-hidden"
                           onMouseEnter={handleMenuEnter}
                           onMouseLeave={handleMenuLeave}>
-                          {/* Left Column - Scrollable */}
-                          <div className="w-1/3 bg-gradient-to-br from-gray-50 to-blue-50 border-r border-gray-200 flex flex-col">
-                            <div className="p-6 border-b border-gray-300 flex-shrink-0">
-                              <h3 className="text-lg font-bold text-gray-900 truncate">
+                          {/* Left Column - Compact and scrollable for 11+ categories */}
+                          <div className="w-1/4 bg-gradient-to-br from-gray-50 to-blue-50 border-r border-gray-200 flex flex-col ">
+                            <div className="p-3 border-b border-gray-300 flex-shrink-0 ">
+                              <h3 className="text-base font-bold text-gray-900 truncate">
                                 {getCategoryDisplayName(category)}
                               </h3>
                             </div>
-                            <div className="flex-1 p-6 pt-4 overflow-y-auto scrollbar-thin scrollbar-thumb-blue-300 scrollbar-track-transparent hover:scrollbar-thumb-blue-400">
-                              <div className="space-y-2">
+                            <div className="flex-1 p-2  scrollbar-thin scrollbar-thumb-blue-300 scrollbar-track-transparent hover:scrollbar-thumb-blue-400">
+                              <div className="space-y-1">
                                 {category.subCategories.map((subcategory) => (
                                   <div
                                     key={subcategory.id}
@@ -407,13 +443,13 @@ const ProfessionalNavbar: React.FC = () => {
                                         subcategory.id.toString()
                                       )
                                     }
-                                    className={`p-3 rounded-xl cursor-pointer transition-all duration-200 ${
+                                    className={`p-2 rounded-lg cursor-pointer transition-all duration-200 ${
                                       hoveredParentCategory ===
                                       subcategory.id.toString()
                                         ? "bg-white text-blue-700 shadow-md border border-blue-200"
                                         : "hover:bg-white/70 text-gray-700"
                                     }`}>
-                                    <div className="font-medium line-clamp-2">
+                                    <div className="font-medium text-sm line-clamp-2">
                                       {subcategory.name}
                                     </div>
                                   </div>
@@ -422,26 +458,26 @@ const ProfessionalNavbar: React.FC = () => {
                             </div>
                           </div>
 
-                          {/* Right Column - Scrollable */}
-                          <div className="w-2/3 bg-white flex flex-col">
+                          {/* Right Column - 3 columns on larger screens (6 items visible) */}
+                          <div className="w-3/4 bg-white flex flex-col">
                             {getActiveParentCategory() ? (
                               <>
-                                <div className="p-6 border-b border-gray-200 flex-shrink-0">
-                                  <h3 className="text-lg font-bold text-gray-900 truncate">
+                                <div className="p-3 border-b border-gray-200 flex-shrink-0">
+                                  <h3 className="text-base font-bold text-gray-900 truncate">
                                     {getActiveParentCategory()?.name}
                                   </h3>
                                 </div>
-                                <div className="flex-1 p-6 pt-4 overflow-y-auto scrollbar-thin scrollbar-thumb-blue-300 scrollbar-track-transparent hover:scrollbar-thumb-blue-400">
-                                  <div className="grid grid-cols-2 gap-4">
+                                <div className="flex-1 p-3 overflow-y-auto scrollbar-thin scrollbar-thumb-blue-300 scrollbar-track-transparent hover:scrollbar-thumb-blue-400">
+                                  <div className="grid grid-cols-3 gap-3">
                                     {getActiveParentCategory()?.subCategories?.map(
                                       (childCategory) => (
                                         <Link
                                           prefetch={true}
                                           key={childCategory.id}
                                           href={`/danh-muc/${childCategory.slug}`}
-                                          className="group p-4 rounded-xl hover:bg-gradient-to-br hover:from-blue-50 hover:to-purple-50 transition-all duration-200 border border-transparent hover:border-blue-200 hover:shadow-lg">
-                                          <div className="flex items-start space-x-3">
-                                            <div className="relative w-12 h-12 flex-shrink-0">
+                                          className="group p-3 rounded-lg hover:bg-gradient-to-br hover:from-blue-50 hover:to-purple-50 transition-all duration-200 border border-transparent hover:border-blue-200 hover:shadow-md">
+                                          <div className="flex items-start space-x-2">
+                                            <div className="relative w-10 h-10 flex-shrink-0">
                                               <ImageLoader
                                                 priority
                                                 fill
@@ -451,7 +487,7 @@ const ProfessionalNavbar: React.FC = () => {
                                               />
                                             </div>
                                             <div className="flex-1 min-w-0">
-                                              <h4 className="font-semibold text-gray-900 group-hover:text-blue-600 transition-colors duration-200 line-clamp-2">
+                                              <h4 className="font-semibold text-sm text-gray-900 group-hover:text-blue-600 transition-colors duration-200 line-clamp-2">
                                                 {childCategory.name}
                                               </h4>
                                               {childCategory.description && (
@@ -465,8 +501,8 @@ const ProfessionalNavbar: React.FC = () => {
                                       )
                                     ) || (
                                       // If no child categories, show parent category info
-                                      <div className="col-span-2 text-center py-8">
-                                        <div className="w-16 h-16 bg-gradient-to-br from-blue-50 to-indigo-50 rounded-full flex items-center justify-center mx-auto mb-4">
+                                      <div className="col-span-3 text-center py-6">
+                                        <div className="w-12 h-12 bg-gradient-to-br from-blue-50 to-indigo-50 rounded-full flex items-center justify-center mx-auto mb-3">
                                           <Image
                                             className="rounded-lg flex-shrink-0"
                                             src={
@@ -477,14 +513,14 @@ const ProfessionalNavbar: React.FC = () => {
                                               getActiveParentCategory()?.name ??
                                               ""
                                             }
-                                            width={32}
-                                            height={32}
+                                            width={24}
+                                            height={24}
                                           />
                                         </div>
                                         <h4 className="font-medium text-gray-900 mb-2">
                                           {getActiveParentCategory()?.name}
                                         </h4>
-                                        <p className="text-sm text-gray-500 line-clamp-3">
+                                        <p className="text-sm text-gray-500 line-clamp-3 mb-3">
                                           {
                                             getActiveParentCategory()
                                               ?.description
@@ -494,7 +530,7 @@ const ProfessionalNavbar: React.FC = () => {
                                           href={`/danh-muc/${
                                             getActiveParentCategory()?.slug
                                           }`}
-                                          className="inline-block mt-4 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors duration-200">
+                                          className="inline-block px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors duration-200">
                                           Xem tất cả
                                         </Link>
                                       </div>
@@ -505,10 +541,10 @@ const ProfessionalNavbar: React.FC = () => {
                             ) : (
                               <div className="flex items-center justify-center h-full">
                                 <div className="text-center">
-                                  <div className="w-16 h-16 bg-gradient-to-br from-blue-100 to-purple-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                                    <ChevronDown className="h-6 w-6 text-blue-500 rotate-90" />
+                                  <div className="w-12 h-12 bg-gradient-to-br from-blue-100 to-purple-100 rounded-full flex items-center justify-center mx-auto mb-3">
+                                    <ChevronDown className="h-5 w-5 text-blue-500 rotate-90" />
                                   </div>
-                                  <p className="text-gray-500">
+                                  <p className="text-gray-500 text-sm">
                                     Hover để xem danh mục con
                                   </p>
                                 </div>
@@ -582,8 +618,8 @@ const ProfessionalNavbar: React.FC = () => {
           } bg-gradient-to-r from-gray-50 via-blue-50 to-purple-50 border-b border-gray-200 overflow-hidden max-h-[48px] `}>
           <div className="max-w-7xl mx-auto px-4 py-2">
             <div className="flex items-center justify-between">
-              <div className="flex items-center space-x-1 space-y-2 flex-wrap">
-                {subCate.slice(0, 7).map((category, index) => (
+              <div className="flex items-center space-x-1 ">
+                {subCate.slice(0, 6).map((category, index) => (
                   <Link
                     href={`/danh-muc/${category.slug}`}
                     key={category.id}

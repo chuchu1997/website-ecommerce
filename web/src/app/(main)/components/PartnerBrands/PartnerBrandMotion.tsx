@@ -63,30 +63,30 @@ export const PartnerBrandsMotion: React.FC<Props> = ({ brands, industry }) => {
   if (!isMounted) return null;
 
   return (
-    <section className="relative py-24 lg:py-32 overflow-hidden bg-gradient-to-br from-gray-900 via-slate-900 to-gray-800">
+    <section className="relative py-24 lg:py-32 overflow-hidden bg-gradient-to-br from-stone-50 via-gray-50 to-stone-100">
       {/* Dynamic Background */}
       <div className="absolute inset-0 overflow-hidden">
         {/* Animated background elements */}
         <motion.div 
           variants={floatingVariants}
           animate="animate"
-          className="absolute -top-40 -right-40 w-80 h-80 bg-gradient-to-br from-blue-600/10 to-purple-600/10 rounded-full blur-3xl"
+          className="absolute -top-40 -right-40 w-80 h-80 bg-gradient-to-br from-amber-200/10 to-yellow-300/15 rounded-full blur-3xl"
         />
         <motion.div 
           variants={floatingVariants}
           animate="animate"
           style={{ animationDelay: "4s" }}
-          className="absolute -bottom-40 -left-40 w-96 h-96 bg-gradient-to-tr from-indigo-600/10 to-cyan-600/10 rounded-full blur-3xl"
+          className="absolute -bottom-40 -left-40 w-96 h-96 bg-gradient-to-tr from-stone-200/10 to-gray-300/15 rounded-full blur-3xl"
         />
         <motion.div 
           variants={floatingVariants}
           animate="animate"
           style={{ animationDelay: "8s" }}
-          className="absolute top-1/3 left-1/2 w-64 h-64 bg-gradient-to-bl from-violet-600/8 to-pink-600/8 rounded-full blur-2xl"
+          className="absolute top-1/3 left-1/2 w-64 h-64 bg-gradient-to-bl from-amber-300/8 to-orange-400/12 rounded-full blur-2xl"
         />
         
         {/* Subtle grid pattern */}
-        <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.02)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.02)_1px,transparent_1px)] bg-[size:80px_80px]" />
+        <div className="absolute inset-0 bg-[linear-gradient(rgba(120,113,108,0.03)_1px,transparent_1px),linear-gradient(90deg,rgba(120,113,108,0.03)_1px,transparent_1px)] bg-[size:80px_80px]" />
       </div>
 
       <div className="relative container mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl">
@@ -105,8 +105,8 @@ export const PartnerBrandsMotion: React.FC<Props> = ({ brands, industry }) => {
               transition={{ type: "spring", stiffness: 300 }}
             >
               <div className="relative">
-                <div className="absolute inset-0 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full blur-xl opacity-60" />
-                <div className="relative bg-gradient-to-r from-blue-500 to-purple-600 rounded-full p-6 lg:p-7 shadow-2xl border border-white/10">
+                <div className="absolute inset-0 bg-gradient-to-r from-amber-400 to-yellow-500 rounded-full blur-xl opacity-30" />
+                <div className="relative bg-gradient-to-r from-amber-500 to-yellow-600 rounded-full p-6 lg:p-7 shadow-2xl border border-amber-300/30">
                   <span className="text-4xl lg:text-5xl">🤝</span>
                 </div>
               </div>
@@ -114,10 +114,10 @@ export const PartnerBrandsMotion: React.FC<Props> = ({ brands, industry }) => {
 
             {/* Main title */}
             <h1 className="text-3xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-black mb-6 lg:mb-8 flex items-center justify-center gap-x-2 leading-[0.9] tracking-tight">
-              <span className="block bg-gradient-to-r from-white via-blue-100 to-white bg-clip-text text-transparent py-2">
+              <span className="block bg-gradient-to-r from-stone-700 via-gray-800 to-stone-700 bg-clip-text text-transparent py-2">
                 Đối Tác
               </span>
-              <span className="block bg-gradient-to-r from-blue-400 via-purple-400 to-blue-500 bg-clip-text text-transparent py-2">
+              <span className="block bg-gradient-to-r from-amber-600 via-yellow-600 to-amber-700 bg-clip-text text-transparent py-2">
                 Tin Cậy
               </span>
             </h1>
@@ -125,7 +125,7 @@ export const PartnerBrandsMotion: React.FC<Props> = ({ brands, industry }) => {
             {/* Description */}
             <motion.p 
               variants={itemVariants}
-              className="text-base sm:text-lg lg:text-xl xl:text-2xl text-gray-300 max-w-4xl mx-auto leading-relaxed font-light"
+              className="text-base sm:text-lg lg:text-xl xl:text-2xl text-stone-600 max-w-4xl mx-auto leading-relaxed font-light"
             >
               Hợp tác cùng các thương hiệu hàng đầu trong ngành {industry}
             </motion.p>
@@ -137,7 +137,7 @@ export const PartnerBrandsMotion: React.FC<Props> = ({ brands, industry }) => {
             >
               <div className="flex items-center space-x-4">
                 <motion.div 
-                  className="w-20 h-0.5 bg-gradient-to-r from-transparent via-blue-400 to-transparent"
+                  className="w-20 h-0.5 bg-gradient-to-r from-transparent via-amber-500 to-transparent"
                   animate={{ scaleX: [0, 1, 0] }}
                   transition={{ duration: 4, repeat: Infinity }}
                 />
@@ -145,7 +145,7 @@ export const PartnerBrandsMotion: React.FC<Props> = ({ brands, industry }) => {
                   {[0, 1, 2].map((i) => (
                     <motion.div
                       key={i}
-                      className="w-2.5 h-2.5 bg-blue-400 rounded-full"
+                      className="w-2.5 h-2.5 bg-amber-500 rounded-full"
                       animate={{ 
                         scale: [1, 1.4, 1],
                         opacity: [0.4, 1, 0.4] 
@@ -159,7 +159,7 @@ export const PartnerBrandsMotion: React.FC<Props> = ({ brands, industry }) => {
                   ))}
                 </div>
                 <motion.div 
-                  className="w-20 h-0.5 bg-gradient-to-r from-transparent via-blue-400 to-transparent"
+                  className="w-20 h-0.5 bg-gradient-to-r from-transparent via-amber-500 to-transparent"
                   animate={{ scaleX: [0, 1, 0] }}
                   transition={{ duration: 4, repeat: Infinity, delay: 2 }}
                 />
@@ -171,8 +171,8 @@ export const PartnerBrandsMotion: React.FC<Props> = ({ brands, industry }) => {
           <motion.div variants={itemVariants} className="space-y-8 lg:space-y-12">
             {/* First Row - Left to Right */}
             <div className="relative overflow-hidden">
-              <div className="absolute left-0 top-0 w-32 h-full bg-gradient-to-r from-gray-900 via-gray-900/80 to-transparent z-10 pointer-events-none" />
-              <div className="absolute right-0 top-0 w-32 h-full bg-gradient-to-l from-gray-900 via-gray-900/80 to-transparent z-10 pointer-events-none" />
+              <div className="absolute left-0 top-0 w-32 h-full bg-gradient-to-r from-stone-50 via-stone-50/80 to-transparent z-10 pointer-events-none" />
+              <div className="absolute right-0 top-0 w-32 h-full bg-gradient-to-l from-stone-50 via-stone-50/80 to-transparent z-10 pointer-events-none" />
               
               <motion.div
                 className="flex items-center gap-8 lg:gap-12"
@@ -198,19 +198,19 @@ export const PartnerBrandsMotion: React.FC<Props> = ({ brands, industry }) => {
                   >
                     <div className="relative w-56 h-36 lg:w-64 lg:h-40">
                       {/* Glow effect */}
-                      <div className="absolute -inset-2 bg-gradient-to-r from-blue-500/20 to-purple-500/20 rounded-3xl blur-lg opacity-0 group-hover:opacity-100 transition-all duration-500" />
+                      <div className="absolute -inset-2 bg-gradient-to-r from-amber-400/15 to-yellow-500/15 rounded-3xl blur-lg opacity-0 group-hover:opacity-100 transition-all duration-500" />
                       
                       {/* Main card */}
-                      <div className="relative bg-white/5 backdrop-blur-sm rounded-2xl border border-white/10 hover:border-white/20 transition-all duration-500 overflow-hidden h-full flex items-center justify-center p-6">
+                      <div className="relative bg-white/90 backdrop-blur-sm rounded-2xl border border-stone-200/50 hover:border-amber-300/50 transition-all duration-500 overflow-hidden h-full flex items-center justify-center p-6 shadow-lg hover:shadow-xl">
                         {/* Shimmer effect */}
-                        <div className="absolute inset-0 -translate-x-full group-hover:translate-x-full transition-transform duration-1000 bg-gradient-to-r from-transparent via-white/10 to-transparent" />
+                        <div className="absolute inset-0 -translate-x-full group-hover:translate-x-full transition-transform duration-1000 bg-gradient-to-r from-transparent via-white/40 to-transparent" />
                         
                         <div className="relative z-10 w-full h-full">
                           <ImageLoader
                             src={brand.imageUrl}
                             alt={brand.name}
                             fill
-                            className="object-contain filter brightness-90 group-hover:brightness-110 transition-all duration-500"
+                            className="object-contain filter brightness-95 group-hover:brightness-105 transition-all duration-500"
                           />
                         </div>
                       </div>
@@ -222,8 +222,8 @@ export const PartnerBrandsMotion: React.FC<Props> = ({ brands, industry }) => {
 
             {/* Second Row - Right to Left (reverse) */}
             <div className="relative overflow-hidden">
-              <div className="absolute left-0 top-0 w-32 h-full bg-gradient-to-r from-gray-900 via-gray-900/80 to-transparent z-10 pointer-events-none" />
-              <div className="absolute right-0 top-0 w-32 h-full bg-gradient-to-l from-gray-900 via-gray-900/80 to-transparent z-10 pointer-events-none" />
+              <div className="absolute left-0 top-0 w-32 h-full bg-gradient-to-r from-stone-50 via-stone-50/80 to-transparent z-10 pointer-events-none" />
+              <div className="absolute right-0 top-0 w-32 h-full bg-gradient-to-l from-stone-50 via-stone-50/80 to-transparent z-10 pointer-events-none" />
               
               <motion.div
                 className="flex items-center gap-8 lg:gap-12"
@@ -249,19 +249,19 @@ export const PartnerBrandsMotion: React.FC<Props> = ({ brands, industry }) => {
                   >
                     <div className="relative w-56 h-36 lg:w-64 lg:h-40">
                       {/* Glow effect */}
-                      <div className="absolute -inset-2 bg-gradient-to-r from-purple-500/20 to-pink-500/20 rounded-3xl blur-lg opacity-0 group-hover:opacity-100 transition-all duration-500" />
+                      <div className="absolute -inset-2 bg-gradient-to-r from-stone-400/15 to-amber-500/15 rounded-3xl blur-lg opacity-0 group-hover:opacity-100 transition-all duration-500" />
                       
                       {/* Main card */}
-                      <div className="relative bg-white/5 backdrop-blur-sm rounded-2xl border border-white/10 hover:border-white/20 transition-all duration-500 overflow-hidden h-full flex items-center justify-center p-6">
+                      <div className="relative bg-white/90 backdrop-blur-sm rounded-2xl border border-stone-200/50 hover:border-stone-300/50 transition-all duration-500 overflow-hidden h-full flex items-center justify-center p-6 shadow-lg hover:shadow-xl">
                         {/* Shimmer effect */}
-                        <div className="absolute inset-0 -translate-x-full group-hover:translate-x-full transition-transform duration-1000 bg-gradient-to-r from-transparent via-white/10 to-transparent" />
+                        <div className="absolute inset-0 -translate-x-full group-hover:translate-x-full transition-transform duration-1000 bg-gradient-to-r from-transparent via-white/40 to-transparent" />
                         
                         <div className="relative z-10 w-full h-full">
                           <ImageLoader
                             src={brand.imageUrl}
                             alt={brand.name}
                             fill
-                            className="object-contain filter brightness-90 group-hover:brightness-110 transition-all duration-500"
+                            className="object-contain filter brightness-95 group-hover:brightness-105 transition-all duration-500"
                           />
                         </div>
                       </div>
@@ -276,25 +276,25 @@ export const PartnerBrandsMotion: React.FC<Props> = ({ brands, industry }) => {
           <motion.div variants={itemVariants} className="flex justify-center mt-20 lg:mt-24">
             <div className="relative group">
               {/* Glow effect */}
-              <div className="absolute -inset-1 bg-gradient-to-r from-blue-600 to-purple-600 rounded-full blur opacity-30 group-hover:opacity-50 transition duration-500" />
+              <div className="absolute -inset-1 bg-gradient-to-r from-amber-400 to-yellow-500 rounded-full blur opacity-20 group-hover:opacity-30 transition duration-500" />
               
-              <div className="relative bg-white/10 backdrop-blur-xl rounded-full border border-white/20 shadow-2xl px-8 py-5 lg:px-12 lg:py-6">
+              <div className="relative bg-white/90 backdrop-blur-xl rounded-full border border-amber-300/40 shadow-xl px-8 py-5 lg:px-12 lg:py-6">
                 <div className="flex items-center gap-4">
                   {/* Animated status indicator */}
                   <div className="flex items-center gap-2">
                     <motion.div 
-                      className="w-3 h-3 bg-green-400 rounded-full"
+                      className="w-3 h-3 bg-emerald-500 rounded-full"
                       animate={{ 
                         scale: [1, 1.2, 1],
                         opacity: [0.7, 1, 0.7] 
                       }}
                       transition={{ duration: 2, repeat: Infinity }}
                     />
-                    <div className="w-2 h-2 bg-green-400/60 rounded-full animate-pulse" />
+                    <div className="w-2 h-2 bg-emerald-400/60 rounded-full animate-pulse" />
                   </div>
                   
-                  <span className="text-lg lg:text-xl text-white/90 font-medium">
-                    Tin cậy bởi <span className="font-bold text-blue-300">{brands.length}+</span> thương hiệu hàng đầu
+                  <span className="text-lg lg:text-xl text-stone-700 font-medium">
+                    Tin cậy bởi <span className="font-bold text-amber-600">{brands.length}+</span> thương hiệu hàng đầu
                   </span>
                 </div>
               </div>

@@ -17,8 +17,13 @@ import { SeoInterface } from "@/types/seo";
 import { BodyContainer } from "@/components/BodyContainer";
 import { LoadingProvider } from "@/context/loading-context";
 import { LoadingOverlay } from "@/components/loading-overlay";
-export const dynamic = "force-dynamic";
-export const revalidate = 60;
+import NavbarClient3 from "@/components/ui/Navbar/components/NavbarVer3";
+import { CategoryAPI } from "@/api/categories/category.api";
+import { CategoryInterface } from "@/types/category";
+import Navbar from "@/components/ui/Navbar/components/NavbarClientVer2";
+import NavbarComponent from "@/components/ui/Navbar";
+
+export const revalidate = 300; // 1 hour
 const geistSans = Geist({ variable: "--font-geist-sans", subsets: ["latin"] });
 const geistMono = Geist_Mono({
   variable: "--font-geist-mono",
@@ -47,11 +52,23 @@ export async function generateMetadata(): Promise<Metadata> {
   return {};
 }
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  const storeInfo: StoreInterface = (await StoreAPI.getStoreInfo()).data.store;
+  const { data } = await CategoryAPI.getAllCategoriesOfStore({
+    justGetParent: false,
+    currentPage: 1,
+    limit: 9999,
+  });
+  const categories: CategoryInterface[] = data.categories;
+  console.log(
+    "🔥 Fetch categories at:",
+    new Date().toLocaleTimeString("vi-VN", { hour12: false })
+  );
+
   return (
     <html lang="en">
       <body
@@ -60,8 +77,10 @@ export default function RootLayout({
           <LoadingOverlay />
           <CookiesClientWrapper>
             <CartProvider>
+              <NavbarComponent storeInfo={storeInfo} categories={categories} />
               <SidebarProvider>
                 <Toaster position="top-center" reverseOrder={false} />
+
                 <BodyContainer className="mt-0 sm:mt-[100px]">
                   {children}
                 </BodyContainer>

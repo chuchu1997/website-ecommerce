@@ -173,7 +173,7 @@
   }
   body {
     /* font-family: var(--font-noto-sans);  */
-    font-family: var(--font-inter);
+    font-family: var(--font-roboto);
     @apply bg-background text-foreground;
   }
   :root {

@@ -8,9 +8,6 @@ import { Toaster } from "react-hot-toast";
 import CookiesClientWrapper from "@/provider/cookie-provider-wrapper";
 import { CartProvider } from "@/context/cart-context";
 
-export const dynamic = "force-dynamic";
-export const revalidate = 60;
-
 export default async function MainLayout({
   children,
 }: Readonly<{
@@ -18,7 +15,6 @@ export default async function MainLayout({
 }>) {
   return (
     <div className="w-full">
-      <NavbarComponent />
       <BodyContainer className="mt-[90px] sm:mt-[80px]">
         {children}
       </BodyContainer>

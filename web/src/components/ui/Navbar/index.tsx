@@ -8,11 +8,16 @@ import MainNavbar from "./components/NavbarClient";
 import { CategoryInterface } from "@/types/category";
 import NavbarClientVer2 from "./components/NavbarClientVer2";
 import NavbarVer3 from "./components/NavbarVer3";
+import { StoreInterface } from "@/types/store";
 
-const NavbarComponent = async () => {
+interface Props {
+  categories: CategoryInterface[];
+  storeInfo: StoreInterface;
+}
+const NavbarComponent = async ({ categories, storeInfo }: Props) => {
   return (
     <nav className=" ">
-      <NavbarVer3 />
+      <NavbarVer3 categoriesProps={categories} storeInfoProps={storeInfo} />
       {/* <AppSidebar categories={getCategories} />
       <MainNavbar data={categories} /> */}
       {/* This is navbar */}

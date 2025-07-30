@@ -33,18 +33,24 @@ import { NewsMasterPage } from "./(main)/components/News/News";
 import { ProductWithCategoryType } from "./(main)/components/ProductWithCategoryType/ProductWithCategoryType";
 import { FlashSaleComponentView } from "./(main)/components/flash-sale";
 import CategoriesList from "./(main)/components/CategoriesList/categories-list";
-
-export const dynamic = "force-dynamic";
-export const revalidate = 60;
+import { CategoryInterface } from "@/types/category";
+import { CategoryAPI } from "@/api/categories/category.api";
+// export const dynamic = "force-dynamic";
+export const revalidate = 300; // 5 phút = 300 giây
 
 const MusicStoreLanding: React.FC = async () => {
   const storeInfo: StoreInterface = (await StoreAPI.getStoreInfo()).data.store;
+  const { data } = await CategoryAPI.getAllCategoriesOfStore({
+    justGetParent: false,
+    currentPage: 1,
+    limit: 9999,
+  });
 
   return (
     <div className=" min-h-screen bg-gray-50 w-full">
       {/* Banner Section */}
       {/* <Banner /> */}
-      <NavbarComponent />
+      {/* <NavbarComponent storeInfo={storeInfo} categories={categories} /> */}
 
       <Hero />
       <CategoriesList />

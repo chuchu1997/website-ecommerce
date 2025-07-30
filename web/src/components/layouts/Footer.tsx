@@ -64,11 +64,11 @@ const Footer: React.FC = async () => {
   }
 
   return (
-    <footer className=" bg-gradient-to-br from-slate-900 via-gray-900 to-slate-800 text-white overflow-hidden border-t border-slate-700/50 relative">
+    <footer className="bg-gradient-to-br from-white via-gray-50 to-gray-100 text-gray-800 overflow-hidden border-t border-gray-200 relative">
       {/* Subtle Background Elements */}
       <div className="absolute inset-0 opacity-5">
-        <div className="absolute top-0 left-1/4 w-64 h-64 bg-amber-400 rounded-full blur-3xl transform -translate-y-1/2"></div>
-        <div className="absolute bottom-0 right-1/4 w-48 h-48 bg-amber-300 rounded-full blur-3xl transform translate-y-1/2"></div>
+        <div className="absolute top-0 left-1/4 w-64 h-64 bg-yellow-300 rounded-full blur-3xl transform -translate-y-1/2"></div>
+        <div className="absolute bottom-0 right-1/4 w-48 h-48 bg-yellow-200 rounded-full blur-3xl transform translate-y-1/2"></div>
       </div>
 
       <div className="relative z-10">
@@ -86,7 +86,7 @@ const Footer: React.FC = async () => {
                     alt="logo"
                     className="mb-4"
                   />
-                  <p className="text-gray-300 text-sm leading-relaxed max-w-sm">
+                  <p className="text-gray-600 text-sm leading-relaxed max-w-sm">
                     Chất lượng cao cấp kết hợp với thiết kế đặc biệt. Chúng tôi
                     đam mê mang đến những sản phẩm vượt trội và nâng tầm phong
                     cách sống.
@@ -96,33 +96,33 @@ const Footer: React.FC = async () => {
                 {/* Contact Info */}
                 <div className="space-y-3">
                   <div className="flex items-start space-x-3 group">
-                    <div className="bg-amber-500/10 p-2 rounded-lg group-hover:bg-amber-500/20 transition-colors duration-200 mt-0.5">
-                      <Phone className="h-4 w-4 text-amber-400" />
+                    <div className="bg-yellow-100 p-2 rounded-lg group-hover:bg-yellow-200 transition-colors duration-200 mt-0.5 border border-yellow-200">
+                      <Phone className="h-4 w-4 text-yellow-600" />
                     </div>
                     <div className="flex-1">
-                      <span className="text-gray-300 text-sm group-hover:text-white transition-colors duration-200">
+                      <span className="text-gray-600 text-sm group-hover:text-gray-800 transition-colors duration-200">
                         {formatPhoneNumber(storeInfo.phone ?? "")}
                       </span>
                     </div>
                   </div>
 
                   <div className="flex items-start space-x-3 group">
-                    <div className="bg-amber-500/10 p-2 rounded-lg group-hover:bg-amber-500/20 transition-colors duration-200 mt-0.5">
-                      <Mail className="h-4 w-4 text-amber-400" />
+                    <div className="bg-yellow-100 p-2 rounded-lg group-hover:bg-yellow-200 transition-colors duration-200 mt-0.5 border border-yellow-200">
+                      <Mail className="h-4 w-4 text-yellow-600" />
                     </div>
                     <div className="flex-1">
-                      <span className="text-gray-300 text-sm group-hover:text-white transition-colors duration-200 break-all">
+                      <span className="text-gray-600 text-sm group-hover:text-gray-800 transition-colors duration-200 break-all">
                         {storeInfo.email ?? ""}
                       </span>
                     </div>
                   </div>
 
                   <div className="flex items-start space-x-3 group">
-                    <div className="bg-amber-500/10 p-2 rounded-lg group-hover:bg-amber-500/20 transition-colors duration-200 mt-0.5">
-                      <MapPin className="h-4 w-4 text-amber-400" />
+                    <div className="bg-yellow-100 p-2 rounded-lg group-hover:bg-yellow-200 transition-colors duration-200 mt-0.5 border border-yellow-200">
+                      <MapPin className="h-4 w-4 text-yellow-600" />
                     </div>
                     <div className="flex-1">
-                      <span className="text-gray-300 text-sm group-hover:text-white transition-colors duration-200 leading-relaxed">
+                      <span className="text-gray-600 text-sm group-hover:text-gray-800 transition-colors duration-200 leading-relaxed">
                         {storeInfo.address ?? ""}
                       </span>
                     </div>
@@ -135,18 +135,18 @@ const Footer: React.FC = async () => {
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-8 lg:gap-12">
                   {footerSections.map((section, index) => (
                     <div key={index} className="space-y-4">
-                      <h3 className="text-amber-400 font-semibold text-base lg:text-lg relative pb-2">
+                      <h3 className="text-yellow-700 font-semibold text-base lg:text-lg relative pb-2">
                         {section.title}
-                        <div className="absolute bottom-0 left-0 w-6 h-0.5 bg-gradient-to-r from-amber-400 to-transparent"></div>
+                        <div className="absolute bottom-0 left-0 w-6 h-0.5 bg-gradient-to-r from-yellow-600 to-transparent"></div>
                       </h3>
                       <ul className="space-y-2">
                         {section.links.map((link, linkIndex) => (
                           <li key={linkIndex}>
                             <Link
                               href={link.href}
-                              className="text-gray-300 hover:text-amber-400 text-sm transition-all duration-200 hover:translate-x-1 inline-block relative group">
+                              className="text-gray-600 hover:text-yellow-700 text-sm transition-all duration-200 hover:translate-x-1 inline-block relative group">
                               {link.label}
-                              <span className="absolute bottom-0 left-0 w-0 h-px bg-amber-400 group-hover:w-full transition-all duration-300"></span>
+                              <span className="absolute bottom-0 left-0 w-0 h-px bg-yellow-600 group-hover:w-full transition-all duration-300"></span>
                             </Link>
                           </li>
                         ))}
@@ -160,7 +160,7 @@ const Footer: React.FC = async () => {
         </div>
 
         {/* Bottom Bar */}
-        <div className="border-t border-gray-700/50 bg-black/30 backdrop-blur-sm">
+        <div className="border-t border-gray-200 bg-gray-50/80 backdrop-blur-sm">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
             <div className="flex flex-col lg:flex-row justify-between items-center space-y-4 lg:space-y-0">
               {/* Certification */}
@@ -179,7 +179,7 @@ const Footer: React.FC = async () => {
                 {socials.map((social) => (
                   <div
                     key={social.id}
-                    className="w-9 h-9 flex items-center justify-center rounded-lg bg-gray-800/80 text-gray-400 hover:bg-amber-500 hover:text-black transition-all duration-300 transform hover:scale-105">
+                    className="w-9 h-9 flex items-center justify-center rounded-lg bg-white border border-gray-200 text-gray-500 hover:bg-yellow-400 hover:text-white hover:border-yellow-400 transition-all duration-300 transform hover:scale-105 shadow-sm">
                     {social.type === "ZALO" ? (
                       <Link
                         href={social.url}
@@ -202,8 +202,8 @@ const Footer: React.FC = async () => {
             </div>
 
             {/* Copyright */}
-            <div className="border-t border-gray-700/30 mt-6 pt-4">
-              <p className="text-gray-400 text-xs text-center leading-relaxed">
+            <div className="border-t border-gray-200 mt-6 pt-4">
+              <p className="text-gray-500 text-xs text-center leading-relaxed">
                 © 2025 Tất cả quyền được bảo lưu. Được phát triển bởi
                 NguyenCuong
               </p>
