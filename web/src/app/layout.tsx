@@ -18,17 +18,26 @@ import { LoadingOverlay } from "@/components/loading-overlay";
 import NavbarComponent from "@/components/ui/Navbar";
 import { CategoryAPI } from "@/api/categories/category.api";
 import { CategoryInterface } from "@/types/category";
-import { unstable_cache } from "next/cache";
 
-export const revalidate = 300; // fallback revalidate
+export const revalidate = 300; // cache fallback 5 phút
 
-// Cache storeInfo trong 300 giây
+// Fetch storeInfo có check SKIP_BUILD_STATIC_GENERATION
 const getStoreInfo = async () => {
+  if (process.env.SKIP_BUILD_STATIC_GENERATION) {
+    console.log("⚠️ Skip fetch API trong lúc build (storeInfo)");
+    return { industry: "" } as StoreInterface;
+  }
+
   return (await StoreAPI.getStoreInfo()).data.store as StoreInterface;
 };
 
-// Cache categories trong 300 giây
+// Fetch categories có check SKIP_BUILD_STATIC_GENERATION
 const getCategories = async () => {
+  if (process.env.SKIP_BUILD_STATIC_GENERATION) {
+    console.log("⚠️ Skip fetch API trong lúc build (categories)");
+    return [] as CategoryInterface[];
+  }
+
   const { data } = await CategoryAPI.getAllCategoriesOfStore({
     justGetParent: false,
     currentPage: 1,
@@ -53,12 +62,11 @@ export default async function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
-  // Dùng cache function thay vì gọi API trực tiếp
   const storeInfo = await getStoreInfo();
   const categories = await getCategories();
 
   console.log(
-    "🔥 Fetch storeInfo & categories (cache TTL 300s) at:",
+    "🔥 Fetch storeInfo & categories (TTL 300s) at:",
     new Date().toLocaleTimeString("vi-VN", { hour12: false })
   );
 
