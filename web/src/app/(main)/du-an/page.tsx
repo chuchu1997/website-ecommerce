@@ -9,6 +9,8 @@ import { ProjectInterface } from "@/types/project";
 export async function generateMetadata(): Promise<Metadata> {
   const website_domain = process.env.NEXT_PUBLIC_BASE_URL || "";
   let storeName = "Tên cửa hàng";
+
+  // Metadata mặc định
   let metadata: Metadata = {
     title: `${storeName} | Dự án thiết kế & thi công nội thất`,
     description: `${storeName} chuyên cung cấp thông tin các dự án thiết kế, thi công nội thất hiện đại, đẹp và tối ưu không gian sống.`,
@@ -40,14 +42,21 @@ export async function generateMetadata(): Promise<Metadata> {
     },
   };
 
+  // ✅ Skip gọi API lúc build để tránh ENOTFOUND
+  if (process.env.SKIP_BUILD_STATIC_GENERATION) {
+    console.log("⚠️ Skip fetch API trong lúc build (du-an/metadata)");
+    return metadata;
+  }
+
   try {
+    // Lấy thông tin store
     const res = await StoreAPI.getStoreInfo();
     const store = res?.data?.store as StoreInterface | undefined;
     if (store?.name) {
       storeName = store.name;
     }
 
-    // Gán lại nếu có store name
+    // Update metadata với storeName
     metadata.title = `${storeName} | Dự án thiết kế & thi công nội thất`;
     metadata.openGraph = {
       ...metadata.openGraph,
@@ -59,6 +68,7 @@ export async function generateMetadata(): Promise<Metadata> {
       title: `Dự án thiết kế nội thất | ${storeName}`,
     };
 
+    // Lấy project theo slug
     const resProject = await ProjectAPI.getProjectWithSlug({ slug: "du-an" });
     const project: ProjectInterface | undefined = resProject?.data?.project;
 
@@ -89,7 +99,6 @@ export async function generateMetadata(): Promise<Metadata> {
     }
   } catch (error) {
     console.error("Error generating metadata:", error);
-    // fallback metadata đã được định nghĩa ở đầu
   }
 
   return metadata;
