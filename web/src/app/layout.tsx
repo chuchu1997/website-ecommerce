@@ -20,31 +20,22 @@ import { CategoryAPI } from "@/api/categories/category.api";
 import { CategoryInterface } from "@/types/category";
 import { unstable_cache } from "next/cache";
 
-export const dynamic = "force-dynamic"; // SSR
 export const revalidate = 300; // fallback revalidate
 
 // Cache storeInfo trong 300 giây
-const getStoreInfo = unstable_cache(
-  async () => {
-    return (await StoreAPI.getStoreInfo()).data.store as StoreInterface;
-  },
-  ["store-info"],
-  { revalidate: 300 }
-);
+const getStoreInfo = async () => {
+  return (await StoreAPI.getStoreInfo()).data.store as StoreInterface;
+};
 
 // Cache categories trong 300 giây
-const getCategories = unstable_cache(
-  async () => {
-    const { data } = await CategoryAPI.getAllCategoriesOfStore({
-      justGetParent: false,
-      currentPage: 1,
-      limit: 9999,
-    });
-    return data.categories as CategoryInterface[];
-  },
-  ["categories"],
-  { revalidate: 300 }
-);
+const getCategories = async () => {
+  const { data } = await CategoryAPI.getAllCategoriesOfStore({
+    justGetParent: false,
+    currentPage: 1,
+    limit: 9999,
+  });
+  return data.categories as CategoryInterface[];
+};
 
 export async function generateMetadata(): Promise<Metadata> {
   const store = await getStoreInfo();

@@ -35,20 +35,14 @@ import { FlashSaleComponentView } from "./(main)/components/flash-sale";
 import CategoriesList from "./(main)/components/CategoriesList/categories-list";
 import { CategoryInterface } from "@/types/category";
 import { CategoryAPI } from "@/api/categories/category.api";
-import { unstable_cache } from "next/cache";
 
 // export const dynamic = "force-dynamic";
-export const dynamic = "force-dynamic";
 
 export const revalidate = 300; // 5 phút = 300 giây
-const getStoreInfo = unstable_cache(
-  async () => {
-    const store = (await StoreAPI.getStoreInfo()).data.store as StoreInterface;
-    return store;
-  },
-  ["store-info"], // cache key
-  { revalidate: 300 } // TTL 300 giây
-);
+const getStoreInfo = async () => {
+  const store = (await StoreAPI.getStoreInfo()).data.store as StoreInterface;
+  return store;
+};
 
 const MusicStoreLanding: React.FC = async () => {
   const storeInfo = await getStoreInfo();
