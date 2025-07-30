@@ -8,7 +8,7 @@ import { ProjectInterface } from "@/types/project";
 
 export async function generateMetadata(): Promise<Metadata> {
   const website_domain = process.env.NEXT_PUBLIC_BASE_URL || "";
-  let storeName = "Tên cửa hàng";
+  let storeName = "Tên cửa hàng 11";
 
   // Metadata mặc định
   let metadata: Metadata = {
