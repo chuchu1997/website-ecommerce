@@ -25,21 +25,11 @@ export const revalidate = 300; // cache fallback 5 phút
 
 // Fetch storeInfo có check SKIP_BUILD_STATIC_GENERATION
 const getStoreInfo = async () => {
-  if (process.env.SKIP_BUILD_STATIC_GENERATION) {
-    console.log("⚠️ Skip fetch API trong lúc build (storeInfo)");
-    return { industry: "" } as StoreInterface;
-  }
-
   return (await StoreAPI.getStoreInfo()).data.store as StoreInterface;
 };
 
 // Fetch categories có check SKIP_BUILD_STATIC_GENERATION
 const getCategories = async () => {
-  if (process.env.SKIP_BUILD_STATIC_GENERATION) {
-    console.log("⚠️ Skip fetch API trong lúc build (categories)");
-    return [] as CategoryInterface[];
-  }
-
   const { data } = await CategoryAPI.getAllCategoriesOfStore({
     justGetParent: false,
     currentPage: 1,
