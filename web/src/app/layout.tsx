@@ -88,7 +88,7 @@ export default async function RootLayout({
 
               <ZaloPhoneWidget />
             </CartProvider>
-            <Footer />
+            <Footer storeInfo={storeInfo} />
           </CookiesClientWrapper>
         </LoadingProvider>
       </body>

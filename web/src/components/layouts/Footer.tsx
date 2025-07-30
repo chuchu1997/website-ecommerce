@@ -18,10 +18,11 @@ interface FooterSection {
   title: string;
   links: FooterLink[];
 }
+interface Props {
+  storeInfo: StoreInterface;
+}
 
-const Footer: React.FC = async () => {
-  const storeInfo = (await StoreAPI.getStoreInfo()).data
-    .store as StoreInterface;
+const Footer: React.FC<Props> = async ({ storeInfo }) => {
   let socials: SocialInterface[] = [];
   if (storeInfo && storeInfo.socials && storeInfo.socials.length > 0) {
     socials = storeInfo.socials;
