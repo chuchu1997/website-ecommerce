@@ -22,7 +22,7 @@ import { SeoInterface } from "@/types/seo";
 // import { HighlightedProjects } from "./components/HighlightProject/HighlightProject";
 // import { PartnerBrands } from "./components/PartnerBrands/PartnerBrands";
 // import { NewsMasterPage } from "./components/News/News";
-import Navbar from "@/components/ui/Navbar/components/NavbarClientVer2";
+import NavbarComponent from "@/components/ui/Navbar";
 import { Hero } from "./(main)/components/Hero/Hero";
 import { InteriorContent } from "./(main)/components/InteriorContent";
 import { FeatureProducts } from "./(main)/components/FeatureProduct/FeatureProduct";
@@ -32,31 +32,87 @@ import { PartnerBrands } from "./(main)/components/PartnerBrands/PartnerBrands";
 import { NewsMasterPage } from "./(main)/components/News/News";
 import { ProductWithCategoryType } from "./(main)/components/ProductWithCategoryType/ProductWithCategoryType";
 import { FlashSaleComponentView } from "./(main)/components/flash-sale";
+import CategoriesList from "./(main)/components/CategoriesList/categories-list";
+import { CategoryInterface } from "@/types/category";
+import { CategoryAPI } from "@/api/categories/category.api";
 
-export const dynamic = "force-dynamic";
-export const revalidate = 60;
+// export const dynamic = "force-dynamic";
+
+export const revalidate = 300; // 5 phút = 300 giây
+const getStoreInfo = async () => {
+  if (process.env.SKIP_BUILD_STATIC_GENERATION) {
+    console.log("⚠️ Skip fetch API trong lúc build");
+    // Trả về dữ liệu mặc định để không làm fail build
+    return { industry: "" } as StoreInterface;
+  }
+
+  const store = (await StoreAPI.getStoreInfo()).data.store as StoreInterface;
+  return store;
+};
 
 const MusicStoreLanding: React.FC = async () => {
-  const storeInfo: StoreInterface = (await StoreAPI.getStoreInfo()).data.store;
+  const storeInfo = await getStoreInfo();
 
   return (
-    <div className=" min-h-screen bg-white w-full">
+    <div className=" min-h-screen bg-gray-50 w-full">
       {/* Banner Section */}
       {/* <Banner /> */}
-      <Navbar />
+      {/* <NavbarComponent storeInfo={storeInfo} categories={categories} /> */}
+
       <Hero />
+      <CategoriesList />
+
       <FlashSaleComponentView />
-      <InteriorContent industry={storeInfo.industry ?? ""} />
+
       <FeatureProducts industry={storeInfo.industry ?? ""} />
       {/* <ProductWithCategoryType
         industry={storeInfo.industry ?? ""}
         slug="guitar"
       />
       */}
+
+      <ProductWithCategoryType
+        industry={storeInfo.industry ?? ""}
+        slug="ban-cat-gach"
+        isGrayBg={true}
+      />
+      <ProductWithCategoryType
+        industry={storeInfo.industry ?? ""}
+        slug="thiet-bi-xay-dung"
+      />
+      <ProductWithCategoryType
+        industry={storeInfo.industry ?? ""}
+        slug="may-han-dien-tu"
+        isGrayBg={true}
+      />
+      <ProductWithCategoryType
+        industry={storeInfo.industry ?? ""}
+        slug="dung-cu-dien-cam-tay"
+      />
+      <ProductWithCategoryType
+        industry={storeInfo.industry ?? ""}
+        slug="dong-co-no"
+        isGrayBg={true}
+      />
+      <ProductWithCategoryType
+        industry={storeInfo.industry ?? ""}
+        slug="may-bom-nuoc"
+      />
+      <ProductWithCategoryType
+        industry={storeInfo.industry ?? ""}
+        slug="vat-tu-co-khi"
+        isGrayBg={true}
+      />
+      <ProductWithCategoryType
+        industry={storeInfo.industry ?? ""}
+        slug="may-nong-nghiep"
+      />
       <ProductCategories />
       <HighlightedProjects industry={storeInfo.industry ?? ""} />
+
       <PartnerBrands industry={storeInfo.industry ?? ""} />
       <NewsMasterPage industry={storeInfo.industry ?? ""} />
+      <InteriorContent industry={storeInfo.industry ?? ""} />
 
       {/* <Hero />
 

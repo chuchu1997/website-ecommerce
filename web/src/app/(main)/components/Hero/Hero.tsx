@@ -39,7 +39,7 @@ export const Hero: React.FC = () => {
   return (
     <section
       id="home"
-      className="relative mt-[82px] h-[300px] md:h-[700px] flex items-center justify-center overflow-hidden">
+      className="relative border mt-[10px] md:mt-[90px] h-[300px] md:h-[800px] flex items-center justify-center overflow-hidden">
       {/* Background image */}
       <div className="absolute inset-0 z-0">
         <ImageLoader
@@ -48,14 +48,14 @@ export const Hero: React.FC = () => {
           fill
           priority={true}
           quality={90}
-          className="w-full h-full"
+          className="w-full h-full object-cover object-center"
           style={{ objectFit: "cover" }}
           sizes="100vw"
           fadeInDuration={500}
           showShimmer={true}
           skeletonClassName="bg-gray-800"
         />
-        <div className="absolute inset-0 bg-black/10 z-40" />
+        <div className="absolute inset-0 bg-black/5 z-40" />
       </div>
 
       {/* Text and CTA */}

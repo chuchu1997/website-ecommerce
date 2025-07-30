@@ -37,7 +37,7 @@ export const RenderGiftItems = ({
         window.location.href = `/san-pham/${gift.slug}`;
       }}
       className={cn(
-        "relative group cursor-pointer overflow-hidden rounded-lg bg-white border border-gray-200 hover:border-gray-300 transition-all duration-200",
+        "relative group cursor-pointer overflow-hidden rounded-xl bg-white border-2 border-yellow-200/60 hover:border-yellow-400/80 transition-all duration-300 hover:shadow-lg hover:shadow-yellow-200/30",
         className
       )}>
       <div className="relative w-full h-full">
@@ -45,14 +45,14 @@ export const RenderGiftItems = ({
           alt={gift.name}
           src={gift.images[0].url}
           fill
-          className="object-cover transition-transform duration-200 group-hover:scale-105"
+          className="object-cover transition-transform duration-300 group-hover:scale-110"
         />
-        <div className="absolute inset-0 bg-black/10 opacity-0 group-hover:opacity-100 transition-opacity duration-200" />
+        <div className="absolute inset-0 bg-gradient-to-t from-yellow-900/20 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
       </div>
 
-      {/* Gift indicator */}
-      <div className="absolute -top-1 -right-1 w-5 h-5 bg-emerald-500 rounded-full flex items-center justify-center shadow-sm">
-        <Gift className="w-3 h-3 text-white" />
+      {/* Premium gift indicator */}
+      <div className="absolute -top-2 -right-2 w-7 h-7 bg-gradient-to-br from-yellow-400 to-amber-500 rounded-full flex items-center justify-center shadow-lg border-2 border-white">
+        <Gift className="w-4 h-4 text-white drop-shadow-sm" />
       </div>
     </div>
   );
@@ -119,7 +119,7 @@ export const ProductCard = ({
         {[...Array(5)].map((_, i) => (
           <Star
             key={i}
-            className={`${starSize} text-yellow-400 fill-current`}
+            className={`${starSize} text-yellow-500 fill-current drop-shadow-sm`}
           />
         ))}
       </div>
@@ -132,24 +132,26 @@ export const ProductCard = ({
         ? "Liên hệ"
         : FormatUtils.formatPriceVND(discountedPrice);
     const priceClass = isSingleColumn
-      ? "text-lg font-bold text-red-600"
-      : "text-lg md:text-xl font-bold text-red-600";
+      ? "text-lg font-black text-yellow-700"
+      : "text-lg md:text-xl font-black text-yellow-700";
 
     return (
       <div className={isSingleColumn ? "flex flex-col" : "space-y-1"}>
         <div
           className={isSingleColumn ? "" : "flex items-center justify-between"}>
-          <span className={priceClass}>{priceText}</span>
+          <span className={`${priceClass} drop-shadow-sm`}>{priceText}</span>
           {!isSingleColumn && isOutOfStock && (
-            <Badge variant="destructive">Hết hàng</Badge>
+            <Badge className="bg-stone-500 text-white border-0 font-medium">
+              Hết hàng
+            </Badge>
           )}
         </div>
         {showLineThroughPrice && (
           <span
             className={
               isSingleColumn
-                ? "text-sm text-gray-400 line-through"
-                : "text-xs md:text-sm text-gray-400 line-through"
+                ? "text-sm text-gray-400 line-through font-medium"
+                : "text-xs md:text-sm text-gray-400 line-through font-medium"
             }>
             {FormatUtils.formatPriceVND(showLineThroughPrice)}
           </span>
@@ -164,10 +166,10 @@ export const ProductCard = ({
         <button
           onClick={handleContactClick}
           className={cn(
-            "cursor-pointer bg-red-600 hover:bg-red-700 text-white font-medium rounded-lg transition-colors duration-200 shadow-sm hover:shadow-md",
+            "cursor-pointer bg-gradient-to-r from-yellow-500 to-amber-600 hover:from-yellow-600 hover:to-amber-700 text-white font-bold rounded-xl transition-all duration-300 shadow-lg hover:shadow-xl hover:shadow-yellow-200/40 transform hover:-translate-y-0.5",
             isSingleColumn
-              ? "w-full flex-1 text-xs md:text-sm py-2 md:py-2.5"
-              : "w-full text-xs md:text-sm py-2 md:py-2.5"
+              ? "w-full flex-1 text-xs md:text-sm py-2.5 md:py-3"
+              : "w-full text-xs md:text-sm py-2.5 md:py-3"
           )}>
           Liên hệ ngay
         </button>
@@ -176,29 +178,29 @@ export const ProductCard = ({
 
     if (isSingleColumn) {
       return (
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-3">
           <button
             disabled={isOutOfStock}
             onClick={(e) => handleAddToCart(e, false)}
-            className="p-2 bg-gray-100 hover:bg-gray-200 rounded-lg transition-colors duration-200 disabled:opacity-50">
+            className="p-3 bg-gradient-to-br from-gray-50 to-gray-100 hover:from-gray-100 hover:to-gray-200 rounded-xl transition-all duration-300 disabled:opacity-50 border border-gray-200 hover:border-gray-300 shadow-sm hover:shadow-md">
             <ShoppingBasket className="w-4 h-4 text-gray-600" />
           </button>
           <button
             disabled={isOutOfStock}
             onClick={(e) => handleAddToCart(e, true)}
-            className="px-4 py-2 bg-red-600 hover:bg-red-700 text-white text-sm font-medium rounded-lg transition-colors duration-200 disabled:opacity-50">
-            Mua
+            className="px-6 py-3 bg-gradient-to-r from-yellow-500 to-amber-600 hover:from-yellow-600 hover:to-amber-700 text-white text-sm font-bold rounded-xl transition-all duration-300 disabled:opacity-50 shadow-lg hover:shadow-xl hover:shadow-yellow-200/40 transform hover:-translate-y-0.5">
+            Mua ngay
           </button>
         </div>
       );
     }
 
     return (
-      <div className="flex gap-2 mt-auto pt-2">
+      <div className="flex gap-3 mt-auto pt-3">
         <button
           disabled={isOutOfStock}
           onClick={(e) => handleAddToCart(e, true)}
-          className="cursor-pointer flex-1 bg-red-600 hover:bg-red-700 text-white text-xs md:text-sm font-medium py-2 md:py-2.5 rounded-lg transition-colors duration-200 shadow-sm hover:shadow-md disabled:opacity-50">
+          className="cursor-pointer flex-1 bg-gradient-to-r from-yellow-500 to-amber-600 hover:from-yellow-600 hover:to-amber-700 text-white text-xs md:text-sm font-bold py-2.5 md:py-3 rounded-xl transition-all duration-300 shadow-lg hover:shadow-xl hover:shadow-yellow-200/40 disabled:opacity-50 transform hover:-translate-y-0.5">
           Mua ngay
         </button>
         <button
@@ -208,7 +210,7 @@ export const ProductCard = ({
             e.stopPropagation();
             handleAddToCart(e, false);
           }}
-          className="px-3 md:px-4 cursor-pointer bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-lg transition-colors duration-200 disabled:opacity-50">
+          className="px-3 md:px-4 cursor-pointer bg-gradient-to-br from-gray-50 to-gray-100 hover:from-gray-100 hover:to-gray-200 text-gray-600 rounded-xl transition-all duration-300 disabled:opacity-50 border border-gray-200 hover:border-gray-300 shadow-sm hover:shadow-md">
           <ShoppingBasket className="w-3 h-3 md:w-4 md:h-4" />
         </button>
       </div>
@@ -220,23 +222,25 @@ export const ProductCard = ({
 
     if (isSingleColumn) {
       return (
-        <div className="flex items-center gap-1 text-xs text-emerald-600">
-          <Gift className="w-3 h-3" />
-          <span>Có quà tặng</span>
+        <div className="flex items-center gap-2 text-xs bg-gradient-to-r from-yellow-50 to-amber-50 px-3 py-1.5 rounded-full border border-yellow-200">
+          <Gift className="w-3 h-3 text-yellow-600" />
+          <span className="font-semibold text-yellow-700">Có quà tặng</span>
         </div>
       );
     }
 
     return (
-      <div className="bg-gradient-to-r from-emerald-50 to-green-50 rounded-lg p-2 md:p-3 border border-emerald-200">
-        <div className="flex items-center gap-2 mb-2">
-          <Gift className="w-3 h-3 md:w-4 md:h-4 text-emerald-600" />
-          <span className="text-xs md:text-sm font-medium text-emerald-800">
+      <div className="bg-gradient-to-br from-yellow-50 via-amber-50 to-yellow-50 rounded-xl p-3 md:p-4 border-2 border-yellow-200/60 shadow-sm">
+        <div className="flex items-center gap-2 mb-3">
+          <div className="p-1.5 bg-gradient-to-br from-yellow-400 to-amber-500 rounded-lg shadow-sm">
+            <Gift className="w-3 h-3 md:w-4 md:h-4 text-white" />
+          </div>
+          <span className="text-xs md:text-sm font-bold text-yellow-800">
             Quà tặng kèm
           </span>
         </div>
 
-        <div className="grid grid-cols-3 gap-1.5 md:gap-2">
+        <div className="grid grid-cols-3 gap-2 md:gap-3">
           {product.giftProducts &&
             product.giftProducts.slice(0, 3).map((giftContainer) => {
               const gift = giftContainer.gift;
@@ -250,8 +254,8 @@ export const ProductCard = ({
             })}
 
           {product.giftProducts && product.giftProducts.length > 3 && (
-            <div className="aspect-square bg-gray-100 rounded-lg flex items-center justify-center border border-gray-200">
-              <span className="text-[10px] md:text-xs font-medium text-gray-600">
+            <div className="aspect-square bg-gradient-to-br from-gray-100 to-gray-200 rounded-xl flex items-center justify-center border-2 border-gray-300 shadow-sm">
+              <span className="text-[10px] md:text-xs font-bold text-gray-600">
                 +{product.giftProducts.length - 3}
               </span>
             </div>
@@ -271,20 +275,23 @@ export const ProductCard = ({
   if (isSingleColumn) {
     return (
       <Link href={`/san-pham/${product.slug}`} className="block group">
-        <div className="flex bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden transition-all duration-300 hover:shadow-md hover:border-gray-300">
+        <div className="flex bg-white rounded-2xl shadow-lg border-2 border-gray-200/60 overflow-hidden transition-all duration-300 hover:shadow-xl hover:shadow-gray-200/50 hover:border-yellow-300/80 hover:-translate-y-1">
           {/* Product Image Container */}
-          <div className="relative w-28 h-28 sm:w-32 sm:h-32 bg-gray-50 flex-shrink-0">
+          <div className="relative w-28 h-28 sm:w-36 sm:h-36 bg-gradient-to-br from-gray-50 to-gray-100 flex-shrink-0">
             <ImageLoader
               src={product.images[0].url}
               alt={product.name}
               fill
-              className="object-cover"
+              className="object-cover transition-transform duration-300 group-hover:scale-105"
             />
+
+            {/* Enhanced overlay */}
+            <div className="absolute inset-0 bg-gradient-to-t from-black/10 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
 
             {/* Promotional badges */}
             {hasPromotion && (
               <div className="absolute top-2 left-2">
-                <Badge className="bg-red-500 text-white text-xs font-medium px-2 py-1 rounded-md shadow-sm">
+                <Badge className="bg-gradient-to-r from-yellow-500 to-amber-600 text-white text-xs font-bold px-3 py-1 rounded-full shadow-lg border-0">
                   SALE
                 </Badge>
               </div>
@@ -292,29 +299,31 @@ export const ProductCard = ({
           </div>
 
           {/* Product Information */}
-          <div className="flex-1 p-4 flex flex-col justify-between min-w-0">
+          <div className="flex-1 p-4 sm:p-5 flex flex-col justify-between min-w-0">
             {/* Top Section */}
-            <div className="space-y-2">
-              {/* Badges */}
-              <div className="flex flex-wrap items-center gap-1">
-                <Badge className="bg-emerald-100 text-emerald-700 text-xs px-2 py-1 rounded-full border-0">
+            <div className="space-y-3">
+              {/* Enhanced Badges */}
+              <div className="flex flex-wrap items-center gap-2">
+                <Badge className="bg-gradient-to-r from-yellow-100 to-amber-100 text-yellow-800 text-xs px-3 py-1 rounded-full border border-yellow-200 font-semibold">
                   HÀNG VIỆT
                 </Badge>
-                <Badge className="bg-blue-100 text-blue-700 text-xs px-2 py-1 rounded-full border-0">
+                <Badge className="bg-gradient-to-r from-gray-100 to-gray-200 text-gray-700 text-xs px-3 py-1 rounded-full border border-gray-300 font-semibold">
                   <Truck className="w-3 h-3 mr-1" />
                   Freeship
                 </Badge>
               </div>
 
               {/* Title */}
-              <h3 className="font-semibold text-sm text-gray-900 leading-tight line-clamp-2 group-hover:text-blue-600 transition-colors duration-200">
+              <h3 className="font-bold text-sm sm:text-base text-gray-800 leading-tight line-clamp-2 group-hover:text-yellow-700 transition-colors duration-200">
                 {product.name}
               </h3>
 
               {/* Rating */}
-              <div className="flex items-center gap-2">
+              <div className="flex items-center gap-3">
                 {renderStars("sm")}
-                <span className="text-gray-500 text-xs">5.0 (19.3k)</span>
+                <span className="text-gray-500 text-xs font-medium">
+                  (5.0) • 19.3k đánh giá
+                </span>
               </div>
 
               {/* Gift indicator */}
@@ -322,7 +331,7 @@ export const ProductCard = ({
             </div>
 
             {/* Bottom Section */}
-            <div className="flex items-center justify-between gap-2 mt-3">
+            <div className="flex items-center justify-between gap-3 mt-4">
               {renderPrice()}
               {renderActionButtons()}
             </div>
@@ -334,61 +343,63 @@ export const ProductCard = ({
 
   // Grid Layout (Card design)
   return (
-    <Link href={`/san-pham/${product.slug}`} className="block h-full">
-      <Card className="group relative h-full overflow-hidden bg-white border border-gray-200 hover:border-gray-300 hover:shadow-lg transition-all duration-300 flex flex-col">
+    <Link href={`/san-pham/${product.slug}`} className="block h-full" prefetch>
+      <Card className="group relative h-full overflow-hidden bg-white border-2 border-gray-200/60 hover:border-yellow-300/80 hover:shadow-xl hover:shadow-gray-200/50 transition-all duration-300 flex flex-col rounded-2xl transform hover:-translate-y-2">
         {/* Image Section */}
         <CardHeader className="p-0 m-0 relative">
-          <div className="relative aspect-square bg-gray-50 overflow-hidden">
+          <div className="relative aspect-square bg-gradient-to-br from-gray-50 to-gray-100 overflow-hidden">
             <ImageLoader
               src={product.images[0].url}
               alt={product.name}
               fill
-              className="object-cover transition-transform duration-300 group-hover:scale-105"
+              className="object-cover transition-transform duration-300 group-hover:scale-110"
             />
 
-            {/* Overlay */}
-            <div className="absolute inset-0 bg-black/0 group-hover:bg-black/5 transition-colors duration-300" />
+            {/* Enhanced Overlay */}
+            <div className="absolute inset-0 bg-gradient-to-t from-black/5 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
 
             {/* Promotional badges */}
             {hasPromotion && (
-              <div className="absolute top-2 left-2 md:top-3 md:left-3 z-10">
+              <div className="absolute top-3 left-3 z-10">
                 <BadgeFlashSale
                   promotion={promotion}
-                  className="shadow-md text-xs md:text-sm"
+                  className="shadow-xl text-xs md:text-sm bg-gradient-to-r from-yellow-500 to-amber-600 border-0 font-bold"
                 />
               </div>
             )}
 
-            {/* Wishlist button */}
-            <button className="absolute top-2 right-2 md:top-3 md:right-3 z-10 p-1.5 md:p-2 bg-white/90 hover:bg-white rounded-full shadow-sm opacity-0 group-hover:opacity-100 transition-all duration-200">
-              <Heart className="w-3 h-3 md:w-4 md:h-4 text-gray-600 hover:text-red-500" />
+            {/* Enhanced Wishlist button */}
+            <button className="absolute top-3 right-3 z-10 p-2 md:p-2.5 bg-white/95 hover:bg-white rounded-full shadow-lg opacity-0 group-hover:opacity-100 transition-all duration-300 border border-gray-200 hover:border-yellow-300 transform hover:scale-110">
+              <Heart className="w-3 h-3 md:w-4 md:h-4 text-gray-500 hover:text-yellow-600 transition-colors duration-200" />
             </button>
           </div>
         </CardHeader>
 
         {/* Content Section */}
-        <CardContent className="p-3 md:p-4 flex-1 flex flex-col space-y-2 md:space-y-3">
+        <CardContent className="p-4 md:p-5 flex-1 flex flex-col space-y-3 md:space-y-4">
           {/* Product Title */}
-          <CardTitle className="text-sm md:text-base font-semibold text-gray-900 leading-snug line-clamp-2 break-words">
+          <CardTitle className="text-sm md:text-base font-bold text-gray-800 leading-snug line-clamp-2 break-words group-hover:text-yellow-700 transition-colors duration-200">
             {product.name}
           </CardTitle>
 
-          <CardDescription className="hidden md:block text-xs lg:text-sm text-gray-600 leading-snug line-clamp-2 break-words">
+          <CardDescription className="hidden md:block text-xs lg:text-sm text-gray-600 leading-relaxed line-clamp-2 break-words font-medium">
             {product.shortDescription}
           </CardDescription>
 
           {/* Rating and Badges */}
           <div className="flex items-center justify-between gap-2">
-            <div className="flex items-center gap-1">
+            <div className="flex items-center gap-2">
               {renderStars("md")}
-              <span className="text-xs md:text-sm text-gray-500 ml-1">
+              <span className="text-xs md:text-sm text-gray-500 ml-1 font-medium">
                 (5.0)
               </span>
             </div>
 
-            {/* Responsive Free Ship Badge */}
+            {/* Enhanced Free Ship Badge */}
             <div className="flex items-center">
-              <FreeshipBadVer2 />
+              <div className="rounded-full text-xs font-semibold ">
+                <FreeshipBadVer2 />
+              </div>
             </div>
           </div>
 

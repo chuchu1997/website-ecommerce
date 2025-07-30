@@ -87,7 +87,7 @@ export class CategoriesService {
 
   async findAll(query: CategoryQueryFilterDto) {
     //Chỉ lấy ra các categories cha !!!
-
+    console.log('Call get all categories !! ');
     const {
       justGetParent = false,
       storeID,

@@ -119,33 +119,33 @@ export const ProductClientPC = ({ product }: propsProductClientPC) => {
       <Star
         key={i}
         className={`w-4 h-4 ${
-          i < rating ? "fill-amber-400 text-amber-400" : "text-slate-300"
+          i < rating ? "fill-yellow-400 text-yellow-400" : "text-gray-300"
         }`}
       />
     ));
   };
   if (!isMount) return null;
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-white">
       {/* Breadcrumb */}
-      <div className="bg-white border-b border-gray-200 sticky top-2 z-10">
+      <div className="bg-white border-b border-silver-gray sticky top-2 z-10">
         <div className="px-3 sm:px-4 lg:px-8 py-2.5 sm:py-3">
           <nav
             className="flex items-center text-xs sm:text-sm"
             aria-label="Breadcrumb">
             <div className="flex items-center space-x-1 sm:space-x-2 min-w-0 flex-1">
-              <span className="text-gray-600 hover:text-gray-900 cursor-pointer transition-colors duration-200 whitespace-nowrap">
+              <span className="text-gray-600 hover:text-gray-800 cursor-pointer transition-colors duration-200 whitespace-nowrap">
                 Trang chủ
               </span>
               <span className="text-gray-400 flex-shrink-0">/</span>
 
-              <span className="text-gray-600 hover:text-gray-900 cursor-pointer transition-colors duration-200 whitespace-nowrap">
+              <span className="text-gray-600 hover:text-gray-800 cursor-pointer transition-colors duration-200 whitespace-nowrap">
                 Sản phẩm
               </span>
               <span className="text-gray-400 flex-shrink-0">/</span>
 
               <span
-                className="text-gray-900 font-medium min-w-0 flex-1"
+                className="text-gray-800 font-medium min-w-0 flex-1"
                 title={product.name}>
                 <span className="block truncate sm:hidden">
                   {product.name.length > 20
@@ -160,7 +160,7 @@ export const ProductClientPC = ({ product }: propsProductClientPC) => {
             {product.name.length > 20 && (
               <div className="sm:hidden ml-2 flex-shrink-0">
                 <button
-                  className="text-blue-600 text-xs hover:text-blue-800 transition-colors"
+                  className="text-yellow-600 text-xs hover:text-yellow-800 transition-colors"
                   onClick={() => {
                     /* Handle showing full name in modal/tooltip */
                   }}>
@@ -180,7 +180,7 @@ export const ProductClientPC = ({ product }: propsProductClientPC) => {
           {/* Product Information */}
           <div className="space-y-6">
             {/* Header */}
-            <div className="bg-white rounded-xl border border-gray-200 p-6">
+            <div className="bg-white rounded-xl border border-silver-gray p-6">
               <div className="flex items-start justify-between mb-4">
                 <h1 className="text-2xl lg:text-3xl font-bold text-gray-900 leading-tight pr-4">
                   {product.name}
@@ -225,7 +225,7 @@ export const ProductClientPC = ({ product }: propsProductClientPC) => {
             </div>
 
             {/* Price */}
-            <div className="bg-white rounded-xl border border-gray-200 p-6">
+            <div className="bg-white rounded-xl border border-silver-gray p-6">
               <div className="flex items-center flex-wrap gap-3 mb-4">
                 <span className="text-3xl lg:text-4xl font-bold text-gray-900">
                   {getDiscountedPrice() === 0
@@ -241,7 +241,7 @@ export const ProductClientPC = ({ product }: propsProductClientPC) => {
                           {FormatUtils.formatPriceVND(showLineThroughPrice)}
                         </span>
                       )}
-                    <span className="bg-red-500 text-white text-sm font-medium px-2 py-1 rounded-md">
+                    <span className="bg-yellow-500 text-gray-900 text-sm font-medium px-2 py-1 rounded-md">
                       -{discountPercentage}%
                     </span>
                   </div>
@@ -249,8 +249,8 @@ export const ProductClientPC = ({ product }: propsProductClientPC) => {
               </div>
 
               <div className="flex items-center space-x-2 mb-4">
-                <span className="bg-gradient-to-r from-red-500 to-orange-500 text-white text-sm font-medium px-3 py-1 rounded-full">
-                  🔥 Flash Sale
+                <span className="bg-yellow-100 text-yellow-800 text-sm font-medium px-3 py-1 rounded-full flex items-center gap-1">
+                  <Clock className="w-4 h-4" /> Flash Sale
                 </span>
                 <span className="text-sm text-gray-600">
                   Ưu đãi có thời hạn
@@ -258,8 +258,8 @@ export const ProductClientPC = ({ product }: propsProductClientPC) => {
               </div>
 
               {product.stock < 10 && (
-                <div className="bg-orange-50 border border-orange-200 rounded-lg p-3">
-                  <p className="text-orange-800 font-medium text-sm flex items-center space-x-2">
+                <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-3">
+                  <p className="text-yellow-800 font-medium text-sm flex items-center space-x-2">
                     <Clock className="w-4 h-4" />
                     <span>
                       Chỉ còn {product.stock} sản phẩm - Đặt hàng ngay!
@@ -270,12 +270,12 @@ export const ProductClientPC = ({ product }: propsProductClientPC) => {
             </div>
 
             {/* Product Options */}
-            <div className="bg-white rounded-xl border border-gray-200 p-6 space-y-6">
+            <div className="bg-white rounded-xl border border-silver-gray p-6 space-y-6">
               {/* Color Selection */}
               {product.colors && product.colors.length > 0 && (
                 <div className="space-y-3">
                   <h3 className="font-semibold text-gray-900 flex items-center space-x-2">
-                    <div className="w-4 h-4 rounded-full bg-gradient-to-r from-blue-400 to-purple-400"></div>
+                    <div className="w-4 h-4 rounded-full bg-yellow-400"></div>
                     <span>Màu sắc</span>
                   </h3>
                   <div className="flex items-center flex-wrap gap-3">
@@ -285,7 +285,7 @@ export const ProductClientPC = ({ product }: propsProductClientPC) => {
                         onClick={() => setSelectedColor(color)}
                         className={`w-10 h-10 rounded-full border-2 transition-all ${
                           selectedColor === color
-                            ? "border-gray-900 ring-2 ring-gray-200"
+                            ? "border-yellow-500 ring-2 ring-yellow-200"
                             : "border-gray-300 hover:border-gray-400"
                         }`}
                         style={{ backgroundColor: color.hex }}
@@ -307,7 +307,7 @@ export const ProductClientPC = ({ product }: propsProductClientPC) => {
                 <div className="space-y-3">
                   <h3 className="font-semibold text-gray-900 flex items-center space-x-2">
                     <svg
-                      className="w-4 h-4"
+                      className="w-4 h-4 text-earthy-brown-600"
                       fill="currentColor"
                       viewBox="0 0 20 20">
                       <path d="M5 3a2 2 0 00-2 2v2a2 2 0 002 2h2a2 2 0 002-2V5a2 2 0 00-2-2H5zM5 11a2 2 0 00-2 2v2a2 2 0 002 2h2a2 2 0 002-2v-2a2 2 0 00-2-2H5zM11 5a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V5zM11 13a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" />
@@ -321,7 +321,7 @@ export const ProductClientPC = ({ product }: propsProductClientPC) => {
                         onClick={() => setSelectedSize(size)}
                         className={`px-4 py-2 border rounded-lg font-medium transition-all ${
                           selectedSize === size
-                            ? "border-gray-900 bg-gray-900 text-white"
+                            ? "border-earthy-brown-600 bg-earthy-brown-600 text-white"
                             : "border-gray-300 hover:border-gray-400 text-gray-700"
                         }`}>
                         {size.name}
@@ -367,13 +367,13 @@ export const ProductClientPC = ({ product }: propsProductClientPC) => {
                     <button
                       onClick={(e: any) => handleAddToCart(e, false)}
                       disabled={product.stock <= 0}
-                      className="flex-1 bg-white border-2 border-gray-900 text-gray-900 py-3 px-6 rounded-lg font-semibold hover:bg-gray-50 transition-colors text-sm sm:text-base disabled:opacity-50 disabled:cursor-not-allowed">
+                      className="flex-1 bg-white border-2 border-yellow-500 text-yellow-500 py-3 px-6 rounded-lg font-semibold hover:bg-yellow-50 transition-colors text-sm sm:text-base disabled:opacity-50 disabled:cursor-not-allowed">
                       Thêm vào giỏ
                     </button>
                     <button
                       onClick={(e) => handleAddToCart(e, true)}
                       disabled={product.stock <= 0}
-                      className="flex-1 bg-gray-900 text-white py-3 px-6 rounded-lg font-semibold hover:bg-gray-800 transition-colors text-sm sm:text-base disabled:opacity-50 disabled:cursor-not-allowed">
+                      className="flex-1 bg-yellow-500 text-gray-900 py-3 px-6 rounded-lg font-semibold hover:bg-yellow-600 transition-colors text-sm sm:text-base disabled:opacity-50 disabled:cursor-not-allowed">
                       Mua ngay
                     </button>
                   </div>
@@ -383,10 +383,10 @@ export const ProductClientPC = ({ product }: propsProductClientPC) => {
 
             {/* Gift Products */}
             {product.giftProducts && product.giftProducts.length > 0 && (
-              <div className="bg-emerald-50 border border-emerald-200 rounded-xl p-6">
+              <div className="bg-yellow-50 border border-yellow-200 rounded-xl p-6">
                 <div className="flex items-center space-x-2 mb-4">
-                  <Gift className="w-5 h-5 text-emerald-600" />
-                  <h3 className="font-semibold text-emerald-800">
+                  <Gift className="w-5 h-5 text-yellow-600" />
+                  <h3 className="font-semibold text-yellow-800">
                     Quà tặng miễn phí kèm theo
                   </h3>
                 </div>
@@ -394,7 +394,7 @@ export const ProductClientPC = ({ product }: propsProductClientPC) => {
                   {product.giftProducts.map((giftContainer, index) => (
                     <div
                       key={index}
-                      className="bg-white rounded-lg p-3 text-sm text-gray-700 border border-emerald-200">
+                      className="bg-white rounded-lg p-3 text-sm text-gray-700 border border-yellow-200">
                       {giftContainer.gift.name}
                     </div>
                   ))}
@@ -406,26 +406,26 @@ export const ProductClientPC = ({ product }: propsProductClientPC) => {
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
               {[
                 {
-                  icon: <Truck className="w-5 h-5 text-blue-600" />,
+                  icon: <Truck className="w-5 h-5 text-earthy-brown-600" />,
                   title: "Miễn phí vận chuyển",
                   desc: "Đơn hàng trên 500.000đ",
                 },
                 {
-                  icon: <Shield className="w-5 h-5 text-emerald-600" />,
+                  icon: <Shield className="w-5 h-5 text-yellow-600" />,
                   title: "Thanh toán bảo mật",
                   desc: "100% được bảo vệ",
                 },
                 {
-                  icon: <RotateCcw className="w-5 h-5 text-purple-600" />,
+                  icon: <RotateCcw className="w-5 h-5 text-gray-600" />,
                   title: "Đổi trả dễ dàng",
                   desc: "15 ngày đổi trả",
                 },
               ].map((feature, index) => (
                 <div
                   key={index}
-                  className="bg-white border border-gray-200 rounded-xl p-4">
+                  className="bg-white border border-silver-gray rounded-xl p-4">
                   <div className="flex items-center space-x-3">
-                    <div className="p-2 rounded-lg bg-gray-50 flex-shrink-0">
+                    <div className="p-2 rounded-lg bg-yellow-50 flex-shrink-0">
                       {feature.icon}
                     </div>
                     <div className="min-w-0">
@@ -442,11 +442,11 @@ export const ProductClientPC = ({ product }: propsProductClientPC) => {
             </div>
 
             {/* Contact Support */}
-            <div className="bg-white border border-gray-200 rounded-xl p-6">
+            <div className="bg-white border border-silver-gray rounded-xl p-6">
               <div className="flex items-center justify-between">
                 <div className="flex items-center space-x-3">
-                  <div className="w-12 h-12 bg-blue-50 rounded-xl flex items-center justify-center flex-shrink-0">
-                    <Phone className="w-6 h-6 text-blue-600" />
+                  <div className="w-12 h-12 bg-yellow-50 rounded-xl flex items-center justify-center flex-shrink-0">
+                    <Phone className="w-6 h-6 text-yellow-600" />
                   </div>
                   <div>
                     <p className="font-medium text-gray-900">Cần hỗ trợ?</p>
@@ -455,7 +455,7 @@ export const ProductClientPC = ({ product }: propsProductClientPC) => {
                     </p>
                   </div>
                 </div>
-                <button className="bg-blue-600 text-white px-6 py-2 rounded-lg font-medium hover:bg-blue-700 transition-colors text-sm">
+                <button className="bg-yellow-500 text-gray-900 px-6 py-2 rounded-lg font-medium hover:bg-yellow-600 transition-colors text-sm">
                   Gọi ngay
                 </button>
               </div>
@@ -464,8 +464,8 @@ export const ProductClientPC = ({ product }: propsProductClientPC) => {
         </div>
 
         {/* Product Details Tabs */}
-        <div className="mt-12 bg-white border border-gray-200 rounded-xl overflow-hidden">
-          <div className="border-b border-gray-200">
+        <div className="mt-12 bg-white border border-silver-gray rounded-xl overflow-hidden">
+          <div className="border-b border-silver-gray">
             <nav className="flex">
               {tabs.map(({ key, label, icon }) => (
                 <button
@@ -473,7 +473,7 @@ export const ProductClientPC = ({ product }: propsProductClientPC) => {
                   onClick={() => setActiveTab(key)}
                   className={`flex-1 py-4 px-3 sm:px-6 font-medium text-xs sm:text-sm transition-colors ${
                     activeTab === key
-                      ? "text-blue-600 bg-blue-50 border-b-2 border-blue-600"
+                      ? "text-earthy-brown-600 bg-earthy-brown-50 border-b-2 border-earthy-brown-600"
                       : "text-gray-600 hover:text-gray-900 hover:bg-gray-50"
                   }`}>
                   <div className="flex flex-col sm:flex-row items-center justify-center space-y-1 sm:space-y-0 sm:space-x-2">
@@ -504,10 +504,12 @@ export const ProductClientPC = ({ product }: propsProductClientPC) => {
                 </h3>
                 <div className="space-y-4">
                   {product.fakeComments.map((comment) => (
-                    <div key={comment.id} className="bg-gray-50 rounded-xl p-6">
+                    <div
+                      key={comment.id}
+                      className="bg-silver-gray rounded-xl p-6">
                       <div className="flex items-start space-x-4">
-                        <div className="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center flex-shrink-0">
-                          <span className="text-blue-700 font-semibold">
+                        <div className="w-12 h-12 bg-yellow-100 rounded-full flex items-center justify-center flex-shrink-0">
+                          <span className="text-yellow-700 font-semibold">
                             {comment.authorName.charAt(0)}
                           </span>
                         </div>
@@ -548,25 +550,29 @@ export const ProductClientPC = ({ product }: propsProductClientPC) => {
                     </h4>
                     {[
                       {
-                        icon: <Truck className="w-5 h-5 text-blue-600" />,
+                        icon: (
+                          <Truck className="w-5 h-5 text-earthy-brown-600" />
+                        ),
                         title: "Giao hàng tiêu chuẩn",
                         desc: "3-5 ngày làm việc",
                         price: "Miễn phí (đơn > 500k)",
                       },
                       {
-                        icon: <Truck className="w-5 h-5 text-emerald-600" />,
+                        icon: <Truck className="w-5 h-5 text-yellow-600" />,
                         title: "Giao hàng nhanh",
                         desc: "1-2 ngày làm việc",
                         price: "200.000đ",
                       },
                       {
-                        icon: <Truck className="w-5 h-5 text-purple-600" />,
+                        icon: <Truck className="w-5 h-5 text-gray-600" />,
                         title: "Giao hàng trong ngày",
                         desc: "Đặt trước 3h chiều",
                         price: "400.000đ",
                       },
                     ].map((shipping, index) => (
-                      <div key={index} className="bg-gray-50 rounded-xl p-4">
+                      <div
+                        key={index}
+                        className="bg-silver-gray rounded-xl p-4">
                         <div className="flex items-start space-x-3">
                           <div className="p-2 rounded-lg bg-white flex-shrink-0">
                             {shipping.icon}
@@ -593,22 +599,26 @@ export const ProductClientPC = ({ product }: propsProductClientPC) => {
                     </h4>
                     {[
                       {
-                        icon: <RotateCcw className="w-5 h-5 text-orange-600" />,
+                        icon: (
+                          <RotateCcw className="w-5 h-5 text-earthy-brown-600" />
+                        ),
                         title: "Đổi trả miễn phí",
                         desc: "30 ngày đổi trả không điều kiện",
                       },
                       {
-                        icon: <Shield className="w-5 h-5 text-red-600" />,
+                        icon: <Shield className="w-5 h-5 text-yellow-600" />,
                         title: "Bảo hành chính hãng",
                         desc: "Bảo hành 12-36 tháng",
                       },
                       {
-                        icon: <Award className="w-5 h-5 text-indigo-600" />,
+                        icon: <Award className="w-5 h-5 text-gray-600" />,
                         title: "Cam kết chất lượng",
                         desc: "100% hàng chính hãng",
                       },
                     ].map((policy, index) => (
-                      <div key={index} className="bg-gray-50 rounded-xl p-4">
+                      <div
+                        key={index}
+                        className="bg-silver-gray rounded-xl p-4">
                         <div className="flex items-start space-x-3">
                           <div className="p-2 rounded-lg bg-white flex-shrink-0">
                             {policy.icon}
