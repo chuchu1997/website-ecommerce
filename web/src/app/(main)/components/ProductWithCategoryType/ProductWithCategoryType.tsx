@@ -17,12 +17,12 @@ export const ProductWithCategoryType = async ({
   slug,
   isGrayBg = false,
 }: Props) => {
-  const response = await fetchSafe(
+  const data = await fetchSafe(
     () => CategoryAPI.getCategoryWithSlug(slug, 1, 12),
-    { data: { products: [] } } // fallback rõ ràng
+    { data: { category: null } } // fallback rõ ràng
   );
 
-  const category = response.data as CategoryInterface;
+  const category = data.category as CategoryInterface;
   if (!category || !category.products) return null;
 
   const products = category.products;
