@@ -13,6 +13,25 @@ interface Props {
 export const FeatureProducts = async ({ industry }: Props) => {
   let featureProducts: ProductInterface[] = [];
   let promotions: PromotionInterface[] = [];
+  const response = await fetchSafe(
+    () => ProductAPI.getFeatureProducts({ limit: 5 }),
+    { data: { products: [] } }
+  );
+
+  featureProducts = response.data.products as ProductInterface[];
+
+  // Lấy danh sách promotion duy nhất
+  const allPromotions: ProductPromotion[] = featureProducts.flatMap(
+    (p) => p.promotionProducts
+  );
+
+  const uniquePromotionsMap = new Map<number, PromotionInterface>();
+  for (const promo of allPromotions) {
+    if (promo.promotion && !uniquePromotionsMap.has(promo.promotionId)) {
+      uniquePromotionsMap.set(promo.promotionId, promo.promotion);
+    }
+  }
+  promotions = Array.from(uniquePromotionsMap.values());
 
   // try {
   //   const response = await fetchSafe(
