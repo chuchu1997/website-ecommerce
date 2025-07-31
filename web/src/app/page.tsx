@@ -55,7 +55,7 @@ const MusicStoreLanding: React.FC = async () => {
       <FeatureProducts industry={storeInfo.industry ?? ""} />
 
       {/* Các block sản phẩm theo category */}
-      {/* <ProductWithCategoryType
+      <ProductWithCategoryType
         industry={storeInfo.industry ?? ""}
         slug="ban-cat-gach"
         isGrayBg={true}
@@ -90,13 +90,13 @@ const MusicStoreLanding: React.FC = async () => {
       <ProductWithCategoryType
         industry={storeInfo.industry ?? ""}
         slug="may-nong-nghiep"
-      /> */}
+      />
 
-      {/* <ProductCategories />
+      <ProductCategories />
       <HighlightedProjects industry={storeInfo.industry ?? ""} />
       <PartnerBrands industry={storeInfo.industry ?? ""} />
       <NewsMasterPage industry={storeInfo.industry ?? ""} />
-      <InteriorContent industry={storeInfo.industry ?? ""} /> */}
+      <InteriorContent industry={storeInfo.industry ?? ""} />
     </div>
   );
 };

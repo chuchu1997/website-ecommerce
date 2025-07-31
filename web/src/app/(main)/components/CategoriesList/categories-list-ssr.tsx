@@ -18,7 +18,7 @@ export const CategoriesListSSR =  async ()=>{
         categories:[]
     })
 
-    categories = data.cagories;
+    categories = data.categories;
 
 
 
