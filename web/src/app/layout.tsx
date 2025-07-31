@@ -65,6 +65,7 @@ export default async function RootLayout({
   children: React.ReactNode;
 }) {
   const storeInfo = await getStoreInfo();
+  console.log("STOROE ROOT", storeInfo);
   const categories = await getCategories();
 
   return (
