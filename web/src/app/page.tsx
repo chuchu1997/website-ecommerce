@@ -17,7 +17,7 @@ import { NewsMasterPage } from "./(main)/components/News/News";
 import { InteriorContent } from "./(main)/components/InteriorContent";
 import { CategoriesListSSR } from "./(main)/components/CategoriesList/categories-list-ssr";
 
-export const revalidate = 300; // ISR 5 phút
+export const revalidate = 60; // ISR 5 phút
 
 // Helper lấy store info với fallback
 const getStoreInfo = async (): Promise<StoreInterface> => {
