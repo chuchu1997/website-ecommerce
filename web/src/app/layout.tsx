@@ -26,20 +26,24 @@ export const revalidate = 300; // cache fallback 5 phút
 
 // Fetch storeInfo có check SKIP_BUILD_STATIC_GENERATION
 const getStoreInfo = async (): Promise<StoreInterface> => {
-  const data = await fetchSafe(() => StoreAPI.getStoreInfo());
-  return data.store ?? { industry: "" };
+  const data = await fetchSafe(
+    () => StoreAPI.getStoreInfo(),
+    { store: { industry: "" } } // Fallback trả về đầy đủ key
+  );
 
-  // return (await StoreAPI.getStoreInfo()).data.store as StoreInterface;
+  return data.store;
 };
 
 // Fetch categories có check SKIP_BUILD_STATIC_GENERATION
 const getCategories = async (): Promise<CategoryInterface[]> => {
-  const data = await fetchSafe(() =>
-    CategoryAPI.getAllCategoriesOfStore({
-      limit: 9999,
-      currentPage: 1,
-      justGetParent: false,
-    })
+  const data = await fetchSafe(
+    () =>
+      CategoryAPI.getAllCategoriesOfStore({
+        limit: 9999,
+        currentPage: 1,
+        justGetParent: false,
+      }),
+    []
   );
   // const { data } = await CategoryAPI.getAllCategoriesOfStore({
   //   justGetParent: false,

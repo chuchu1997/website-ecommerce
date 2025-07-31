@@ -39,8 +39,12 @@ import { fetchSafe } from "@/utils/fetchSafe";
 // export const dynamic = "force-dynamic";
 export const revalidate = 300; // 5 phút = 300 giây
 const getStoreInfo = async (): Promise<StoreInterface> => {
-  const data = await fetchSafe(() => StoreAPI.getStoreInfo());
-  return data?.store ?? { industry: "" }; // map ở ngoài
+  const data = await fetchSafe(
+    () => StoreAPI.getStoreInfo(),
+    { store: { industry: "" } } // Fallback trả về đầy đủ key
+  );
+
+  return data.store;
 };
 const MusicStoreLanding: React.FC = async () => {
   const storeInfo = await getStoreInfo();

@@ -21,7 +21,9 @@ interface Props {
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
 
-  const data = await fetchSafe(() => ProjectAPI.getProjectWithSlug({ slug }));
+  const data = await fetchSafe(() => ProjectAPI.getProjectWithSlug({ slug }), {
+    project: null,
+  });
 
   const project = data?.project as ProjectInterface | null;
 
@@ -43,7 +45,9 @@ const DuAnSlug = async ({ params }: Props) => {
   const { slug } = await params;
 
   // ✅ Dùng fetchSafe để tránh crash lúc build
-  const data = await fetchSafe(() => ProjectAPI.getProjectWithSlug({ slug }));
+  const data = await fetchSafe(() => ProjectAPI.getProjectWithSlug({ slug }), {
+    project: undefined,
+  });
 
   const project = data?.project as ProjectInterface | null;
 

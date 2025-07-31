@@ -8,8 +8,11 @@ import { FormatUtils } from "@/utils/format";
 import Link from "next/link";
 
 const NewsPage = async () => {
-  const data = await fetchSafe(() =>
-    NewsAPI.getNews({ currentPage: 1, limit: 9 })
+  const data = await fetchSafe(
+    () => NewsAPI.getNews({ currentPage: 1, limit: 9 }),
+    {
+      article: null,
+    }
   );
 
   const news = (data?.articles ?? []) as NewsInterface[];

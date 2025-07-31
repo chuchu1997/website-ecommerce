@@ -20,8 +20,9 @@ export async function generateMetadata({
   const resolvedParams = await params;
 
   try {
-    const data = await fetchSafe(() =>
-      ProductAPI.getProductBySlug(resolvedParams.slug)
+    const data = await fetchSafe(
+      () => ProductAPI.getProductBySlug(resolvedParams.slug),
+      { product: null }
     );
 
     const product = data?.product as ProductInterface | null;
@@ -49,7 +50,9 @@ const SanPhamPageWithSlug = async (props: SanPhamPageWithProps) => {
   const { params } = props;
   const { slug } = await params;
 
-  const data = await fetchSafe(() => ProductAPI.getProductBySlug(slug));
+  const data = await fetchSafe(() => ProductAPI.getProductBySlug(slug), {
+    product: null,
+  });
 
   const product = data?.product as ProductInterface | null;
 

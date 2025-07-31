@@ -1,17 +1,9 @@
-/** @format */
-
-import type { AxiosResponse } from "axios";
+import { AxiosResponse } from "axios";
 
 export async function fetchSafe<T>(
   fetcher: () => Promise<AxiosResponse<T>>,
-  fallback: T | null = null
-): Promise<T | null> {
-  // Nếu đang build, skip API call
-
-  console.log(
-    "🔥 SKIP BUILD VARIABLE",
-    process.env.SKIP_BUILD_STATIC_GENERATION
-  );
+  fallback: T
+): Promise<T> {
   if (process.env.SKIP_BUILD_STATIC_GENERATION === "true") {
     console.log("⚠️ Skip fetch during build");
     return fallback;

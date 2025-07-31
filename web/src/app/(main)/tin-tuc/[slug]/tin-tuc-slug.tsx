@@ -24,7 +24,9 @@ export async function generateMetadata({
   const { slug } = await params;
 
   // Dùng fetchSafe để tránh crash build khi API lỗi
-  const data = await fetchSafe(() => NewsAPI.getNewsWithSlug({ slug }));
+  const data = await fetchSafe(() => NewsAPI.getNewsWithSlug({ slug }), {
+    article: null,
+  });
 
   const news = data?.article as NewsInterface | null;
 
@@ -52,7 +54,9 @@ const TintucSlug = async ({ params }: Props) => {
 
   let news: NewsInterface | undefined;
 
-  const data = await fetchSafe(() => NewsAPI.getNewsWithSlug({ slug }));
+  const data = await fetchSafe(() => NewsAPI.getNewsWithSlug({ slug }), {
+    article: null,
+  });
 
   news = data?.article as NewsInterface | undefined;
 
