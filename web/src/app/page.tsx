@@ -44,6 +44,8 @@ const getStoreInfo = async (): Promise<StoreInterface> => {
 };
 const MusicStoreLanding: React.FC = async () => {
   const storeInfo = await getStoreInfo();
+  console.log("STORE INFO LOG", storeInfo);
+
   console.log(
     "🔥 Fetch storeInfo (TTL 300s) at:",
     new Date().toLocaleTimeString("vi-VN", { hour12: false })
