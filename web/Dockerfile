@@ -2,17 +2,17 @@
 FROM node:22-slim AS builder
 WORKDIR /app
 
-# Copy package và cài dependencies
+# Cài dependencies trước để cache tốt hơn
 COPY package*.json ./
 RUN npm ci
 
-# Copy toàn bộ code
+# Copy toàn bộ source
 COPY . .
 
-# ✅ Bỏ prefetch data
+# Skip fetch API khi build để tránh lỗi ENOTFOUND
 ENV SKIP_BUILD_STATIC_GENERATION=true
 
-# Build Next.js (không bật SKIP_BUILD_STATIC_GENERATION)
+# Build Next.js
 RUN npm run build
 
 # Stage 2: Runtime
@@ -21,16 +21,16 @@ WORKDIR /app
 
 ENV NODE_ENV=production
 ENV PORT=3900
-
+# Runtime thì KHÔNG skip API (để ISR hoạt động)
 ENV SKIP_BUILD_STATIC_GENERATION=false
 
-# Copy chỉ các thư mục cần thiết từ builder
+# Copy output từ builder
 COPY --from=builder /app/public ./public
 COPY --from=builder /app/.next ./.next
 COPY --from=builder /app/node_modules ./node_modules
 COPY --from=builder /app/package*.json ./
 
-# Quan trọng: tạo quyền ghi cho ISR cache
+# Tạo quyền ghi cho cache ISR
 RUN mkdir -p .next/cache && chmod -R 777 .next/cache
 
 EXPOSE 3900
