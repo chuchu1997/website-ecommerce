@@ -13,8 +13,12 @@ import { ImageLoader } from "@/components/ui/image-loader";
 // interface Props  {
 //   categoriesProps
 // }
-const CategoriesList = () => {
-  const [categories, setCategories] = useState<CategoryInterface[]>([]);
+interface Props {
+  categoriesProps: CategoryInterface[];
+}
+const CategoriesListClient = ({ categoriesProps }: Props) => {
+  const [categories, setCategories] =
+    useState<CategoryInterface[]>(categoriesProps);
 
   const fetchCategories = async () => {
     const res = await CategoryAPI.getAllCategoriesOfStore({
@@ -90,4 +94,4 @@ const CategoriesList = () => {
   );
 };
 
-export default CategoriesList;
+export default CategoriesListClient;

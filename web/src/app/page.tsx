@@ -6,7 +6,7 @@ import { fetchSafe } from "@/utils/fetchSafe";
 
 // Components
 import { Hero } from "./(main)/components/Hero/Hero";
-import CategoriesList from "./(main)/components/CategoriesList/categories-list";
+import CategoriesListClient from "./(main)/components/CategoriesList/categories-list";
 import { FlashSaleComponentView } from "./(main)/components/flash-sale";
 import { FeatureProducts } from "./(main)/components/FeatureProduct/FeatureProduct";
 import { ProductWithCategoryType } from "./(main)/components/ProductWithCategoryType/ProductWithCategoryType";
@@ -15,6 +15,7 @@ import { HighlightedProjects } from "./(main)/components/HighlightProject/Highli
 import { PartnerBrands } from "./(main)/components/PartnerBrands/PartnerBrands";
 import { NewsMasterPage } from "./(main)/components/News/News";
 import { InteriorContent } from "./(main)/components/InteriorContent";
+import { CategoriesListSSR } from "./(main)/components/CategoriesList/categories-list-ssr";
 
 export const revalidate = 300; // ISR 5 phút
 
@@ -47,7 +48,7 @@ const MusicStoreLanding: React.FC = async () => {
   return (
     <div className="min-h-screen bg-gray-50 w-full">
       <Hero />
-      <CategoriesList />
+      <CategoriesListSSR />
       <FlashSaleComponentView />
 
       {/* Feature products */}
