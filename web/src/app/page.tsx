@@ -27,10 +27,7 @@ const getStoreInfo = async (): Promise<StoreInterface> => {
     {
       data: {
         store: {
-          name: "Máy xây dựng mới ",
           industry: "Thiết bị xây dựng",
-          address: "",
-          phone: "",
         } as StoreInterface,
       },
     }

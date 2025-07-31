@@ -21,11 +21,13 @@ interface Props {
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
 
-  const data = await fetchSafe(() => ProjectAPI.getProjectWithSlug({ slug }), {
-    project: null,
+  const res = await fetchSafe(() => ProjectAPI.getProjectWithSlug({ slug }), {
+    data: {
+      service: undefined,
+    },
   });
 
-  const project = data?.project as ProjectInterface | null;
+  const project = res.data.project as ProjectInterface | null;
 
   if (project?.seo && typeof project.seo === "object") {
     return generateSeoForPage(project.seo);

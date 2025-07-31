@@ -16,12 +16,16 @@ export async function generateMetadata({
   // Await the params first
   const resolvedParams = await params;
 
-  const data = await fetchSafe(
+  const res = await fetchSafe(
     () => CategoryAPI.getCategoryWithSlug(resolvedParams.slug, 1, 1),
-    { category: null } // Fallback trả về đầy đủ key
+    {
+      data: {
+        category: null,
+      },
+    } // Fallback trả về đầy đủ key
   );
 
-  const category = data.category;
+  const category = res.data.category;
 
   if (
     category.seo &&

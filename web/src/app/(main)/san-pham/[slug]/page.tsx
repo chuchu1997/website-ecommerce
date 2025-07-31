@@ -20,12 +20,16 @@ export async function generateMetadata({
   const resolvedParams = await params;
 
   try {
-    const data = await fetchSafe(
+    const res = await fetchSafe(
       () => ProductAPI.getProductBySlug(resolvedParams.slug),
-      { product: null }
+      {
+        data: {
+          product: null,
+        },
+      }
     );
 
-    const product = data?.product as ProductInterface | null;
+    const product = res.data?.product as ProductInterface | null;
 
     // Nếu có SEO custom
     if (product && typeof product.seo === "object") {

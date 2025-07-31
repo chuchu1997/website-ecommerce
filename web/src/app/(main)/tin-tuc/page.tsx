@@ -8,14 +8,16 @@ import { FormatUtils } from "@/utils/format";
 import Link from "next/link";
 
 const NewsPage = async () => {
-  const data = await fetchSafe(
+  const res = await fetchSafe(
     () => NewsAPI.getNews({ currentPage: 1, limit: 9 }),
     {
-      article: null,
+      data: {
+        article: null,
+      },
     }
   );
 
-  const news = (data?.articles ?? []) as NewsInterface[];
+  const news = (res.data?.articles ?? []) as NewsInterface[];
 
   return (
     <div className="bg-gradient-to-br from-yellow-50 to-white">

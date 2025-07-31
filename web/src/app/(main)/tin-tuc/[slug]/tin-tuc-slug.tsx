@@ -24,11 +24,13 @@ export async function generateMetadata({
   const { slug } = await params;
 
   // Dùng fetchSafe để tránh crash build khi API lỗi
-  const data = await fetchSafe(() => NewsAPI.getNewsWithSlug({ slug }), {
-    article: null,
+  const res = await fetchSafe(() => NewsAPI.getNewsWithSlug({ slug }), {
+    data: {
+      article: null,
+    },
   });
 
-  const news = data?.article as NewsInterface | null;
+  const news = res.data?.article as NewsInterface | null;
 
   if (news && typeof news.seo === "object") {
     // Nếu có dữ liệu SEO từ backend

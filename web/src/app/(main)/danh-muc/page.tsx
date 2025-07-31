@@ -10,16 +10,18 @@ import { fetchSafe } from "@/utils/fetchSafe";
 
 const getCategories = async (): Promise<CategoryInterface[]> => {
   // fetchSafe
-  const data = await fetchSafe(
+  const res = await fetchSafe(
     () =>
       CategoryAPI.getAllCategoriesOfStore({
         justGetParent: false,
       }),
     {
-      categories: [],
+      data: {
+        categories: [],
+      },
     }
   );
-  return data.categories ?? [];
+  return res.data.categories ?? [];
 };
 
 const DanhMucPage = async () => {

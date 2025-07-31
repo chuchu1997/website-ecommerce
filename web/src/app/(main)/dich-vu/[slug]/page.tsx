@@ -19,11 +19,13 @@ interface Props {
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
 
-  const data = await fetchSafe(() => ServiceAPI.getServiceWithSlug({ slug }), {
-    service: undefined,
+  const res = await fetchSafe(() => ServiceAPI.getServiceWithSlug({ slug }), {
+    data: {
+      service: undefined,
+    },
   });
 
-  const service = data?.service as ServiceInterface | null;
+  const service = res.data.service as ServiceInterface | null;
 
   if (service?.seo && typeof service.seo === "object") {
     return generateSeoForPage(service.seo);
@@ -43,11 +45,13 @@ const DuAnSlug = async ({ params }: Props) => {
   const { slug } = await params;
 
   // ✅ Dùng fetchSafe để tránh crash lúc build
-  const data = await fetchSafe(() => ServiceAPI.getServiceWithSlug({ slug }), {
-    service: null,
+  const res = await fetchSafe(() => ServiceAPI.getServiceWithSlug({ slug }), {
+    data: {
+      service: null,
+    },
   });
 
-  const service = data?.service as ServiceInterface | null;
+  const service = res.data.service as ServiceInterface | null;
 
   if (!service) {
     return (

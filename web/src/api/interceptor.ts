@@ -4,9 +4,9 @@ import axios from "axios";
 import toast from "react-hot-toast";
 
 const baseURL =
-  typeof window === "undefined"
-    ? process.env.API_INTERNAL_URL || "http://localhost:3000" // SSR / build
-    : process.env.NEXT_PUBLIC_API; // Client
+  typeof window !== "undefined"
+    ? process.env.NEXT_PUBLIC_API // client (browser)
+    : process.env.API_INTERNAL_URL || "https://mxdm-api.45.32.105.240.sslip.io"; // server (SSR)
 const api = axios.create({
   baseURL: baseURL,
 });
