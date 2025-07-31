@@ -4,18 +4,26 @@ import { FC } from "react";
 import { ProductCategoriesMotion } from "./ProductCategoriesMotion";
 import { CategoryInterface } from "@/types/category";
 import { CategoryAPI } from "@/api/categories/category.api";
+import { fetchSafe } from "@/utils/fetchSafe";
 
 export const ProductCategories: FC = async () => {
   // const ss = CategoryAPI.getAllCategoriesOfStore()
 
   let categories: CategoryInterface[] = [];
-  const res = await CategoryAPI.getAllCategoriesOfStore({
-    justGetParent: false,
-    currentPage: 1,
-    limit: 6,
-  });
 
-  categories = res.data.categories;
+  const data = await fetchSafe(
+    () =>
+      CategoryAPI.getAllCategoriesOfStore({
+        justGetParent: false,
+        currentPage: 1,
+        limit: 6,
+      }),
+    {
+      categories: [],
+    }
+  );
+
+  categories = data.categories;
 
   // categories = res.data.categories.filter(
   //   (category: CategoryInterface) => category.slug !== "san-pham"
