@@ -38,7 +38,7 @@ import { CategoryAPI } from "@/api/categories/category.api";
 import { fetchSafe } from "@/utils/fetchSafe";
 // export const dynamic = "force-dynamic";
 export const revalidate = 300; // 5 phút = 300 giây
-export const getStoreInfo = async (): Promise<StoreInterface> => {
+const getStoreInfo = async (): Promise<StoreInterface> => {
   const data = await fetchSafe(() => StoreAPI.getStoreInfo());
   return data?.store ?? { industry: "" }; // map ở ngoài
 };
