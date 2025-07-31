@@ -85,6 +85,8 @@ services:
       CLIENT_MAX_BODY_SIZE: 25m
     networks:
       - proxy
+    volumes:
+      - .next-cache:/app/.next/cache
     restart: unless-stopped
     # ✅ Chờ đến khi API thực sự sẵn sàng
 
@@ -94,3 +96,4 @@ networks:
 
 volumes:
   mysql-data-mayxaydungmoi:
+  .next-cache:
