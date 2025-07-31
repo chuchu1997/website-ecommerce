@@ -14,29 +14,29 @@ export const FeatureProducts = async ({ industry }: Props) => {
   let featureProducts: ProductInterface[] = [];
   let promotions: PromotionInterface[] = [];
 
-  try {
-    const response = await fetchSafe(
-      () => ProductAPI.getFeatureProducts({ limit: 5 }),
-      { data: { products: [] } }
-    );
+  // try {
+  //   const response = await fetchSafe(
+  //     () => ProductAPI.getFeatureProducts({ limit: 5 }),
+  //     { data: { products: [] } }
+  //   );
 
-    featureProducts = response.data.products as ProductInterface[];
+  //   featureProducts = response.data.products as ProductInterface[];
 
-    const allProductPromotions: ProductPromotion[] = featureProducts.flatMap(
-      (product) => product.promotionProducts
-    );
+  //   const allProductPromotions: ProductPromotion[] = featureProducts.flatMap(
+  //     (product) => product.promotionProducts
+  //   );
 
-    const uniquePromotionsMap = new Map<number, PromotionInterface>();
+  //   const uniquePromotionsMap = new Map<number, PromotionInterface>();
 
-    for (const promo of allProductPromotions) {
-      if (promo.promotion && !uniquePromotionsMap.has(promo.promotionId)) {
-        uniquePromotionsMap.set(promo.promotionId, promo.promotion);
-      }
-    }
-    promotions = Array.from(uniquePromotionsMap.values());
-  } catch (error) {
-    console.error("Failed to fetch featured products:", error);
-  }
+  //   for (const promo of allProductPromotions) {
+  //     if (promo.promotion && !uniquePromotionsMap.has(promo.promotionId)) {
+  //       uniquePromotionsMap.set(promo.promotionId, promo.promotion);
+  //     }
+  //   }
+  //   promotions = Array.from(uniquePromotionsMap.values());
+  // } catch (error) {
+  //   console.error("Failed to fetch featured products:", error);
+  // }
 
   const stats = [
     {
