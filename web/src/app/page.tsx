@@ -35,15 +35,9 @@ import { FlashSaleComponentView } from "./(main)/components/flash-sale";
 import CategoriesList from "./(main)/components/CategoriesList/categories-list";
 import { CategoryInterface } from "@/types/category";
 import { CategoryAPI } from "@/api/categories/category.api";
-export const dynamic = "force-dynamic";
+// export const dynamic = "force-dynamic";
 export const revalidate = 300; // 5 phút = 300 giây
 const getStoreInfo = async () => {
-  if (process.env.SKIP_BUILD_STATIC_GENERATION) {
-    console.log("⚠️ Skip fetch API trong lúc build");
-    // Trả về dữ liệu mặc định để không làm fail build
-    return { industry: "" } as StoreInterface;
-  }
-
   const store = (await StoreAPI.getStoreInfo()).data.store as StoreInterface;
   return store;
 };

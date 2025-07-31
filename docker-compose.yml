@@ -1,5 +1,7 @@
+version: '3.9'
 
 services:
+  # MySQL
   mxdm-mysql:
     image: mysql:8
     container_name: mayxaydungmoi-mysql
@@ -12,9 +14,8 @@ services:
     ports:
       - "3317:3306"
     volumes:
-      - mysql-data-mayxaydungmoi:/var/lib/mysql
-      - ./init.sql:/docker-entrypoint-initdb.d/init.sql  # Add this line
-
+      - mysql-data-mxdm:/var/lib/mysql
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
     networks:
       - proxy
     healthcheck:
@@ -24,6 +25,7 @@ services:
       interval: 10s
       start_period: 40s
 
+  # API container
   mxdm-api:
     build: ./api
     container_name: mayxaydungmoi-api
@@ -36,10 +38,6 @@ services:
       - ./api/.env
     environment:
       DATABASE_URL: ${DATABASE_URL}
-      VIRTUAL_HOST: ${VIRTUAL_HOST}
-      VIRTUAL_PORT: ${VIRTUAL_PORT}
-      LETSENCRYPT_HOST: ${LETSENCRYPT_HOST}
-      LETSENCRYPT_EMAIL: ${LETSENCRYPT_EMAIL}
     networks:
       - proxy
     restart: unless-stopped
@@ -50,22 +48,7 @@ services:
       retries: 5
       start_period: 20s
 
-  mxdm-admin:
-    build: ./admin
-    container_name: mayxaydungmoi-admin
-    ports:
-      - "3018:3500"
-    env_file:
-      - ./admin/.env
-    environment:
-      VIRTUAL_HOST: ${ADMIN_VIRTUAL_HOST}
-      VIRTUAL_PORT: ${ADMIN_VIRTUAL_PORT}
-      LETSENCRYPT_HOST: ${ADMIN_LETSENCRYPT_HOST}
-      LETSENCRYPT_EMAIL: ${ADMIN_LETSENCRYPT_EMAIL}
-    networks:
-      - proxy
-    restart: unless-stopped
-
+  # Next.js Web
   mxdm-web:
     build: ./web
     container_name: mayxaydungmoi-web
@@ -77,20 +60,17 @@ services:
     env_file:
       - ./web/.env
     environment:
-      VIRTUAL_HOST: ${WEBSITE_VIRTUAL_HOST}
-      VIRTUAL_PORT: ${WEBSITE_VIRTUAL_PORT}
-      LETSENCRYPT_HOST: ${WEBSITE_LETSENCRYPT_HOST}
-      LETSENCRYPT_EMAIL: ${WEBSITE_LETSENCRYPT_EMAIL}
-
-      CLIENT_MAX_BODY_SIZE: 25m
+      API_BASE_URL: http://mxdm-api:3000
     networks:
       - proxy
+    volumes:
+      - .next-cache:/app/.next/cache
     restart: unless-stopped
-    # ✅ Chờ đến khi API thực sự sẵn sàng
 
 networks:
   proxy:
     external: true
 
 volumes:
-  mysql-data-mayxaydungmoi:
+  mysql-data-mxdm:
+  .next-cache:

@@ -19,7 +19,7 @@ import NavbarComponent from "@/components/ui/Navbar";
 import { CategoryAPI } from "@/api/categories/category.api";
 import { CategoryInterface } from "@/types/category";
 import Navbar from "@/components/ui/Navbar/components/NavbarClientVer2";
-export const dynamic = "force-dynamic";
+// export const dynamic = "force-dynamic";
 
 export const revalidate = 300; // cache fallback 5 phút
 

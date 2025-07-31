@@ -10,6 +10,9 @@ import Image from "next/image";
 import Link from "next/link";
 import { ImageLoader } from "@/components/ui/image-loader";
 
+// interface Props  {
+//   categoriesProps
+// }
 const CategoriesList = () => {
   const [categories, setCategories] = useState<CategoryInterface[]>([]);
 
