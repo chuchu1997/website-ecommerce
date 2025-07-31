@@ -1,27 +1,22 @@
 /** @format */
 "use client";
 
-import { CategoryAPI } from "@/api/categories/category.api";
+import { CategoryInterface } from "@/types/category";
 import { Slider } from "@/common/SlideCustom";
 import { useBreakpoint } from "@/hooks/use-breakpoint";
-import { CategoryInterface } from "@/types/category";
-import { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { ImageLoader } from "@/components/ui/image-loader";
 
-// interface Props  {
-//   categoriesProps
-// }
 interface Props {
   categoriesProps: CategoryInterface[];
 }
-const CategoriesListClient = ({ categoriesProps }: Props) => {
-  const [categories, setCategories] =
-    useState<CategoryInterface[]>(categoriesProps);
 
+const CategoriesListClient = ({ categoriesProps }: Props) => {
+  const categories = categoriesProps || [];
   const breakpoint = useBreakpoint();
 
+  // Xác định số items hiển thị theo breakpoint
   const getItemsPerView = () => {
     switch (breakpoint) {
       case "sm":
@@ -39,20 +34,25 @@ const CategoriesListClient = ({ categoriesProps }: Props) => {
     }
   };
 
+  // Render từng category
   const renderCategory = (category: CategoryInterface) => (
     <Link
-      href={`/danh-muc/${category.slug}`}
       key={category.id}
+      href={`/danh-muc/${category.slug}`}
       className="border min-h-[170px] group flex flex-col items-center justify-start p-3 rounded-lg hover:shadow-lg transition duration-300 bg-white">
-      <div className="w-24 h-24  relative mb-2 rounded-full overflow-hidden border">
-        {category.imageUrl && (
+      <div className="w-24 h-24 relative mb-2 rounded-full overflow-hidden border">
+        {category.imageUrl ? (
           <ImageLoader
-            priority={true}
+            priority
             src={category.imageUrl}
             alt={category.name}
             fill
             className="object-cover group-hover:scale-105 transition-transform duration-300"
           />
+        ) : (
+          <div className="w-full h-full flex items-center justify-center text-xs text-gray-400">
+            No image
+          </div>
         )}
       </div>
       <div className="text-center">
@@ -63,6 +63,15 @@ const CategoriesListClient = ({ categoriesProps }: Props) => {
     </Link>
   );
 
+  // Trường hợp không có category
+  if (!categories.length) {
+    return (
+      <div className="my-6 max-w-7xl mx-auto px-4 mt-10 text-center text-gray-500">
+        Không có danh mục nào để hiển thị
+      </div>
+    );
+  }
+
   return (
     <div className="my-6 max-w-7xl mx-auto px-4 mt-10">
       <Slider
@@ -71,9 +80,9 @@ const CategoriesListClient = ({ categoriesProps }: Props) => {
         onItemClick={() => {}}
         itemsPerView={getItemsPerView()}
         gap={20}
-        showArrows={true}
+        showArrows
         showDots={false}
-        autoPlay={true}
+        autoPlay
         autoPlayInterval={5000}
       />
     </div>
