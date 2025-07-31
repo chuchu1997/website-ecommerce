@@ -22,31 +22,31 @@ import Navbar from "@/components/ui/Navbar/components/NavbarClientVer2";
 import { fetchSafe } from "@/utils/fetchSafe";
 export const revalidate = 300; // ISR 5 phút
 // Fetch storeInfo có check SKIP_BUILD_STATIC_GENERATION
-const getStoreInfo = async (): Promise<StoreInterface> => {
-  const res = await fetchSafe(
-    () => StoreAPI.getStoreInfo(),
-    // fallback để tránh lỗi khi build
-    {
-      data: {
-        store: {
-          industry: "TEST",
-        },
-      },
-    }
-  );
+// const getStoreInfo = async (): Promise<StoreInterface> => {
+//   const res = await fetchSafe(
+//     () => StoreAPI.getStoreInfo(),
+//     // fallback để tránh lỗi khi build
+//     {
+//       data: {
+//         store: {
+//           industry: "TEST",
+//         },
+//       },
+//     }
+//   );
 
-  return res.data.store;
-};
+//   return res.data.store;
+// };
 
 // Fetch categories có check SKIP_BUILD_STATIC_GENERATION
 
 export async function generateMetadata(): Promise<Metadata> {
-  const store = await getStoreInfo();
+  // const store = await getStoreInfo();
 
-  if (!store) return {};
-  if (store.seo && typeof store.seo === "object") {
-    return generateSeoForPage(store.seo as SeoInterface);
-  }
+  // if (!store) return {};
+  // if (store.seo && typeof store.seo === "object") {
+  //   return generateSeoForPage(store.seo as SeoInterface);
+  // }
 
   return {};
 }
@@ -56,7 +56,7 @@ export default async function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const storeInfo = await getStoreInfo();
+  // const storeInfo = await getStoreInfo();
 
   return (
     <html lang="en">
@@ -75,7 +75,7 @@ export default async function RootLayout({
               </SidebarProvider>
               <ZaloPhoneWidget />
             </CartProvider>
-            <Footer storeInfo={storeInfo} />
+            {/* <Footer storeInfo={storeInfo} /> */}
           </CookiesClientWrapper>
         </LoadingProvider>
       </body>
