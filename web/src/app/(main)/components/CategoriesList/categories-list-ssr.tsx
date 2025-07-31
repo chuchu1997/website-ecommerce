@@ -1,0 +1,27 @@
+import { CategoryAPI } from "@/api/categories/category.api"
+import { CategoryInterface } from "@/types/category"
+import { fetchSafe } from "@/utils/fetchSafe"
+
+
+
+
+const CategoriesListSSR =  async ()=>{
+
+    // let categories:CategoryInterface[] = [];
+
+    // const data  = await fetchSafe(()=> CategoryAPI.getAllCategoriesOfStore({
+    //     currentPage:1,
+    //     limit:999,
+    //     justGetParent:false
+    // }),{
+    //     categories:[]
+    // })
+
+    // categories = data.cagories;
+
+
+
+
+
+    return <>HEHE</>
+}

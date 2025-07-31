@@ -14,7 +14,7 @@ services:
     ports:
       - "3317:3306"
     volumes:
-      - mysql-data-mxdm:/var/lib/mysql
+      - mysql-data-mayxaydungmoi:/var/lib/mysql
       - ./init.sql:/docker-entrypoint-initdb.d/init.sql
     networks:
       - proxy
@@ -72,5 +72,5 @@ networks:
     external: true
 
 volumes:
-  mysql-data-mxdm:
+  mysql-data-mayxaydungmoi:
   .next-cache:
