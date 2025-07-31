@@ -21,20 +21,22 @@ export const revalidate = 300; // ISR 5 phút
 
 // Helper lấy store info với fallback
 const getStoreInfo = async (): Promise<StoreInterface> => {
-  const data = await fetchSafe(
+  const res = await fetchSafe(
     () => StoreAPI.getStoreInfo(),
     // fallback để tránh lỗi khi build
     {
-      store: {
-        name: "Máy xây dựng mới ",
-        industry: "Thiết bị xây dựng",
-        address: "",
-        phone: "",
-      } as StoreInterface,
+      data: {
+        store: {
+          name: "Máy xây dựng mới ",
+          industry: "Thiết bị xây dựng",
+          address: "",
+          phone: "",
+        } as StoreInterface,
+      },
     }
   );
 
-  return data.store;
+  return res.data.store;
 };
 
 const MusicStoreLanding: React.FC = async () => {
