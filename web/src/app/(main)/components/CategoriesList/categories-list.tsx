@@ -20,20 +20,6 @@ const CategoriesListClient = ({ categoriesProps }: Props) => {
   const [categories, setCategories] =
     useState<CategoryInterface[]>(categoriesProps);
 
-  const fetchCategories = async () => {
-    const res = await CategoryAPI.getAllCategoriesOfStore({
-      justGetParent: false,
-    });
-
-    const data = res.data.categories as CategoryInterface[];
-
-    setCategories(data.filter((item) => item.parentId !== null).slice(0, 16));
-  };
-
-  useEffect(() => {
-    fetchCategories();
-  }, []);
-
   const breakpoint = useBreakpoint();
 
   const getItemsPerView = () => {

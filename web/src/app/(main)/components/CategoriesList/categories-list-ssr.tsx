@@ -10,6 +10,7 @@ export const CategoriesListSSR =  async ()=>{
 
     let categories:CategoryInterface[] = [];
 
+    
     const res  = await fetchSafe(()=> CategoryAPI.getAllCategoriesOfStore({
         currentPage:1,
         limit:999,
@@ -18,9 +19,11 @@ export const CategoriesListSSR =  async ()=>{
         data:{
             categories:[]
         }
-    })
+    })  
+    console.log("DEBUG categories response:", res);
 
-    categories = res.data.categories;
+
+        categories = res?.data?.categories ?? [];
 
 
 
