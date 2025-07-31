@@ -13,18 +13,20 @@ interface Props {
 export const HighlightedProjects = async ({ industry }: Props) => {
   let projects: ProjectInterface[] = [];
 
-  const data = await fetchSafe(
+  const res = await fetchSafe(
     () =>
       ProjectAPI.getProjects({
         limit: 6,
         currentPage: 1,
       }),
     {
-      projects: [],
+      data: {
+        projects: [],
+      },
     }
   );
 
-  projects = data.projects;
+  projects = res.data.projects;
 
   return (
     <section id="projects" className="">

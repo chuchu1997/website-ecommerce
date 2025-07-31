@@ -11,7 +11,7 @@ export const ProductCategories: FC = async () => {
 
   let categories: CategoryInterface[] = [];
 
-  const data = await fetchSafe(
+  const res = await fetchSafe(
     () =>
       CategoryAPI.getAllCategoriesOfStore({
         justGetParent: false,
@@ -19,11 +19,13 @@ export const ProductCategories: FC = async () => {
         limit: 6,
       }),
     {
-      categories: [],
+      data: {
+        categories: [],
+      },
     }
   );
 
-  categories = data.categories;
+  categories = res.data.categories;
 
   // categories = res.data.categories.filter(
   //   (category: CategoryInterface) => category.slug !== "san-pham"

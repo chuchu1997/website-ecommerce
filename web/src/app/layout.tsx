@@ -26,39 +26,45 @@ export const revalidate = 300; // cache fallback 5 phút
 
 // Fetch storeInfo có check SKIP_BUILD_STATIC_GENERATION
 const getStoreInfo = async (): Promise<StoreInterface> => {
-  const data = await fetchSafe(
+  const res = await fetchSafe(
     () => StoreAPI.getStoreInfo(),
     // fallback để tránh lỗi khi build
     {
-      store: {
-        name: "Máy xây dựng mới ",
-        industry: "Thiết bị xây dựng",
-        address: "",
-        phone: "",
-      } as StoreInterface,
+      data: {
+        store: {
+          name: "Máy xây dựng mới ",
+          industry: "Thiết bị xây dựng",
+          address: "",
+          phone: "",
+        } as StoreInterface,
+      },
     }
   );
 
-  return data.store;
+  return res.data.store;
 };
 
 // Fetch categories có check SKIP_BUILD_STATIC_GENERATION
 const getCategories = async (): Promise<CategoryInterface[]> => {
-  const data = await fetchSafe(
+  const res = await fetchSafe(
     () =>
       CategoryAPI.getAllCategoriesOfStore({
         limit: 9999,
         currentPage: 1,
         justGetParent: false,
       }),
-    { categories: [] }
+    {
+      data: {
+        categories: [],
+      },
+    }
   );
   // const { data } = await CategoryAPI.getAllCategoriesOfStore({
   //   justGetParent: false,
   //   currentPage: 1,
   //   limit: 9999,
   // });
-  return data.categories as CategoryInterface[];
+  return res.data.categories as CategoryInterface[];
 };
 
 export async function generateMetadata(): Promise<Metadata> {

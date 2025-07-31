@@ -10,15 +10,17 @@ export const CategoriesListSSR =  async ()=>{
 
     let categories:CategoryInterface[] = [];
 
-    const data  = await fetchSafe(()=> CategoryAPI.getAllCategoriesOfStore({
+    const res  = await fetchSafe(()=> CategoryAPI.getAllCategoriesOfStore({
         currentPage:1,
         limit:999,
         justGetParent:false
     }),{
-        categories:[]
+        data:{
+            categories:[]
+        }
     })
 
-    categories = data.categories;
+    categories = res.data.categories;
 
 
 

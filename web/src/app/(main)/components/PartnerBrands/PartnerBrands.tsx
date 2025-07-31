@@ -10,11 +10,13 @@ interface Props  {
 }
 export const PartnerBrands = async  ({industry}:Props) => {
 
-  const data = await fetchSafe(()=>BrandAPI.getAllBrandsFromStore(),{
-    brands:[]
+  const res = await fetchSafe(()=>BrandAPI.getAllBrandsFromStore(),{
+   data:{
+     brands:[]
+   }
   })
 
-  const brands =data.brands
+  const brands =res.data.brands
 
   return (
     <section className="">

@@ -53,7 +53,7 @@ const MusicStoreLanding: React.FC = async () => {
 
       <FeatureProducts industry={storeInfo.industry ?? ""} />
 
-      {/* <ProductWithCategoryType
+      <ProductWithCategoryType
         industry={storeInfo.industry ?? ""}
         slug="ban-cat-gach"
         isGrayBg={true}
@@ -88,7 +88,7 @@ const MusicStoreLanding: React.FC = async () => {
       <ProductWithCategoryType
         industry={storeInfo.industry ?? ""}
         slug="may-nong-nghiep"
-      /> */}
+      />
 
       <ProductCategories />
       <HighlightedProjects industry={storeInfo.industry ?? ""} />

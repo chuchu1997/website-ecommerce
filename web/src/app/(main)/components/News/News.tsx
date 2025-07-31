@@ -60,15 +60,17 @@ export const NewsMasterPage = async ({industry}:Props) => {
   let news:NewsInterface[] = [];
 
 
-  const data = await fetchSafe(()=>NewsAPI.getNews({
+  const res = await fetchSafe(()=>NewsAPI.getNews({
     currentPage:1,
     limit:3
   }),{
-    articles:[]
+    data:{
+      articles:[]
+    }
   })
   
-  news = data.articles;
-  
+  news = res.data.articles;
+
 
   return (
     <section id="projects">
