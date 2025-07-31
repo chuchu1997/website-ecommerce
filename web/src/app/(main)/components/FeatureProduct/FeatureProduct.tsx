@@ -1,7 +1,10 @@
+/** @format */
+
 import { ProductAPI } from "@/api/products/product.api";
 import { ProductListMotionWrapper } from "@/components/ui/product/ProductListMotionWrapper";
 import { ProductInterface } from "@/types/product";
 import { PromotionInterface, ProductPromotion } from "@/types/promotion";
+import { fetchSafe } from "@/utils/fetchSafe";
 
 interface Props {
   industry: string;
@@ -12,9 +15,10 @@ export const FeatureProducts = async ({ industry }: Props) => {
   let promotions: PromotionInterface[] = [];
 
   try {
-    const response = await ProductAPI.getFeatureProducts({
-      limit: 5,
-    });
+    const response = await fetchSafe(
+      () => ProductAPI.getFeatureProducts({ limit: 5 }),
+      { data: { products: [] } }
+    );
 
     featureProducts = response.data.products as ProductInterface[];
 
@@ -41,23 +45,23 @@ export const FeatureProducts = async ({ industry }: Props) => {
       color: "from-yellow-600 to-yellow-700",
       bgColor: "from-yellow-50 to-yellow-100",
       shadowColor: "shadow-yellow-200/50",
-      icon: "🌟"
+      icon: "🌟",
     },
     {
       value: "100%",
       label: "Chất lượng cao cấp",
-      color: "from-amber-700 to-yellow-800", 
+      color: "from-amber-700 to-yellow-800",
       bgColor: "from-amber-50 to-yellow-50",
       shadowColor: "shadow-amber-200/50",
-      icon: "✨"
+      icon: "✨",
     },
     {
       value: "24/7",
       label: "Hỗ trợ tận tâm",
       color: "from-stone-600 to-stone-700",
-      bgColor: "from-stone-50 to-gray-100", 
+      bgColor: "from-stone-50 to-gray-100",
       shadowColor: "shadow-stone-200/50",
-      icon: "🤝"
+      icon: "🤝",
     },
     {
       value: promotions.length || 0,
@@ -65,8 +69,8 @@ export const FeatureProducts = async ({ industry }: Props) => {
       color: "from-yellow-600 to-amber-600",
       bgColor: "from-yellow-50 to-amber-50",
       shadowColor: "shadow-yellow-200/50",
-      icon: "🎁"
-    }
+      icon: "🎁",
+    },
   ];
 
   return (
@@ -77,14 +81,21 @@ export const FeatureProducts = async ({ industry }: Props) => {
         <div className="absolute -top-40 -left-40 w-80 h-80 bg-gradient-to-br from-yellow-100/30 to-amber-200/20 rounded-full blur-3xl animate-pulse" />
         <div className="absolute -bottom-40 -right-40 w-96 h-96 bg-gradient-to-br from-stone-100/25 to-yellow-200/15 rounded-full blur-3xl animate-pulse animation-delay-2000" />
         <div className="absolute top-1/3 left-1/2 transform -translate-x-1/2 w-64 h-64 bg-gradient-to-br from-gray-100/20 to-yellow-100/10 rounded-full blur-2xl animate-pulse animation-delay-4000" />
-        
+
         {/* Refined grid pattern */}
         <div className="absolute inset-0 bg-[linear-gradient(rgba(156,163,175,0.03)_1px,transparent_1px),linear-gradient(90deg,rgba(156,163,175,0.03)_1px,transparent_1px)] bg-[size:80px_80px]" />
-        
+
         {/* Premium curves */}
-        <svg className="absolute inset-0 w-full h-full opacity-15" xmlns="http://www.w3.org/2000/svg">
+        <svg
+          className="absolute inset-0 w-full h-full opacity-15"
+          xmlns="http://www.w3.org/2000/svg">
           <defs>
-            <linearGradient id="premiumGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+            <linearGradient
+              id="premiumGradient"
+              x1="0%"
+              y1="0%"
+              x2="100%"
+              y2="100%">
               <stop offset="0%" stopColor="rgba(245, 158, 11, 0.15)" />
               <stop offset="50%" stopColor="rgba(217, 119, 6, 0.12)" />
               <stop offset="100%" stopColor="rgba(120, 113, 108, 0.08)" />
@@ -116,7 +127,9 @@ export const FeatureProducts = async ({ industry }: Props) => {
             <div className="absolute inset-0 bg-gradient-to-r from-yellow-400 via-amber-500 to-yellow-600 rounded-3xl blur-xl opacity-25 animate-pulse" />
             <div className="absolute inset-2 bg-gradient-to-r from-yellow-100 to-amber-100 rounded-2xl opacity-50" />
             <div className="relative bg-white rounded-2xl p-5 lg:p-7 shadow-2xl border border-yellow-200/50 backdrop-blur-sm">
-              <span className="text-3xl lg:text-5xl filter drop-shadow-sm">⭐</span>
+              <span className="text-3xl lg:text-5xl filter drop-shadow-sm">
+                ⭐
+              </span>
             </div>
           </div>
 
@@ -131,12 +144,18 @@ export const FeatureProducts = async ({ industry }: Props) => {
           {/* Refined Description */}
           <div className="max-w-4xl mx-auto">
             <p className="text-base sm:text-xl lg:text-2xl text-gray-600 leading-relaxed font-light mb-4">
-              Khám phá những sản phẩm <span className="font-semibold text-yellow-700 bg-yellow-50 px-2 py-1 rounded-lg">{industry}</span> được chế tác tinh xảo, 
-              thiết kế hiện đại và được yêu thích nhất từ bộ sưu tập của chúng tôi
+              Khám phá những sản phẩm{" "}
+              <span className="font-semibold text-yellow-700 bg-yellow-50 px-2 py-1 rounded-lg">
+                {industry}
+              </span>{" "}
+              được chế tác tinh xảo, thiết kế hiện đại và được yêu thích nhất từ
+              bộ sưu tập của chúng tôi
             </p>
             <div className="inline-flex items-center gap-2 bg-white/80 backdrop-blur-sm border border-gray-200 rounded-full px-6 py-3 shadow-lg">
               <div className="w-2 h-2 bg-yellow-500 rounded-full animate-pulse"></div>
-              <span className="text-sm text-gray-600 font-medium">Được tuyển chọn kỹ lưỡng</span>
+              <span className="text-sm text-gray-600 font-medium">
+                Được tuyển chọn kỹ lưỡng
+              </span>
             </div>
           </div>
 
@@ -177,14 +196,17 @@ export const FeatureProducts = async ({ industry }: Props) => {
                 <div className="w-8 h-8 bg-gradient-to-r from-yellow-400 to-amber-500 rounded-full flex items-center justify-center">
                   <span className="text-white text-sm font-bold">✓</span>
                 </div>
-                <span className="text-yellow-800 font-semibold text-sm uppercase tracking-wider">Uy tín & Chất lượng</span>
+                <span className="text-yellow-800 font-semibold text-sm uppercase tracking-wider">
+                  Uy tín & Chất lượng
+                </span>
               </div>
-              
+
               <h3 className="text-2xl lg:text-4xl font-black text-gray-800 mb-6">
                 Tại Sao Chọn Chúng Tôi?
               </h3>
               <p className="text-lg text-gray-600 max-w-3xl mx-auto leading-relaxed">
-                Những con số minh chứng cho chất lượng và uy tín hàng đầu trong ngành
+                Những con số minh chứng cho chất lượng và uy tín hàng đầu trong
+                ngành
               </p>
             </div>
 
@@ -193,14 +215,15 @@ export const FeatureProducts = async ({ industry }: Props) => {
               {stats.map((stat, index) => (
                 <div
                   key={index}
-                  className={`group relative bg-white rounded-3xl p-6 lg:p-8 shadow-xl hover:shadow-2xl ${stat.shadowColor} transition-all duration-700 hover:-translate-y-3 border border-gray-100 hover:border-yellow-200 overflow-hidden`}
-                >
+                  className={`group relative bg-white rounded-3xl p-6 lg:p-8 shadow-xl hover:shadow-2xl ${stat.shadowColor} transition-all duration-700 hover:-translate-y-3 border border-gray-100 hover:border-yellow-200 overflow-hidden`}>
                   {/* Premium Background Gradient */}
-                  <div className={`absolute inset-0 bg-gradient-to-br ${stat.bgColor} rounded-3xl opacity-0 group-hover:opacity-100 transition-all duration-700`} />
-                  
+                  <div
+                    className={`absolute inset-0 bg-gradient-to-br ${stat.bgColor} rounded-3xl opacity-0 group-hover:opacity-100 transition-all duration-700`}
+                  />
+
                   {/* Floating Accent */}
                   <div className="absolute top-4 right-4 w-12 h-12 bg-gradient-to-br from-yellow-100 to-amber-100 rounded-full opacity-0 group-hover:opacity-100 transition-all duration-500 blur-sm"></div>
-                  
+
                   {/* Content */}
                   <div className="relative text-center">
                     {/* Icon with Enhanced Styling */}
@@ -212,12 +235,13 @@ export const FeatureProducts = async ({ industry }: Props) => {
                         </div>
                       </div>
                     </div>
-                    
+
                     {/* Value with Premium Typography */}
-                    <div className={`text-2xl lg:text-4xl xl:text-5xl font-black mb-4 bg-gradient-to-r ${stat.color} bg-clip-text text-transparent filter drop-shadow-sm`}>
+                    <div
+                      className={`text-2xl lg:text-4xl xl:text-5xl font-black mb-4 bg-gradient-to-r ${stat.color} bg-clip-text text-transparent filter drop-shadow-sm`}>
                       {stat.value}
                     </div>
-                    
+
                     {/* Label */}
                     <div className="text-sm lg:text-base text-gray-600 font-semibold leading-relaxed group-hover:text-gray-700 transition-colors duration-300">
                       {stat.label}
@@ -225,8 +249,10 @@ export const FeatureProducts = async ({ industry }: Props) => {
                   </div>
 
                   {/* Sophisticated Hover Effect */}
-                  <div className={`absolute inset-0 rounded-3xl bg-gradient-to-br ${stat.bgColor} opacity-0 group-hover:opacity-20 transition-all duration-700`} />
-                  
+                  <div
+                    className={`absolute inset-0 rounded-3xl bg-gradient-to-br ${stat.bgColor} opacity-0 group-hover:opacity-20 transition-all duration-700`}
+                  />
+
                   {/* Corner Accent */}
                   <div className="absolute bottom-0 right-0 w-16 h-16 bg-gradient-to-tl from-yellow-100/50 to-transparent rounded-tl-full opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
                 </div>
@@ -247,14 +273,24 @@ export const FeatureProducts = async ({ industry }: Props) => {
                     <div className="w-4 h-4 bg-yellow-500 rounded-full animate-pulse shadow-lg"></div>
                     <div className="absolute inset-0 w-4 h-4 bg-yellow-400 rounded-full animate-ping opacity-50"></div>
                   </div>
-                  <div className="w-3 h-3 bg-amber-400 rounded-full animate-pulse shadow-md" style={{ animationDelay: "0.3s" }} />
-                  <div className="w-2 h-2 bg-yellow-600 rounded-full animate-pulse shadow-sm" style={{ animationDelay: "0.6s" }} />
+                  <div
+                    className="w-3 h-3 bg-amber-400 rounded-full animate-pulse shadow-md"
+                    style={{ animationDelay: "0.3s" }}
+                  />
+                  <div
+                    className="w-2 h-2 bg-yellow-600 rounded-full animate-pulse shadow-sm"
+                    style={{ animationDelay: "0.6s" }}
+                  />
                 </div>
-                
+
                 {/* Trust Message */}
                 <div className="text-center">
                   <div className="text-lg lg:text-xl text-gray-700 font-bold">
-                    Được tin tưởng bởi <span className="text-2xl font-black bg-gradient-to-r from-yellow-600 to-amber-600 bg-clip-text text-transparent">1000+</span> khách hàng
+                    Được tin tưởng bởi{" "}
+                    <span className="text-2xl font-black bg-gradient-to-r from-yellow-600 to-amber-600 bg-clip-text text-transparent">
+                      1000+
+                    </span>{" "}
+                    khách hàng
                   </div>
                   <div className="text-sm text-gray-500 font-medium mt-1">
                     Chất lượng được công nhận toàn quốc
