@@ -15,7 +15,9 @@ const getCategories = async (): Promise<CategoryInterface[]> => {
       CategoryAPI.getAllCategoriesOfStore({
         justGetParent: false,
       }),
-    []
+    {
+      categories: [],
+    }
   );
   return data.categories ?? [];
 };

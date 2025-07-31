@@ -3,6 +3,7 @@ import { NewsInterface } from "@/types/news";
 import { ProjectInterface } from "@/types/project";
 import { NewsMotion } from "./NewsMotion";
 import { NewsAPI } from "@/api/news/news.api";
+import { fetchSafe } from "@/utils/fetchSafe";
 
 
 
@@ -53,13 +54,21 @@ interface Props  {
 
 }
 export const NewsMasterPage = async ({industry}:Props) => {
+
+
+
   let news:NewsInterface[] = [];
 
-  const res = await NewsAPI.getNews({
+
+  const data = await fetchSafe(()=>NewsAPI.getNews({
     currentPage:1,
     limit:3
+  }),{
+    articles:[]
   })
-  news = res.data.articles;
+  
+  news = data.articles;
+  
 
   return (
     <section id="projects">
