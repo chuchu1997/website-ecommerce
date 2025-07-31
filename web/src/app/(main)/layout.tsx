@@ -8,6 +8,8 @@ import { Toaster } from "react-hot-toast";
 import CookiesClientWrapper from "@/provider/cookie-provider-wrapper";
 import { CartProvider } from "@/context/cart-context";
 
+export const revalidate = 300; // 5 phút = 300 giây
+
 export default async function MainLayout({
   children,
 }: Readonly<{
