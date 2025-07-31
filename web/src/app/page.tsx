@@ -35,13 +35,13 @@ import { FlashSaleComponentView } from "./(main)/components/flash-sale";
 import CategoriesList from "./(main)/components/CategoriesList/categories-list";
 import { CategoryInterface } from "@/types/category";
 import { CategoryAPI } from "@/api/categories/category.api";
+import { fetchSafe } from "@/utils/fetchSafe";
 // export const dynamic = "force-dynamic";
 export const revalidate = 300; // 5 phút = 300 giây
-const getStoreInfo = async () => {
-  const store = (await StoreAPI.getStoreInfo()).data.store as StoreInterface;
-  return store;
+export const getStoreInfo = async (): Promise<StoreInterface> => {
+  const data = await fetchSafe(() => StoreAPI.getStoreInfo());
+  return data?.store ?? { industry: "" }; // map ở ngoài
 };
-
 const MusicStoreLanding: React.FC = async () => {
   const storeInfo = await getStoreInfo();
   console.log(

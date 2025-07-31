@@ -1,52 +1,64 @@
-import { StoreAPI } from "@/api/stores/store.api";
-import NewsPage from "./tin-tuc-page";
-
-
 /** @format */
-
+"use client";
+import { NewsAPI } from "@/api/news/news.api";
+import { NewsInterface } from "@/types/news";
+import { fetchSafe } from "@/utils/fetchSafe";
 import { Metadata } from "next";
-import { StoreInterface } from "@/types/store";
+import { FormatUtils } from "@/utils/format";
+import Link from "next/link";
 
-export async function generateMetadata(
- 
-): Promise<Metadata> {
+const NewsPage = async () => {
+  const data = await fetchSafe(() =>
+    NewsAPI.getNews({ currentPage: 1, limit: 9 })
+  );
 
+  const news = (data?.articles ?? []) as NewsInterface[];
 
-  const res = await StoreAPI.getStoreInfo();
-  const store = res.data.store as StoreInterface;
-  const storeName = store ? store.name :"Tên cửa hàng";
-  const website_domain = process.env.NEXT_PUBLIC_BASE_URL || ""
-    return {
-    title: ` ${storeName} | Tin tức nhạc cụ, guitar mới nhất `,
-    description: `${storeName} cập nhật nhanh các tin tức, xu hướng mới nhất về nhạc cụ, đặc biệt là guitar, phụ kiện và các sự kiện âm nhạc.`,
-    keywords: [
-      "tin tức guitar",
-      "tin tức nhạc cụ",
-      "guitar sài thành",
-      "cửa hàng guitar",
-      "phụ kiện guitar",
-      "tin tức âm nhạc",
-      "guitar mới",
-    ],
-    openGraph: {
-      title: `Tin tức nhạc cụ & guitar mới nhất | ${storeName}`,
-      description:
-        "Theo dõi các xu hướng, mẹo vặt, đánh giá và sự kiện về guitar & nhạc cụ tại Guitar Sài Thành.",
-      type: "website",
-      url: `${website_domain}/tin-tuc`,
-      siteName: storeName,
-    },
-    twitter: {
-      card: "summary_large_image",
-      title: `Tin tức về guitar & nhạc cụ mới nhất | ${storeName}`,
-      description:
-        "Tổng hợp thông tin hữu ích về guitar, phụ kiện, xu hướng và các dòng sản phẩm mới.",
-    },
-    alternates: {
-      canonical: `${website_domain}/tin-tuc`,
-    },
-  };
+  return (
+    <div className="bg-gradient-to-br from-yellow-50 to-white">
+      <div className="text-gray-800 container mx-auto">
+        {/* Header */}
+        <div className="py-16 px-6 md:px-16 text-center">
+          <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
+            Tin Tức & Blog
+          </h1>
+          <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+            Cập nhật những tin tức mới nhất, bài viết hữu ích và kinh nghiệm
+            chơi nhạc cụ từ Guitar Sài Thành.
+          </p>
+        </div>
 
-}
+        {/* News List */}
+        <section className="py-12 px-6 md:px-16 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          {news.map((item) => (
+            <Link
+              key={item.id}
+              href={`/tin-tuc/${item.slug}`}
+              className="bg-white rounded-xl shadow-md hover:shadow-lg transition overflow-hidden">
+              <img
+                src={item.imageUrl}
+                alt={item.title}
+                className="w-full h-48 object-cover"
+              />
+              <div className="p-4 space-y-2">
+                <h2 className="text-lg font-semibold text-gray-800 line-clamp-2">
+                  {item.title}
+                </h2>
+
+                <p className="text-sm text-gray-600 leading-relaxed line-clamp-2">
+                  {item.shortDescription}
+                </p>
+
+                <p className="text-xs text-gray-400">
+                  {FormatUtils.formatDate(item.createdAt)}
+                </p>
+              </div>
+            </Link>
+          ))}
+        </section>
+      </div>
+    </div>
+  );
+};
 
 export default NewsPage;

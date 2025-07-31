@@ -4,19 +4,18 @@ import type { Metadata } from "next";
 import { CategoryAPI } from "@/api/categories/category.api";
 import { CategoryInterface } from "@/types/category";
 import CategoryCard from "@/components/ui/CategoryCard";
+import { fetchSafe } from "@/utils/fetchSafe";
 
-export const revalidate = 300; // cache fallback 5 phút
+// export const revalidate = 300; // cache fallback 5 phút
 
 const getCategories = async (): Promise<CategoryInterface[]> => {
-  if (process.env.SKIP_BUILD_STATIC_GENERATION) {
-    console.log("⚠️ Skip fetch categories trong build (DanhMucPage)");
-    return [];
-  }
-
-  const res = await CategoryAPI.getAllCategoriesOfStore({
-    justGetParent: false,
-  });
-  return res.data.categories;
+  // fetchSafe
+  const data = await fetchSafe(() =>
+    CategoryAPI.getAllCategoriesOfStore({
+      justGetParent: false,
+    })
+  );
+  return data.categories ?? [];
 };
 
 const DanhMucPage = async () => {

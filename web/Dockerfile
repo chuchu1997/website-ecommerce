@@ -9,6 +9,9 @@ RUN npm ci
 # Copy toàn bộ code
 COPY . .
 
+# ✅ Bỏ prefetch data
+ENV SKIP_BUILD_STATIC_GENERATION=true
+
 # Build Next.js (không bật SKIP_BUILD_STATIC_GENERATION)
 RUN npm run build
 
@@ -18,6 +21,8 @@ WORKDIR /app
 
 ENV NODE_ENV=production
 ENV PORT=3900
+
+ENV SKIP_BUILD_STATIC_GENERATION=false
 
 # Copy chỉ các thư mục cần thiết từ builder
 COPY --from=builder /app/public ./public

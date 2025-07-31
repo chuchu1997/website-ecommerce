@@ -1,107 +1,54 @@
-import { StoreAPI } from "@/api/stores/store.api";
-import ProjectPage from "./du-an-page";
-
-import { Metadata } from "next";
-import { StoreInterface } from "@/types/store";
+/** @format */
+"use client";
+import { NewsAPI } from "@/api/news/news.api";
 import { ProjectAPI } from "@/api/projects/projects.api";
+import { ProjectCard } from "@/components/ui/ProjectCard";
+import { NewsInterface } from "@/types/news";
 import { ProjectInterface } from "@/types/project";
+import { FormatUtils } from "@/utils/format";
 
-export async function generateMetadata(): Promise<Metadata> {
-  const website_domain = process.env.NEXT_PUBLIC_BASE_URL || "";
-  let storeName = "Tên cửa hàng 11";
+import React, { useEffect, useState } from "react";
 
-  // Metadata mặc định
-  let metadata: Metadata = {
-    title: `${storeName} | Dự án thiết kế & thi công nội thất`,
-    description: `${storeName} chuyên cung cấp thông tin các dự án thiết kế, thi công nội thất hiện đại, đẹp và tối ưu không gian sống.`,
-    keywords: [
-      "dự án nội thất",
-      "thiết kế nội thất",
-      "nội thất phòng khách",
-      "thi công nội thất",
-      "nội thất hiện đại",
-      "trang trí nhà cửa",
-      "nội thất đẹp",
-    ],
-    openGraph: {
-      title: `Dự án nội thất mới nhất | ${storeName}`,
-      description:
-        "Khám phá các dự án thiết kế và thi công nội thất thực tế từ cửa hàng của chúng tôi.",
-      type: "website",
-      url: `${website_domain}/du-an`,
-      siteName: storeName,
-    },
-    twitter: {
-      card: "summary_large_image",
-      title: `Dự án thiết kế nội thất | ${storeName}`,
-      description:
-        "Tổng hợp các dự án nổi bật về thiết kế thi công nội thất, xu hướng và phong cách mới nhất.",
-    },
-    alternates: {
-      canonical: `${website_domain}/du-an`,
-    },
+const ProjectPage: React.FC = () => {
+  const [projects, setProjects] = useState<ProjectInterface[]>([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [total, setTotal] = useState(0);
+
+  const fetchProjects = async () => {
+    let res = await ProjectAPI.getProjects({ currentPage, limit: 9999 });
+    if (res.status === 200) {
+      setTotal(res.data.total);
+      setProjects(res.data.projects);
+    }
   };
+  useEffect(() => {
+    fetchProjects();
+  }, [currentPage]);
 
-  // ✅ Skip gọi API lúc build để tránh ENOTFOUND
-  if (process.env.SKIP_BUILD_STATIC_GENERATION) {
-    console.log("⚠️ Skip fetch API trong lúc build (du-an/metadata)");
-    return metadata;
-  }
+  return (
+    <div className="">
+      <div className="text-gray-800 container mx-auto">
+        {/* Header */}
+        <div className="py-16 px-6 md:px-16 text-center">
+          <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
+            Dự Án Nội Thất
+          </h1>
+          <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+            Khám phá các dự án thiết kế và thi công nội thất thực tế từ cửa hàng
+            chúng tôi. Cập nhật những xu hướng và giải pháp tối ưu không gian
+            sống.
+          </p>
+        </div>
 
-  try {
-    // Lấy thông tin store
-    const res = await StoreAPI.getStoreInfo();
-    const store = res?.data?.store as StoreInterface | undefined;
-    if (store?.name) {
-      storeName = store.name;
-    }
-
-    // Update metadata với storeName
-    metadata.title = `${storeName} | Dự án thiết kế & thi công nội thất`;
-    metadata.openGraph = {
-      ...metadata.openGraph,
-      siteName: storeName,
-      title: `Dự án nội thất mới nhất | ${storeName}`,
-    };
-    metadata.twitter = {
-      ...metadata.twitter,
-      title: `Dự án thiết kế nội thất | ${storeName}`,
-    };
-
-    // Lấy project theo slug
-    const resProject = await ProjectAPI.getProjectWithSlug({ slug: "du-an" });
-    const project: ProjectInterface | undefined = resProject?.data?.project;
-
-    if (project?.seo) {
-      metadata.title = project.seo.title || metadata.title;
-      metadata.description = project.seo.description || metadata.description;
-
-      if (project.seo.keywords) {
-        metadata.keywords = project.seo.keywords;
-      }
-
-      metadata.openGraph = {
-        ...metadata.openGraph,
-        title: project.seo.title || metadata.openGraph?.title,
-        description: project.seo.description || metadata.openGraph?.description,
-        url: `${website_domain}/du-an`,
-      };
-
-      metadata.twitter = {
-        ...metadata.twitter,
-        title: project.seo.title || metadata.twitter?.title,
-        description: project.seo.description || metadata.twitter?.description,
-      };
-
-      metadata.alternates = {
-        canonical: project.seo.canonicalUrl || `${website_domain}/du-an`,
-      };
-    }
-  } catch (error) {
-    console.error("Error generating metadata:", error);
-  }
-
-  return metadata;
-}
+        {/* Project List */}
+        <section className="py-12 px-6 md:px-16 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          {projects.map((item) => (
+            <ProjectCard project={item} key={item.id} />
+          ))}
+        </section>
+      </div>
+    </div>
+  );
+};
 
 export default ProjectPage;

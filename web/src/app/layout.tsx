@@ -19,28 +19,38 @@ import NavbarComponent from "@/components/ui/Navbar";
 import { CategoryAPI } from "@/api/categories/category.api";
 import { CategoryInterface } from "@/types/category";
 import Navbar from "@/components/ui/Navbar/components/NavbarClientVer2";
+import { fetchSafe } from "@/utils/fetchSafe";
 // export const dynamic = "force-dynamic";
 
 export const revalidate = 300; // cache fallback 5 phút
 
 // Fetch storeInfo có check SKIP_BUILD_STATIC_GENERATION
-const getStoreInfo = async () => {
-  return (await StoreAPI.getStoreInfo()).data.store as StoreInterface;
+const getStoreInfo = async (): Promise<StoreInterface> => {
+  const data = await fetchSafe(() => StoreAPI.getStoreInfo());
+  return data.store ?? { industry: "" };
+
+  // return (await StoreAPI.getStoreInfo()).data.store as StoreInterface;
 };
 
 // Fetch categories có check SKIP_BUILD_STATIC_GENERATION
-const getCategories = async () => {
-  const { data } = await CategoryAPI.getAllCategoriesOfStore({
-    justGetParent: false,
-    currentPage: 1,
-    limit: 9999,
-  });
+const getCategories = async (): Promise<CategoryInterface[]> => {
+  const data = await fetchSafe(() =>
+    CategoryAPI.getAllCategoriesOfStore({
+      limit: 9999,
+      currentPage: 1,
+      justGetParent: false,
+    })
+  );
+  // const { data } = await CategoryAPI.getAllCategoriesOfStore({
+  //   justGetParent: false,
+  //   currentPage: 1,
+  //   limit: 9999,
+  // });
   return data.categories as CategoryInterface[];
 };
 
 export async function generateMetadata(): Promise<Metadata> {
   const store = await getStoreInfo();
-
   if (!store) return {};
   if (store.seo && typeof store.seo === "object") {
     return generateSeoForPage(store.seo as SeoInterface);

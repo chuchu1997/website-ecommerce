@@ -12,80 +12,94 @@ import { NewsInterface } from "@/types/news";
 import { ProductInterface } from "@/types/product";
 import { ProjectInterface } from "@/types/project";
 import { ServiceInterface } from "@/types/service";
+import { fetchSafe } from "@/utils/fetchSafe";
 
 export async function GET(): Promise<Response> {
   const baseUrl =
     process.env.NEXT_PUBLIC_BASE_URL || "https://guitarsaithanh.com";
   const now = new Date().toISOString();
 
-  // 1. Lấy sản phẩm từ API
-  const [productsRes, newRes, cateRes, serRes, proRes] = await Promise.all([
-    ProductAPI.getAllProducts(),
-    CategoryAPI.getAllCategoriesOfStore({
-      justGetParent: false,
-      currentPage: 1,
-      limit: 9999,
+  // ✅ Gọi API an toàn với fetchSafe()
+  const [productsRes, cateRes, newsRes, serRes, proRes] = await Promise.all([
+    fetchSafe(() => ProductAPI.getAllProducts(), { products: [] }),
+    fetchSafe(
+      () =>
+        CategoryAPI.getAllCategoriesOfStore({
+          justGetParent: false,
+          currentPage: 1,
+          limit: 9999,
+        }),
+      { categories: [] }
+    ),
+    fetchSafe(() => NewsAPI.getNews({ currentPage: 1, limit: 9999 }), {
+      articles: [],
     }),
-    NewsAPI.getNews({ currentPage: 1, limit: 9999 }),
-    ServiceAPI.getServices({
-      currentPage: 1,
-      limit: 9999,
-    }),
-    ProjectAPI.getProjects({
-      currentPage: 1,
-      limit: 9999,
-    }),
+    fetchSafe(
+      () =>
+        ServiceAPI.getServices({
+          currentPage: 1,
+          limit: 9999,
+        }),
+      { services: [] }
+    ),
+    fetchSafe(
+      () =>
+        ProjectAPI.getProjects({
+          currentPage: 1,
+          limit: 9999,
+        }),
+      { projects: [] }
+    ),
   ]);
-  const products = productsRes.data.products || [];
-  const news: NewsInterface[] = newRes.data.articles || [];
-  const categories: CategoryInterface[] = cateRes.data.categories || [];
 
-  const services: ServiceInterface[] = serRes.data.services || [];
+  // ✅ Nếu API bị skip (lúc build) thì dùng fallback để không crash
+  const products: ProductInterface[] = productsRes?.products || [];
+  const categories: CategoryInterface[] = cateRes?.categories || [];
+  const news: NewsInterface[] = newsRes?.articles || [];
+  const services: ServiceInterface[] = serRes?.services || [];
+  const projects: ProjectInterface[] = proRes?.projects || [];
 
-  const projects: ProjectInterface[] = proRes.data.projects || [];
-
-  const newsUrls = news.map((n) => {
-    return `
+  // Tạo sitemap urls
+  const newsUrls = news.map(
+    (n) => `
       <url>
         <loc>${baseUrl}/tin-tuc/${n.slug}</loc>
         <lastmod>${now}</lastmod>
-      </url>`;
-  });
-  // 2. Các URL động từ sản phẩm
-  const productUrls = products.map((p: ProductInterface) => {
-    return `
+      </url>`
+  );
+
+  const productUrls = products.map(
+    (p) => `
       <url>
         <loc>${baseUrl}/san-pham/${p.slug}</loc>
         <lastmod>${now}</lastmod>
-      </url>
-    `;
-  });
+      </url>`
+  );
 
-  const categoriesUrls = categories.map((c) => {
-    return `
+  const categoriesUrls = categories.map(
+    (c) => `
       <url>
         <loc>${baseUrl}/danh-muc/${c.slug}</loc>
         <lastmod>${now}</lastmod>
-      </url>`;
-  });
+      </url>`
+  );
 
-  const servicesUrls = services.map((s) => {
-    return `
+  const servicesUrls = services.map(
+    (s) => `
       <url>
         <loc>${baseUrl}/dich-vu/${s.slug}</loc>
         <lastmod>${now}</lastmod>
-      </url>`;
-  });
+      </url>`
+  );
 
-  const projectsUrls = projects.map((p) => {
-    return `
+  const projectsUrls = projects.map(
+    (p) => `
       <url>
         <loc>${baseUrl}/du-an/${p.slug}</loc>
         <lastmod>${now}</lastmod>
-      </url>`;
-  });
+      </url>`
+  );
 
-  // 3. Các URL tĩnh bổ sung thủ công
   const staticUrls = [
     "/chinh-sach-ban-hang",
     "/chinh-sach-doi-tra",
@@ -99,16 +113,15 @@ export async function GET(): Promise<Response> {
     "/dang-ky-lam-dai-ly",
     "/gioi-thieu",
     "/lien-he",
-  ].map((path) => {
-    return `
+  ].map(
+    (path) => `
       <url>
         <loc>${baseUrl}${path}</loc>
         <lastmod>${now}</lastmod>
-      </url>
-    `;
-  });
+      </url>`
+  );
 
-  // 4. Kết hợp tất cả
+  // Combine tất cả URL vào XML
   const xml = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 ${[
