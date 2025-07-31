@@ -20,8 +20,7 @@ import { CategoryAPI } from "@/api/categories/category.api";
 import { CategoryInterface } from "@/types/category";
 import Navbar from "@/components/ui/Navbar/components/NavbarClientVer2";
 import { fetchSafe } from "@/utils/fetchSafe";
-export const dynamic = "force-dynamic";
-
+export const revalidate = 120; // ISR 5 phút
 // Fetch storeInfo có check SKIP_BUILD_STATIC_GENERATION
 const getStoreInfo = async (): Promise<StoreInterface> => {
   const res = await fetchSafe(
