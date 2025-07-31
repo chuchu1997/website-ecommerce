@@ -57,11 +57,6 @@ export default async function RootLayout({
   const storeInfo = await getStoreInfo();
   const categories = await getCategories();
 
-  console.log(
-    "🔥 Fetch storeInfo & categories (TTL 300s) at:",
-    new Date().toLocaleTimeString("vi-VN", { hour12: false })
-  );
-
   return (
     <html lang="en">
       <body

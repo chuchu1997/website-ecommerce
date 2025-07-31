@@ -44,6 +44,10 @@ const getStoreInfo = async () => {
 
 const MusicStoreLanding: React.FC = async () => {
   const storeInfo = await getStoreInfo();
+  console.log(
+    "🔥 Fetch storeInfo (TTL 300s) at:",
+    new Date().toLocaleTimeString("vi-VN", { hour12: false })
+  );
 
   return (
     <div className=" min-h-screen bg-gray-50 w-full">
