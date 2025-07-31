@@ -5,6 +5,7 @@ import { CategoryInterface } from "@/types/category";
 import { ProductInterface } from "@/types/product";
 import { ProductPromotion, PromotionInterface } from "@/types/promotion";
 import { ProductWithCategoryClient } from "./ProductWithCategoryClient";
+import { fetchSafe } from "@/utils/fetchSafe";
 
 interface Props {
   industry: string;
@@ -23,7 +24,12 @@ export const ProductWithCategoryType = async ({
   let category: CategoryInterface | undefined;
 
   try {
-    category = (await CategoryAPI.getCategoryWithSlug(slug, 1, 12)).data;
+    const response = await fetchSafe(
+      () => CategoryAPI.getCategoryWithSlug(slug, 1, 12),
+      { data: undefined } // fallback nếu lỗi
+    );
+    category = response.data;
+
     if (category && category.products && category.products.length > 0) {
       products = category.products;
 
