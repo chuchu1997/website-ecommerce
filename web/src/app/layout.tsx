@@ -28,7 +28,15 @@ export const revalidate = 300; // cache fallback 5 phút
 const getStoreInfo = async (): Promise<StoreInterface> => {
   const data = await fetchSafe(
     () => StoreAPI.getStoreInfo(),
-    { store: { industry: "" } } // Fallback trả về đầy đủ key
+    // fallback để tránh lỗi khi build
+    {
+      store: {
+        name: "Máy xây dựng mới ",
+        industry: "Thiết bị xây dựng",
+        address: "",
+        phone: "",
+      } as StoreInterface,
+    }
   );
 
   return data.store;
@@ -43,7 +51,7 @@ const getCategories = async (): Promise<CategoryInterface[]> => {
         currentPage: 1,
         justGetParent: false,
       }),
-    []
+    { categories: [] }
   );
   // const { data } = await CategoryAPI.getAllCategoriesOfStore({
   //   justGetParent: false,
