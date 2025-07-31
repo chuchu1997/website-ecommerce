@@ -51,11 +51,9 @@ const MusicStoreLanding: React.FC = async () => {
       <CategoriesListSSR />
       <FlashSaleComponentView />
 
-      {/* Feature products */}
       <FeatureProducts industry={storeInfo.industry ?? ""} />
 
-      {/* Các block sản phẩm theo category */}
-      <ProductWithCategoryType
+      {/* <ProductWithCategoryType
         industry={storeInfo.industry ?? ""}
         slug="ban-cat-gach"
         isGrayBg={true}
@@ -90,7 +88,7 @@ const MusicStoreLanding: React.FC = async () => {
       <ProductWithCategoryType
         industry={storeInfo.industry ?? ""}
         slug="may-nong-nghiep"
-      />
+      /> */}
 
       <ProductCategories />
       <HighlightedProjects industry={storeInfo.industry ?? ""} />

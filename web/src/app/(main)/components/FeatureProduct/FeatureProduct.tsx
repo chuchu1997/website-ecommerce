@@ -13,12 +13,13 @@ interface Props {
 export const FeatureProducts = async ({ industry }: Props) => {
   let featureProducts: ProductInterface[] = [];
   let promotions: PromotionInterface[] = [];
-  const response = await fetchSafe(
+  const data = await fetchSafe(
     () => ProductAPI.getFeatureProducts({ limit: 5 }),
     { data: { products: [] } }
   );
 
-  featureProducts = response.data.products as ProductInterface[];
+  console.log("FEATURE PRODUCT", data);
+  featureProducts = data.products as ProductInterface[];
 
   // Lấy danh sách promotion duy nhất
   const allPromotions: ProductPromotion[] = featureProducts.flatMap(

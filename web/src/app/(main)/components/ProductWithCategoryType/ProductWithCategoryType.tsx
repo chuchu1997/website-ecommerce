@@ -23,6 +23,7 @@ export const ProductWithCategoryType = async ({
   );
 
   const category = data.category as CategoryInterface;
+  console.log("CATEGORY IN PRODUCT TYPE", category);
   if (!category || !category.products) return null;
 
   const products = category.products;
