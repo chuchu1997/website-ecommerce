@@ -36,8 +36,8 @@ import CategoriesList from "./(main)/components/CategoriesList/categories-list";
 import { CategoryInterface } from "@/types/category";
 import { CategoryAPI } from "@/api/categories/category.api";
 import { CategoriesListSSR } from "./(main)/components/CategoriesList/categories-list-ssr";
-export const dynamic = "force-dynamic";
-export const revalidate = 300; // 5 phút = 300 giây
+
+export const revalidate = 100; // ISR 5 phút
 
 const MusicStoreLanding: React.FC = async () => {
   return (
