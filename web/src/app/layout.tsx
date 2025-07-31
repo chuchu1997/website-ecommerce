@@ -20,7 +20,7 @@ import { CategoryAPI } from "@/api/categories/category.api";
 import { CategoryInterface } from "@/types/category";
 import Navbar from "@/components/ui/Navbar/components/NavbarClientVer2";
 import { fetchSafe } from "@/utils/fetchSafe";
-export const revalidate = 120; // ISR 5 phút
+export const revalidate = 300; // ISR 5 phút
 // Fetch storeInfo có check SKIP_BUILD_STATIC_GENERATION
 const getStoreInfo = async (): Promise<StoreInterface> => {
   const res = await fetchSafe(
@@ -29,8 +29,8 @@ const getStoreInfo = async (): Promise<StoreInterface> => {
     {
       data: {
         store: {
-          industry: "Thiết bị xây dựng",
-        } as StoreInterface,
+          industry: "TEST",
+        },
       },
     }
   );
@@ -39,30 +39,10 @@ const getStoreInfo = async (): Promise<StoreInterface> => {
 };
 
 // Fetch categories có check SKIP_BUILD_STATIC_GENERATION
-const getCategories = async (): Promise<CategoryInterface[]> => {
-  const res = await fetchSafe(
-    () =>
-      CategoryAPI.getAllCategoriesOfStore({
-        limit: 9999,
-        currentPage: 1,
-        justGetParent: false,
-      }),
-    {
-      data: {
-        categories: [],
-      },
-    }
-  );
-  // const { data } = await CategoryAPI.getAllCategoriesOfStore({
-  //   justGetParent: false,
-  //   currentPage: 1,
-  //   limit: 9999,
-  // });
-  return res.data.categories as CategoryInterface[];
-};
 
 export async function generateMetadata(): Promise<Metadata> {
   const store = await getStoreInfo();
+
   if (!store) return {};
   if (store.seo && typeof store.seo === "object") {
     return generateSeoForPage(store.seo as SeoInterface);
@@ -77,8 +57,6 @@ export default async function RootLayout({
   children: React.ReactNode;
 }) {
   const storeInfo = await getStoreInfo();
-  console.log("STOROE ROOT", storeInfo);
-  const categories = await getCategories();
 
   return (
     <html lang="en">
@@ -88,7 +66,7 @@ export default async function RootLayout({
           <LoadingOverlay />
           <CookiesClientWrapper>
             <CartProvider>
-              <NavbarComponent storeInfo={storeInfo} categories={categories} />
+              {/* <NavbarComponent storeInfo={storeInfo} categories={categories} /> */}
               <SidebarProvider>
                 <Toaster position="top-center" reverseOrder={false} />
                 <BodyContainer className="mt-0 sm:mt-[100px]">
