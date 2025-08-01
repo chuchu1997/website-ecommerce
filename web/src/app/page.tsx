@@ -38,6 +38,7 @@ import { CategoryAPI } from "@/api/categories/category.api";
 import { CategoriesListSSR } from "./(main)/components/CategoriesList/categories-list-ssr";
 import { HeroSSR } from "./(main)/components/Hero/HeroSSR";
 import { fetchSafe } from "@/utils/fetchSafe";
+export const revalidate = 300; // 5 phút
 
 const getCacheStoreInfoSSR = async (): Promise<StoreInterface> => {
   const res = await fetchSafe(() => StoreAPI.getStoreInfo(), {
