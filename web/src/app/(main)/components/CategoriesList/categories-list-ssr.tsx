@@ -13,7 +13,7 @@ const getCachedCategories = unstable_cache(
       () =>
         CategoryAPI.getAllCategoriesOfStore({
           currentPage: 1,
-          limit: 999,
+          limit: 2,
           justGetParent: false,
         }),
       {
