@@ -10,6 +10,7 @@ export async function fetchSafe<T>(
   }
 
   try {
+    console.log("can fetch",process.env.SKIP_BUILD_STATIC_GENERATION)
     const res = await fetcher();
     return res.data;
   } catch (err) {
