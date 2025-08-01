@@ -3,34 +3,26 @@ import { CategoryAPI } from "@/api/categories/category.api";
 import { CategoryInterface } from "@/types/category";
 import { fetchSafe } from "@/utils/fetchSafe";
 import CategoriesListClient from "./categories-list";
-import { unstable_cache } from "next/cache";
+// import { unstable_cache } from "next/cache";
 
-const getCachedCategories = unstable_cache(
-  async (): Promise<CategoryInterface[]> => {
-    const res = await fetchSafe(
-      () =>
-        CategoryAPI.getAllCategoriesOfStore({
-          currentPage: 1,
-          limit: 2,
-          justGetParent: false,
-        }),
-      {
-        categories: [],
-      }
-    );
+export const revalidate = 100; // ISR 5 phút
 
-    // Handle both possible response structures with fallback
-    const categories = res?.categories ?? [];
-    console.log("✅ Categories(1) found:", categories.length);
-
-    return categories;
-  },
-  ["categories-list"], // cache key
-  {
-    revalidate: 60, // 1 minute
-    tags: ["categories"],
-  }
-);
+const getCachedCategories = async (): Promise<CategoryInterface[]> => {
+  const res = await fetchSafe(
+    () =>
+      CategoryAPI.getAllCategoriesOfStore({
+        currentPage: 1,
+        limit: 999,
+        justGetParent: false,
+      }),
+    {
+      categories: [],
+    }
+  );
+  const categories = res?.categories ?? [];
+  console.log("✅ Categories(1) found:", categories.length);
+  return categories;
+};
 
 export const CategoriesListSSR = async () => {
   const categories = await getCachedCategories();

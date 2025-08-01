@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useCallback } from "react";
 import Image from "next/image";
 import { ImageLoaderInterface } from "@/types/image";
 import { cn } from "@/lib/utils";
@@ -64,56 +64,111 @@ export const ImageLoader: React.FC<ImageLoaderInterface> = ({
   );
   const [imageSrc, setImageSrc] = useState(src);
   const [hasTriedFallback, setHasTriedFallback] = useState(false);
-  const [isIntersecting, setIsIntersecting] = useState(false);
+  const [isIntersecting, setIsIntersecting] = useState(priority); // Initialize based on priority
   const [showLowQuality, setShowLowQuality] = useState(true);
+  const [isMounted, setIsMounted] = useState(false);
   const imgRef = useRef<HTMLDivElement>(null);
+  const observerRef = useRef<IntersectionObserver | null>(null);
 
-  // Intersection Observer for lazy loading
+  // Ensure component is mounted before using intersection observer
   useEffect(() => {
-    if (!imgRef.current || priority) {
-      setIsIntersecting(true);
+    setIsMounted(true);
+  }, []);
+
+  // Custom image loader to handle cache issues
+  const customImageLoader = useCallback(({ src, width, quality }: { src: string; width: number; quality?: number }) => {
+    if (!src || src.startsWith('data:')) return src;
+    
+    try {
+      const url = new URL(src);
+      url.searchParams.set('w', width.toString());
+      if (quality) {
+        url.searchParams.set('q', quality.toString());
+      }
+      // Add cache-busting for development or when specifically needed
+      if (process.env.NODE_ENV === 'development') {
+        url.searchParams.set('cb', Date.now().toString());
+      }
+      return url.toString();
+    } catch {
+      // If URL parsing fails, return original src
+      return src;
+    }
+  }, []);
+
+  // Intersection Observer for lazy loading - only run on client
+  useEffect(() => {
+    if (!isMounted || !imgRef.current || priority || isIntersecting) {
+      if (priority && !isIntersecting) {
+        setIsIntersecting(true);
+      }
       return;
     }
 
-    const observer = new IntersectionObserver(
+    // Clean up previous observer
+    if (observerRef.current) {
+      observerRef.current.disconnect();
+    }
+
+    observerRef.current = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting) {
           setIsIntersecting(true);
-          observer.disconnect();
+          if (observerRef.current) {
+            observerRef.current.disconnect();
+          }
         }
       },
       {
-        rootMargin: "50px", // Start loading 50px before the image comes into view
+        rootMargin: "50px",
+        threshold: 0.01, // Trigger when even 1% is visible
       }
     );
 
-    observer.observe(imgRef.current);
-    return () => observer.disconnect();
-  }, [priority]);
+    if (imgRef.current) {
+      observerRef.current.observe(imgRef.current);
+    }
 
+    return () => {
+      if (observerRef.current) {
+        observerRef.current.disconnect();
+      }
+    };
+  }, [isMounted, priority, isIntersecting]);
+
+  // Reset states when src changes
   useEffect(() => {
-    setImageState("loading");
-    setImageSrc(src);
-    setHasTriedFallback(false);
-    setShowLowQuality(true);
-  }, [src]);
+    if (imageSrc !== src) {
+      setImageState("loading");
+      setImageSrc(src);
+      setHasTriedFallback(false);
+      setShowLowQuality(true);
+    }
+  }, [src, imageSrc]);
 
-  const handleImageLoad = () => {
+  const handleImageLoad = useCallback(() => {
     setImageState("loaded");
     // Hide low quality after high quality loads
-    setTimeout(() => setShowLowQuality(false), fadeInDuration);
+    const timer = setTimeout(() => setShowLowQuality(false), fadeInDuration);
     if (onLoad) onLoad();
-  };
+    
+    return () => clearTimeout(timer);
+  }, [fadeInDuration, onLoad]);
 
-  const handleImageError = () => {
+  const handleImageError = useCallback(() => {
+    console.error(`Failed to load image: ${imageSrc}`);
+    
     if (fallbackSrc && !hasTriedFallback && imageSrc !== fallbackSrc) {
+      console.log(`Trying fallback image: ${fallbackSrc}`);
       setImageSrc(fallbackSrc);
       setHasTriedFallback(true);
+      setImageState("loading"); // Reset to loading state for fallback
       return;
     }
+    
     setImageState("error");
     if (onError) onError();
-  };
+  }, [imageSrc, fallbackSrc, hasTriedFallback, onError]);
 
   const defaultFallback = !fallbackSrc
     ? generatePlaceholder(
@@ -137,14 +192,8 @@ export const ImageLoader: React.FC<ImageLoaderInterface> = ({
 
   const mergedSkeletonClasses = cn(
     "animate-pulse bg-gray-200",
-    "absolute inset-0", // Ensure full coverage
+    "absolute inset-0",
     skeletonClassName || className
-  );
-
-  const shimmerWrapperClasses = cn(
-    showShimmer && "relative overflow-hidden",
-    showShimmer &&
-      "before:absolute before:inset-0 before:-translate-x-full before:animate-[shimmer_2s_infinite] before:bg-gradient-to-r before:from-transparent before:via-white/60 before:to-transparent"
   );
 
   const containerClasses = cn(
@@ -153,22 +202,40 @@ export const ImageLoader: React.FC<ImageLoaderInterface> = ({
     !fill && width && height ? `w-[${width}px] h-[${height}px]` : ""
   );
 
+  // Don't render anything until mounted to prevent hydration issues
+  if (!isMounted) {
+    return (
+      <div ref={imgRef} className={containerClasses}>
+        <div
+          className={`${mergedSkeletonClasses} flex items-center justify-center`}
+          style={
+            !fill && width && height
+              ? { width: `${width}px`, height: `${height}px` }
+              : undefined
+          }
+        >
+          <div className="w-8 h-8 border-4 border-gray-300 border-t-amber-500 rounded-full animate-spin" />
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div ref={imgRef} className={containerClasses}>
       {/* Skeleton loading */}
-   {imageState === "loading" && (
-  <div
-    className={`${mergedSkeletonClasses} flex items-center justify-center`}
-    style={
-      !fill && width && height
-        ? { width: `${width}px`, height: `${height}px` }
-        : undefined
-    }
-  >
-    {/* Circle Spinner */}
-    <div className="w-8 h-8 border-4 border-gray-300 border-t-amber-500 rounded-full animate-spin" />
-  </div>
-)}
+      {imageState === "loading" && (
+        <div
+          className={`${mergedSkeletonClasses} flex items-center justify-center`}
+          style={
+            !fill && width && height
+              ? { width: `${width}px`, height: `${height}px` }
+              : undefined
+          }
+        >
+          {/* Circle Spinner */}
+          <div className="w-8 h-8 border-4 border-gray-300 border-t-amber-500 rounded-full animate-spin" />
+        </div>
+      )}
 
       {/* Low quality placeholder (loads first) */}
       {isIntersecting && showLowQuality && imageState !== "error" && (
@@ -184,12 +251,13 @@ export const ImageLoader: React.FC<ImageLoaderInterface> = ({
               imageState === "loaded" ? "opacity-50" : "opacity-100"
             )}
             priority={priority}
+            unoptimized={true} // Skip optimization for placeholder
           />
         </div>
       )}
 
       {/* High quality image */}
-      {isIntersecting && (
+      {isIntersecting && imageState !== "error" && (
         <Image
           src={imageSrc}
           alt={alt}
@@ -201,6 +269,7 @@ export const ImageLoader: React.FC<ImageLoaderInterface> = ({
           sizes={sizes}
           quality={quality}
           priority={priority}
+          loader={customImageLoader}
           className={cn(
             mergedImageClasses,
             "absolute inset-0 z-20",
@@ -230,6 +299,7 @@ export const ImageLoader: React.FC<ImageLoaderInterface> = ({
             fill={fill}
             className={cn("object-cover", fill && "absolute inset-0", className)}
             priority={priority}
+            unoptimized={true} // Skip optimization for fallback
           />
         </div>
       )}
