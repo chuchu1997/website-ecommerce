@@ -10,15 +10,29 @@ interface Props {
   industry: string;
 }
 
+const getCacheFeatureProductSSR = async (): Promise<ProductInterface[]> => {
+  const res = await fetchSafe(
+    () => ProductAPI.getFeatureProducts({ limit: 5 }),
+    {
+      products: [],
+    }
+  );
+  const products = res.products ?? [];
+  return products;
+
+  // const storeInfo = res.store ?? { industry: "Xây dựng" };
+
+  // return storeInfo;
+};
+
 export const FeatureProducts = async ({ industry }: Props) => {
   let featureProducts: ProductInterface[] = [];
   let promotions: PromotionInterface[] = [];
-  const res = await fetchSafe(
-    () => ProductAPI.getFeatureProducts({ limit: 5 }),
-    { data: { products: [] } }
-  );
-
-  featureProducts = res.data.products as ProductInterface[];
+  // const res = await fetchSafe(
+  //   () => ProductAPI.getFeatureProducts({ limit: 5 }),
+  //   { data: { products: [] } }
+  // );
+  featureProducts = await getCacheFeatureProductSSR();
 
   // Lấy danh sách promotion duy nhất
   const allPromotions: ProductPromotion[] = featureProducts.flatMap(

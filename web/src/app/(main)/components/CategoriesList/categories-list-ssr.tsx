@@ -5,8 +5,6 @@ import { fetchSafe } from "@/utils/fetchSafe";
 import CategoriesListClient from "./categories-list";
 // import { unstable_cache } from "next/cache";
 
-export const revalidate = 100; // ISR 5 phút
-
 const getCachedCategories = async (): Promise<CategoryInterface[]> => {
   const res = await fetchSafe(
     () =>

@@ -37,14 +37,28 @@ import { CategoryInterface } from "@/types/category";
 import { CategoryAPI } from "@/api/categories/category.api";
 import { CategoriesListSSR } from "./(main)/components/CategoriesList/categories-list-ssr";
 import { HeroSSR } from "./(main)/components/Hero/HeroSSR";
+import { fetchSafe } from "@/utils/fetchSafe";
 
 export const revalidate = 100; // ISR 5 phút
+const getCacheStoreInfoSSR = async (): Promise<StoreInterface> => {
+  const res = await fetchSafe(() => StoreAPI.getStoreInfo(), {
+    store: {
+      industry: "Xây dựng",
+    },
+  });
+  const storeInfo = res.store ?? { industry: "Xây dựng" };
+
+  return storeInfo;
+};
 
 const MusicStoreLanding: React.FC = async () => {
+  const storeInfo = await getCacheStoreInfoSSR();
+
   return (
     <div className=" min-h-screen bg-gray-50 w-full">
       <HeroSSR />
       <CategoriesListSSR />
+      <FeatureProducts industry={storeInfo.industry ?? "Xây dựng"} />
     </div>
   );
 };

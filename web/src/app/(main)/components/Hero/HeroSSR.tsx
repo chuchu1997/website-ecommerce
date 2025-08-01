@@ -4,8 +4,6 @@ import { BannerInterface } from "@/types/banner";
 import { HeroClient } from "./Hero";
 import { fetchSafe } from "@/utils/fetchSafe";
 
-export const revalidate = 100; // ISR 100 giây
-
 const getCachedBanners = async (): Promise<BannerInterface[]> => {
   const res = await fetchSafe(() => BannerAPI.getAllBannerFromStore(), {
     banners: [],
