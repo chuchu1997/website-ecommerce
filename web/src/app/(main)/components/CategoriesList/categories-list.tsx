@@ -7,6 +7,7 @@ import { useBreakpoint } from "@/hooks/use-breakpoint";
 import Image from "next/image";
 import Link from "next/link";
 import { ImageLoader } from "@/components/ui/image-loader";
+import { useState } from "react";
 
 interface Props {
   categoriesProps: CategoryInterface[];
@@ -15,6 +16,7 @@ interface Props {
 const CategoriesListClient = ({ categoriesProps }: Props) => {
   const categories = categoriesProps || [];
   const breakpoint = useBreakpoint();
+  const [imageErrors, setImageErrors] = useState<Set<string>>(new Set());
 
   // Debug logs
   console.log("🔍 CategoriesListClient received:", {
@@ -43,33 +45,58 @@ const CategoriesListClient = ({ categoriesProps }: Props) => {
     }
   };
 
+  // Handle image load errors
+  const handleImageError = (categoryId: string) => {
+    setImageErrors((prev) => new Set(prev).add(categoryId));
+  };
+
+  // Custom image loader to handle cache issues
+  const customImageLoader = ({
+    src,
+    width,
+    quality,
+  }: {
+    src: string;
+    width: number;
+    quality?: number;
+  }) => {
+    // Add cache-busting parameter when using unstable_cache
+    const url = new URL(src);
+    url.searchParams.set("w", width.toString());
+    if (quality) {
+      url.searchParams.set("q", quality.toString());
+    }
+    // Add timestamp to prevent cache issues
+    url.searchParams.set("t", Date.now().toString());
+    return url.toString();
+  };
+
   // Render từng category
   const renderCategory = (category: CategoryInterface) => {
     console.log("🔍 Rendering category:", category);
+    const hasImageError = imageErrors.has(category.id.toString());
+
     return (
       <Link
         key={category.id}
         href={`/danh-muc/${category.slug}`}
         className="border min-h-[170px] group flex flex-col items-center justify-start p-3 rounded-lg hover:shadow-lg transition duration-300 bg-white">
         <div className="w-24 h-24 relative mb-2 rounded-full overflow-hidden border">
-          {category.imageUrl ? (
-            // <ImageLoader
-            //   priority
-            //   src={category.imageUrl}
-            //   alt={category.name}
-            //   fill
-            //   className="object-cover group-hover:scale-105 transition-transform duration-300"
-            // />
-
+          {category.imageUrl && !hasImageError ? (
             <Image
               src={category.imageUrl}
               alt={category.name}
               fill
               className="object-cover"
+              loader={customImageLoader}
+              onError={() => handleImageError(category.id.toString())}
+              unoptimized={process.env.NODE_ENV === "development"} // Disable optimization in dev
+              priority={false} // Don't prioritize these images
+              sizes="(max-width: 768px) 96px, 96px"
             />
           ) : (
-            <div className="w-full h-full flex items-center justify-center text-xs text-gray-400">
-              No image
+            <div className="w-full h-full flex items-center justify-center text-xs text-gray-400 bg-gray-100">
+              {hasImageError ? "Failed to load" : "No image"}
             </div>
           )}
         </div>
