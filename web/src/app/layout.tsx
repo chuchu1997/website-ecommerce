@@ -34,7 +34,6 @@ const getCachedCategories = async (): Promise<CategoryInterface[]> => {
     }
   );
   const categories = res?.categories ?? [];
-  console.log("✅ Categories(1) found:", categories.length);
   return categories;
 };
 
