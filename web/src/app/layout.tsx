@@ -18,46 +18,35 @@ import { LoadingOverlay } from "@/components/loading-overlay";
 import NavbarComponent from "@/components/ui/Navbar";
 import { CategoryAPI } from "@/api/categories/category.api";
 import { CategoryInterface } from "@/types/category";
+import Navbar from "@/components/ui/Navbar/components/NavbarClientVer2";
 import { fetchSafe } from "@/utils/fetchSafe";
-import { unstable_cache } from "next/cache";
-
 export const revalidate = 300; // ISR 5 phút
+const getCachedCategories = async (): Promise<CategoryInterface[]> => {
+  const res = await fetchSafe(
+    () =>
+      CategoryAPI.getAllCategoriesOfStore({
+        currentPage: 1,
+        limit: 999,
+        justGetParent: false,
+      }),
+    {
+      categories: [],
+    }
+  );
+  const categories = res?.categories ?? [];
+  return categories;
+};
 
-/**
- * Cache category 5 phút, dù page dynamic hay static
- */
-const getCachedCategories = unstable_cache(
-  async (): Promise<CategoryInterface[]> => {
-    const res = await fetchSafe(
-      () =>
-        CategoryAPI.getAllCategoriesOfStore({
-          currentPage: 1,
-          limit: 999,
-          justGetParent: false,
-        }),
-      {
-        categories: [],
-      }
-    );
-    return res?.categories ?? [];
-  },
-  ["categories-cache"], // cache key
-  { revalidate: 300 }
-);
+const getCacheStoreInfoSSR = async (): Promise<StoreInterface> => {
+  const res = await fetchSafe(() => StoreAPI.getStoreInfo(), {
+    store: {
+      industry: "Xây dựng",
+    },
+  });
+  const storeInfo = res.store ?? { industry: "Xây dựng" };
 
-/**
- * Cache store info 5 phút
- */
-const getCacheStoreInfoSSR = unstable_cache(
-  async (): Promise<StoreInterface> => {
-    const res = await fetchSafe(() => StoreAPI.getStoreInfo(), {
-      store: { industry: "Xây dựng" },
-    });
-    return res.store ?? { industry: "Xây dựng" };
-  },
-  ["store-info-cache"],
-  { revalidate: 300 }
-);
+  return storeInfo;
+};
 
 export async function generateMetadata(): Promise<Metadata> {
   const store = await getCacheStoreInfoSSR();
@@ -75,10 +64,10 @@ export default async function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const [storeInfo, categories] = await Promise.all([
-    getCacheStoreInfoSSR(),
-    getCachedCategories(),
-  ]);
+  const storeInfo = await getCacheStoreInfoSSR();
+  const categories = await getCachedCategories();
+
+  // const storeInfo = await getStoreInfo();
 
   return (
     <html lang="en">
