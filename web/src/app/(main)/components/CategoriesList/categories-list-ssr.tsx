@@ -42,7 +42,7 @@ const getCachedCategories = unstable_cache(
 
     // Check if categories exist at different paths
     console.log("🔍 Checking alternative paths:");
-    console.log("🔍 res.categories:", res?.categories);
+    console.log("🔍 res.categories (LENGHTH):", res?.categories.length);
     console.log("🔍 res.data?.data?.categories:", res?.data?.data?.categories);
     console.log(
       "🔍 res.data?.result?.categories:",
