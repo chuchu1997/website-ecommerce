@@ -21,32 +21,41 @@ import { CategoryInterface } from "@/types/category";
 import Navbar from "@/components/ui/Navbar/components/NavbarClientVer2";
 import { fetchSafe } from "@/utils/fetchSafe";
 export const revalidate = 100; // ISR 5 phút
-// Fetch storeInfo có check SKIP_BUILD_STATIC_GENERATION
-// const getStoreInfo = async (): Promise<StoreInterface> => {
-//   const res = await fetchSafe(
-//     () => StoreAPI.getStoreInfo(),
-//     // fallback để tránh lỗi khi build
-//     {
-//       data: {
-//         store: {
-//           industry: "TEST",
-//         },
-//       },
-//     }
-//   );
+const getCachedCategories = async (): Promise<CategoryInterface[]> => {
+  const res = await fetchSafe(
+    () =>
+      CategoryAPI.getAllCategoriesOfStore({
+        currentPage: 1,
+        limit: 999,
+        justGetParent: false,
+      }),
+    {
+      categories: [],
+    }
+  );
+  const categories = res?.categories ?? [];
+  console.log("✅ Categories(1) found:", categories.length);
+  return categories;
+};
 
-//   return res.data.store;
-// };
+const getCacheStoreInfoSSR = async (): Promise<StoreInterface> => {
+  const res = await fetchSafe(() => StoreAPI.getStoreInfo(), {
+    store: {
+      industry: "Xây dựng",
+    },
+  });
+  const storeInfo = res.store ?? { industry: "Xây dựng" };
 
-// Fetch categories có check SKIP_BUILD_STATIC_GENERATION
+  return storeInfo;
+};
 
 export async function generateMetadata(): Promise<Metadata> {
-  // const store = await getStoreInfo();
+  const store = await getCacheStoreInfoSSR();
 
-  // if (!store) return {};
-  // if (store.seo && typeof store.seo === "object") {
-  //   return generateSeoForPage(store.seo as SeoInterface);
-  // }
+  if (!store) return {};
+  if (store.seo && typeof store.seo === "object") {
+    return generateSeoForPage(store.seo as SeoInterface);
+  }
 
   return {};
 }
@@ -56,6 +65,9 @@ export default async function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
+  const storeInfo = await getCacheStoreInfoSSR();
+  const categories = await getCachedCategories();
+
   // const storeInfo = await getStoreInfo();
 
   return (
@@ -66,7 +78,7 @@ export default async function RootLayout({
           <LoadingOverlay />
           <CookiesClientWrapper>
             <CartProvider>
-              {/* <NavbarComponent storeInfo={storeInfo} categories={categories} /> */}
+              <NavbarComponent storeInfo={storeInfo} categories={categories} />
               <SidebarProvider>
                 <Toaster position="top-center" reverseOrder={false} />
                 <BodyContainer className="mt-0 sm:mt-[100px]">
@@ -75,7 +87,7 @@ export default async function RootLayout({
               </SidebarProvider>
               <ZaloPhoneWidget />
             </CartProvider>
-            {/* <Footer storeInfo={storeInfo} /> */}
+            <Footer storeInfo={storeInfo} />
           </CookiesClientWrapper>
         </LoadingProvider>
       </body>
