@@ -23,7 +23,7 @@ import { SeoInterface } from "@/types/seo";
 // import { PartnerBrands } from "./components/PartnerBrands/PartnerBrands";
 // import { NewsMasterPage } from "./components/News/News";
 import NavbarComponent from "@/components/ui/Navbar";
-import { Hero } from "./(main)/components/Hero/Hero";
+import { HeroClient } from "./(main)/components/Hero/Hero";
 import { InteriorContent } from "./(main)/components/InteriorContent";
 import { FeatureProducts } from "./(main)/components/FeatureProduct/FeatureProduct";
 import { ProductCategories } from "./(main)/components/ProductCategories/ProductCategories";
@@ -36,12 +36,14 @@ import CategoriesList from "./(main)/components/CategoriesList/categories-list";
 import { CategoryInterface } from "@/types/category";
 import { CategoryAPI } from "@/api/categories/category.api";
 import { CategoriesListSSR } from "./(main)/components/CategoriesList/categories-list-ssr";
+import { HeroSSR } from "./(main)/components/Hero/HeroSSR";
 
 export const revalidate = 100; // ISR 5 phút
 
 const MusicStoreLanding: React.FC = async () => {
   return (
     <div className=" min-h-screen bg-gray-50 w-full">
+      <HeroSSR />
       <CategoriesListSSR />
     </div>
   );
