@@ -628,7 +628,7 @@ export const ProductClient = ({ product }: propsProductClientPC) => {
             )}
           </div>
         </div>
-        <ProductSuggess product={product} />
+        {/* <ProductSuggess product={product} /> */}
       </div>
     </div>
   );
