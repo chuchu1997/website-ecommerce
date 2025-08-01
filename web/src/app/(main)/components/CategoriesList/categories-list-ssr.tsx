@@ -21,7 +21,7 @@ const getCachedCategories = unstable_cache(
 
     // Handle both possible response structures with fallback
     const categories = res?.categories ?? [];
-    console.log("✅ Categories found:", categories.length);
+    console.log("✅ Categories(1) found:", categories.length);
 
     return categories;
   },

@@ -53,12 +53,19 @@ const CategoriesListClient = ({ categoriesProps }: Props) => {
         className="border min-h-[170px] group flex flex-col items-center justify-start p-3 rounded-lg hover:shadow-lg transition duration-300 bg-white">
         <div className="w-24 h-24 relative mb-2 rounded-full overflow-hidden border">
           {category.imageUrl ? (
-            <ImageLoader
-              priority
+            // <ImageLoader
+            //   priority
+            //   src={category.imageUrl}
+            //   alt={category.name}
+            //   fill
+            //   className="object-cover group-hover:scale-105 transition-transform duration-300"
+            // />
+
+            <Image
               src={category.imageUrl}
               alt={category.name}
               fill
-              className="object-cover group-hover:scale-105 transition-transform duration-300"
+              className="object-cover"
             />
           ) : (
             <div className="w-full h-full flex items-center justify-center text-xs text-gray-400">
