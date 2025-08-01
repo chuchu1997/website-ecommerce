@@ -36,7 +36,7 @@ const CategoryCard = (props: Props) => {
           variants={cardHover}
           className="relative rounded-2xl sm:rounded-3xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-500 bg-white/50 backdrop-blur-sm border border-white/60">
           {/* Image Container */}
-          <div className="relative aspect-[4/3] sm:aspect-[16/12] overflow-hidden">
+          <div className="relative z-30 aspect-[4/3] sm:aspect-[16/12] overflow-hidden">
             <ImageLoader
               src={category.imageUrl}
               alt={category.name}
@@ -55,7 +55,7 @@ const CategoryCard = (props: Props) => {
           </div>
 
           {/* Content Overlay */}
-          <div className="absolute inset-0 flex items-center justify-center">
+          <div className="absolute z-40 inset-0 flex items-center justify-center">
             <div className="text-center text-white transform group-hover:scale-105 transition-transform duration-300">
               <motion.h3
                 className="text-xl sm:text-2xl lg:text-3xl font-bold mb-2 sm:mb-3 drop-shadow-lg"
