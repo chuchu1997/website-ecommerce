@@ -52,24 +52,29 @@ import { fetchSafe } from "@/utils/fetchSafe";
 interface Props  { 
   industry:string;
 
+
 }
+
+
+const getCachedNews = async (): Promise<NewsInterface[]> => {
+  const res = await fetchSafe(
+    () =>
+      NewsAPI.getNews({
+        currentPage: 1,
+        limit: 3,
+      
+      }),
+    {
+      articles: [],
+    }
+  );
+  const articles = res?.articles ?? [];
+  return articles;
+};
 export const NewsMasterPage = async ({industry}:Props) => {
 
+  const news = await getCachedNews();
 
-
-  let news:NewsInterface[] = [];
-
-
-  const res = await fetchSafe(()=>NewsAPI.getNews({
-    currentPage:1,
-    limit:3
-  }),{
-    data:{
-      articles:[]
-    }
-  })
-  
-  news = res.data.articles;
 
 
   return (

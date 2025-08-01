@@ -3,6 +3,7 @@
 import { CategoryInterface } from "@/types/category";
 import { motion } from "framer-motion";
 import Link from "next/link";
+import { ImageLoader } from "../image-loader";
 
 interface Props {
   category: CategoryInterface;
@@ -36,9 +37,10 @@ const CategoryCard = (props: Props) => {
           className="relative rounded-2xl sm:rounded-3xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-500 bg-white/50 backdrop-blur-sm border border-white/60">
           {/* Image Container */}
           <div className="relative aspect-[4/3] sm:aspect-[16/12] overflow-hidden">
-            <img
+            <ImageLoader
               src={category.imageUrl}
               alt={category.name}
+              fill
               className="w-full h-full object-cover transition-all duration-700 group-hover:scale-110 group-hover:rotate-1"
             />
 

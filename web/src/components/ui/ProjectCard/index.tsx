@@ -3,6 +3,7 @@
 import { ProjectInterface, ProjectType } from "@/types/project";
 import { ArrowRight } from "lucide-react";
 import Link from "next/link";
+import { ImageLoader } from "../image-loader";
 
 export const ProjectTypeLabel: Record<ProjectType, string> = {
   [ProjectType.HOME]: "Nhà ở",
@@ -17,10 +18,11 @@ export const ProjectCard: React.FC<{ project: ProjectInterface }> = ({
 }) => {
   return (
     <div className="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1">
-      <div className="relative">
-        <img
+      <div className="relative w-full h-64">
+        <ImageLoader
           src={project.imageUrl}
           alt={project.title}
+          fill
           className="w-full h-64 object-cover"
         />
         <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>

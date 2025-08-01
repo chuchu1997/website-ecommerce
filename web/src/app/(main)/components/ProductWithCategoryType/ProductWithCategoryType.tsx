@@ -17,13 +17,19 @@ export const ProductWithCategoryType = async ({
   slug,
   isGrayBg = false,
 }: Props) => {
-  const res = await fetchSafe(
-    () => CategoryAPI.getCategoryWithSlug(slug, 1, 12),
-    { data: { category: null } } // fallback rõ ràng
-  );
+  const getCacheCategoryWithSlug = async (): Promise<CategoryInterface> => {
+    const res = await fetchSafe(
+      () => CategoryAPI.getCategoryWithSlug(slug, 1, 12),
+      {
+        category: undefined,
+      }
+    );
+    const category = res.category ?? undefined;
+    return category;
+  };
 
-  const category = res.data.category as CategoryInterface;
-  console.log("CATEGORY IN PRODUCT TYPE", category);
+  const category = await getCacheCategoryWithSlug();
+
   if (!category || !category.products) return null;
 
   const products = category.products;

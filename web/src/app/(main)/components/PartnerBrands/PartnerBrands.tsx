@@ -8,15 +8,22 @@ import { fetchSafe } from "@/utils/fetchSafe";
 interface Props  {
   industry:string;
 }
+
+const getCachedPartnerBrands = async (): Promise<BrandInterface[]> => {
+  const res = await fetchSafe(
+    () =>
+      BrandAPI.getAllBrandsFromStore(),
+    {
+     brands: [],
+    }
+  );
+  const brands  = res?.brands ?? [];
+  return brands;
+};
 export const PartnerBrands = async  ({industry}:Props) => {
 
-  const res = await fetchSafe(()=>BrandAPI.getAllBrandsFromStore(),{
-   data:{
-     brands:[]
-   }
-  })
-
-  const brands =res.data.brands
+ const brands = await getCachedPartnerBrands();
+ 
 
   return (
     <section className="">

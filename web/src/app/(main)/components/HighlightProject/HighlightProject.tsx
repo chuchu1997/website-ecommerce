@@ -9,24 +9,23 @@ import { ProductAPI } from "@/api/products/product.api";
 interface Props {
   industry: string;
 }
-
-export const HighlightedProjects = async ({ industry }: Props) => {
-  let projects: ProjectInterface[] = [];
-
+const getCachedProjects = async (): Promise<ProjectInterface[]> => {
   const res = await fetchSafe(
     () =>
       ProjectAPI.getProjects({
-        limit: 6,
         currentPage: 1,
+        limit: 6,
       }),
     {
-      data: {
-        projects: [],
-      },
+      projects: [],
     }
   );
+  const projects = res.projects;
+  return projects;
+};
 
-  projects = res.data.projects;
+export const HighlightedProjects = async ({ industry }: Props) => {
+  const projects: ProjectInterface[] = await getCachedProjects();
 
   return (
     <section id="projects" className="">

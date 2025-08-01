@@ -6,26 +6,29 @@ import { CategoryInterface } from "@/types/category";
 import { CategoryAPI } from "@/api/categories/category.api";
 import { fetchSafe } from "@/utils/fetchSafe";
 
+const getCachedCategories = async (): Promise<CategoryInterface[]> => {
+  const res = await fetchSafe(
+    () =>
+      CategoryAPI.getAllCategoriesOfStore({
+        currentPage: 1,
+        limit: 999,
+        justGetParent: false,
+      }),
+    {
+      categories: [],
+    }
+  );
+  const categories = res?.categories ?? [];
+  console.log("✅ Categories(1) found:", categories.length);
+  return categories;
+};
+
 export const ProductCategories: FC = async () => {
   // const ss = CategoryAPI.getAllCategoriesOfStore()
 
   let categories: CategoryInterface[] = [];
 
-  const res = await fetchSafe(
-    () =>
-      CategoryAPI.getAllCategoriesOfStore({
-        justGetParent: false,
-        currentPage: 1,
-        limit: 6,
-      }),
-    {
-      data: {
-        categories: [],
-      },
-    }
-  );
-
-  categories = res.data.categories;
+  categories = await getCachedCategories();
 
   // categories = res.data.categories.filter(
   //   (category: CategoryInterface) => category.slug !== "san-pham"

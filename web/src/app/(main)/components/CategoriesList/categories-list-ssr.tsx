@@ -10,7 +10,7 @@ const getCachedCategories = async (): Promise<CategoryInterface[]> => {
     () =>
       CategoryAPI.getAllCategoriesOfStore({
         currentPage: 1,
-        limit: 999,
+        limit: 10,
         justGetParent: false,
       }),
     {
