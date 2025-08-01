@@ -20,7 +20,7 @@ import { CategoryAPI } from "@/api/categories/category.api";
 import { CategoryInterface } from "@/types/category";
 import Navbar from "@/components/ui/Navbar/components/NavbarClientVer2";
 import { fetchSafe } from "@/utils/fetchSafe";
-export const revalidate = 100; // ISR 5 phút
+export const revalidate = 300; // ISR 5 phút
 const getCachedCategories = async (): Promise<CategoryInterface[]> => {
   const res = await fetchSafe(
     () =>
