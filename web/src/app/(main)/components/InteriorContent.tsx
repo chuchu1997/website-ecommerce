@@ -15,8 +15,8 @@ export const InteriorContent: React.FC<Props> = ({ industry }) => {
     show: {
       opacity: 1,
       transition: {
-        duration: 0.8,
-        staggerChildren: 0.2,
+        duration: 0.6,
+        staggerChildren: 0.15,
       },
     },
   };
@@ -24,29 +24,39 @@ export const InteriorContent: React.FC<Props> = ({ industry }) => {
   const itemVariants = {
     hidden: { 
       opacity: 0, 
-      y: 60,
-      scale: 0.9,
-      rotateX: -10
+      y: 30,
+      scale: 0.95
     },
     show: {
       opacity: 1,
       y: 0,
       scale: 1,
-      rotateX: 0,
       transition: { 
-        duration: 0.8, 
-        ease: [0.4, 0, 0.2, 1] 
+        duration: 0.6,
+        ease: [0.25, 0.1, 0.25, 1]
       },
     },
   };
 
+  // Simplified floating animation - less intensive
   const floatingVariants = {
     animate: {
-      y: [-10, 10, -10],
-      rotate: [0, 2, -2, 0],
-      scale: [1, 1.05, 1],
+      y: [-8, 8, -8],
       transition: {
-        duration: 18,
+        duration: 12,
+        repeat: Infinity,
+        ease: "easeInOut"
+      }
+    }
+  };
+
+  // Optimized subtle floating for background elements
+  const subtleFloatVariants = {
+    animate: {
+      y: [-15, 15, -15],
+      x: [-10, 10, -10],
+      transition: {
+        duration: 20,
         repeat: Infinity,
         ease: "easeInOut"
       }
@@ -60,9 +70,7 @@ export const InteriorContent: React.FC<Props> = ({ industry }) => {
         'Cung cấp các dòng máy xây dựng chất lượng cao như máy xúc, máy ủi, máy trộn bê tông... từ các thương hiệu uy tín.',
       icon: '🚜',
       gradient: 'from-amber-500 to-yellow-600',
-      glowColor: 'amber-500/20',
-      borderColor: 'amber-400/30',
-      shadowColor: 'amber-500/10',
+      hoverGradient: 'from-amber-600 to-yellow-700',
     },
     {
       title: 'Bảo Trì & Sửa Chữa Nhanh Chóng',
@@ -70,9 +78,7 @@ export const InteriorContent: React.FC<Props> = ({ industry }) => {
         'Dịch vụ bảo dưỡng và sửa chữa tận nơi, giúp máy móc hoạt động ổn định, giảm thời gian ngưng trệ thi công.',
       icon: '🔧',
       gradient: 'from-stone-400 to-gray-500',
-      glowColor: 'stone-400/20',
-      borderColor: 'stone-300/30',
-      shadowColor: 'stone-400/10',
+      hoverGradient: 'from-stone-500 to-gray-600',
     },
     {
       title: 'Cho Thuê Máy Xây Dựng',
@@ -80,9 +86,7 @@ export const InteriorContent: React.FC<Props> = ({ industry }) => {
         'Giải pháp thuê máy xây dựng linh hoạt theo ngày, tuần hoặc dự án. Tiết kiệm chi phí đầu tư ban đầu.',
       icon: '📦',
       gradient: 'from-amber-600 to-orange-700',
-      glowColor: 'amber-600/20',
-      borderColor: 'amber-500/30',
-      shadowColor: 'amber-600/10',
+      hoverGradient: 'from-amber-700 to-orange-800',
     },
   ];
 
@@ -94,75 +98,29 @@ export const InteriorContent: React.FC<Props> = ({ industry }) => {
 
   return (
     <section className="relative py-24 lg:py-32 overflow-hidden bg-gradient-to-br from-stone-50 via-gray-50 to-stone-100">
-      {/* Enhanced Dynamic Background */}
+      {/* Optimized Background - Reduced elements and complexity */}
       <div className="absolute inset-0 overflow-hidden">
-        {/* Primary animated background elements */}
+        {/* Primary background elements - reduced from 5 to 3 */}
         <motion.div 
-          variants={floatingVariants}
+          variants={subtleFloatVariants}
           animate="animate"
-          className="absolute -top-40 -right-40 w-96 h-96 bg-gradient-to-br from-amber-200/15 to-yellow-300/20 rounded-full blur-3xl"
+          className="absolute -top-40 -right-40 w-96 h-96 bg-gradient-to-br from-amber-200/10 to-yellow-300/15 rounded-full blur-2xl will-change-transform"
         />
         <motion.div 
-          variants={floatingVariants}
+          variants={subtleFloatVariants}
           animate="animate"
-          style={{ animationDelay: "6s" }}
-          className="absolute -bottom-40 -left-40 w-80 h-80 bg-gradient-to-tr from-stone-200/15 to-gray-300/20 rounded-full blur-3xl"
+          style={{ animationDelay: "10s" }}
+          className="absolute -bottom-40 -left-40 w-80 h-80 bg-gradient-to-tr from-stone-200/10 to-gray-300/15 rounded-full blur-2xl will-change-transform"
         />
         <motion.div 
-          variants={floatingVariants}
+          variants={subtleFloatVariants}
           animate="animate"
-          style={{ animationDelay: "12s" }}
-          className="absolute top-1/2 right-1/4 w-72 h-72 bg-gradient-to-bl from-amber-300/10 to-orange-400/15 rounded-full blur-2xl"
-        />
-        
-        {/* Secondary floating elements */}
-        <motion.div 
-          variants={floatingVariants}
-          animate="animate"
-          style={{ animationDelay: "3s" }}
-          className="absolute top-1/4 left-1/3 w-64 h-64 bg-gradient-to-r from-zinc-200/10 to-gray-300/15 rounded-full blur-2xl"
-        />
-        <motion.div 
-          variants={floatingVariants}
-          animate="animate"
-          style={{ animationDelay: "9s" }}
-          className="absolute bottom-1/3 right-1/3 w-56 h-56 bg-gradient-to-l from-stone-300/10 to-amber-300/15 rounded-full blur-xl"
+          style={{ animationDelay: "5s" }}
+          className="absolute top-1/2 right-1/4 w-72 h-72 bg-gradient-to-bl from-amber-300/8 to-orange-400/12 rounded-full blur-xl will-change-transform"
         />
         
-        {/* Sophisticated grid pattern */}
-        <div className="absolute inset-0 bg-[linear-gradient(rgba(120,113,108,0.03)_1px,transparent_1px),linear-gradient(90deg,rgba(120,113,108,0.03)_1px,transparent_1px)] bg-[size:100px_100px]" />
-        
-        {/* Animated circuit-like pattern */}
-        <svg className="absolute inset-0 w-full h-full opacity-10" xmlns="http://www.w3.org/2000/svg">
-          <defs>
-            <linearGradient id="circuitGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-              <stop offset="0%" stopColor="rgba(217, 119, 6, 0.15)" />
-              <stop offset="30%" stopColor="rgba(120, 113, 108, 0.18)" />
-              <stop offset="70%" stopColor="rgba(180, 83, 9, 0.12)" />
-              <stop offset="100%" stopColor="rgba(217, 119, 6, 0.15)" />
-            </linearGradient>
-          </defs>
-          <motion.path
-            d="M0,200 L200,200 L200,400 L600,400 L600,100 L1000,100"
-            stroke="url(#circuitGradient)"
-            strokeWidth="1"
-            fill="none"
-            strokeDasharray="5,5"
-            initial={{ pathLength: 0, opacity: 0 }}
-            animate={{ pathLength: 1, opacity: 0.3 }}
-            transition={{ duration: 4, repeat: Infinity, repeatType: "reverse" }}
-          />
-          <motion.path
-            d="M100,600 L400,600 L400,300 L800,300 L800,500 L1200,500"
-            stroke="url(#circuitGradient)"
-            strokeWidth="1"
-            fill="none"
-            strokeDasharray="3,7"
-            initial={{ pathLength: 0, opacity: 0 }}
-            animate={{ pathLength: 1, opacity: 0.2 }}
-            transition={{ duration: 5, repeat: Infinity, repeatType: "reverse", delay: 1 }}
-          />
-        </svg>
+        {/* Simplified grid pattern - lighter and less intensive */}
+        <div className="absolute inset-0 bg-[linear-gradient(rgba(120,113,108,0.02)_1px,transparent_1px),linear-gradient(90deg,rgba(120,113,108,0.02)_1px,transparent_1px)] bg-[size:80px_80px]" />
       </div>
 
       <div className="relative container mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl">
@@ -172,23 +130,23 @@ export const InteriorContent: React.FC<Props> = ({ industry }) => {
           whileInView="show"
           viewport={{ once: true, margin: "-50px" }}
         >
-          {/* Enhanced Hero Header */}
+          {/* Optimized Hero Header */}
           <motion.div variants={itemVariants} className="text-center mb-20 lg:mb-28">
-            {/* Floating icon with sophisticated design */}
+            {/* Simplified floating icon */}
             <motion.div 
               className="inline-flex items-center justify-center w-24 h-24 lg:w-28 lg:h-28 mb-10"
-              whileHover={{ scale: 1.15, rotate: 8 }}
-              transition={{ type: "spring", stiffness: 300 }}
+              whileHover={{ scale: 1.1 }}
+              transition={{ type: "spring", stiffness: 300, damping: 20 }}
             >
               <div className="relative">
-                <div className="absolute inset-0 bg-gradient-to-r from-amber-400 to-yellow-500 rounded-full blur-xl opacity-30" />
-                <div className="relative bg-gradient-to-r from-amber-500 to-yellow-600 rounded-full p-6 lg:p-7 shadow-2xl border border-amber-300/30">
+                <div className="absolute inset-0 bg-gradient-to-r from-amber-400 to-yellow-500 rounded-full blur-lg opacity-20" />
+                <div className="relative bg-gradient-to-r from-amber-500 to-yellow-600 rounded-full p-6 lg:p-7 shadow-xl border border-amber-300/20">
                   <span className="text-4xl lg:text-5xl">🏗️</span>
                 </div>
               </div>
             </motion.div>
 
-            {/* Main title with enhanced styling */}
+            {/* Optimized title */}
             <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-black mb-6 lg:mb-8 leading-[0.9] tracking-tight">
               <span className="py-4 block bg-gradient-to-r from-stone-700 via-gray-800 to-stone-700 bg-clip-text text-transparent mb-2">
                 Giải Pháp Máy Móc
@@ -198,7 +156,6 @@ export const InteriorContent: React.FC<Props> = ({ industry }) => {
               </span>
             </h1>
 
-            {/* Enhanced description */}
             <motion.p 
               variants={itemVariants}
               className="text-base sm:text-lg lg:text-xl xl:text-2xl text-stone-600 max-w-4xl mx-auto leading-relaxed font-light"
@@ -206,65 +163,59 @@ export const InteriorContent: React.FC<Props> = ({ industry }) => {
               Cung cấp – bảo trì – cho thuê máy móc công trình hiện đại cho mọi dự án xây dựng tại {industry || "Việt Nam"}
             </motion.p>
 
-            {/* Enhanced animated divider */}
+            {/* Simplified animated divider */}
             <motion.div 
               variants={itemVariants}
               className="flex items-center justify-center mt-10 lg:mt-12"
             >
               <div className="flex items-center space-x-6">
-                <motion.div 
-                  className="w-24 h-0.5 bg-gradient-to-r from-transparent via-amber-500 to-transparent"
-                  animate={{ scaleX: [0, 1, 0] }}
-                  transition={{ duration: 4, repeat: Infinity }}
-                />
+                <div className="w-24 h-0.5 bg-gradient-to-r from-transparent via-amber-500 to-transparent" />
                 <div className="flex space-x-3">
                   <motion.div
                     className="w-3 h-3 bg-amber-500 rounded-full"
                     animate={{ 
-                      scale: [1, 1.4, 1],
-                      opacity: [0.4, 1, 0.4] 
+                      scale: [1, 1.2, 1],
+                      opacity: [0.5, 1, 0.5] 
                     }}
                     transition={{ 
-                      duration: 2.5, 
+                      duration: 3, 
                       repeat: Infinity,
-                      delay: 0
+                      ease: "easeInOut"
                     }}
                   />
                   <motion.div
                     className="w-3 h-3 bg-stone-400 rounded-full"
                     animate={{ 
-                      scale: [1, 1.4, 1],
-                      opacity: [0.4, 1, 0.4] 
+                      scale: [1, 1.2, 1],
+                      opacity: [0.5, 1, 0.5] 
                     }}
                     transition={{ 
-                      duration: 2.5, 
+                      duration: 3, 
                       repeat: Infinity,
-                      delay: 0.5
+                      delay: 1,
+                      ease: "easeInOut"
                     }}
                   />
                   <motion.div
                     className="w-3 h-3 bg-amber-600 rounded-full"
                     animate={{ 
-                      scale: [1, 1.4, 1],
-                      opacity: [0.4, 1, 0.4] 
+                      scale: [1, 1.2, 1],
+                      opacity: [0.5, 1, 0.5] 
                     }}
                     transition={{ 
-                      duration: 2.5, 
+                      duration: 3, 
                       repeat: Infinity,
-                      delay: 1
+                      delay: 2,
+                      ease: "easeInOut"
                     }}
                   />
                 </div>
-                <motion.div 
-                  className="w-24 h-0.5 bg-gradient-to-r from-transparent via-amber-500 to-transparent"
-                  animate={{ scaleX: [0, 1, 0] }}
-                  transition={{ duration: 4, repeat: Infinity, delay: 2 }}
-                />
+                <div className="w-24 h-0.5 bg-gradient-to-r from-transparent via-amber-500 to-transparent" />
               </div>
             </motion.div>
           </motion.div>
 
-          {/* Enhanced Services Grid */}
+          {/* Optimized Services Grid */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 lg:gap-10">
             {services.map((item, index) => (
               <motion.div
@@ -272,28 +223,21 @@ export const InteriorContent: React.FC<Props> = ({ industry }) => {
                 variants={itemVariants}
                 className="group relative"
                 whileHover={{ 
-                  y: -15, 
-                  scale: 1.02,
-                  rotateX: 5 
+                  y: -8,
+                  transition: { type: "spring", stiffness: 400, damping: 25 }
                 }}
-                transition={{ type: "spring", stiffness: 300, damping: 30 }}
               >
-                {/* Enhanced glow effect */}
-                <div className={`absolute -inset-3 bg-gradient-to-r from-${item.glowColor} to-${item.glowColor} rounded-3xl blur-lg opacity-0 group-hover:opacity-100 transition-all duration-500`} />
-                
-                {/* Main card */}
-                <div className={`relative bg-white/80 backdrop-blur-sm rounded-2xl border border-${item.borderColor} hover:border-${item.borderColor.replace('/30', '/50')} transition-all duration-500 overflow-hidden p-8 lg:p-10 shadow-lg hover:shadow-xl`}>
-                  {/* Shimmer effect */}
-                  <div className="absolute inset-0 -translate-x-full group-hover:translate-x-full transition-transform duration-1000 bg-gradient-to-r from-transparent via-white/40 to-transparent" />
+                {/* Simplified card design */}
+                <div className="relative bg-white/90 backdrop-blur-sm rounded-2xl border border-stone-200/50 hover:border-amber-300/40 transition-all duration-300 overflow-hidden p-8 lg:p-10 shadow-lg hover:shadow-xl will-change-transform">
                   
-                  {/* Icon section */}
+                  {/* Icon section - simplified animation */}
                   <div className="relative z-10 mb-8">
                     <motion.div 
-                      className={`inline-flex items-center justify-center w-20 h-20 bg-gradient-to-r ${item.gradient} rounded-2xl shadow-lg border border-white/20`}
-                      whileHover={{ scale: 1.1, rotate: 5 }}
-                      transition={{ type: "spring", stiffness: 400 }}
+                      className={`inline-flex items-center justify-center w-20 h-20 bg-gradient-to-r ${item.gradient} rounded-2xl shadow-md border border-white/20 group-hover:bg-gradient-to-r group-hover:${item.hoverGradient}`}
+                      whileHover={{ scale: 1.05 }}
+                      transition={{ type: "spring", stiffness: 300, damping: 20 }}
                     >
-                      <span className="text-3xl lg:text-4xl filter drop-shadow-sm">
+                      <span className="text-3xl lg:text-4xl">
                         {item.icon}
                       </span>
                     </motion.div>
@@ -301,55 +245,37 @@ export const InteriorContent: React.FC<Props> = ({ industry }) => {
 
                   {/* Content */}
                   <div className="relative z-10">
-                    <h3 className="text-xl lg:text-2xl font-bold text-stone-800 mb-4 group-hover:text-stone-900 transition-colors">
+                    <h3 className="text-xl lg:text-2xl font-bold text-stone-800 mb-4 group-hover:text-stone-900 transition-colors duration-200">
                       {item.title}
                     </h3>
-                    <p className="text-base lg:text-lg text-stone-600 leading-relaxed group-hover:text-stone-700 transition-colors">
+                    <p className="text-base lg:text-lg text-stone-600 leading-relaxed group-hover:text-stone-700 transition-colors duration-200">
                       {item.description}
                     </p>
                   </div>
 
-                  {/* Bottom accent line */}
-                  <div className={`absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-r ${item.gradient} opacity-0 group-hover:opacity-100 transition-opacity duration-300`} />
+                  {/* Bottom accent - simplified */}
+                  <div className={`absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-r ${item.gradient} opacity-0 group-hover:opacity-100 transition-opacity duration-200`} />
                 </div>
               </motion.div>
             ))}
           </div>
 
-          {/* Enhanced Stats Badge */}
+          {/* Optimized Stats Badge */}
           <motion.div variants={itemVariants} className="flex justify-center mt-20 lg:mt-24">
             <div className="relative group">
-              {/* Multi-layer glow effect */}
-              <div className="absolute -inset-1 bg-gradient-to-r from-amber-400 via-yellow-400 to-amber-500 rounded-full blur opacity-20 group-hover:opacity-30 transition duration-500" />
-              
-              <div className="relative bg-white/90 backdrop-blur-xl rounded-full border border-amber-300/40 shadow-xl px-12 py-6 lg:px-16 lg:py-7">
+              <div className="relative bg-white/95 backdrop-blur-xl rounded-full border border-amber-300/30 shadow-lg hover:shadow-xl px-12 py-6 lg:px-16 lg:py-7 transition-all duration-300">
                 <div className="flex items-center gap-4">
-                  {/* Animated status indicators */}
+                  {/* Simplified status indicators */}
                   <div className="flex items-center gap-3">
                     <motion.div 
                       className="w-3 h-3 bg-amber-500 rounded-full"
                       animate={{ 
-                        scale: [1, 1.3, 1],
                         opacity: [0.7, 1, 0.7] 
                       }}
-                      transition={{ duration: 2, repeat: Infinity }}
+                      transition={{ duration: 2.5, repeat: Infinity, ease: "easeInOut" }}
                     />
-                    <motion.div 
-                      className="w-2.5 h-2.5 bg-stone-400 rounded-full"
-                      animate={{ 
-                        scale: [1, 1.2, 1],
-                        opacity: [0.5, 1, 0.5] 
-                      }}
-                      transition={{ duration: 2, repeat: Infinity, delay: 0.5 }}
-                    />
-                    <motion.div 
-                      className="w-2 h-2 bg-amber-600 rounded-full"
-                      animate={{ 
-                        scale: [1, 1.1, 1],
-                        opacity: [0.4, 1, 0.4] 
-                      }}
-                      transition={{ duration: 2, repeat: Infinity, delay: 1 }}
-                    />
+                    <div className="w-2.5 h-2.5 bg-stone-400 rounded-full opacity-60" />
+                    <div className="w-2 h-2 bg-amber-600 rounded-full opacity-50" />
                   </div>
                   
                   <span className="text-lg lg:text-xl text-stone-700 font-medium">

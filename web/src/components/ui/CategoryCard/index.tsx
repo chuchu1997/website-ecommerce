@@ -45,12 +45,12 @@ const CategoryCard = (props: Props) => {
             />
 
             {/* Overlay Gradients */}
-            <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-70 group-hover:opacity-85 transition-opacity duration-300" />
-            <div className="absolute inset-0 bg-gradient-to-r from-purple-600/20 to-pink-600/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+            <div className="z-40 absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-70 group-hover:opacity-85 transition-opacity duration-300" />
+            <div className="z-40 absolute inset-0 bg-gradient-to-r from-purple-600/20 to-pink-600/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
 
             {/* Shimmer Effect */}
-            <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-              <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent transform -skew-x-12 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-1000" />
+            <div className="z-40 absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+              <div className="z-40 absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent transform -skew-x-12 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-1000" />
             </div>
           </div>
 
@@ -78,7 +78,7 @@ const CategoryCard = (props: Props) => {
           </div>
 
           {/* Category Badge */}
-          <div className="absolute top-4 left-4 sm:top-6 sm:left-6">
+          <div className="z-40 absolute top-4 left-4 sm:top-6 sm:left-6">
             <div className="bg-white/20 backdrop-blur-sm rounded-full px-3 py-1 sm:px-4 sm:py-2 border border-white/30 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
               <span className="text-white text-xs sm:text-sm font-medium">
                 Danh mục
@@ -87,7 +87,7 @@ const CategoryCard = (props: Props) => {
           </div>
 
           {/* Bottom Accent */}
-          <div className="absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-r from-purple-500 to-pink-500 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+          <div className="z-40 absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-r from-purple-500 to-pink-500 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
         </motion.div>
       </motion.div>
     </Link>
