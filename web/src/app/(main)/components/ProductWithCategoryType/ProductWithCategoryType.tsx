@@ -4,7 +4,6 @@ import { CategoryInterface } from "@/types/category";
 import { ProductPromotion, PromotionInterface } from "@/types/promotion";
 import { ProductWithCategoryClient } from "./ProductWithCategoryClient";
 import { fetchSafe } from "@/utils/fetchSafe";
-export const revalidate = 100; // 5 phút = 300 giây
 
 interface Props {
   industry: string;
@@ -19,12 +18,12 @@ const getCacheCategoryWithSlug = async (
   const res = await fetchSafe(
     () => CategoryAPI.getCategoryWithSlug(slug, 1, 12),
     {
-      category: null,
+      data: null,
     }
   );
   console.log("🔍 RES - slug:", res);
 
-  return res.category ?? null;
+  return res.data ?? null; // lấy res.data thay vì res.category
 };
 
 export const ProductWithCategoryType = async ({

@@ -53,7 +53,7 @@ const ProductWithSlugSSR = async ({
   }
 
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen container mx-auto">
       <ProductClient product={product} />
     </div>
   );
