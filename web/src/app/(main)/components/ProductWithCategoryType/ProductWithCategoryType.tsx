@@ -4,7 +4,6 @@ import { CategoryInterface } from "@/types/category";
 import { ProductPromotion, PromotionInterface } from "@/types/promotion";
 import { ProductWithCategoryClient } from "./ProductWithCategoryClient";
 import { fetchSafe } from "@/utils/fetchSafe";
-export const revalidate = 100; // ISR 5 phút
 
 interface Props {
   industry: string;
