@@ -295,7 +295,6 @@ const ProfessionalNavbar: React.FC<NavbarProps> = ({
               {/* Logo */}
               <Link href="/" prefetch={true} className="flex-shrink-0">
                 <Image
-                  priority
                   alt="logo"
                   src="/logo.png"
                   width={100}
@@ -479,7 +478,6 @@ const ProfessionalNavbar: React.FC<NavbarProps> = ({
                                           <div className="flex items-start space-x-2">
                                             <div className="relative w-10 h-10 flex-shrink-0">
                                               <ImageLoader
-                                                priority
                                                 fill
                                                 className="rounded-lg object-cover shadow-sm"
                                                 src={childCategory.imageUrl}
@@ -502,8 +500,9 @@ const ProfessionalNavbar: React.FC<NavbarProps> = ({
                                     ) || (
                                       // If no child categories, show parent category info
                                       <div className="col-span-3 text-center py-6">
-                                        <div className="w-12 h-12 bg-gradient-to-br from-blue-50 to-indigo-50 rounded-full flex items-center justify-center mx-auto mb-3">
-                                          <Image
+                                        <div className="relative w-12 h-12 bg-gradient-to-br from-blue-50 to-indigo-50 rounded-full flex items-center justify-center mx-auto mb-3">
+                                          <ImageLoader
+                                            fill
                                             className="rounded-lg flex-shrink-0"
                                             src={
                                               getActiveParentCategory()
@@ -513,8 +512,6 @@ const ProfessionalNavbar: React.FC<NavbarProps> = ({
                                               getActiveParentCategory()?.name ??
                                               ""
                                             }
-                                            width={24}
-                                            height={24}
                                           />
                                         </div>
                                         <h4 className="font-medium text-gray-900 mb-2">

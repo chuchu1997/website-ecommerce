@@ -21,7 +21,7 @@ import { CategoryInterface } from "@/types/category";
 import { fetchSafe } from "@/utils/fetchSafe";
 import { unstable_cache } from "next/cache";
 
-export const revalidate = 300; // ISR 5 phút
+export const revalidate = 100; // ISR 5 phút
 
 /**
  * Cache category 5 phút, dù page dynamic hay static
