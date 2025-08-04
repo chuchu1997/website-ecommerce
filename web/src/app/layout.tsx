@@ -83,7 +83,10 @@ export async function generateMetadata(): Promise<Metadata> {
   if (store?.seo && typeof store.seo === "object") {
     return generateSeoForPage(store.seo as SeoInterface);
   }
-  return {};
+  return {
+    title: "Máy xây dựng mới ",
+    description: "Máy xây dựng mới description ",
+  };
 }
 
 export default async function RootLayout({
