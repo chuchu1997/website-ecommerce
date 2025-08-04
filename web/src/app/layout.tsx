@@ -42,7 +42,7 @@ const getCachedCategories = unstable_cache(
     return res?.categories ?? [];
   },
   ["categories-cache"], // cache key
-  { revalidate: 300 }
+  { revalidate: 100 }
 );
 
 /**
@@ -56,7 +56,7 @@ const getCacheStoreInfoSSR = unstable_cache(
     return res.store ?? { industry: "Xây dựng" };
   },
   ["store-info-cache"],
-  { revalidate: 300 }
+  { revalidate: 100 }
 );
 
 export async function generateMetadata(): Promise<Metadata> {
