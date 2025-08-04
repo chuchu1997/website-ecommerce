@@ -41,6 +41,15 @@ import { fetchSafe } from "@/utils/fetchSafe";
 export const revalidate = 100; // 5 phút
 
 const getCacheStoreInfoSSR = async (): Promise<StoreInterface> => {
+  const now = new Date();
+
+  const vnTime = now.toLocaleString("vi-VN", {
+    timeZone: "Asia/Ho_Chi_Minh",
+    hour12: false,
+  });
+
+  console.log(`🕒 [Categories_LIST] GỌI API lúc: ${vnTime}`);
+
   const res = await fetchSafe(() => StoreAPI.getStoreInfo(), {
     store: {
       industry: "Xây dựng",
@@ -58,12 +67,12 @@ const MusicStoreLanding: React.FC = async () => {
     <div className=" min-h-screen bg-gray-50 w-full">
       <HeroSSR />
       <CategoriesListSSR />
-      <FeatureProducts industry={storeInfo.industry ?? "Xây dựng"} />
+      {/* <FeatureProducts industry={storeInfo.industry ?? "Xây dựng"} />
       <ProductWithCategoryType
         industry={storeInfo.industry ?? ""}
         slug="ban-cat-gach"
         isGrayBg={true}
-      />
+      /> */}
       {/* <ProductWithCategoryType
         industry={storeInfo.industry ?? ""}
         slug="thiet-bi-xay-dung"
@@ -95,12 +104,12 @@ const MusicStoreLanding: React.FC = async () => {
         industry={storeInfo.industry ?? ""}
         slug="may-nong-nghiep"
       /> */}
-      <ProductCategories />
+      {/* <ProductCategories />
       <HighlightedProjects industry={storeInfo.industry ?? ""} />
 
       <PartnerBrands industry={storeInfo.industry ?? ""} />
       <NewsMasterPage industry={storeInfo.industry ?? ""} />
-      <InteriorContent industry={storeInfo.industry ?? ""} />
+      <InteriorContent industry={storeInfo.industry ?? ""} /> */}
     </div>
   );
 };

@@ -26,6 +26,15 @@ import { unstable_cache } from "next/cache";
  */
 const getCachedCategories = unstable_cache(
   async (): Promise<CategoryInterface[]> => {
+    const now = new Date();
+    // Format giờ theo VN
+    const vnTime = now.toLocaleString("vi-VN", {
+      timeZone: "Asia/Ho_Chi_Minh",
+      hour12: false,
+    });
+
+    console.log(`🕒 [Categories] GỌI API lúc: ${vnTime}`);
+
     const res = await fetchSafe(
       () =>
         CategoryAPI.getAllCategoriesOfStore({
