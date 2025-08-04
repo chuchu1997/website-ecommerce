@@ -21,10 +21,8 @@ import { CategoryInterface } from "@/types/category";
 import { fetchSafe } from "@/utils/fetchSafe";
 import { unstable_cache } from "next/cache";
 
-export const revalidate = 100; // ISR 5 phút
-
 /**
- * Cache category 5 phút, dù page dynamic hay static
+ * Cache categories 5 phút, có thể invalidate bằng tag
  */
 const getCachedCategories = unstable_cache(
   async (): Promise<CategoryInterface[]> => {
@@ -35,14 +33,13 @@ const getCachedCategories = unstable_cache(
           limit: 999,
           justGetParent: false,
         }),
-      {
-        categories: [],
-      }
+      { categories: [] }
     );
+
     return res?.categories ?? [];
   },
-  ["categories-cache"], // cache key
-  { revalidate: 100 }
+  ["categories-cache"],
+  { revalidate: 100, tags: ["categories-v1"] } // TTL 5 phút
 );
 
 /**
@@ -53,10 +50,11 @@ const getCacheStoreInfoSSR = unstable_cache(
     const res = await fetchSafe(() => StoreAPI.getStoreInfo(), {
       store: { industry: "Xây dựng" },
     });
+
     return res.store ?? { industry: "Xây dựng" };
   },
   ["store-info-cache"],
-  { revalidate: 100 }
+  { revalidate: 100, tags: ["store-info-v1"] }
 );
 
 export async function generateMetadata(): Promise<Metadata> {
