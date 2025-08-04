@@ -276,7 +276,7 @@ const ProfessionalNavbar: React.FC<NavbarProps> = ({
         }`}>
         {/* TOP SECTION - Logo, Search, Payment Guide, Business Hours */}
         <div className="bg-gradient-to-r from-blue-50 via-white to-purple-50 border-b border-gray-100">
-          <div className="max-w-7xl mx-auto px-4 py-0">
+          <div className="container mx-auto  py-0">
             <div className="flex items-center justify-between">
               {/* Mobile Menu Button */}
               <div className="lg:hidden">
@@ -295,6 +295,7 @@ const ProfessionalNavbar: React.FC<NavbarProps> = ({
               {/* Logo */}
               <Link href="/" prefetch={true} className="flex-shrink-0">
                 <Image
+                  priority
                   alt="logo"
                   src="/logo.png"
                   width={100}
@@ -377,7 +378,7 @@ const ProfessionalNavbar: React.FC<NavbarProps> = ({
 
         {/* MIDDLE SECTION - Main Categories & Cart */}
         <div className="hidden sm:block bg-white border-b border-gray-100">
-          <div className="max-w-7xl mx-auto px-4 py-1">
+          <div className="container mx-auto  py-1">
             <div className="flex items-center justify-between">
               {/* Desktop Navigation */}
               <nav className="hidden lg:flex items-center text-sm space-x-1 flex-1">
@@ -470,10 +471,6 @@ const ProfessionalNavbar: React.FC<NavbarProps> = ({
                                   <div className="grid grid-cols-3 gap-3">
                                     {getActiveParentCategory()?.subCategories?.map(
                                       (childCategory) => {
-                                        console.log(
-                                          "CHILD IMAGE",
-                                          childCategory.imageUrl
-                                        );
                                         return (
                                           <Link
                                             prefetch={true}
@@ -685,7 +682,7 @@ const ProfessionalNavbar: React.FC<NavbarProps> = ({
                       {/* Two-column layout for subcategories */}
                       {expandedMobileCategory === category.id.toString() && (
                         <div className="bg-gray-50 rounded-xl p-2 mt-2">
-                          <div className="flex gap-1 h-72">
+                          <div className="flex gap-1 h-100">
                             {/* Left Column - Parent Categories */}
                             <div className="w-2/5 bg-white rounded-lg p-2 border-r border-gray-200 overflow-y-auto">
                               <h4 className="text-xs font-semibold text-gray-900 mb-2 border-b border-gray-200 pb-2 truncate">
@@ -740,7 +737,7 @@ const ProfessionalNavbar: React.FC<NavbarProps> = ({
                                       )?.name
                                     }
                                   </h4>
-                                  <div className="space-y-1.5">
+                                  <div className="space-y-1.5 grid grid-cols-2">
                                     {category.subCategories
                                       .find(
                                         (cat) =>
@@ -751,30 +748,34 @@ const ProfessionalNavbar: React.FC<NavbarProps> = ({
                                         <Link
                                           key={childCategory.id}
                                           href={`/danh-muc/${childCategory.slug}`}
-                                          className="group flex items-start gap-2 p-1.5 rounded-lg hover:bg-blue-50 transition-all duration-200 hover:shadow-sm border border-transparent hover:border-blue-200">
-                                          <Image
-                                            className="rounded-md flex-shrink-0"
-                                            src={childCategory.imageUrl}
-                                            alt={childCategory.name}
-                                            width={24}
-                                            height={24}
-                                          />
-                                          <div className="flex-1 min-w-0">
-                                            <h5 className="text-xs font-medium text-gray-900 mb-1 group-hover:text-blue-600 transition-colors duration-200 truncate">
-                                              {childCategory.name}
+                                          className="group flex flex-col items-center p-2 rounded-lg hover:bg-blue-50 transition-all duration-200 hover:shadow-sm border border-transparent hover:border-blue-200">
+                                          {/* Image Section */}
+                                          <div className="relative h-12 w-12 sm:h-14 sm:w-14 md:h-16 md:w-16 mb-2 flex-shrink-0">
+                                            <ImageLoader
+                                              fill
+                                              className="rounded-md object-cover"
+                                              src={childCategory.imageUrl}
+                                              alt={childCategory.name}
+                                            />
+                                          </div>
+
+                                          {/* Name Section */}
+                                          <div className="w-full text-center">
+                                            <h5
+                                              className="text-xs sm:text-sm font-medium text-gray-900 group-hover:text-blue-600 transition-colors duration-200 leading-tight px-1"
+                                              title={childCategory.name}>
+                                              <span className="line-clamp-2 break-words">
+                                                {childCategory.name}
+                                              </span>
                                             </h5>
-                                            {childCategory.description && (
-                                              <p className="text-xs text-gray-500 group-hover:text-blue-500 transition-colors duration-200 line-clamp-2 leading-tight">
-                                                {childCategory.description}
-                                              </p>
-                                            )}
                                           </div>
                                         </Link>
                                       )) || (
                                       // If no child categories, show the parent category info
                                       <div className="text-center py-3">
-                                        <div className="w-10 h-10 bg-gradient-to-br from-blue-50 to-indigo-50 rounded-full flex items-center justify-center mx-auto mb-2">
+                                        <div className="relative w-14 h-14 bg-gradient-to-br from-blue-50 to-indigo-50 rounded-full flex items-center justify-center mx-auto mb-2">
                                           <ImageLoader
+                                            fill
                                             className="rounded-md"
                                             src={
                                               category.subCategories.find(
@@ -790,8 +791,6 @@ const ProfessionalNavbar: React.FC<NavbarProps> = ({
                                                   hoveredParentCategory
                                               )?.name ?? ""
                                             }
-                                            width={20}
-                                            height={20}
                                           />
                                         </div>
                                         <h5 className="text-xs font-medium text-gray-900 mb-2 truncate">
@@ -846,19 +845,20 @@ const ProfessionalNavbar: React.FC<NavbarProps> = ({
                     </div>
                   ) : (
                     // Categories without subcategories - direct link
-                    <Link
-                      href={`/danh-muc/${category.slug}`}
-                      className="flex items-center px-3 py-2.5 text-sm text-gray-900 hover:text-blue-600 hover:bg-blue-50 rounded-xl transition-all duration-200 font-medium">
-                      <span className="truncate">
-                        {getCategoryDisplayName(category)}
-                      </span>
-                    </Link>
+                    // <Link
+                    //   href={`/danh-muc/${category.slug}`}
+                    //   className="flex items-center px-3 py-2.5 text-sm text-gray-900 hover:text-blue-600 hover:bg-blue-50 rounded-xl transition-all duration-200 font-medium">
+                    //   <span className="truncate">
+                    //     {getCategoryDisplayName(category)}
+                    //   </span>
+                    // </Link>
+                    <></>
                   )}
                 </div>
               ))}
 
               {/* Static Navigation Links */}
-              <div className="border-t border-gray-200 pt-3 mt-3 space-y-1">
+              {/* <div className="border-t border-gray-200 pt-3 mt-3 space-y-1">
                 <Link
                   prefetch={true}
                   href="/gioi-thieu"
@@ -872,7 +872,7 @@ const ProfessionalNavbar: React.FC<NavbarProps> = ({
                   className="flex items-center px-3 py-2.5 text-sm text-gray-900 hover:text-blue-600 hover:bg-blue-50 rounded-xl transition-all duration-200 font-medium">
                   Liên hệ
                 </Link>
-              </div>
+              </div> */}
 
               {/* Mobile Contact Info */}
               <div className="border-t border-gray-200 pt-3 mt-3">

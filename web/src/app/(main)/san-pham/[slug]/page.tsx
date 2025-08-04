@@ -9,12 +9,21 @@ import { ProductInterface } from "@/types/product";
 import { ProductClient } from "./ProductWithSlugClient";
 import { fetchSafe } from "@/utils/fetchSafe";
 
+export const revalidate = 120; // 5 phút
+
 const getCachedProductWithSlug = async (
   slug: string
 ): Promise<ProductInterface | undefined> => {
   const res = await fetchSafe(() => ProductAPI.getProductBySlug(slug), {
     product: undefined,
   });
+
+  const vnTime = new Date().toLocaleString("vi-VN", {
+    timeZone: "Asia/Ho_Chi_Minh",
+    hour12: false,
+  });
+
+  console.log(`🕒 [PRODUCT SAN PHAM] GỌI API lúc: ${vnTime}`);
   return res?.product ?? undefined;
 };
 

@@ -1,8 +1,7 @@
 /** @format */
 
 import { BodyContainer } from "@/components/BodyContainer";
-
-export const revalidate = 100; // ISR 5 phút
+export const revalidate = 120; // ISR 5 phút
 
 export default async function MainLayout({
   children,

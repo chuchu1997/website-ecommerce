@@ -344,23 +344,23 @@ export const ProductCard = ({
   // Grid Layout (Card design)
   return (
     <Link href={`/san-pham/${product.slug}`} className="block h-full" prefetch>
-      <Card className="group relative h-full overflow-hidden bg-white border-2 border-gray-200/60 hover:border-yellow-300/80 hover:shadow-xl hover:shadow-gray-200/50 transition-all duration-300 flex flex-col rounded-2xl transform hover:-translate-y-2">
+      <Card className="group relative h-full overflow-hidden bg-white shadow-md hover:shadow-2xl transition-all duration-500 ease-out flex flex-col rounded-2xl transform hover:-translate-y-1 hover:scale-[1.02] border border-gray-100">
         {/* Image Section */}
         <CardHeader className="p-0 m-0 relative">
-          <div className="relative aspect-square bg-gradient-to-br from-gray-50 to-gray-100 overflow-hidden">
+          <div className="relative aspect-square bg-gradient-to-br from-gray-50 to-gray-100 overflow-hidden rounded-t-2xl">
             <ImageLoader
               src={product.images[0].url}
               alt={product.name}
               fill
-              className="object-cover transition-transform duration-300 group-hover:scale-110"
+              className="object-cover transition-transform duration-700 ease-out group-hover:scale-105"
             />
 
-            {/* Enhanced Overlay */}
-            <div className="absolute inset-0 bg-gradient-to-t from-black/5 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+            {/* Subtle Overlay Enhancement */}
+            <div className="absolute inset-0 bg-gradient-to-t from-black/10 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
 
             {/* Promotional badges */}
             {hasPromotion && (
-              <div className="absolute top-3 left-3 z-10">
+              <div className="absolute top-4 left-4 z-10 transform transition-transform duration-300 group-hover:scale-105">
                 <BadgeFlashSale
                   promotion={promotion}
                   className="shadow-xl text-xs md:text-sm bg-gradient-to-r from-yellow-500 to-amber-600 border-0 font-bold"
@@ -369,16 +369,23 @@ export const ProductCard = ({
             )}
 
             {/* Enhanced Wishlist button */}
-            <button className="absolute top-3 right-3 z-10 p-2 md:p-2.5 bg-white/95 hover:bg-white rounded-full shadow-lg opacity-0 group-hover:opacity-100 transition-all duration-300 border border-gray-200 hover:border-yellow-300 transform hover:scale-110">
-              <Heart className="w-3 h-3 md:w-4 md:h-4 text-gray-500 hover:text-yellow-600 transition-colors duration-200" />
+            <button className="absolute top-4 right-4 z-10 p-2.5 bg-white/90 backdrop-blur-sm hover:bg-white rounded-full shadow-lg opacity-0 group-hover:opacity-100 transition-all duration-300 transform translate-y-2 group-hover:translate-y-0 hover:scale-110">
+              <Heart className="w-4 h-4 text-gray-600 hover:text-red-500 transition-colors duration-200" />
             </button>
+
+            {/* Quick View Button - appears on hover */}
+            <div className="absolute inset-x-4 bottom-4 z-10 opacity-0 group-hover:opacity-100 transition-all duration-300 transform translate-y-4 group-hover:translate-y-0">
+              <button className="w-full py-2.5 bg-white/95 backdrop-blur-sm hover:bg-white rounded-xl shadow-lg text-sm font-semibold text-gray-800 hover:text-yellow-600 transition-all duration-200 border border-gray-200/50">
+                Xem nhanh
+              </button>
+            </div>
           </div>
         </CardHeader>
 
         {/* Content Section */}
-        <CardContent className="p-4 md:p-5 flex-1 flex flex-col space-y-3 md:space-y-4">
+        <CardContent className="p-5 md:p-6 flex-1 flex flex-col space-y-4">
           {/* Product Title */}
-          <CardTitle className="text-sm md:text-base font-bold text-gray-800 leading-snug line-clamp-2 break-words group-hover:text-yellow-700 transition-colors duration-200">
+          <CardTitle className="text-sm md:text-base font-bold text-gray-800 leading-snug line-clamp-2 break-words group-hover:text-gray-900 transition-colors duration-300">
             {product.name}
           </CardTitle>
 
@@ -396,22 +403,36 @@ export const ProductCard = ({
             </div>
 
             {/* Enhanced Free Ship Badge */}
-            <div className="flex items-center">
-              <div className="rounded-full text-xs font-semibold ">
+            <div className="flex items-center transform transition-transform duration-300 group-hover:scale-105">
+              <div className="rounded-full text-xs font-semibold">
                 <FreeshipBadVer2 />
               </div>
             </div>
           </div>
 
           {/* Price Section */}
-          {renderPrice()}
+          <div className="transform transition-transform duration-300 group-hover:scale-105">
+            {renderPrice()}
+          </div>
 
           {/* Gift Products Section */}
-          {renderGiftSection()}
+          <div className="transform transition-all duration-300 group-hover:translate-x-1">
+            {renderGiftSection()}
+          </div>
 
           {/* Action Buttons */}
-          <div>{renderActionButtons()}</div>
+          <div className="mt-auto pt-2">
+            <div className="transform transition-all duration-300 group-hover:scale-105">
+              {renderActionButtons()}
+            </div>
+          </div>
         </CardContent>
+
+        {/* Subtle shine effect on hover */}
+        <div
+          className="absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700 transform -skew-x-12 translate-x-full group-hover:-translate-x-full pointer-events-none"
+          style={{ transitionDelay: "0.1s" }}
+        />
       </Card>
     </Link>
   );

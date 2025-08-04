@@ -5,6 +5,8 @@ import { ProductPromotion, PromotionInterface } from "@/types/promotion";
 import { ProductWithCategoryClient } from "./ProductWithCategoryClient";
 import { fetchSafe } from "@/utils/fetchSafe";
 
+// export const revalidate = 120; // 5 phút
+
 interface Props {
   industry: string;
   slug: string;
@@ -29,9 +31,6 @@ export const ProductWithCategoryType = async ({
   isGrayBg = false,
 }: Props) => {
   const category = await getCacheCategoryWithSlug(slug);
-
-  console.log("🔍 ProductWithCategoryType - slug:", slug);
-  console.log("🔍 Category data:", category);
 
   // Trường hợp không có category
   if (!category) {

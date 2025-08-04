@@ -17,13 +17,6 @@ const CategoriesListClient = ({ categoriesProps }: Props) => {
   const breakpoint = useBreakpoint();
 
   // Debug logs
-  console.log("🔍 CategoriesListClient received:", {
-    categoriesProps,
-    categories,
-    categoriesLength: categories.length,
-    firstCategory: categories[0],
-    breakpoint,
-  });
 
   // Xác định số items hiển thị theo breakpoint
   const getItemsPerView = () => {
@@ -45,7 +38,6 @@ const CategoriesListClient = ({ categoriesProps }: Props) => {
 
   // Render từng category
   const renderCategory = (category: CategoryInterface) => {
-    console.log("🔍 Rendering category:", category);
     return (
       <Link
         key={category.id}
@@ -78,19 +70,12 @@ const CategoriesListClient = ({ categoriesProps }: Props) => {
 
   // Trường hợp không có category
   if (!categories.length) {
-    console.log("🔍 No categories to display");
     return (
       <div className="my-6 max-w-7xl mx-auto px-4 mt-10 text-center text-gray-500">
         Không có danh mục nào để hiển thị
       </div>
     );
   }
-
-  console.log("🔍 About to render Slider with:", {
-    itemsCount: categories.length,
-    itemsPerView: getItemsPerView(),
-    firstItem: categories[0],
-  });
 
   // Temporary fallback without Slider for testing
   const renderWithoutSlider = () => (
@@ -108,9 +93,6 @@ const CategoriesListClient = ({ categoriesProps }: Props) => {
   try {
     return (
       <div className="my-6 max-w-7xl mx-auto px-4 mt-10">
-        <div className="mb-4 text-blue-600">
-          DEBUG: Rendering {categories.length} categories with Slider
-        </div>
         <Slider
           items={categories}
           renderItem={renderCategory}

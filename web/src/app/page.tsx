@@ -38,42 +38,23 @@ import { CategoryAPI } from "@/api/categories/category.api";
 import { CategoriesListSSR } from "./(main)/components/CategoriesList/categories-list-ssr";
 import { HeroSSR } from "./(main)/components/Hero/HeroSSR";
 import { fetchSafe } from "@/utils/fetchSafe";
-export const revalidate = 100; // 5 phút
-
-const getCacheStoreInfoSSR = async (): Promise<StoreInterface> => {
-  const now = new Date();
-
-  const vnTime = now.toLocaleString("vi-VN", {
-    timeZone: "Asia/Ho_Chi_Minh",
-    hour12: false,
-  });
-
-  console.log(`🕒 [Categories_LIST] GỌI API lúc: ${vnTime}`);
-
-  const res = await fetchSafe(() => StoreAPI.getStoreInfo(), {
-    store: {
-      industry: "Xây dựng",
-    },
-  });
-  const storeInfo = res.store ?? { industry: "Xây dựng" };
-
-  return storeInfo;
-};
+import { getCachedStoreInfo } from "./layout";
+export const revalidate = 120; // 5 phút
 
 const MusicStoreLanding: React.FC = async () => {
-  const storeInfo = await getCacheStoreInfoSSR();
+  const storeInfo = await getCachedStoreInfo();
 
   return (
     <div className=" min-h-screen bg-gray-50 w-full">
       <HeroSSR />
       <CategoriesListSSR />
-      {/* <FeatureProducts industry={storeInfo.industry ?? "Xây dựng"} />
+      <FeatureProducts industry={storeInfo.industry ?? "Xây dựng"} />
       <ProductWithCategoryType
         industry={storeInfo.industry ?? ""}
         slug="ban-cat-gach"
         isGrayBg={true}
-      /> */}
-      {/* <ProductWithCategoryType
+      />
+      <ProductWithCategoryType
         industry={storeInfo.industry ?? ""}
         slug="thiet-bi-xay-dung"
       />
@@ -103,13 +84,13 @@ const MusicStoreLanding: React.FC = async () => {
       <ProductWithCategoryType
         industry={storeInfo.industry ?? ""}
         slug="may-nong-nghiep"
-      /> */}
-      {/* <ProductCategories />
+      />
+      <ProductCategories />
       <HighlightedProjects industry={storeInfo.industry ?? ""} />
 
       <PartnerBrands industry={storeInfo.industry ?? ""} />
       <NewsMasterPage industry={storeInfo.industry ?? ""} />
-      <InteriorContent industry={storeInfo.industry ?? ""} /> */}
+      <InteriorContent industry={storeInfo.industry ?? ""} />
     </div>
   );
 };

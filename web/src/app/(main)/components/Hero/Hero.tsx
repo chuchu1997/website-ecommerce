@@ -44,12 +44,13 @@ export const HeroClient: React.FC<Props> = ({ bannersProps }) => {
       id="home"
       className="relative border mt-[10px] md:mt-[90px] h-[300px] md:h-[800px] flex items-center justify-center overflow-hidden">
       {/* Background image */}
+
       <div className="absolute inset-0 z-0">
         <ImageLoader
           src={currentBanner.imageUrl}
           alt={currentBanner.title || "banner"}
           fill
-          priority={false}
+          priority={currentSlide === 0 ? true : false}
           quality={90}
           className="w-full h-full object-cover object-center"
           style={{ objectFit: "cover" }}

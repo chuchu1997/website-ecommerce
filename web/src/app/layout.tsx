@@ -54,7 +54,7 @@ export const getCachedCategories = cache(
     },
     ["categories-cache"],
     {
-      revalidate: 100,
+      revalidate: 120,
       tags: ["categories"],
     }
   )
@@ -73,7 +73,7 @@ export const getCachedStoreInfo = cache(
       return res.store ?? { industry: "Xây dựng" };
     },
     ["store-info-cache"],
-    { revalidate: 100, tags: ["store-info"] }
+    { revalidate: 120, tags: ["store-info"] }
   )
 );
 
@@ -108,9 +108,9 @@ export default async function RootLayout({
               <NavbarComponent storeInfo={storeInfo} categories={categories} />
               <SidebarProvider>
                 <Toaster position="top-center" reverseOrder={false} />
-                {/* <BodyContainer className="mt-0 sm:mt-[100px]">
+                <BodyContainer className="mt-0 sm:mt-[100px]">
                   {children}
-                </BodyContainer> */}
+                </BodyContainer>
               </SidebarProvider>
               <ZaloPhoneWidget />
             </CartProvider>
