@@ -61,7 +61,7 @@
 .text-price {
   color: var(--text-price);
 }
-.scrollbar-thin {
+/* .scrollbar-thin {
   scrollbar-width: thin;
 }
 
@@ -80,7 +80,7 @@
 
 ::-webkit-scrollbar {
   width: 6px;
-}
+} */
 @theme {
   --font-roboto: "Roboto", sans-serif;
   --breakpoint-3xl: 1920px;
