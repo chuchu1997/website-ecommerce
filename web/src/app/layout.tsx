@@ -20,60 +20,69 @@ import { CategoryAPI } from "@/api/categories/category.api";
 import { CategoryInterface } from "@/types/category";
 import { fetchSafe } from "@/utils/fetchSafe";
 import { unstable_cache } from "next/cache";
+import { cache } from "react"; // <- quan trọng
 
 /**
- * Cache categories 5 phút, có thể invalidate bằng tag
+ * Cache categories 5 phút, coalesce với cache()
  */
-const getCachedCategories = unstable_cache(
-  async (): Promise<CategoryInterface[]> => {
-    const now = new Date();
-    // Format giờ theo VN
-    const vnTime = now.toLocaleString("vi-VN", {
-      timeZone: "Asia/Ho_Chi_Minh",
-      hour12: false,
-    });
+export const getCachedCategories = cache(
+  unstable_cache(
+    async (): Promise<CategoryInterface[]> => {
+      const vnTime = new Date().toLocaleString("vi-VN", {
+        timeZone: "Asia/Ho_Chi_Minh",
+        hour12: false,
+      });
 
-    console.log(`🕒 [Categories] GỌI API lúc: ${vnTime}`);
+      console.log(`🕒 [Categories] GỌI API lúc: ${vnTime}`);
 
-    const res = await fetchSafe(
-      () =>
-        CategoryAPI.getAllCategoriesOfStore({
-          currentPage: 1,
-          limit: 999,
-          justGetParent: false,
-        }),
-      { categories: [] }
-    );
+      try {
+        const res = await fetchSafe(
+          () =>
+            CategoryAPI.getAllCategoriesOfStore({
+              currentPage: 1,
+              limit: 999,
+              justGetParent: false,
+            }),
+          { categories: [] }
+        );
 
-    return res?.categories ?? [];
-  },
-  ["categories-cache"],
-  { revalidate: 100, tags: ["categories-v1"] } // TTL 5 phút
+        return Array.isArray(res?.categories) ? res.categories : [];
+      } catch (error) {
+        console.error("❌ [Categories] Lỗi khi gọi API:", error);
+        return [];
+      }
+    },
+    ["categories-cache"],
+    {
+      revalidate: 100,
+      tags: ["categories"],
+    }
+  )
 );
 
 /**
- * Cache store info 5 phút
+ * Cache store info 5 phút, coalesce với cache()
  */
-const getCacheStoreInfoSSR = unstable_cache(
-  async (): Promise<StoreInterface> => {
-    const res = await fetchSafe(() => StoreAPI.getStoreInfo(), {
-      store: { industry: "Xây dựng" },
-    });
+export const getCachedStoreInfo = cache(
+  unstable_cache(
+    async (): Promise<StoreInterface> => {
+      const res = await fetchSafe(() => StoreAPI.getStoreInfo(), {
+        store: { industry: "Xây dựng" },
+      });
 
-    return res.store ?? { industry: "Xây dựng" };
-  },
-  ["store-info-cache"],
-  { revalidate: 100, tags: ["store-info-v1"] }
+      return res.store ?? { industry: "Xây dựng" };
+    },
+    ["store-info-cache"],
+    { revalidate: 100, tags: ["store-info"] }
+  )
 );
 
 export async function generateMetadata(): Promise<Metadata> {
-  const store = await getCacheStoreInfoSSR();
+  const store = await getCachedStoreInfo();
 
-  if (!store) return {};
-  if (store.seo && typeof store.seo === "object") {
+  if (store?.seo && typeof store.seo === "object") {
     return generateSeoForPage(store.seo as SeoInterface);
   }
-
   return {};
 }
 
@@ -82,8 +91,9 @@ export default async function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
+  // Promise.all để fetch song song
   const [storeInfo, categories] = await Promise.all([
-    getCacheStoreInfoSSR(),
+    getCachedStoreInfo(),
     getCachedCategories(),
   ]);
 
@@ -98,9 +108,9 @@ export default async function RootLayout({
               <NavbarComponent storeInfo={storeInfo} categories={categories} />
               <SidebarProvider>
                 <Toaster position="top-center" reverseOrder={false} />
-                <BodyContainer className="mt-0 sm:mt-[100px]">
+                {/* <BodyContainer className="mt-0 sm:mt-[100px]">
                   {children}
-                </BodyContainer>
+                </BodyContainer> */}
               </SidebarProvider>
               <ZaloPhoneWidget />
             </CartProvider>
