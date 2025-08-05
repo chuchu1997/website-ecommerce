@@ -1,3 +1,5 @@
+/** @format */
+
 "use client";
 
 import { ImageLoader } from "@/components/ui/image-loader";
@@ -5,7 +7,14 @@ import { CategoryInterface } from "@/types/category";
 import { ProductInterface } from "@/types/product";
 import { PromotionInterface } from "@/types/promotion";
 import Link from "next/link";
-import { ArrowRight, Star, TrendingUp, Package, Tag, Sparkles } from "lucide-react";
+import {
+  ArrowRight,
+  Star,
+  TrendingUp,
+  Package,
+  Tag,
+  Sparkles,
+} from "lucide-react";
 
 import { ProductCard } from "@/components/ui/product/product-card";
 import { useWindowSize } from "@/hooks/useWindowSize";
@@ -31,7 +40,8 @@ export const ProductWithCategoryClient = ({
   const windowSize = useWindowSize();
 
   return (
-    <section className={`py-8 lg:py-12 ${isGrayBg ? "bg-gray-50" : "bg-white"}`}>
+    <section
+      className={`py-8 lg:py-12 ${isGrayBg ? "bg-gray-50" : "bg-white"}`}>
       <div className="container mx-auto  ">
         {/* Category Banner Header */}
         <div className="mb-8 lg:mb-12">
@@ -46,7 +56,7 @@ export const ProductWithCategoryClient = ({
             />
             {/* Overlay */}
             <div className="absolute inset-0 bg-gradient-to-r from-black/60 via-black/30 to-transparent" />
-            
+
             {/* Category Info Overlay */}
             <div className="absolute z-30 bottom-0 left-0 right-0 p-4 sm:p-6 lg:p-8">
               <div className="flex items-end justify-between">
@@ -57,8 +67,7 @@ export const ProductWithCategoryClient = ({
                     </span>
                     {promotions.length > 0 && (
                       <span className="bg-red-500 text-white px-3 py-1 rounded-full text-xs font-semibold flex items-center gap-1">
-                        <Sparkles className="w-3 h-3" />
-                        2 ưu đãi
+                        <Sparkles className="w-3 h-3" />2 ưu đãi
                       </span>
                     )}
                   </div>
@@ -66,16 +75,16 @@ export const ProductWithCategoryClient = ({
                     {category?.name}
                   </h1>
                   <p className="text-dark text-sm sm:text-base max-w-2xl italic">
-                    Khám phá bộ sưu tập {category?.name?.toLowerCase()} chất lượng cao cho ngành {industry}
+                    Khám phá bộ sưu tập {category?.name?.toLowerCase()} chất
+                    lượng cao cho ngành {industry}
                   </p>
                 </div>
-                
+
                 {/* Desktop CTA */}
                 <div className="hidden lg:block ml-6">
                   <Link
                     href={`/danh-muc/${slug}`}
-                    className="bg-yellow-500 hover:bg-yellow-600 text-black px-6 py-3 rounded-xl font-semibold transition-all duration-200 flex items-center gap-2 shadow-lg hover:shadow-xl transform hover:scale-105"
-                  >
+                    className="bg-yellow-500 hover:bg-yellow-600 text-black px-6 py-3 rounded-xl font-semibold transition-all duration-200 flex items-center gap-2 shadow-lg hover:shadow-xl transform hover:scale-105">
                     Xem tất cả
                     <ArrowRight className="w-5 h-5" />
                   </Link>
@@ -116,10 +125,10 @@ export const ProductWithCategoryClient = ({
                   <Tag className="w-5 h-5 text-red-600" />
                 </div>
                 <div className="text-xl sm:text-2xl font-bold text-gray-900">
-                 2
+                  2
                 </div>
                 <div className="text-xs sm:text-sm text-gray-600 font-medium">
-                 Ưu đãi
+                  Ưu đãi
                 </div>
               </div>
             </div>
@@ -134,10 +143,10 @@ export const ProductWithCategoryClient = ({
               <div className="w-1 h-8 bg-yellow-500 rounded-full"></div>
               <div>
                 <h2 className="text-xl sm:text-2xl lg:text-3xl font-bold text-gray-900">
-                Danh mục {category.name}
+                  Danh mục {category.name}
                 </h2>
                 <p className="text-gray-600 text-sm sm:text-base">
-                 Các sản phẩm thuộc danh mục {category.name}
+                  Các sản phẩm thuộc danh mục {category.name}
                 </p>
               </div>
             </div>
@@ -150,11 +159,10 @@ export const ProductWithCategoryClient = ({
           </div>
 
           {/* Products Grid would go here */}
-          <div className="bg-gray-50rounded-xl p-1 text-center">
-                         <div className="relative z-10">
-            <ProductListMotionWrapper products={products} />
-          </div>
-         
+          <div className="bg-gray-50 rounded-xl p-1 ">
+            <div className="relative z-10">
+              <ProductListMotionWrapper products={products} />
+            </div>
           </div>
         </div>
 
@@ -164,30 +172,24 @@ export const ProductWithCategoryClient = ({
           <div className="lg:hidden">
             <Link
               href={`/danh-muc/${slug}`}
-              className="flex items-center justify-center gap-3 w-full mx-auto bg-gray-900 hover:bg-black text-white px-6 py-2 rounded-xl font-semibold transition-all duration-200 shadow-lg"
-            >
+              className="flex items-center justify-center gap-3 w-full bg-gradient-to-r from-yellow-500 to-yellow-600 hover:from-yellow-600 hover:to-yellow-700 text-white px-6 py-3 rounded-xl font-semibold transition-all duration-300 shadow-md hover:shadow-lg transform hover:scale-[1.02] border border-yellow-400 hover:border-yellow-500">
               Xem tất cả sản phẩm
-              <ArrowRight className="w-5 h-5" />
+              <ArrowRight className="w-5 h-5 transition-transform duration-300 group-hover:translate-x-1" />
             </Link>
           </div>
 
           {/* Additional Products Info */}
           <div className="hidden lg:block text-center">
-              <div className="inline-flex items-center gap-2 text-gray-600">
-                <span className="text-sm">
-                  Và còn các
-               
-                  sản phẩm khác
-                </span>
-                <Link
-                  href={`/danh-muc/${slug}`}
-                  className="text-yellow-600 hover:text-yellow-700 font-semibold transition-colors flex items-center gap-1 ml-2"
-                >
-                  Khám phá ngay
-                  <ArrowRight className="w-4 h-4" />
-                </Link>
-              </div>
+            <div className="inline-flex items-center gap-2 text-gray-600">
+              <span className="text-sm">Và còn các sản phẩm khác</span>
+              <Link
+                href={`/danh-muc/${slug}`}
+                className="text-yellow-600 hover:text-yellow-700 font-semibold transition-colors flex items-center gap-1 ml-2">
+                Khám phá ngay
+                <ArrowRight className="w-4 h-4" />
+              </Link>
             </div>
+          </div>
           {/* Promotions Banner */}
           {promotions.length > 0 && (
             <div className="bg-gradient-to-r from-yellow-50 to-yellow-100 border border-yellow-200 rounded-xl p-4 sm:p-6 shadow-sm">
@@ -205,7 +207,7 @@ export const ProductWithCategoryClient = ({
                     </p>
                   </div>
                 </div>
-                
+
                 <div className="flex items-center gap-2 bg-yellow-500 text-black px-4 py-2 rounded-lg font-semibold text-sm">
                   <span>HOT</span>
                   <Star className="w-4 h-4 fill-current" />

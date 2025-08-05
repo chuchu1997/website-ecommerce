@@ -483,11 +483,11 @@ const ProfessionalNavbar: React.FC<NavbarProps> = ({
                                                 <h4 className="font-semibold text-sm text-gray-900 group-hover:text-blue-600 transition-colors duration-200 line-clamp-2">
                                                   {childCategory.name}
                                                 </h4>
-                                                {childCategory.description && (
+                                                {/* {childCategory.description && (
                                                   <p className="text-xs text-gray-500 group-hover:text-blue-500 transition-colors duration-200 line-clamp-2 mt-1">
                                                     {childCategory.description}
                                                   </p>
-                                                )}
+                                                )} */}
                                               </div>
                                             </div>
                                           </Link>
