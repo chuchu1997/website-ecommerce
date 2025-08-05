@@ -333,9 +333,7 @@ export const ProductCard = ({
               {/* Rating */}
               <div className="flex items-center gap-2">
                 {renderStars()}
-                <span className="text-gray-500 text-xs font-medium">
-                  5.0 (1.2k)
-                </span>
+                <span className="text-gray-500 text-xs font-medium">5.0</span>
               </div>
 
               {/* Gift indicator */}
@@ -420,9 +418,6 @@ export const ProductCard = ({
                 5.0
               </span>
             </div>
-            <span className="text-xs text-gray-500 font-medium">
-              (1.2k đánh giá)
-            </span>
           </div>
 
           {/* Price Section */}

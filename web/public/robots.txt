@@ -3,8 +3,8 @@ User-agent: *
 Allow: /
 
 # Host
-Host: https://guitarsaithanh.com
+Host: https://saithanhguitar.com
 
 # Sitemaps
-Sitemap: https://guitarsaithanh.com/sitemap.xml
-Sitemap: https://guitarsaithanh.com/server-sitemap.xml
+Sitemap: https://saithanhguitar.com/sitemap.xml
+Sitemap: https://saithanhguitar.com/server-sitemap.xml

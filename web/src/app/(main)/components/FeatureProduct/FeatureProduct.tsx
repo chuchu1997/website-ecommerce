@@ -46,7 +46,7 @@ export const FeatureProducts = async ({ industry }: Props) => {
 
   return (
     <section className="py-16 lg:py-24 bg-white border-t border-gray-200">
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="container mx-auto">
         {/* Header Section */}
         <div className="max-w-3xl mx-auto text-center mb-16">
           {/* Badge */}
