@@ -25,10 +25,7 @@ export const FeatureProducts = async ({ industry }: Props) => {
   let promotions: PromotionInterface[] = [];
 
   try {
-    const response = await ProductAPI.getFeatureProducts({
-      limit: 5,
-    });
-
+   
     featureProducts = await getCacheFeatureProductSSR();
 
     const allProductPromotions: ProductPromotion[] = featureProducts.flatMap(
