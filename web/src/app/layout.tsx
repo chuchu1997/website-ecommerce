@@ -67,10 +67,10 @@ export const getCachedStoreInfo = cache(
   unstable_cache(
     async (): Promise<StoreInterface> => {
       const res = await fetchSafe(() => StoreAPI.getStoreInfo(), {
-        store: { industry: "Xây dựng" },
+        store: { industry: "Nhạc cụ" },
       });
 
-      return res.store ?? { industry: "Xây dựng" };
+      return res.store ?? { industry: "Nhạc cụ" };
     },
     ["store-info-cache"],
     { revalidate: 120, tags: ["store-info"] }
@@ -84,8 +84,7 @@ export async function generateMetadata(): Promise<Metadata> {
     return generateSeoForPage(store.seo as SeoInterface);
   }
   return {
-    title: "Máy xây dựng mới ",
-    description: "Máy xây dựng mới description ",
+    title: "Sài thành guitar  ",
   };
 }
 
