@@ -48,7 +48,7 @@ function ContentLoader({ jsonContent }: { jsonContent: string }) {
   return (
     <RichTextPlugin
       contentEditable={
-        <ContentEditable className="prose dark:prose-invert max-w-none outline-none" />
+        <ContentEditable className="prose dark:prose-invert max-w-none outline-none " />
       }
       placeholder={null}
       ErrorBoundary={LexicalErrorBoundary}

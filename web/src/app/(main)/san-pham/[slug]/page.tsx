@@ -80,7 +80,7 @@ const SanPhamSlugSSR = async ({
   }
 
   return (
-    <div className="container mx-auto py-[20px]">
+    <div className="container mx-auto mt-[120px]">
       <ProductClient product={product} />
     </div>
   );

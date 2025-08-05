@@ -309,7 +309,7 @@ export default function ProductMobile({ product }: propsProductMobile) {
             <h3 className="font-semibold text-sm mb-3 text-gray-800">
               Giới thiệu về sản phẩm này
             </h3>
-            <div className="prose prose-sm max-w-none text-gray-700">
+            <div className="prose prose-sm max-w-none text-gray-700 ">
               <EditorClientWrapper jsonString={product.description} />
             </div>
           </div>

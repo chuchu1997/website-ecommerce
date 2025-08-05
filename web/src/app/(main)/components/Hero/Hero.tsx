@@ -42,7 +42,7 @@ export const HeroClient: React.FC<Props> = ({ bannersProps }) => {
   return (
     <section
       id="home"
-      className="relative border mt-[10px] md:mt-[90px] h-[300px] md:h-[800px] flex items-center justify-center overflow-hidden">
+      className="relative border mt-[80px] md:mt-[90px] h-[300px] md:h-[800px] flex items-center justify-center overflow-hidden">
       {/* Background image */}
 
       <div className="absolute inset-0 z-0">

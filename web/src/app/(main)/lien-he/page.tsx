@@ -126,7 +126,7 @@ const ContactPage = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50 px-4 py-16 sm:px-6 lg:px-8">
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50 px-4 py-16 sm:px-6 lg:px-8 mt-[60px] sm:mt-[80px]">
       <div className="mx-auto max-w-6xl">
         {/* Header Section */}
         <div className="text-center mb-16">

@@ -110,7 +110,7 @@ export default async function RootLayout({
               <NavbarComponent storeInfo={storeInfo} categories={categories} />
               <SidebarProvider>
                 <Toaster position="top-center" reverseOrder={false} />
-                <BodyContainer className="mt-0 sm:mt-[40px]">
+                <BodyContainer className="mt-0 sm:mt-[25px]">
                   {children}
                 </BodyContainer>
               </SidebarProvider>

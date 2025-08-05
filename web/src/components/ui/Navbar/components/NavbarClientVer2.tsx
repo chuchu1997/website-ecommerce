@@ -262,13 +262,13 @@ const ProfessionalNavbar: React.FC<NavbarProps> = ({
     <>
       {/* Main Header - Fixed positioning */}
       <header
-        className={`fixed top-0 left-0 right-0 z-40 w-full transition-all duration-300 ${
+        className={`fixed top-0 left-0 right-0 z-40 w-full transition-all duration-300  ${
           isScrolled
             ? "bg-white/98 backdrop-blur-lg shadow-xl border-b border-gray-100"
             : "bg-white shadow-lg"
         }`}>
         {/* TOP SECTION - Logo, Search, Payment Guide, Business Hours */}
-        <div className="bg-gradient-to-r from-blue-50 via-white to-purple-50 border-b border-gray-100">
+        <div className="bg-gradient-to-r from-blue-50 via-white to-purple-50 border-b border-gray-100 px-2">
           <div className="container mx-auto  py-0">
             <div className="flex items-center justify-between">
               {/* Mobile Menu Button */}
@@ -331,7 +331,7 @@ const ProfessionalNavbar: React.FC<NavbarProps> = ({
                 className="inline-flex relative p-3 text-gray-700 hover:text-blue-600 hover:bg-blue-50 rounded-xl transition-all duration-200 sm:hidden items-center group">
                 <ShoppingCart className="w-5 h-5 group-hover:scale-110 transition-transform duration-200" />
                 {cartQuantity > 0 && (
-                  <span className="absolute -top-1 -right-1 bg-gradient-to-r from-red-500 to-pink-500 text-white text-xs rounded-full w-6 h-6 flex items-center justify-center font-bold shadow-lg animate-pulse">
+                  <span className="absolute -top-1 -right-1 bg-gradient-to-r from-red-500 to-pink-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center font-bold shadow-lg animate-pulse">
                     {cartQuantity}
                   </span>
                 )}
