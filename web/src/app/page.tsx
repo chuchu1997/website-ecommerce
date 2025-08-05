@@ -21,7 +21,7 @@ import { FlashSaleComponentView } from "./(main)/components/flash-sale";
 import { HeroSSR } from "./(main)/components/Hero/HeroSSR";
 import { getCachedStoreInfo } from "./layout";
 
-export const revalidate = 120;
+export const revalidate = 30;
 
 const MusicStoreLanding: React.FC = async () => {
   const storeInfo = await getCachedStoreInfo();
