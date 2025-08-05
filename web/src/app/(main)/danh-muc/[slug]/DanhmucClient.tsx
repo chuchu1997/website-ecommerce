@@ -76,12 +76,14 @@ interface Project {
 }
 
 // Fetch functions for each variant
-
-const DanhMucPage = () => {
+interface Props {
+  categoryProps: CategoryInterface;
+}
+const DanhMucPageClient = ({ categoryProps }: Props) => {
   const { slug } = useParams();
-  const [category, setCategory] = useState<CategoryInterface | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const category: CategoryInterface = categoryProps;
 
   useEffect(() => {
     fetchProductsFromCategory(1, 4);
@@ -101,7 +103,6 @@ const DanhMucPage = () => {
 
       const categoryData = res.data;
       const products = categoryData.products;
-      setCategory(categoryData);
 
       return {
         products: products ?? [],
@@ -213,7 +214,7 @@ const DanhMucPage = () => {
         {category.variant ? (
           <div className="space-y-8">{renderVariantContent()}</div>
         ) : (
-          <div className="space-y-8 mt-[30px]">
+          <div className="space-y-8">
             <ScrollToLoadProductsWithCategory
               categoryName={category.name}
               fetchProducts={fetchProductsFromCategory}
@@ -229,4 +230,4 @@ const DanhMucPage = () => {
   );
 };
 
-export default DanhMucPage;
+export default DanhMucPageClient;

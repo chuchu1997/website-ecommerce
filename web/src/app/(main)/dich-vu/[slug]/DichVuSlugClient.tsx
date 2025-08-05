@@ -14,7 +14,7 @@ interface Props {
   params: Promise<{ slug: string }>;
 }
 
-const DuAnSlug = async ({ params }: Props) => {
+const DichVuSlugClient = async ({ params }: Props) => {
   const { slug } = await params;
 
   let service: ServiceInterface | undefined;
@@ -90,4 +90,4 @@ const DuAnSlug = async ({ params }: Props) => {
   );
 };
 
-export default DuAnSlug;
+export default DichVuSlugClient;

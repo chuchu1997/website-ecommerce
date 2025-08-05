@@ -3,25 +3,33 @@ import { ProductListMotionWrapper } from "@/components/ui/product/ProductListMot
 import { Brand } from "@/types/brand";
 import { ProductInterface } from "@/types/product";
 import { ProductPromotion, PromotionInterface } from "@/types/promotion";
+import { fetchSafe } from "@/utils/fetchSafe";
 
-
-
-
-
-interface Props  { 
-  industry:string;
+interface Props {
+  industry: string;
 }
-export const FeatureProducts = async ({industry}:Props) => {
+
+const getCacheFeatureProductSSR = async (): Promise<ProductInterface[]> => {
+  const res = await fetchSafe(
+    () => ProductAPI.getFeatureProducts({ limit: 5 }),
+    {
+      products: [],
+    }
+  );
+  const products = res.products ?? [];
+  return products;
+};
+
+export const FeatureProducts = async ({ industry }: Props) => {
   let featureProducts: ProductInterface[] = [];
   let promotions: PromotionInterface[] = [];
 
-    
   try {
     const response = await ProductAPI.getFeatureProducts({
       limit: 5,
     });
 
-    featureProducts = response.data.products as ProductInterface[];
+    featureProducts = await getCacheFeatureProductSSR();
 
     const allProductPromotions: ProductPromotion[] = featureProducts.flatMap(
       (product) => product.promotionProducts
@@ -40,104 +48,92 @@ export const FeatureProducts = async ({industry}:Props) => {
   }
 
   return (
-    <section className="order-t border-white/30 shadow-inner relative py-12 sm:py-16 lg:py-24 bg-gradient-to-br from-gray-50 via-white to-gray-100 overflow-hidden">
-      {/* Background Decorations */}
-      <div className="absolute inset-0 overflow-hidden">
-        <div className="absolute -top-32 -right-32 w-64 h-64 bg-gradient-to-br from-amber-200/20 to-orange-300/20 rounded-full blur-3xl" />
-        <div className="absolute -bottom-32 -left-32 w-64 h-64 bg-gradient-to-br from-blue-200/20 to-purple-300/20 rounded-full blur-3xl" />
-        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-gradient-to-br from-green-200/10 to-teal-300/10 rounded-full blur-3xl" />
-      </div>
-
-      <div className="relative container mx-auto px-1 sm:px-6 lg:px-8">
+    <section className="py-16 lg:py-24 bg-white border-t border-gray-200">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header Section */}
-        <div className="text-center mb-12 sm:mb-16 lg:mb-20">
-          {/* Icon Badge */}
-          <div className="inline-flex items-center justify-center w-16 h-16 sm:w-20 sm:h-20 bg-gradient-to-r from-amber-500 to-orange-600 rounded-2xl mb-6 sm:mb-8 shadow-lg">
-            <span className="text-2xl sm:text-3xl">⭐</span>
+        <div className="max-w-3xl mx-auto text-center mb-16">
+          {/* Badge */}
+          <div className="inline-flex items-center px-4 py-2 bg-yellow-100 border border-yellow-200 rounded-full mb-6">
+            <svg className="w-4 h-4 text-yellow-600 mr-2" fill="currentColor" viewBox="0 0 20 20">
+              <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+            </svg>
+            <span className="text-sm font-medium text-yellow-800">Sản phẩm nổi bật</span>
           </div>
 
           {/* Main Title */}
-          <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-extrabold mb-4 sm:mb-6 leading-tight">
-            <span className="bg-gradient-to-r from-gray-900 via-gray-800 to-gray-900 bg-clip-text text-transparent">
-              Sản Phẩm
-            </span>
-            
-            <span className="bg-gradient-to-r from-amber-600 via-orange-600 to-amber-700 bg-clip-text text-transparent ml-4">
-              Nổi Bật
-            </span>
+          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-gray-900 mb-6 leading-tight">
+            Sản Phẩm 
+            <span className="text-yellow-600 ml-2">Được Yêu Thích Nhất</span>
           </h2>
 
           {/* Subtitle */}
-          <p className="text-base sm:text-lg md:text-xl lg:text-2xl text-gray-600 max-w-2xl lg:max-w-4xl mx-auto leading-relaxed">
-            Khám phá những sản phẩm trong ngành {industry} được yêu thích nhất, được chế tác tinh xảo và thiết kế hiện đại.
+          <p className="text-base text-gray-600 leading-relaxed max-w-2xl mx-auto">
+            Khám phá bộ sưu tập sản phẩm chất lượng cao trong ngành <span className="font-semibold text-gray-900">{industry}</span>, được khách hàng tin tựng và đánh giá cao nhất.
           </p>
-
-          {/* Decorative Line */}
-          <div className="flex items-center justify-center mt-4 sm:mt-10">
-            <div className="flex space-x-2">
-              <div className="w-2 h-2 bg-amber-500 rounded-full animate-pulse" />
-              <div className="w-2 h-2 bg-orange-500 rounded-full animate-pulse delay-150" />
-              <div className="w-2 h-2 bg-amber-500 rounded-full animate-pulse delay-300" />
-            </div>
-          </div>
         </div>
 
         {/* Products Section */}
-        <div className="relative">
-          {/* Products Grid/List */}
-          <div className="relative z-10">
-            <ProductListMotionWrapper products={featureProducts} />
-          </div>
-       
+        <div className="mb-16">
+          <ProductListMotionWrapper products={featureProducts} />
         </div>
 
-        {/* Call to Action */}
-        {/* <div className="text-center mt-12 sm:mt-16 lg:mt-20">
-          <button className="group relative bg-gradient-to-r from-amber-600 to-orange-600 hover:from-amber-700 hover:to-orange-700 text-white px-6 sm:px-8 lg:px-10 py-3 sm:py-4 lg:py-5 rounded-xl sm:rounded-2xl text-sm sm:text-base lg:text-lg font-semibold transition-all duration-300 shadow-lg hover:shadow-2xl overflow-hidden transform hover:scale-105">
-            <span className="relative z-10 flex items-center justify-center gap-2">
-              Xem Tất Cả Sản Phẩm
-              <span className="group-hover:translate-x-1 transition-transform duration-300">
-                →
-              </span>
-            </span>
-            <div className="absolute inset-0 bg-gradient-to-r from-white/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-          </button>
-        </div> */}
-
-        {/* Stats Section (Optional Enhancement) */}
+        {/* Stats Section */}
         {featureProducts.length > 0 && (
-          <div className="mt-16 sm:mt-20 lg:mt-24">
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-6 sm:gap-8">
+          <div className="border-t border-gray-200 pt-16">
+            <div className="grid grid-cols-2 lg:grid-cols-4 gap-8">
               <div className="text-center">
-                <div className="text-2xl sm:text-3xl lg:text-4xl font-bold text-gray-900 mb-2">
+                <div className="w-12 h-12 bg-yellow-100 rounded-xl flex items-center justify-center mx-auto mb-4">
+                  <svg className="w-6 h-6 text-yellow-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
+                  </svg>
+                </div>
+                <div className="text-2xl lg:text-3xl font-bold text-gray-900 mb-2">
                   {featureProducts.length}
                 </div>
-                <div className="text-sm sm:text-base text-gray-600">
+                <div className="text-sm text-gray-600 font-medium">
                   Sản phẩm nổi bật
                 </div>
               </div>
+
               <div className="text-center">
-                <div className="text-2xl sm:text-3xl lg:text-4xl font-bold text-gray-900 mb-2">
+                <div className="w-12 h-12 bg-yellow-100 rounded-xl flex items-center justify-center mx-auto mb-4">
+                  <svg className="w-6 h-6 text-yellow-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                  </svg>
+                </div>
+                <div className="text-2xl lg:text-3xl font-bold text-gray-900 mb-2">
                   100%
                 </div>
-                <div className="text-sm sm:text-base text-gray-600">
-                  Chất lượng cao
+                <div className="text-sm text-gray-600 font-medium">
+                  Chất lượng đảm bảo
                 </div>
               </div>
+
               <div className="text-center">
-                <div className="text-2xl sm:text-3xl lg:text-4xl font-bold text-gray-900 mb-2">
+                <div className="w-12 h-12 bg-yellow-100 rounded-xl flex items-center justify-center mx-auto mb-4">
+                  <svg className="w-6 h-6 text-yellow-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M18.364 5.636l-3.536 3.536m0 5.656l3.536 3.536M9.172 9.172L5.636 5.636m3.536 9.192L5.636 18.364M12 2.25a9.75 9.75 0 110 19.5 9.75 9.75 0 010-19.5z" />
+                  </svg>
+                </div>
+                <div className="text-2xl lg:text-3xl font-bold text-gray-900 mb-2">
                   24/7
                 </div>
-                <div className="text-sm sm:text-base text-gray-600">
+                <div className="text-sm text-gray-600 font-medium">
                   Hỗ trợ khách hàng
                 </div>
               </div>
+
               <div className="text-center">
-                <div className="text-2xl sm:text-3xl lg:text-4xl font-bold text-gray-900 mb-2">
-                  {promotions.length || 0}
+                <div className="w-12 h-12 bg-yellow-100 rounded-xl flex items-center justify-center mx-auto mb-4">
+                  <svg className="w-6 h-6 text-yellow-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z" />
+                  </svg>
                 </div>
-                <div className="text-sm sm:text-base text-gray-600">
-                  Ưu đãi hiện tại
+                <div className="text-2xl lg:text-3xl font-bold text-gray-900 mb-2">
+                  {promotions.length}
+                </div>
+                <div className="text-sm text-gray-600 font-medium">
+                  Ưu đãi đặc biệt
                 </div>
               </div>
             </div>

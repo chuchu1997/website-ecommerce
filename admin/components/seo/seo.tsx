@@ -1,6 +1,6 @@
 /** @format */
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import {
   Search,
   Globe,
@@ -26,6 +26,72 @@ import { KeywordsInput } from "./KeywordInput";
 const SEOForm = ({ loading = false, form }: any) => {
   const [activeTab, setActiveTab] = useState("basic");
   const [seoScore, setSeoScore] = useState(0);
+  const debounceRef = useRef<NodeJS.Timeout | null>(null);
+  useEffect(() => {
+    const pathname =
+      typeof window !== "undefined"
+        ? window.location.pathname.toLowerCase()
+        : "";
+
+    const subscription = form.watch((value: any, { name }: any) => {
+      // 👉 Lắng nghe thay đổi của slug
+      if (name === "slug" && value?.slug) {
+        const currentSeoSlug = form.getValues("seo.slug");
+        if (currentSeoSlug === value.slug) return;
+
+        if (debounceRef.current) clearTimeout(debounceRef.current);
+
+        debounceRef.current = setTimeout(() => {
+          if (pathname.includes("news")) {
+            form.setValue("seo.slug", `tin-tuc/${value.slug}`);
+            form.setValue(
+              "seo.canonicalUrl",
+              `${process.env.NEXT_PUBLIC_BASE_URL_WEBSITE}/tin-tuc/${value.slug}`
+            );
+          }
+
+          if (pathname.includes("products")) {
+            form.setValue("seo.slug", `san-pham/${value.slug}`);
+            form.setValue(
+              "seo.canonicalUrl",
+              `${process.env.NEXT_PUBLIC_BASE_URL_WEBSITE}/san-pham/${value.slug}`
+            );
+          }
+
+          if (pathname.includes("projects")) {
+            form.setValue("seo.slug", `du-an/${value.slug}`);
+            form.setValue(
+              "seo.canonicalUrl",
+              `${process.env.NEXT_PUBLIC_BASE_URL_WEBSITE}/du-an/${value.slug}`
+            );
+          }
+
+          if (pathname.includes("services")) {
+            form.setValue("seo.slug", `dich-vu/${value.slug}`);
+            form.setValue(
+              "seo.canonicalUrl",
+              `${process.env.NEXT_PUBLIC_BASE_URL_WEBSITE}/dich-vu/${value.slug}`
+            );
+          }
+
+          if (pathname.includes("categories")) {
+            form.setValue("seo.slug", `danh-muc/${value.slug}`);
+            form.setValue(
+              "seo.canonicalUrl",
+              `${process.env.NEXT_PUBLIC_BASE_URL_WEBSITE}/danh-muc/${value.slug}`
+            );
+          }
+        }, 400);
+      }
+
+      // 👉 Lắng nghe thay đổi của imageUrl
+    });
+
+    return () => {
+      if (debounceRef.current) clearTimeout(debounceRef.current);
+      subscription.unsubscribe();
+    };
+  }, [form]);
 
   const ProgressBar = ({ value, max, className = "" }: any) => (
     <div className={`w-full bg-gray-200 rounded-full h-2 ${className}`}>
@@ -41,10 +107,12 @@ const SEOForm = ({ loading = false, form }: any) => {
       />
     </div>
   );
+
   const getSEOScore = () => {
     let score = 0;
     const seo = form.watch("seo");
-    console.log("CALL NE ", seo);
+
+    seo?.canonicalUrl;
 
     if (seo?.title?.length >= 30 && seo.title.length <= 60) score += 20;
     if (seo?.description?.length >= 120 && seo.description.length <= 160)
@@ -56,6 +124,7 @@ const SEOForm = ({ loading = false, form }: any) => {
     if (seo?.ogTitle && seo?.ogDescription) score += 10;
     return score;
   };
+
   useEffect(() => {
     setSeoScore(getSEOScore());
   }, []);

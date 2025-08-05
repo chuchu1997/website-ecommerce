@@ -1,16 +1,14 @@
 /** @format */
 "use client";
-import { NewsAPI } from "@/api/news/news.api";
 import { ProjectAPI } from "@/api/projects/projects.api";
 import { ProjectCard } from "@/components/ui/ProjectCard";
-import { NewsInterface } from "@/types/news";
-import { ProjectInterface } from "@/types/project";
-import { FormatUtils } from "@/utils/format";
+import { ServiceCard } from "@/components/ui/ServiceCard";
+import { ServiceInterface } from "@/types/service";
 
 import React, { useEffect, useState } from "react";
 
-const ProjectPage: React.FC = () => {
-  const [projects, setProjects] = useState<ProjectInterface[]>([]);
+const DichVuPageClient: React.FC = () => {
+  const [services, setServices] = useState<ServiceInterface[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [total, setTotal] = useState(0);
 
@@ -18,7 +16,7 @@ const ProjectPage: React.FC = () => {
     let res = await ProjectAPI.getProjects({ currentPage, limit: 9999 });
     if (res.status === 200) {
       setTotal(res.data.total);
-      setProjects(res.data.projects);
+      setServices(res.data.projects);
     }
   };
   useEffect(() => {
@@ -42,8 +40,8 @@ const ProjectPage: React.FC = () => {
 
         {/* Project List */}
         <section className="py-12 px-6 md:px-16 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {projects.map((item) => (
-            <ProjectCard project={item} key={item.id} />
+          {services.map((item) => (
+            <ServiceCard service={item} key={item.id} />
           ))}
         </section>
       </div>
@@ -51,4 +49,4 @@ const ProjectPage: React.FC = () => {
   );
 };
 
-export default ProjectPage;
+export default DichVuPageClient;

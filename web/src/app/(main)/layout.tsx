@@ -18,8 +18,7 @@ export default async function MainLayout({
 }>) {
   return (
     <div className="w-full">
-      <Navbar />
-      <BodyContainer className="mt-[90px] sm:mt-[80px]">
+      <BodyContainer className="mt-[60px] sm:mt-[80px]">
         {children}
       </BodyContainer>
       {/* <BodyContainer className="mt-[90px] sm:mt-[65px]">

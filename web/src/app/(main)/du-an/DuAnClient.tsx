@@ -9,7 +9,7 @@ import { FormatUtils } from "@/utils/format";
 
 import React, { useEffect, useState } from "react";
 
-const ProjectPage: React.FC = () => {
+const ProjectPageClient: React.FC = () => {
   const [projects, setProjects] = useState<ProjectInterface[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [total, setTotal] = useState(0);
@@ -51,4 +51,4 @@ const ProjectPage: React.FC = () => {
   );
 };
 
-export default ProjectPage;
+export default ProjectPageClient;

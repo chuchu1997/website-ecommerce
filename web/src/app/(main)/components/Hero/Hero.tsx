@@ -7,20 +7,23 @@ import { BannerAPI } from "@/api/banner/banner.api";
 import { BannerInterface } from "@/types/banner";
 import { ImageLoader } from "@/components/ui/image-loader";
 
-export const Hero: React.FC = () => {
+interface Props {
+  bannersProps: BannerInterface[];
+}
+export const HeroClient: React.FC<Props> = ({ bannersProps }) => {
   const [currentSlide, setCurrentSlide] = useState(0);
-  const [banners, setBanners] = useState<BannerInterface[]>([]);
+  const [banners, setBanners] = useState<BannerInterface[]>(bannersProps);
 
-  const fetchBanners = async () => {
-    const response = await BannerAPI.getAllBannerFromStore();
-    if (response.status === 200) {
-      setBanners(response.data.banners as BannerInterface[]);
-    }
-  };
+  // const fetchBanners = async () => {
+  //   const response = await BannerAPI.getAllBannerFromStore();
+  //   if (response.status === 200) {
+  //     setBanners(response.data.banners as BannerInterface[]);
+  //   }
+  // };
 
-  useEffect(() => {
-    fetchBanners();
-  }, []);
+  // useEffect(() => {
+  //   fetchBanners();
+  // }, []);
 
   useEffect(() => {
     if (banners.length === 0) return;
@@ -39,37 +42,38 @@ export const Hero: React.FC = () => {
   return (
     <section
       id="home"
-      className="relative mt-[82px] h-[300px] md:h-[700px] flex items-center justify-center overflow-hidden">
+      className="relative border mt-[10px] md:mt-[90px] h-[300px] md:h-[800px] flex items-center justify-center overflow-hidden">
       {/* Background image */}
+
       <div className="absolute inset-0 z-0">
         <ImageLoader
           src={currentBanner.imageUrl}
           alt={currentBanner.title || "banner"}
           fill
-          priority={true}
+          priority={currentSlide === 0 ? true : false}
           quality={90}
-          className="w-full h-full"
+          className="w-full h-full object-cover object-center"
           style={{ objectFit: "cover" }}
           sizes="100vw"
           fadeInDuration={500}
           showShimmer={true}
           skeletonClassName="bg-gray-800"
         />
-        <div className="absolute inset-0 bg-black/10 z-40" />
+        <div className="absolute inset-0 bg-black/5 z-40" />
       </div>
 
       {/* Text and CTA */}
-      {/* <div className="relative z-20 text-center text-white max-w-4xl mx-auto px-4">
+      <div className="relative z-20 text-center text-white max-w-4xl mx-auto px-4">
         <HeroMotion
         // mainTitle={currentBanner.title || "Máy xây dựng mới "}
         // subTitle={currentBanner.description || "Sản phẩm tiêu chuẩn"}
         // action={currentBanner.cta?.title || "Khám phá"}
         // link={currentBanner.cta?.link}
         />
-      </div> */}
+      </div>
 
       {/* Dot navigation */}
-      <div className="scale-80 absolute bottom-8 left-1/2 transform -translate-x-1/2 z-30 flex space-x-3">
+      <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 z-30 flex space-x-3">
         {banners.map((_, index) => (
           <button
             key={index}
