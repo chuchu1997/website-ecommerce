@@ -4,6 +4,7 @@ import { UpdateArticleDto } from './dto/update-article.dto';
 import { ArticleQueryFilterDto } from './dto/query-article.dto';
 import { UploadService } from 'src/upload/upload.service';
 import { PrismaService } from 'src/prisma.service';
+import { ImageMediaType } from '@prisma/client';
 
 @Injectable()
 export class ArticlesService {
@@ -20,6 +21,12 @@ export class ArticlesService {
           seo: seo as any, // Cast to 'any' or 'Prisma.InputJsonValue'
         }),
         ...data,
+        image: {
+          create: {
+            url: data.imageUrl,
+            type: ImageMediaType.NEWS,
+          },
+        },
       },
     });
     return article;
@@ -35,6 +42,9 @@ export class ArticlesService {
       },
       take: limit,
       skip: (currentPage - 1) * limit,
+      include: {
+        image: true,
+      },
     });
     return articles;
   }
@@ -49,6 +59,9 @@ export class ArticlesService {
     return await this.prisma.news.findUnique({
       where: {
         slug: slug,
+      },
+      include: {
+        image: true,
       },
     });
   }
@@ -80,6 +93,11 @@ export class ArticlesService {
           seo: seo as any, // Cast to 'any' or 'Prisma.InputJsonValue'
         }),
         imageUrl: imageUrl,
+        image: {
+          update: {
+            url: imageUrl,
+          },
+        },
       },
     });
 
@@ -90,12 +108,19 @@ export class ArticlesService {
     const existArticle = await this.prisma.news.findUnique({
       where: { id },
       select: {
+        image: true,
         imageUrl: true,
       },
     });
     if (existArticle?.imageUrl) {
       await this.uploadService.deleteImagesFromS3(existArticle.imageUrl);
+      await this.prisma.imageMedia.delete({
+        where: {
+          id: existArticle.image?.id,
+        },
+      });
     }
+
     return await this.prisma.news.delete({
       where: { id },
     });

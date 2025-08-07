@@ -47,6 +47,7 @@ export const ProductClient = () => {
           products: ProductInterface[];
           total: number;
         };
+        console.log("products", products);
         if (products) {
           setProducts(products);
           setTotalProduct(total);

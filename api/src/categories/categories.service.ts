@@ -69,6 +69,11 @@ export class CategoriesService {
           data: {
             ...data,
             position,
+            image: {
+              create: {
+                url: data.imageUrl,
+              },
+            },
             ...(seo !== undefined && { seo: seo as any }),
           },
         }),
@@ -231,6 +236,28 @@ export class CategoriesService {
   async update(id: number, updateCategoryDto: UpdateCategoryDto) {
     const { seo, position, ...data } = updateCategoryDto;
 
+    const checkImageChange = await this.prisma.category.findUnique({
+      where: { id },
+      select: {
+        imageUrl: true,
+      },
+    });
+    const isImagesUpdated =
+      data.imageUrl &&
+      JSON.stringify(data.imageUrl) !==
+        JSON.stringify(checkImageChange?.imageUrl);
+    if (isImagesUpdated) {
+      await this.uploadService.deleteImagesFromS3(
+        checkImageChange?.imageUrl ?? '',
+      );
+    }
+
+    // const isImagesUpdated =
+    //   imageUrl &&
+    //   JSON.stringify(imageUrl) !== JSON.stringify(existArticle?.imageUrl);
+    // if (isImagesUpdated) {
+    //   await this.uploadService.deleteImagesFromS3(existArticle?.imageUrl ?? '');
+    // }
     // Kiểm tra slug trùng
     const existingSlug = await this.prisma.category.findUnique({
       where: { slug: data.slug },
@@ -300,6 +327,11 @@ export class CategoriesService {
         ...data,
         parentId: newParentId ?? null,
         position: position ?? existCategory.position,
+        image: {
+          update: {
+            url: data.imageUrl,
+          },
+        },
       },
     });
 
@@ -314,8 +346,18 @@ export class CategoriesService {
         position: true,
         parentId: true,
         storeId: true,
+        image: true,
+        imageUrl: true,
       },
     });
+    if (existCategory?.imageUrl) {
+      await this.uploadService.deleteImagesFromS3(existCategory.imageUrl);
+      await this.prisma.imageMedia.delete({
+        where: {
+          id: existCategory.image?.id,
+        },
+      });
+    }
 
     if (!existCategory) {
       throw new BadRequestException(`❌ Danh mục với ID:${id} không tồn tại`);

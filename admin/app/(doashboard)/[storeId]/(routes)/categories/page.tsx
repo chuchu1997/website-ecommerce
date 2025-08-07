@@ -184,6 +184,7 @@ export default function CategoriesManagement() {
       const { categories } = response.data as {
         categories: CategoryInterface[];
       };
+
       setCategories(categories);
     }
   };
