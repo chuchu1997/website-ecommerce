@@ -1,8 +1,7 @@
-
 services:
-  mxdm-mysql:
+  mxdm2-mysql:
     image: mysql:8
-    container_name: mayxaydungmoi-mysql
+    container_name: mayxaydungmoi-mysql-ver2
     restart: always
     environment:
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
@@ -10,11 +9,10 @@ services:
       MYSQL_USER: ${MYSQL_USER}
       MYSQL_PASSWORD: ${MYSQL_PASSWORD}
     ports:
-      - "3317:3306"
+      - "4317:3306"  # Đổi port
     volumes:
-      - mysql-data-mayxaydungmoi:/var/lib/mysql
-      - ./init.sql:/docker-entrypoint-initdb.d/init.sql  # Add this line
-
+      - mysql-data-mayxaydungmoi-ver2:/var/lib/mysql
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
     networks:
       - proxy
     healthcheck:
@@ -24,13 +22,13 @@ services:
       interval: 10s
       start_period: 40s
 
-  mxdm-api:
+  mxdm2-api:
     build: ./api
-    container_name: mayxaydungmoi-api
+    container_name: mayxaydungmoi-api-ver2
     expose:
-      - "3000"
+      - "4000"
     depends_on:
-      mxdm-mysql:
+      mxdm2-mysql:
         condition: service_healthy
     env_file:
       - ./api/.env
@@ -44,17 +42,17 @@ services:
       - proxy
     restart: unless-stopped
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:3000/health"]
+      test: ["CMD", "curl", "-f", "http://localhost:4000/health"]
       interval: 10s
       timeout: 5s
       retries: 5
       start_period: 20s
 
-  mxdm-admin:
+  mxdm2-admin:
     build: ./admin
-    container_name: mayxaydungmoi-admin
+    container_name: mayxaydungmoi-admin-ver2
     ports:
-      - "3018:3500"
+      - "4018:3500"
     env_file:
       - ./admin/.env
     environment:
@@ -66,13 +64,13 @@ services:
       - proxy
     restart: unless-stopped
 
-  mxdm-web:
+  mxdm2-web:
     build: ./web
-    container_name: mayxaydungmoi-web
+    container_name: mayxaydungmoi-web-ver2
     ports:
-      - "3019:3900"
+      - "4019:3900"
     depends_on:
-      mxdm-api:
+      mxdm2-api:
         condition: service_healthy
     env_file:
       - ./web/.env
@@ -86,11 +84,10 @@ services:
     networks:
       - proxy
     restart: unless-stopped
-    # ✅ Chờ đến khi API thực sự sẵn sàng
 
 networks:
   proxy:
     external: true
 
 volumes:
-  mysql-data-mayxaydungmoi:
+  mysql-data-mayxaydungmoi-ver2:
