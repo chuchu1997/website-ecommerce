@@ -1,7 +1,8 @@
+
 services:
-  mxdm2-mysql:
+  mxdm-mysql:
     image: mysql:8
-    container_name: mayxaydungmoi-mysql-ver2
+    container_name: mayxaydungmoi-mysql
     restart: always
     environment:
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
@@ -9,10 +10,11 @@ services:
       MYSQL_USER: ${MYSQL_USER}
       MYSQL_PASSWORD: ${MYSQL_PASSWORD}
     ports:
-      - "4317:3306"  # Đổi port
+      - "3317:3306"
     volumes:
-      - mysql-data-mayxaydungmoi-ver2:/var/lib/mysql
-      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+      - mysql-data-mayxaydungmoi:/var/lib/mysql
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql  # Add this line
+
     networks:
       - proxy
     healthcheck:
@@ -22,13 +24,13 @@ services:
       interval: 10s
       start_period: 40s
 
-  mxdm2-api:
+  mxdm-api:
     build: ./api
-    container_name: mayxaydungmoi-api-ver2
+    container_name: mayxaydungmoi-api
     expose:
       - "3000"
     depends_on:
-      mxdm2-mysql:
+      mxdm-mysql:
         condition: service_healthy
     env_file:
       - ./api/.env
@@ -48,11 +50,11 @@ services:
       retries: 5
       start_period: 20s
 
-  mxdm2-admin:
+  mxdm-admin:
     build: ./admin
-    container_name: mayxaydungmoi-admin-ver2
+    container_name: mayxaydungmoi-admin
     ports:
-      - "4018:3500"
+      - "3018:3500"
     env_file:
       - ./admin/.env
     environment:
@@ -64,13 +66,13 @@ services:
       - proxy
     restart: unless-stopped
 
-  mxdm2-web:
+  mxdm-web:
     build: ./web
-    container_name: mayxaydungmoi-web-ver2
+    container_name: mayxaydungmoi-web
     ports:
-      - "4019:3900"
+      - "3019:3900"
     depends_on:
-      mxdm2-api:
+      mxdm-api:
         condition: service_healthy
     env_file:
       - ./web/.env
@@ -84,10 +86,11 @@ services:
     networks:
       - proxy
     restart: unless-stopped
+    # ✅ Chờ đến khi API thực sự sẵn sàng
 
 networks:
   proxy:
     external: true
 
 volumes:
-  mysql-data-mayxaydungmoi-ver2:
+  mysql-data-mayxaydungmoi:
