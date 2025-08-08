@@ -21,8 +21,8 @@ CREATE TABLE `ImageMedia` (
 
 
 INSERT INTO `ImageMedia` (`id`, `url`, `productId`)
-SELECT `id`, `url`,`productId` FROM `image`
+SELECT `id`, `url`,`productId` FROM `Image`
 WHERE `productId` IS NOT NULL;
 
 -- Xóa bảng image sau khi chuyển xong
-DROP TABLE `image`;
+DROP TABLE `Image`;
