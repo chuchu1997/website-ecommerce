@@ -26,7 +26,7 @@ services:
     build: ./api
     container_name: mayxaydungmoi-api-ver2
     expose:
-      - "4000"
+      - "3000"
     depends_on:
       mxdm2-mysql:
         condition: service_healthy
@@ -42,7 +42,7 @@ services:
       - proxy
     restart: unless-stopped
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:4000/health"]
+      test: ["CMD", "curl", "-f", "http://localhost:3000/health"]
       interval: 10s
       timeout: 5s
       retries: 5
