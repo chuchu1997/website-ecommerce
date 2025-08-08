@@ -138,8 +138,8 @@ export const ProductWithCategoryClient = ({
                     : windowSize.width < 768
                       ? 3
                       : windowSize.width < 1024
-                        ? 3
-                        : 4
+                        ? 4
+                        : 5
                 }
                 gap={4}
                 showArrows={windowSize.width >= 768}

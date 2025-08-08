@@ -468,7 +468,7 @@ const ProfessionalNavbar: React.FC<NavbarProps> = ({
                                   </h3>
                                 </div>
                                 <div className="flex-1 p-3 overflow-y-auto scrollbar-thin scrollbar-thumb-blue-300 scrollbar-track-transparent hover:scrollbar-thumb-blue-400">
-                                  <div className="grid grid-cols-3 gap-3">
+                                  <div className="grid grid-cols-5 gap-3">
                                     {getActiveParentCategory()?.subCategories?.map(
                                       (childCategory) => {
                                         return (
@@ -477,7 +477,7 @@ const ProfessionalNavbar: React.FC<NavbarProps> = ({
                                             key={childCategory.id}
                                             href={`/danh-muc/${childCategory.slug}`}
                                             className="group p-3 rounded-lg hover:bg-gradient-to-br hover:from-blue-50 hover:to-purple-50 transition-all duration-200 border border-transparent hover:border-blue-200 hover:shadow-md">
-                                            <div className="flex items-start space-x-2">
+                                            <div className="flex flex-col items-center space-y-2">
                                               <div className="relative w-10 h-10 flex-shrink-0">
                                                 <ImageLoader
                                                   fill
@@ -487,14 +487,14 @@ const ProfessionalNavbar: React.FC<NavbarProps> = ({
                                                 />
                                               </div>
                                               <div className="flex-1 min-w-0">
-                                                <h4 className="font-semibold text-sm text-gray-900 group-hover:text-blue-600 transition-colors duration-200 line-clamp-2">
+                                                <h4 className="text-center font-semibold text-sm text-gray-900 group-hover:text-blue-600 transition-colors duration-200 line-clamp-2">
                                                   {childCategory.name}
                                                 </h4>
-                                                {childCategory.description && (
+                                                {/* {childCategory.description && (
                                                   <p className="text-xs text-gray-500 group-hover:text-blue-500 transition-colors duration-200 line-clamp-2 mt-1">
                                                     {childCategory.description}
                                                   </p>
-                                                )}
+                                                )} */}
                                               </div>
                                             </div>
                                           </Link>

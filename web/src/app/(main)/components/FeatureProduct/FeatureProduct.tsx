@@ -17,6 +17,7 @@ const getCacheFeatureProductSSR = async (): Promise<ProductInterface[]> => {
       products: [],
     }
   );
+
   const products = res.products ?? [];
   return products;
   // const storeInfo = res.store ?? { industry: "Xây dựng" };

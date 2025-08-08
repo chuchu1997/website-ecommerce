@@ -37,7 +37,7 @@ export const RenderGiftItems = ({
         window.location.href = `/san-pham/${gift.slug}`;
       }}
       className={cn(
-        "relative group cursor-pointer overflow-hidden rounded-xl bg-white border-2 border-yellow-200/60 hover:border-yellow-400/80 transition-all duration-300 hover:shadow-lg hover:shadow-yellow-200/30",
+        "relative group cursor-pointer overflow-hidden rounded-lg bg-white border border-stone-200 hover:border-amber-300 transition-all duration-200 hover:shadow-sm",
         className
       )}>
       <div className="relative w-full h-full">
@@ -45,14 +45,14 @@ export const RenderGiftItems = ({
           alt={gift.name}
           src={gift.images[0].url}
           fill
-          className="object-cover transition-transform duration-300 group-hover:scale-110"
+          className="object-cover transition-transform duration-200 group-hover:scale-[1.02]"
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-yellow-900/20 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+        <div className="absolute inset-0 bg-gradient-to-t from-stone-900/10 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-200" />
       </div>
 
       {/* Premium gift indicator */}
-      <div className="absolute -top-2 -right-2 w-7 h-7 bg-gradient-to-br from-yellow-400 to-amber-500 rounded-full flex items-center justify-center shadow-lg border-2 border-white">
-        <Gift className="w-4 h-4 text-white drop-shadow-sm" />
+      <div className="absolute -top-1 -right-1 w-6 h-6 bg-gradient-to-br from-amber-400 to-amber-500 rounded-full flex items-center justify-center shadow-sm border border-white">
+        <Gift className="w-3 h-3 text-white" />
       </div>
     </div>
   );
@@ -119,7 +119,7 @@ export const ProductCard = ({
         {[...Array(5)].map((_, i) => (
           <Star
             key={i}
-            className={`${starSize} text-yellow-500 fill-current drop-shadow-sm`}
+            className={`${starSize} text-yellow-500 fill-current`}
           />
         ))}
       </div>
@@ -132,14 +132,14 @@ export const ProductCard = ({
         ? "Liên hệ"
         : FormatUtils.formatPriceVND(discountedPrice);
     const priceClass = isSingleColumn
-      ? "text-lg font-black text-yellow-700"
-      : "text-lg md:text-xl font-black text-yellow-700";
+      ? "text-lg font-bold text-amber-600"
+      : "text-lg md:text-xl font-bold text-amber-600";
 
     return (
       <div className={isSingleColumn ? "flex flex-col" : "space-y-1"}>
         <div
           className={isSingleColumn ? "" : "flex items-center justify-between"}>
-          <span className={`${priceClass} drop-shadow-sm`}>{priceText}</span>
+          <span className={priceClass}>{priceText}</span>
           {!isSingleColumn && isOutOfStock && (
             <Badge className="bg-stone-500 text-white border-0 font-medium">
               Hết hàng
@@ -150,8 +150,8 @@ export const ProductCard = ({
           <span
             className={
               isSingleColumn
-                ? "text-sm text-gray-400 line-through font-medium"
-                : "text-xs md:text-sm text-gray-400 line-through font-medium"
+                ? "text-sm text-stone-400 line-through font-medium"
+                : "text-xs md:text-sm text-stone-400 line-through font-medium"
             }>
             {FormatUtils.formatPriceVND(showLineThroughPrice)}
           </span>
@@ -166,7 +166,7 @@ export const ProductCard = ({
         <button
           onClick={handleContactClick}
           className={cn(
-            "cursor-pointer bg-gradient-to-r from-yellow-500 to-amber-600 hover:from-yellow-600 hover:to-amber-700 text-white font-bold rounded-xl transition-all duration-300 shadow-lg hover:shadow-xl hover:shadow-yellow-200/40 transform hover:-translate-y-0.5",
+            "cursor-pointer bg-amber-500 hover:bg-amber-600 text-white font-medium rounded-lg transition-colors duration-200",
             isSingleColumn
               ? "w-full flex-1 text-xs md:text-sm py-2.5 md:py-3"
               : "w-full text-xs md:text-sm py-2.5 md:py-3"
@@ -182,13 +182,13 @@ export const ProductCard = ({
           <button
             disabled={isOutOfStock}
             onClick={(e) => handleAddToCart(e, false)}
-            className="p-3 bg-gradient-to-br from-gray-50 to-gray-100 hover:from-gray-100 hover:to-gray-200 rounded-xl transition-all duration-300 disabled:opacity-50 border border-gray-200 hover:border-gray-300 shadow-sm hover:shadow-md">
-            <ShoppingBasket className="w-4 h-4 text-gray-600" />
+            className="p-3 bg-stone-50 hover:bg-stone-100 rounded-lg transition-colors duration-200 disabled:opacity-50 border border-stone-200">
+            <ShoppingBasket className="w-4 h-4 text-stone-600" />
           </button>
           <button
             disabled={isOutOfStock}
             onClick={(e) => handleAddToCart(e, true)}
-            className="px-6 py-3 bg-gradient-to-r from-yellow-500 to-amber-600 hover:from-yellow-600 hover:to-amber-700 text-white text-sm font-bold rounded-xl transition-all duration-300 disabled:opacity-50 shadow-lg hover:shadow-xl hover:shadow-yellow-200/40 transform hover:-translate-y-0.5">
+            className="px-6 py-3 bg-amber-500 hover:bg-amber-600 text-white text-sm font-medium rounded-lg transition-colors duration-200 disabled:opacity-50">
             Mua ngay
           </button>
         </div>
@@ -200,7 +200,7 @@ export const ProductCard = ({
         <button
           disabled={isOutOfStock}
           onClick={(e) => handleAddToCart(e, true)}
-          className="cursor-pointer flex-1 bg-gradient-to-r from-yellow-500 to-amber-600 hover:from-yellow-600 hover:to-amber-700 text-white text-xs md:text-sm font-bold py-2.5 md:py-3 rounded-xl transition-all duration-300 shadow-lg hover:shadow-xl hover:shadow-yellow-200/40 disabled:opacity-50 transform hover:-translate-y-0.5">
+          className="cursor-pointer flex-1 bg-amber-500 hover:bg-amber-600 text-white text-xs md:text-sm font-medium py-2.5 md:py-3 rounded-lg transition-colors duration-200 disabled:opacity-50">
           Mua ngay
         </button>
         <button
@@ -210,7 +210,7 @@ export const ProductCard = ({
             e.stopPropagation();
             handleAddToCart(e, false);
           }}
-          className="px-3 md:px-4 cursor-pointer bg-gradient-to-br from-gray-50 to-gray-100 hover:from-gray-100 hover:to-gray-200 text-gray-600 rounded-xl transition-all duration-300 disabled:opacity-50 border border-gray-200 hover:border-gray-300 shadow-sm hover:shadow-md">
+          className="px-3 md:px-4 cursor-pointer bg-stone-50 hover:bg-stone-100 text-stone-600 rounded-lg transition-colors duration-200 disabled:opacity-50 border border-stone-200">
           <ShoppingBasket className="w-3 h-3 md:w-4 md:h-4" />
         </button>
       </div>
@@ -222,20 +222,20 @@ export const ProductCard = ({
 
     if (isSingleColumn) {
       return (
-        <div className="flex items-center gap-2 text-xs bg-gradient-to-r from-yellow-50 to-amber-50 px-3 py-1.5 rounded-full border border-yellow-200">
-          <Gift className="w-3 h-3 text-yellow-600" />
-          <span className="font-semibold text-yellow-700">Có quà tặng</span>
+        <div className="flex items-center gap-2 text-xs bg-amber-50 px-3 py-1.5 rounded-full border border-amber-200">
+          <Gift className="w-3 h-3 text-amber-600" />
+          <span className="font-medium text-amber-700">Có quà tặng</span>
         </div>
       );
     }
 
     return (
-      <div className="bg-gradient-to-br from-yellow-50 via-amber-50 to-yellow-50 rounded-xl p-3 md:p-4 border-2 border-yellow-200/60 shadow-sm">
+      <div className="bg-amber-50 rounded-lg p-3 md:p-4 border border-amber-200">
         <div className="flex items-center gap-2 mb-3">
-          <div className="p-1.5 bg-gradient-to-br from-yellow-400 to-amber-500 rounded-lg shadow-sm">
+          <div className="p-1.5 bg-amber-500 rounded-lg">
             <Gift className="w-3 h-3 md:w-4 md:h-4 text-white" />
           </div>
-          <span className="text-xs md:text-sm font-bold text-yellow-800">
+          <span className="text-xs md:text-sm font-medium text-amber-800">
             Quà tặng kèm
           </span>
         </div>
@@ -254,8 +254,8 @@ export const ProductCard = ({
             })}
 
           {product.giftProducts && product.giftProducts.length > 3 && (
-            <div className="aspect-square bg-gradient-to-br from-gray-100 to-gray-200 rounded-xl flex items-center justify-center border-2 border-gray-300 shadow-sm">
-              <span className="text-[10px] md:text-xs font-bold text-gray-600">
+            <div className="aspect-square bg-stone-100 rounded-lg flex items-center justify-center border border-stone-200">
+              <span className="text-[10px] md:text-xs font-medium text-stone-600">
                 +{product.giftProducts.length - 3}
               </span>
             </div>
@@ -275,23 +275,23 @@ export const ProductCard = ({
   if (isSingleColumn) {
     return (
       <Link href={`/san-pham/${product.slug}`} className="block group">
-        <div className="flex bg-white rounded-2xl shadow-lg border-2 border-gray-200/60 overflow-hidden transition-all duration-300 hover:shadow-xl hover:shadow-gray-200/50 hover:border-yellow-300/80 hover:-translate-y-1">
+        <div className="flex bg-white rounded-xl border border-stone-200 overflow-hidden transition-all duration-200 hover:shadow-sm hover:border-amber-300">
           {/* Product Image Container */}
-          <div className="relative w-28 h-28 sm:w-36 sm:h-36 bg-gradient-to-br from-gray-50 to-gray-100 flex-shrink-0">
+          <div className="relative w-28 h-28 sm:w-36 sm:h-36 bg-stone-50 flex-shrink-0">
             <ImageLoader
               src={product.images[0].url}
               alt={product.name}
               fill
-              className="object-cover transition-transform duration-300 group-hover:scale-105"
+              className="object-cover transition-transform duration-200 group-hover:scale-[1.02]"
             />
 
             {/* Enhanced overlay */}
-            <div className="absolute inset-0 bg-gradient-to-t from-black/10 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/5 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-200" />
 
             {/* Promotional badges */}
             {hasPromotion && (
               <div className="absolute top-2 left-2">
-                <Badge className="bg-gradient-to-r from-yellow-500 to-amber-600 text-white text-xs font-bold px-3 py-1 rounded-full shadow-lg border-0">
+                <Badge className="bg-amber-500 text-white text-xs font-medium px-3 py-1 rounded-full border-0">
                   SALE
                 </Badge>
               </div>
@@ -304,24 +304,24 @@ export const ProductCard = ({
             <div className="space-y-3">
               {/* Enhanced Badges */}
               <div className="flex flex-wrap items-center gap-2">
-                <Badge className="bg-gradient-to-r from-yellow-100 to-amber-100 text-yellow-800 text-xs px-3 py-1 rounded-full border border-yellow-200 font-semibold">
+                <Badge className="bg-amber-50 text-amber-800 text-xs px-3 py-1 rounded-full border border-amber-200 font-medium">
                   HÀNG VIỆT
                 </Badge>
-                <Badge className="bg-gradient-to-r from-gray-100 to-gray-200 text-gray-700 text-xs px-3 py-1 rounded-full border border-gray-300 font-semibold">
+                <Badge className="bg-stone-100 text-stone-700 text-xs px-3 py-1 rounded-full border border-stone-300 font-medium">
                   <Truck className="w-3 h-3 mr-1" />
                   Freeship
                 </Badge>
               </div>
 
               {/* Title */}
-              <h3 className="font-bold text-sm sm:text-base text-gray-800 leading-tight line-clamp-2 group-hover:text-yellow-700 transition-colors duration-200">
+              <h3 className="font-bold text-sm sm:text-base text-stone-800 leading-tight line-clamp-2 group-hover:text-amber-700 transition-colors duration-200">
                 {product.name}
               </h3>
 
               {/* Rating */}
               <div className="flex items-center gap-3">
                 {renderStars("sm")}
-                <span className="text-gray-500 text-xs font-medium">
+                <span className="text-stone-500 text-xs font-medium">
                   (5.0) • 19.3k đánh giá
                 </span>
               </div>
@@ -344,38 +344,38 @@ export const ProductCard = ({
   // Grid Layout (Card design)
   return (
     <Link href={`/san-pham/${product.slug}`} className="block h-full" prefetch>
-      <Card className="group relative h-full overflow-hidden bg-white shadow-md hover:shadow-2xl transition-all duration-500 ease-out flex flex-col rounded-2xl transform hover:-translate-y-1 hover:scale-[1.02] border border-gray-100">
+      <Card className="group relative h-full overflow-hidden bg-white border border-stone-200 transition-all duration-200 hover:shadow-sm hover:border-amber-300 flex flex-col rounded-xl">
         {/* Image Section */}
         <CardHeader className="p-0 m-0 relative">
-          <div className="relative aspect-square bg-gradient-to-br from-gray-50 to-gray-100 overflow-hidden rounded-t-2xl">
+          <div className="relative aspect-square bg-stone-50 overflow-hidden rounded-t-xl">
             <ImageLoader
               src={product.images[0].url}
               alt={product.name}
               fill
-              className="object-cover transition-transform duration-700 ease-out group-hover:scale-105"
+              className="object-cover transition-transform duration-200 group-hover:scale-[1.02]"
             />
 
             {/* Subtle Overlay Enhancement */}
-            <div className="absolute inset-0 bg-gradient-to-t from-black/10 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/5 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-200" />
 
             {/* Promotional badges */}
             {hasPromotion && (
-              <div className="absolute top-4 left-4 z-10 transform transition-transform duration-300 group-hover:scale-105">
+              <div className="absolute top-3 left-3 z-10">
                 <BadgeFlashSale
                   promotion={promotion}
-                  className="shadow-xl text-xs md:text-sm bg-gradient-to-r from-yellow-500 to-amber-600 border-0 font-bold"
+                  className="text-xs md:text-sm bg-amber-500 border-0 font-medium"
                 />
               </div>
             )}
 
             {/* Enhanced Wishlist button */}
-            <button className="absolute top-4 right-4 z-10 p-2.5 bg-white/90 backdrop-blur-sm hover:bg-white rounded-full shadow-lg opacity-0 group-hover:opacity-100 transition-all duration-300 transform translate-y-2 group-hover:translate-y-0 hover:scale-110">
-              <Heart className="w-4 h-4 text-gray-600 hover:text-red-500 transition-colors duration-200" />
+            <button className="absolute top-3 right-3 z-10 p-2 bg-white/90 hover:bg-white rounded-lg opacity-0 group-hover:opacity-100 transition-all duration-200 border border-stone-200">
+              <Heart className="w-4 h-4 text-stone-600 hover:text-red-500 transition-colors duration-200" />
             </button>
 
             {/* Quick View Button - appears on hover */}
-            <div className="absolute inset-x-4 bottom-4 z-10 opacity-0 group-hover:opacity-100 transition-all duration-300 transform translate-y-4 group-hover:translate-y-0">
-              <button className="w-full py-2.5 bg-white/95 backdrop-blur-sm hover:bg-white rounded-xl shadow-lg text-sm font-semibold text-gray-800 hover:text-yellow-600 transition-all duration-200 border border-gray-200/50">
+            <div className="absolute  inset-x-3 bottom-3 z-30 opacity-0 group-hover:opacity-100 transition-all duration-200">
+              <button className="cursor-pointer w-full py-2.5 bg-white/95 hover:bg-white rounded-lg text-sm font-medium text-stone-800 hover:text-amber-600 transition-colors duration-200 border border-stone-200">
                 Xem nhanh
               </button>
             </div>
@@ -383,13 +383,13 @@ export const ProductCard = ({
         </CardHeader>
 
         {/* Content Section */}
-        <CardContent className="p-5 md:p-6 flex-1 flex flex-col space-y-4">
+        <CardContent className="p-4 md:p-5 flex-1 flex flex-col space-y-3">
           {/* Product Title */}
-          <CardTitle className="text-sm md:text-base font-bold text-gray-800 leading-snug line-clamp-2 break-words group-hover:text-gray-900 transition-colors duration-300">
+          <CardTitle className="text-sm md:text-base font-bold text-stone-800 leading-snug line-clamp-2 break-words group-hover:text-stone-900 transition-colors duration-200">
             {product.name}
           </CardTitle>
 
-          <CardDescription className="hidden md:block text-xs lg:text-sm text-gray-600 leading-relaxed line-clamp-2 break-words font-medium">
+          <CardDescription className="hidden md:block text-xs lg:text-sm text-stone-600 leading-relaxed line-clamp-2 break-words font-medium">
             {product.shortDescription}
           </CardDescription>
 
@@ -397,42 +397,28 @@ export const ProductCard = ({
           <div className="flex items-center justify-between gap-2">
             <div className="flex items-center gap-2">
               {renderStars("md")}
-              <span className="text-xs md:text-sm text-gray-500 ml-1 font-medium">
+              <span className="text-xs md:text-sm text-stone-500 ml-1 font-medium">
                 (5.0)
               </span>
             </div>
 
             {/* Enhanced Free Ship Badge */}
-            <div className="flex items-center transform transition-transform duration-300 group-hover:scale-105">
-              <div className="rounded-full text-xs font-semibold">
+            <div className="flex items-center">
+              <div className="rounded-full text-xs font-medium">
                 <FreeshipBadVer2 />
               </div>
             </div>
           </div>
 
           {/* Price Section */}
-          <div className="transform transition-transform duration-300 group-hover:scale-105">
-            {renderPrice()}
-          </div>
+          <div>{renderPrice()}</div>
 
           {/* Gift Products Section */}
-          <div className="transform transition-all duration-300 group-hover:translate-x-1">
-            {renderGiftSection()}
-          </div>
+          <div>{renderGiftSection()}</div>
 
           {/* Action Buttons */}
-          <div className="mt-auto pt-2">
-            <div className="transform transition-all duration-300 group-hover:scale-105">
-              {renderActionButtons()}
-            </div>
-          </div>
+          <div className="mt-auto pt-2">{renderActionButtons()}</div>
         </CardContent>
-
-        {/* Subtle shine effect on hover */}
-        <div
-          className="absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700 transform -skew-x-12 translate-x-full group-hover:-translate-x-full pointer-events-none"
-          style={{ transitionDelay: "0.1s" }}
-        />
       </Card>
     </Link>
   );

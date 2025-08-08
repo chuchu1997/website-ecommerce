@@ -26,7 +26,7 @@ export function Slider<T>({
   showArrows = true,
   showDots = true,
   autoPlay = false,
-  autoPlayInterval = 3000
+  autoPlayInterval = 4000
 }: SliderProps<T>) {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isTransitioning, setIsTransitioning] = useState(false);
@@ -88,16 +88,14 @@ export function Slider<T>({
   const itemWidth = `calc((100% - ${(itemsPerView - 1) * gap}px) / ${itemsPerView})`;
   
   // Fixed translation calculation
-  // Each slide moves by: (item width + gap) * currentIndex
-  // But we need to calculate this as a percentage of the total container width
-  const slideWidth = 100 / itemsPerView; // Each item takes this percentage of container
-  const gapPercentage = (gap / (sliderRef.current?.offsetWidth || 1)) * 100; // Convert gap to percentage
+  const slideWidth = 100 / itemsPerView;
+  const gapPercentage = (gap / (sliderRef.current?.offsetWidth || 1)) * 100;
   const translateX = -(currentIndex * (slideWidth + gapPercentage));
   
   return (
     <div className={`relative w-full ${className}`}>
       {/* Main slider container */}
-      <div className="relative overflow-hidden rounded-xl ">
+      <div className="relative overflow-hidden">
         {/* Slider track */}
         <div
           ref={sliderRef}
@@ -105,7 +103,6 @@ export function Slider<T>({
           style={{
             transform: `translateX(${translateX}%)`,
             gap: `${gap}px`,
-            padding: ''
           }}
         >
           {items.map((item, index) => (
@@ -115,50 +112,64 @@ export function Slider<T>({
               style={{ width: itemWidth }}
               onClick={() => handleItemClick(item, index)}
             >
-              <div className="h-full transform transition-all duration-200 hover:scale-105 hover:shadow-lg rounded-lg overflow-hidden ">
+              <div className="h-full">
                 {renderItem(item, index)}
               </div>
             </div>
           ))}
         </div>
 
-        {/* Navigation arrows */}
+        {/* Navigation arrows - Refined design matching your aesthetic */}
         {showArrows && items.length > itemsPerView && (
           <>
             <button
               onClick={goToPrevious}
               disabled={currentIndex === 0 || isTransitioning}
-              className="absolute left-4 top-1/2 -translate-y-1/2 z-10 p-3 rounded-full bg-white/90 backdrop-blur-sm shadow-lg border border-slate-200/60 text-slate-700 hover:bg-white hover:text-slate-900 disabled:opacity-40 disabled:cursor-not-allowed transition-all duration-200 hover:scale-110"
+              className="absolute left-3 top-1/2 -translate-y-1/2 z-10 p-2.5 rounded-lg bg-white/95 backdrop-blur-sm border border-stone-200 text-stone-600 hover:bg-white hover:text-stone-800 hover:border-amber-300 disabled:opacity-40 disabled:cursor-not-allowed transition-all duration-200 shadow-sm hover:shadow-md"
             >
-              <ChevronLeft size={20} />
+              <ChevronLeft size={18} />
             </button>
             
             <button
               onClick={goToNext}
               disabled={currentIndex >= maxIndex || isTransitioning}
-              className="absolute right-4 top-1/2 -translate-y-1/2 z-10 p-3 rounded-full bg-white/90 backdrop-blur-sm shadow-lg border border-slate-200/60 text-slate-700 hover:bg-white hover:text-slate-900 disabled:opacity-40 disabled:cursor-not-allowed transition-all duration-200 hover:scale-110"
+              className="absolute right-3 top-1/2 -translate-y-1/2 z-10 p-2.5 rounded-lg bg-white/95 backdrop-blur-sm border border-stone-200 text-stone-600 hover:bg-white hover:text-stone-800 hover:border-amber-300 disabled:opacity-40 disabled:cursor-not-allowed transition-all duration-200 shadow-sm hover:shadow-md"
             >
-              <ChevronRight size={20} />
+              <ChevronRight size={18} />
             </button>
           </>
         )}
       </div>
 
-      {/* Dots indicator */}
+      {/* Dots indicator - Refined with stone/amber colors */}
       {showDots && items.length > itemsPerView && (
-        <div className="flex justify-center gap-2 mt-6">
+        <div className="flex justify-center items-center gap-2 mt-4 sm:mt-6">
           {Array.from({ length: maxIndex + 1 }).map((_, index) => (
             <button
               key={index}
               onClick={() => goToSlide(index)}
               disabled={isTransitioning}
-              className={`w-3 h-3 rounded-full transition-all duration-200 ${
+              className={`transition-all duration-200 rounded-full ${
                 currentIndex === index
-                  ? 'bg-blue-500 scale-125 shadow-md'
-                  : 'bg-slate-300 hover:bg-slate-400'
+                  ? 'w-6 h-2.5 bg-amber-500 shadow-sm'
+                  : 'w-2.5 h-2.5 bg-stone-300 hover:bg-stone-400'
               }`}
             />
           ))}
+        </div>
+      )}
+
+      {/* Progress indicator - Optional elegant addition */}
+      {items.length > itemsPerView && (
+        <div className="mt-3 sm:mt-4">
+          <div className="w-full bg-stone-200 rounded-full h-1 overflow-hidden">
+            <div 
+              className="h-full bg-gradient-to-r from-amber-400 to-amber-500 rounded-full transition-all duration-300 ease-out"
+              style={{ 
+                width: `${((currentIndex + 1) / (maxIndex + 1)) * 100}%` 
+              }}
+            />
+          </div>
         </div>
       )}
     </div>
