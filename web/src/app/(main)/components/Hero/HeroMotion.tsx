@@ -97,7 +97,7 @@ export const HeroMotion = (props: Props) => {
       )}
 
       {/* Decorative Elements */}
-      <motion.div 
+      {/* <motion.div 
         variants={fadeInUpStagger}
         className="mt-12 lg:mt-16 flex justify-center"
       >
@@ -118,7 +118,7 @@ export const HeroMotion = (props: Props) => {
             />
           ))}
         </div>
-      </motion.div>
+      </motion.div> */}
     </motion.div>
   );
 };

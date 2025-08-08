@@ -7,6 +7,8 @@
 :root {
     overflow-x:hidden;
   --font-roboto: "Roboto", sans-serif;
+  --font-noto-sans:"Noto Sans",sans-serif;
+  --font-inter:"Inter",sans-serif;
   --radius: 0.625rem;
   --background: oklch(1 0 0);
   --foreground: oklch(0.145 0 0);
@@ -59,6 +61,26 @@
 .text-price {
   color: var(--text-price);
 }
+/* .scrollbar-thin {
+  scrollbar-width: thin;
+}
+
+.scrollbar-thumb-blue-300::-webkit-scrollbar-thumb {
+  background-color: rgb(147 197 253);
+  border-radius: 9999px;
+}
+
+.scrollbar-track-transparent::-webkit-scrollbar-track {
+  background-color: transparent;
+}
+
+.scrollbar-thumb-blue-400:hover::-webkit-scrollbar-thumb {
+  background-color: rgb(96 165 250);
+}
+
+::-webkit-scrollbar {
+  width: 6px;
+} */
 @theme {
   --font-roboto: "Roboto", sans-serif;
   --breakpoint-3xl: 1920px;
@@ -150,6 +172,8 @@
     @apply border-border outline-ring/50;
   }
   body {
+    /* font-family: var(--font-noto-sans);  */
+    font-family: var(--font-roboto);
     @apply bg-background text-foreground;
   }
   :root {

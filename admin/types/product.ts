@@ -6,8 +6,19 @@ import { SeoType } from "./seo";
 
 
 
+export enum ImageMediaType {
+ PRODUCT="PRODUCT",
+ CATEGORY="CATEGORY",
+ BANNER="BANNER",
+ BRAND="BRAND",
+ NEWS="NEWS",
+ SERVICE="SERVICE",
+ PROJECT="PROJECT",
+ NONE="NONE"
+}
 export interface ImageInterface { 
     url:string;
+    type?:ImageMediaType
 
 }
 

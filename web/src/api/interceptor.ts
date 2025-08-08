@@ -6,7 +6,7 @@ import toast from "react-hot-toast";
 const baseURL =
   typeof window !== "undefined"
     ? process.env.NEXT_PUBLIC_API // client (browser)
-    : process.env.API_INTERNAL_URL || "https://api.45.32.105.240.sslip.io"; // server (SSR)
+    : process.env.API_INTERNAL_URL || "https://mxdm-api.45.32.105.240.sslip.io"; // server (SSR)
 const api = axios.create({
   baseURL: baseURL,
 });

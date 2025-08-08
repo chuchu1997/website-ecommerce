@@ -22,8 +22,8 @@ import { SeoInterface } from "@/types/seo";
 // import { HighlightedProjects } from "./components/HighlightProject/HighlightProject";
 // import { PartnerBrands } from "./components/PartnerBrands/PartnerBrands";
 // import { NewsMasterPage } from "./components/News/News";
-import Navbar from "@/components/ui/Navbar/components/NavbarClientVer2";
-import { Hero } from "./(main)/components/Hero/Hero";
+import NavbarComponent from "@/components/ui/Navbar";
+import { HeroClient } from "./(main)/components/Hero/Hero";
 import { InteriorContent } from "./(main)/components/InteriorContent";
 import { FeatureProducts } from "./(main)/components/FeatureProduct/FeatureProduct";
 import { ProductCategories } from "./(main)/components/ProductCategories/ProductCategories";
@@ -32,45 +32,65 @@ import { PartnerBrands } from "./(main)/components/PartnerBrands/PartnerBrands";
 import { NewsMasterPage } from "./(main)/components/News/News";
 import { ProductWithCategoryType } from "./(main)/components/ProductWithCategoryType/ProductWithCategoryType";
 import { FlashSaleComponentView } from "./(main)/components/flash-sale";
-
-export const dynamic = "force-dynamic";
-export const revalidate = 60;
+import CategoriesList from "./(main)/components/CategoriesList/categories-list";
+import { CategoryInterface } from "@/types/category";
+import { CategoryAPI } from "@/api/categories/category.api";
+import { CategoriesListSSR } from "./(main)/components/CategoriesList/categories-list-ssr";
+import { HeroSSR } from "./(main)/components/Hero/HeroSSR";
+import { fetchSafe } from "@/utils/fetchSafe";
+import { getCachedStoreInfo } from "./layout";
+export const revalidate = 120; // 5 phút
 
 const MusicStoreLanding: React.FC = async () => {
-  const storeInfo: StoreInterface = (await StoreAPI.getStoreInfo()).data.store;
+  const storeInfo = await getCachedStoreInfo();
 
   return (
-    <div className=" min-h-screen bg-white w-full">
-      {/* Banner Section */}
-      {/* <Banner /> */}
-      <Navbar />
-      <Hero />
-      <FlashSaleComponentView />
-      <InteriorContent industry={storeInfo.industry ?? ""} />
-      <FeatureProducts industry={storeInfo.industry ?? ""} />
-      {/* <ProductWithCategoryType
+    <div className=" min-h-screen bg-gray-50 w-full">
+      <HeroSSR />
+      <CategoriesListSSR />
+      <FeatureProducts industry={storeInfo.industry ?? "Xây dựng"} />
+      <ProductWithCategoryType
         industry={storeInfo.industry ?? ""}
-        slug="guitar"
+        slug="ban-cat-gach"
+        isGrayBg={true}
       />
-      */}
+      <ProductWithCategoryType
+        industry={storeInfo.industry ?? ""}
+        slug="thiet-bi-xay-dung"
+      />
+      <ProductWithCategoryType
+        industry={storeInfo.industry ?? ""}
+        slug="may-han-dien-tu"
+        isGrayBg={true}
+      />
+      <ProductWithCategoryType
+        industry={storeInfo.industry ?? ""}
+        slug="dung-cu-dien-cam-tay"
+      />
+      <ProductWithCategoryType
+        industry={storeInfo.industry ?? ""}
+        slug="dong-co-no"
+        isGrayBg={true}
+      />
+      <ProductWithCategoryType
+        industry={storeInfo.industry ?? ""}
+        slug="may-bom-nuoc"
+      />
+      <ProductWithCategoryType
+        industry={storeInfo.industry ?? ""}
+        slug="vat-tu-co-khi"
+        isGrayBg={true}
+      />
+      <ProductWithCategoryType
+        industry={storeInfo.industry ?? ""}
+        slug="may-nong-nghiep"
+      />
       <ProductCategories />
       <HighlightedProjects industry={storeInfo.industry ?? ""} />
+
       <PartnerBrands industry={storeInfo.industry ?? ""} />
       <NewsMasterPage industry={storeInfo.industry ?? ""} />
-
-      {/* <Hero />
-
-      <InteriorContent />
-
-      <FeaturedProductVer2 />
-
-      <ProductCategoriesMotion />
-
-      <HighlightedProjects />
-
-      <PartnerBrands />
-
-      <NewsMasterPage /> */}
+      <InteriorContent industry={storeInfo.industry ?? ""} />
     </div>
   );
 };

@@ -48,6 +48,19 @@ export class CategoriesService {
             },
           }),
         );
+      } else {
+        transactionOps.push(
+          this.prisma.category.updateMany({
+            where: {
+              position: { gte: position },
+              storeId: data.storeId,
+              parentId: data.parentId, // chỉ áp dụng cho category con cùng parent
+            },
+            data: {
+              position: { increment: 1 },
+            },
+          }),
+        );
       }
 
       // ✅ Luôn thêm tạo mới category vào transaction
@@ -56,6 +69,11 @@ export class CategoriesService {
           data: {
             ...data,
             position,
+            image: {
+              create: {
+                url: data.imageUrl,
+              },
+            },
             ...(seo !== undefined && { seo: seo as any }),
           },
         }),
@@ -74,7 +92,7 @@ export class CategoriesService {
 
   async findAll(query: CategoryQueryFilterDto) {
     //Chỉ lấy ra các categories cha !!!
-
+    console.log('Call get all categories !! ');
     const {
       justGetParent = false,
       storeID,
@@ -115,9 +133,7 @@ export class CategoriesService {
       include: {
         subCategories: true, // Lấy cấp con đầu tiên
       },
-      orderBy: {
-        createdAt: 'asc', // Sắp xếp theo thời gian tạo (có thể tùy chỉnh)
-      },
+      orderBy: { position: 'asc' },
     });
 
     // Đệ quy lấy các cấp con của từng category
@@ -149,6 +165,9 @@ export class CategoriesService {
         where: {
           parentId: categoryId,
           storeId: storeID,
+        },
+        orderBy: {
+          position: 'asc',
         },
         select: { id: true },
       });
@@ -217,6 +236,28 @@ export class CategoriesService {
   async update(id: number, updateCategoryDto: UpdateCategoryDto) {
     const { seo, position, ...data } = updateCategoryDto;
 
+    const checkImageChange = await this.prisma.category.findUnique({
+      where: { id },
+      select: {
+        imageUrl: true,
+      },
+    });
+    const isImagesUpdated =
+      data.imageUrl &&
+      JSON.stringify(data.imageUrl) !==
+        JSON.stringify(checkImageChange?.imageUrl);
+    if (isImagesUpdated) {
+      await this.uploadService.deleteImagesFromS3(
+        checkImageChange?.imageUrl ?? '',
+      );
+    }
+
+    // const isImagesUpdated =
+    //   imageUrl &&
+    //   JSON.stringify(imageUrl) !== JSON.stringify(existArticle?.imageUrl);
+    // if (isImagesUpdated) {
+    //   await this.uploadService.deleteImagesFromS3(existArticle?.imageUrl ?? '');
+    // }
     // Kiểm tra slug trùng
     const existingSlug = await this.prisma.category.findUnique({
       where: { slug: data.slug },
@@ -235,17 +276,18 @@ export class CategoriesService {
       throw new BadRequestException(`⚠️ Danh mục với ID:${id} không tồn tại`);
     }
 
-    const isParentCategory = (data.parentId ?? existCategory.parentId) === null;
+    // Xác định category cha hay con (parentId null => cha)
+    const newParentId = data.parentId ?? existCategory.parentId;
+    const isParentCategory = newParentId === null;
 
-    // Nếu có thay đổi position & là category cha thì cập nhật lại position các category khác
+    // Nếu có thay đổi position
     if (
       position !== undefined &&
       existCategory.position !== null &&
-      position !== existCategory.position &&
-      isParentCategory
+      position !== existCategory.position
     ) {
       if (position < existCategory.position) {
-        // Đẩy lên trên: tăng position của các category nằm giữa [position, currentPosition)
+        // Đẩy lên trên
         await this.prisma.category.updateMany({
           where: {
             position: {
@@ -253,14 +295,14 @@ export class CategoriesService {
               lt: existCategory.position,
             },
             storeId: data.storeId ?? existCategory.storeId,
-            parentId: null, // chỉ áp dụng cho category cha
+            parentId: isParentCategory ? null : newParentId, // nếu là con thì filter theo parentId
           },
           data: {
             position: { increment: 1 },
           },
         });
       } else {
-        // Đẩy xuống dưới: giảm position của các category nằm giữa (currentPosition, position]
+        // Đẩy xuống dưới
         await this.prisma.category.updateMany({
           where: {
             position: {
@@ -268,7 +310,7 @@ export class CategoriesService {
               lte: position,
             },
             storeId: data.storeId ?? existCategory.storeId,
-            parentId: null,
+            parentId: isParentCategory ? null : newParentId,
           },
           data: {
             position: { decrement: 1 },
@@ -281,12 +323,15 @@ export class CategoriesService {
     const updatedCategory = await this.prisma.category.update({
       where: { id },
       data: {
-        ...(seo !== undefined && {
-          seo: seo as any,
-        }),
+        ...(seo !== undefined && { seo: seo as any }),
         ...data,
-        parentId: data.parentId ?? null,
+        parentId: newParentId ?? null,
         position: position ?? existCategory.position,
+        image: {
+          update: {
+            url: data.imageUrl,
+          },
+        },
       },
     });
 
@@ -301,8 +346,18 @@ export class CategoriesService {
         position: true,
         parentId: true,
         storeId: true,
+        image: true,
+        imageUrl: true,
       },
     });
+    if (existCategory?.imageUrl) {
+      await this.uploadService.deleteImagesFromS3(existCategory.imageUrl);
+      await this.prisma.imageMedia.delete({
+        where: {
+          id: existCategory.image?.id,
+        },
+      });
+    }
 
     if (!existCategory) {
       throw new BadRequestException(`❌ Danh mục với ID:${id} không tồn tại`);

@@ -21,7 +21,7 @@ import { BannerInterface } from "@/types/banner";
 import { ImageUploadSection } from "../../../products/[slug]/components/product-image-upload";
 import { InputSectionWithForm } from "@/components/ui/inputSectionWithForm";
 import { CheckActiveSectionWithForm } from "@/components/ui/checkActiveSectionWithForm";
-import { ImageInterface } from "@/types/product";
+import { ImageInterface, ImageMediaType } from "@/types/product";
 import S3CloudAPI from "@/app/api/upload/s3-cloud";
 import BannerAPI from "@/app/api/banners/banner.api";
 

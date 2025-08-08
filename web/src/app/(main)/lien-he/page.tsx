@@ -6,6 +6,7 @@ import { toast } from "react-hot-toast";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
+
 import {
   Mail,
   Phone,
@@ -127,7 +128,7 @@ const ContactPage = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50 px-4 py-16 sm:px-6 lg:px-8">
-      <div className="mx-auto max-w-4xl">
+      <div className="mx-auto max-w-6xl">
         {/* Header Section */}
         <div className="text-center mb-16">
           <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-r from-blue-600 to-purple-600 rounded-2xl mb-6">
@@ -144,7 +145,7 @@ const ContactPage = () => {
 
         <div className="grid lg:grid-cols-3 gap-12">
           {/* Contact Info */}
-          <div className="lg:col-span-1">
+          <div className="lg:col-span-1 overflow-hidden">
             <div className="bg-white rounded-2xl p-8 shadow-xl border border-gray-100 h-fit">
               <h3 className="text-xl font-semibold text-gray-900 mb-6">
                 Thông tin liên hệ

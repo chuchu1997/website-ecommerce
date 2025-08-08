@@ -18,7 +18,7 @@ export function ProductListMotionWrapper({
   }, []);
   if (!isMounted) return null;
   return (
-    <div className="columns-2 sm:columns-2 lg:columns-4 gap-1 md:gap-4 space-y-4  ">
+    <div className="columns-2 sm:columns-3 lg:columns-5 gap-1 md:gap-4 space-y-4  ">
       {products.map((product) => {
         const endDate = product.promotionProducts[0]?.promotion?.endDate;
         const isExpired = endDate

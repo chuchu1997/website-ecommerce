@@ -137,7 +137,7 @@ export const ProductImageGallery = ({ images }: PropsProductImageGallery) => {
                   src={image.url}
                   alt={`Thumbnail ${index + 1}`}
                   className="object-cover object-center"
-                  priority={true}
+           
                   fill
                 />
               </button>
@@ -169,7 +169,7 @@ export const ProductImageGallery = ({ images }: PropsProductImageGallery) => {
                       alt={`Product image ${index + 1}`}
                       className="object-cover object-center pointer-events-none"
                       fill
-                      priority={index === currentIndex}
+                    
                     />
                   </div>
                 ))}
@@ -290,7 +290,7 @@ export const ProductImageGallery = ({ images }: PropsProductImageGallery) => {
                   alt={`Product image ${index + 1}`}
                   className="object-cover object-center pointer-events-none"
                   fill
-                  priority={index === currentIndex}
+                
                 />
               </div>
             ))}
