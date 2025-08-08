@@ -7,7 +7,7 @@ CREATE TABLE `ImageMedia` (
     `size` INTEGER,
     `width` INTEGER,
     `height` INTEGER,
-    `productId` INTEGER UNIQUE,
+    `productId` INTEGER ,
     `bannerId` INTEGER UNIQUE,
     `categoryId` INTEGER UNIQUE,
     `brandId` INTEGER UNIQUE,
