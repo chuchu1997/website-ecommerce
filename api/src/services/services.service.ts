@@ -20,6 +20,11 @@ export class ServicesService {
             seo: seo as any, // Cast to 'any' or 'Prisma.InputJsonValue'
           }),
           ...data,
+          image: {
+            create: {
+              url: data.imageUrl,
+            },
+          },
         },
       });
     } catch (err) {
@@ -87,6 +92,11 @@ export class ServicesService {
           ...(seo !== undefined && {
             seo: seo as any, // Cast to 'any' or 'Prisma.InputJsonValue'
           }),
+          image: {
+            update: {
+              url: imageUrl,
+            },
+          },
           imageUrl: imageUrl,
         },
       });
@@ -100,10 +110,16 @@ export class ServicesService {
       where: { id },
       select: {
         imageUrl: true,
+        image: true,
       },
     });
     if (existProject?.imageUrl) {
       await this.uploadService.deleteImagesFromS3(existProject.imageUrl);
+      await this.prisma.imageMedia.delete({
+        where: {
+          id: existProject.image?.id,
+        },
+      });
     }
     return await this.prisma.service.delete({
       where: { id },

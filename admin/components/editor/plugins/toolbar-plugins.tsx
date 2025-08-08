@@ -44,6 +44,7 @@ import { $createHeadingNode, $isHeadingNode } from "@lexical/rich-text";
 import { createEmptyHistoryState } from "@lexical/history";
 import ImagePickerDialog from "@/components/modals/image-picker";
 import { INSERT_INLINE_IMAGE_COMMAND } from "./InlineImagePlugin";
+import { TOGGLE_LINK_COMMAND } from "@lexical/link";
 
 const ToolbarButton = ({
   onClick,
@@ -290,7 +291,17 @@ const ToolbarPlugins = () => {
       </div>
 
       <ToolbarDivider />
-
+      <ToolbarButton
+        onClick={() => {
+          const url = prompt("Nhập URL:");
+          if (url !== null) {
+            editor.dispatchCommand(TOGGLE_LINK_COMMAND, url || null);
+          }
+        }}
+        title="Chèn liên kết (Ctrl+K)">
+        <Link className="w-4 h-4" />
+      </ToolbarButton>
+      <ToolbarDivider />
       {/* Special */}
       <div className="flex items-center gap-1">
         <ToolbarButton
@@ -309,6 +320,7 @@ const ToolbarPlugins = () => {
           <CameraIcon className="w-4 h-4" />
         </ToolbarButton>
       </div>
+
       <ImagePickerDialog
         open={isImageDialogOpen}
         onClose={() => setImageDialogOpen(false)}

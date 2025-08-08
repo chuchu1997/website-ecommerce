@@ -1,9 +1,0 @@
-[2025-07-18 15:45:08] [ERROR] Lỗi Tạo Product , Message PrismaClientKnownRequestError: 
-Invalid `this.prisma.product.create()` invocation in
-D:\release_web\ecommerce-website\api\src\products\products.service.ts:30:49
-
-  27 const { images, giftProducts, sizes, colors, seo, storeId, ...data } =
-  28   createProductDto;
-  29 try {
-→ 30   const product = await this.prisma.product.create(
-Value out of range for the type. Out of range value for column 'stock' at row 1 - Trace: no trace

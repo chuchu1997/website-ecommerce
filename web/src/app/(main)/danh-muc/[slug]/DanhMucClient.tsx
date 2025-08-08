@@ -11,7 +11,7 @@ import {
   ScrollToLoadProductsWithCategory,
 } from "@/components/scrollToLoad/scrollToLoadProductWithCategoryComponent";
 import { ProductInterface } from "@/types/product";
-import ServicesSection from "./components/ServiceSection";
+import ServicesSection from "./components/ServicesSection";
 import ProjectsSection from "./components/ProjectsSection";
 import NewsSection from "./components/NewsSection";
 
@@ -76,12 +76,14 @@ interface Project {
 }
 
 // Fetch functions for each variant
-
-const DanhMucPage = () => {
+interface Props {
+  categoryProps: CategoryInterface;
+}
+const DanhMucPageClient = ({ categoryProps }: Props) => {
   const { slug } = useParams();
-  const [category, setCategory] = useState<CategoryInterface | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const category: CategoryInterface = categoryProps;
 
   useEffect(() => {
     fetchProductsFromCategory(1, 4);
@@ -101,7 +103,6 @@ const DanhMucPage = () => {
 
       const categoryData = res.data;
       const products = categoryData.products;
-      setCategory(categoryData);
 
       return {
         products: products ?? [],
@@ -229,4 +230,4 @@ const DanhMucPage = () => {
   );
 };
 
-export default DanhMucPage;
+export default DanhMucPageClient;

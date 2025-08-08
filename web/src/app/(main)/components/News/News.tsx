@@ -3,6 +3,7 @@ import { NewsInterface } from "@/types/news";
 import { ProjectInterface } from "@/types/project";
 import { NewsMotion } from "./NewsMotion";
 import { NewsAPI } from "@/api/news/news.api";
+import { fetchSafe } from "@/utils/fetchSafe";
 
 
 
@@ -51,15 +52,30 @@ import { NewsAPI } from "@/api/news/news.api";
 interface Props  { 
   industry:string;
 
-}
-export const NewsMasterPage = async ({industry}:Props) => {
-  let news:NewsInterface[] = [];
 
-  const res = await NewsAPI.getNews({
-    currentPage:1,
-    limit:3
-  })
-  news = res.data.articles;
+}
+
+
+const getCachedNews = async (): Promise<NewsInterface[]> => {
+  const res = await fetchSafe(
+    () =>
+      NewsAPI.getNews({
+        currentPage: 1,
+        limit: 3,
+      
+      }),
+    {
+      articles: [],
+    }
+  );
+  const articles = res?.articles ?? [];
+  return articles;
+};
+export const NewsMasterPage = async ({industry}:Props) => {
+
+  const news = await getCachedNews();
+
+
 
   return (
     <section id="projects">

@@ -4,6 +4,7 @@ import { UpdateBannerDto } from './dto/update-banner.dto';
 import { PrismaService } from 'src/prisma.service';
 import { UploadService } from 'src/upload/upload.service';
 import { BannerFilterDto } from './dto/get-banner-filter.dto';
+import { ImageMediaType } from '@prisma/client';
 
 @Injectable()
 export class BannerService {
@@ -31,6 +32,12 @@ export class BannerService {
           cta: data.cta ? JSON.parse(JSON.stringify(data.cta)) : undefined,
 
           position,
+          image: {
+            create: {
+              url: data.imageUrl,
+              type: ImageMediaType.BANNER,
+            },
+          },
         },
       }),
     ]);
@@ -113,7 +120,11 @@ export class BannerService {
       data: {
         ...data,
         cta: data.cta ? JSON.parse(JSON.stringify(data.cta)) : undefined,
-
+        image: {
+          update: {
+            url: imageUrl,
+          },
+        },
         imageUrl: imageUrl ?? existBanner.imageUrl, // Keep old imageUrl if not provided
         position: position ?? existBanner.position, // Keep old position if not provided
         updatedAt: new Date(),
@@ -127,11 +138,17 @@ export class BannerService {
       where: { id },
       select: {
         imageUrl: true,
+        image: true,
         position: true,
       },
     });
     if (existBanner?.imageUrl) {
       await this.uploadService.deleteImagesFromS3(existBanner.imageUrl);
+      await this.prisma.imageMedia.delete({
+        where: {
+          id: existBanner.image?.id,
+        },
+      });
     }
     await this.prisma.banner.delete({
       where: { id },

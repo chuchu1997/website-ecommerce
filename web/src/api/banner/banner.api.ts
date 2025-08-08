@@ -6,6 +6,9 @@ const url = `/banners`;
 
 export const BannerAPI = {
   getAllBannerFromStore: async () => {
+    const fullUrl = `${api.defaults.baseURL}${url}?storeID=${storeID}`;
+    console.log("FULL URL GET BANNER ", fullUrl);
+
     return await api({
       method: "GET",
       url: url,

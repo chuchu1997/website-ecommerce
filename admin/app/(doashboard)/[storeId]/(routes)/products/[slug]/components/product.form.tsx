@@ -4,6 +4,7 @@
 import { Form } from "@/components/ui/form";
 import {
   ImageInterface,
+  ImageMediaType,
   ProductColorInterface,
   ProductInterface,
   ProductSizeInterface,
@@ -184,7 +185,12 @@ export const ProductForm: React.FC<ProductProps> = ({ initialData }) => {
       // Upload ảnh lên S3
       const oldImages = data.images.filter((img) => !img.file);
       const newImages = data.images.filter((img) => img.file);
-      let finalImageUrls: ImageInterface[] = [...oldImages];
+      // Ensure all images have the required 'type' property
+      let finalImageUrls: ImageInterface[] = [
+        ...oldImages.map((img) => ({
+          ...img,
+        })),
+      ];
 
       if (newImages.length > 0) {
         const formData = new FormData();
@@ -197,13 +203,14 @@ export const ProductForm: React.FC<ProductProps> = ({ initialData }) => {
         const uploadRes = await S3CloudAPI.uploadImageToS3(formData);
         if (uploadRes.status !== 200) throw new Error("Upload thất bại");
 
-        const { imageUrls } = uploadRes.data as { imageUrls: [] };
+        const { imageUrls } = uploadRes.data as { imageUrls: string[] };
         const uploadedImageUrls: ImageInterface[] = imageUrls.map((img) => ({
           url: img,
           file: undefined,
+          type: ImageMediaType.PRODUCT, // Set the required type property
         }));
 
-        finalImageUrls = [...oldImages, ...uploadedImageUrls];
+        finalImageUrls = [...finalImageUrls, ...uploadedImageUrls];
       }
 
       const {
