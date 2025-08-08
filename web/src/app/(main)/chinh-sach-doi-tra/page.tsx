@@ -2,6 +2,7 @@
 
 import React from "react";
 import { RotateCw, Clock, AlertCircle, CheckCircle } from "lucide-react";
+export const dynamic = "force-dynamic";
 
 export default function ReturnPolicyPage() {
   const returnConditions = [

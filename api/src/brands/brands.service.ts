@@ -4,6 +4,7 @@ import { UpdateBrandDto } from './dto/update-brand.dto';
 import { PrismaService } from 'src/prisma.service';
 import { UploadService } from 'src/upload/upload.service';
 import { FilterBrandDto } from './dto/filter-dto';
+import { ImageMediaType } from '@prisma/client';
 
 @Injectable()
 export class BrandsService {
@@ -31,6 +32,12 @@ export class BrandsService {
         data: {
           ...data,
           position,
+          image: {
+            create: {
+              url: data.imageUrl,
+              type: ImageMediaType.BRAND,
+            },
+          },
         },
       }),
     ]);
@@ -112,6 +119,11 @@ export class BrandsService {
         where: { id },
         data: {
           ...data,
+          image: {
+            update: {
+              url: imageUrl,
+            },
+          },
           imageUrl: imageUrl ?? existBrand.imageUrl,
           position: position ?? existBrand.position,
         },
@@ -128,10 +140,16 @@ export class BrandsService {
       select: {
         imageUrl: true,
         position: true,
+        image: true,
       },
     });
     if (existBrand?.imageUrl) {
       await this.uploadService.deleteImagesFromS3(existBrand.imageUrl);
+      await this.prisma.imageMedia.delete({
+        where: {
+          id: existBrand.image?.id,
+        },
+      });
     }
     await this.prisma.brand.delete({
       where: { id },

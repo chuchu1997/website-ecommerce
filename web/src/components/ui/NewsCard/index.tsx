@@ -2,14 +2,16 @@ import { NewsInterface } from "@/types/news";
 import { FormatUtils } from "@/utils/format";
 import { ArrowRight } from "lucide-react";
 import Link from "next/link";
+import { ImageLoader } from "../image-loader";
 
 export const NewsCard: React.FC<{ news: NewsInterface }> = ({ news }) => {
   return (
     <div className="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1">
-      <div className="relative">
-        <img 
-          src={news.imageUrl} 
+      <div className="relative w-full h-48">
+        <ImageLoader 
+          src={news.imageUrl ??""} 
           alt={news.title} 
+          fill
           className="w-full h-48 object-cover"
         />
         {/* <div className="absolute top-4 left-4">

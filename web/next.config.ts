@@ -26,6 +26,7 @@ const nextConfig: NextConfig = {
       {
         protocol: "https",
         hostname: "mekship-develop.s3.ap-southeast-1.amazonaws.com",
+        pathname: "/**",
       },
       {
         hostname: "res.cloudinary.com",
@@ -38,6 +39,7 @@ const nextConfig: NextConfig = {
     formats: ["image/avif", "image/webp"],
     // Optimize more aggressively in production
     minimumCacheTTL: 60,
+    dangerouslyAllowSVG: true,
   },
   /* config options here */
 };

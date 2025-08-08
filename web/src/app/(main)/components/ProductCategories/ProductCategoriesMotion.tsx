@@ -16,48 +16,75 @@ interface Props {
 
 export const ProductCategoriesMotion = (props: Props) => {
   const [isMounted, setIsMounted] = useState(false);
-
   const { title, description, categories } = props;
 
+  // Simplified animation variants for better performance
   const containerVariants = {
-    hidden: {},
+    hidden: { opacity: 0 },
     show: {
+      opacity: 1,
       transition: {
-        staggerChildren: 0.12,
+        duration: 0.6,
+        staggerChildren: 0.1,
+        ease: "easeOut",
       },
     },
   };
 
-  const fadeInUp = {
-    hidden: { opacity: 0, y: 50 },
+  const itemVariants = {
+    hidden: {
+      opacity: 0,
+      y: 20,
+    },
     show: {
       opacity: 1,
       y: 0,
-      transition: { duration: 0.7, ease: [0.25, 0.25, 0.25, 0.75] },
+      transition: {
+        duration: 0.6,
+        ease: "easeOut",
+      },
     },
   };
 
-  const cardHover = {
-    hover: {
-      y: -12,
-      transition: { duration: 0.3, ease: "easeOut" },
+  // Simplified floating animation
+  const floatingVariants = {
+    animate: {
+      y: [-5, 5, -5],
+      transition: {
+        duration: 8,
+        repeat: Infinity,
+        ease: "easeInOut",
+      },
     },
   };
+
   useEffect(() => {
     setIsMounted(true);
   }, []);
+
   if (!isMounted) return null;
 
   return (
-    <section className="order-t border-white/30 shadow-inner relative py-12 sm:py-16 lg:py-24 bg-gradient-to-br from-gray-50 via-white to-gray-100 overflow-hidden">
-      {/* Background Decorations */}
-      <div className="absolute inset-0 overflow-hidden">
-        <div className="absolute -top-40 -right-40 w-80 h-80 bg-gradient-to-br from-purple-200/30 to-pink-300/30 rounded-full blur-3xl" />
-        <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-gradient-to-br from-blue-200/30 to-cyan-300/30 rounded-full blur-3xl" />
-        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-gradient-to-br from-amber-200/20 to-orange-300/20 rounded-full blur-3xl" />
+    <section className="relative py-16 lg:py-24 overflow-hidden bg-white">
+      {/* Warm gradient background */}
+      <div className="absolute inset-0 bg-gradient-to-br from-white via-yellow-50/30 to-amber-50/20" />
+
+      {/* Subtle background elements with earth tones */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        <motion.div
+          variants={floatingVariants}
+          animate="animate"
+          className="absolute top-20 -right-20 w-40 h-40 bg-gradient-to-br from-yellow-200/30 to-amber-200/20 rounded-full blur-3xl"
+        />
+        <motion.div
+          variants={floatingVariants}
+          animate="animate"
+          style={{ animationDelay: "4s" }}
+          className="absolute -bottom-10 -left-20 w-60 h-60 bg-gradient-to-tr from-amber-100/25 to-yellow-100/15 rounded-full blur-3xl"
+        />
       </div>
 
-      <div className="relative container mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="relative container mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl">
         <motion.div
           variants={containerVariants}
           initial="hidden"
@@ -65,91 +92,128 @@ export const ProductCategoriesMotion = (props: Props) => {
           viewport={{ once: true, margin: "-100px" }}>
           {/* Header Section */}
           <motion.div
-            variants={fadeInUp}
-            className="text-center mb-12 sm:mb-16 lg:mb-20">
-            {/* Icon Badge */}
-            <div className="inline-flex items-center justify-center w-16 h-16 sm:w-20 sm:h-20 bg-gradient-to-r from-purple-500 to-pink-600 rounded-2xl mb-6 sm:mb-8 shadow-lg">
-              <span className="text-2xl sm:text-3xl">🏷️</span>
-            </div>
+            variants={itemVariants}
+            className="text-center mb-16 lg:mb-20">
+            {/* Earth-toned icon */}
+            <motion.div
+              className="inline-flex items-center justify-center w-16 h-16 mb-8 bg-gradient-to-br from-amber-600 to-yellow-600 rounded-2xl shadow-lg"
+              whileHover={{ scale: 1.05 }}
+              transition={{ type: "spring", stiffness: 300, damping: 20 }}>
+              <svg
+                className="w-8 h-8 text-white"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24">
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"
+                />
+              </svg>
+            </motion.div>
 
-            {/* Main Title */}
-            <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-extrabold mb-4 sm:mb-6 leading-tight">
-              <span className="bg-gradient-to-r from-gray-900 via-gray-800 to-gray-900 bg-clip-text text-transparent">
-                {title}
-              </span>
-            </h2>
+            {/* Earth brown title */}
+            <h1 className="text-3xl sm:text-4xl lg:text-5xl xl:text-6xl font-bold mb-6 text-amber-900 leading-tight">
+              {title}
+            </h1>
 
-            {/* Description */}
-            <p className="text-base sm:text-lg md:text-xl lg:text-2xl text-gray-600 max-w-2xl lg:max-w-4xl mx-auto leading-relaxed">
+            {/* Light gray description */}
+            <motion.p
+              variants={itemVariants}
+              className="text-lg lg:text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
               {description}
-            </p>
-
-            {/* Decorative Line */}
-            <div className="flex items-center justify-center mt-8 sm:mt-10">
-              <div className="flex space-x-2">
-                <div className="w-2 h-2 bg-purple-500 rounded-full animate-pulse" />
-                <div className="w-2 h-2 bg-pink-500 rounded-full animate-pulse delay-150" />
-                <div className="w-2 h-2 bg-purple-500 rounded-full animate-pulse delay-300" />
-              </div>
-            </div>
+            </motion.p>
           </motion.div>
 
           {/* Categories Grid */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8 lg:gap-10">
-            {categories.map((category) => (
-              <CategoryCard category={category} key={category.id} />
-            ))}
-          </div>
+          <motion.div variants={itemVariants} className="mb-16 lg:mb-20">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 lg:gap-10">
+              {categories.map((category, index) => (
+                <motion.div
+                  key={category.id}
+                  variants={itemVariants}
+                  whileHover={{
+                    y: -4,
+                    transition: { duration: 0.2, ease: "easeOut" },
+                  }}
+                  style={{ animationDelay: `${index * 0.1}s` }}>
+                  <CategoryCard category={category} />
+                </motion.div>
+              ))}
+            </div>
+          </motion.div>
 
-          {/* Call to Action */}
-          <Link href={`/danh-muc`}>
-            <motion.div
-              variants={fadeInUp}
-              className="text-center mt-12 sm:mt-16 lg:mt-20">
+          {/* Call-to-Action with warm colors */}
+          <motion.div variants={itemVariants} className="text-center mb-16">
+            <Link href="/danh-muc" passHref>
               <motion.button
                 whileHover={{
-                  scale: 1.05,
-                  boxShadow: "0 20px 40px rgba(168, 85, 247, 0.4)",
+                  scale: 1.02,
+                  boxShadow: "0 20px 40px rgba(217, 119, 6, 0.2)",
                 }}
                 whileTap={{ scale: 0.98 }}
-                className="group relative bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white px-6 sm:px-8 lg:px-10 py-3 sm:py-4 lg:py-5 rounded-xl sm:rounded-2xl text-sm sm:text-base lg:text-lg font-semibold transition-all duration-300 shadow-lg hover:shadow-2xl overflow-hidden">
-                <span className="relative z-10 flex items-center justify-center gap-2">
-                  Khám Phá Tất Cả Danh Mục
-                  <motion.span
-                    animate={{ x: [0, 5, 0] }}
-                    transition={{ duration: 1.5, repeat: Infinity }}>
-                    →
-                  </motion.span>
-                </span>
-                <div className="absolute inset-0 bg-gradient-to-r from-white/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                className="inline-flex items-center gap-3 bg-gradient-to-r from-amber-600 to-yellow-600 hover:from-amber-700 hover:to-yellow-700 text-white px-8 py-4 lg:px-12 lg:py-5 rounded-xl text-lg font-semibold transition-all duration-300 shadow-lg hover:shadow-xl">
+                Khám Phá Tất Cả Danh Mục
+                <motion.svg
+                  className="w-5 h-5"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                  animate={{ x: [0, 4, 0] }}
+                  transition={{
+                    duration: 2,
+                    repeat: Infinity,
+                    ease: "easeInOut",
+                  }}>
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M17 8l4 4m0 0l-4 4m4-4H3"
+                  />
+                </motion.svg>
               </motion.button>
-            </motion.div>
-          </Link>
+            </Link>
+          </motion.div>
 
-          {/* Stats Section */}
+          {/* Stats Section with earth tones */}
           {categories.length > 0 && (
-            <motion.div
-              variants={fadeInUp}
-              className="mt-16 sm:mt-20 lg:mt-24 text-center">
-              <div className="inline-flex items-center gap-8 sm:gap-12 px-6 py-4 bg-white/60 backdrop-blur-sm rounded-2xl border border-white/60 shadow-lg">
-                <div className="text-center">
-                  <div className="text-2xl sm:text-3xl font-bold text-gray-900 mb-1">
-                    {categories.length}
+            <motion.div variants={itemVariants} className="flex justify-center">
+              <div className="bg-white/90 backdrop-blur-sm rounded-2xl border border-gray-200/60 shadow-xl p-8 lg:p-12">
+                <div className="flex items-center gap-12 lg:gap-16">
+                  <div className="text-center">
+                    <motion.div
+                      className="text-4xl lg:text-5xl font-bold text-amber-700 mb-2"
+                      whileHover={{ scale: 1.05 }}
+                      transition={{
+                        type: "spring",
+                        stiffness: 300,
+                        damping: 20,
+                      }}>
+                      {categories.length}
+                    </motion.div>
+                    <div className="text-sm lg:text-base text-gray-500 font-medium uppercase tracking-wider">
+                      Danh mục
+                    </div>
                   </div>
-                  <div className="text-xs sm:text-sm text-gray-600">
-                    Danh mục
-                  </div>
-                </div>
-                <div className="w-px h-8 bg-gray-300" />
-                <div className="text-center">
-                  <div className="text-2xl sm:text-3xl font-bold text-gray-900 mb-1">
-                    {categories.reduce(
-                      (total, cat) => total + (cat.products?.length || 0),
-                      0
-                    )}
-                  </div>
-                  <div className="text-xs sm:text-sm text-gray-600">
-                    Sản phẩm
+
+                  <div className="w-px h-16 bg-gradient-to-b from-transparent via-gray-300 to-transparent" />
+
+                  <div className="text-center">
+                    <motion.div
+                      className="text-4xl lg:text-5xl font-bold text-yellow-600 mb-2"
+                      whileHover={{ scale: 1.05 }}
+                      transition={{
+                        type: "spring",
+                        stiffness: 300,
+                        damping: 20,
+                      }}>
+                      500+
+                    </motion.div>
+                    <div className="text-sm lg:text-base text-gray-500 font-medium uppercase tracking-wider">
+                      Sản phẩm
+                    </div>
                   </div>
                 </div>
               </div>

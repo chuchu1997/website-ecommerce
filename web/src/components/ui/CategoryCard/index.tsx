@@ -3,6 +3,7 @@
 import { CategoryInterface } from "@/types/category";
 import { motion } from "framer-motion";
 import Link from "next/link";
+import { ImageLoader } from "../image-loader";
 
 interface Props {
   category: CategoryInterface;
@@ -35,25 +36,26 @@ const CategoryCard = (props: Props) => {
           variants={cardHover}
           className="relative rounded-2xl sm:rounded-3xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-500 bg-white/50 backdrop-blur-sm border border-white/60">
           {/* Image Container */}
-          <div className="relative aspect-[4/3] sm:aspect-[16/12] overflow-hidden">
-            <img
+          <div className="relative z-30 aspect-[4/3] sm:aspect-[16/12] overflow-hidden">
+            <ImageLoader
               src={category.imageUrl}
               alt={category.name}
+              fill
               className="w-full h-full object-cover transition-all duration-700 group-hover:scale-110 group-hover:rotate-1"
             />
 
             {/* Overlay Gradients */}
-            <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-70 group-hover:opacity-85 transition-opacity duration-300" />
-            <div className="absolute inset-0 bg-gradient-to-r from-purple-600/20 to-pink-600/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+            <div className="z-40 absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-70 group-hover:opacity-85 transition-opacity duration-300" />
+            <div className="z-40 absolute inset-0 bg-gradient-to-r from-purple-600/20 to-pink-600/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
 
             {/* Shimmer Effect */}
-            <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-              <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent transform -skew-x-12 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-1000" />
+            <div className="z-40 absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+              <div className="z-40 absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent transform -skew-x-12 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-1000" />
             </div>
           </div>
 
           {/* Content Overlay */}
-          <div className="absolute inset-0 flex items-center justify-center">
+          <div className="absolute z-40 inset-0 flex items-center justify-center">
             <div className="text-center text-white transform group-hover:scale-105 transition-transform duration-300">
               <motion.h3
                 className="text-xl sm:text-2xl lg:text-3xl font-bold mb-2 sm:mb-3 drop-shadow-lg"
@@ -76,7 +78,7 @@ const CategoryCard = (props: Props) => {
           </div>
 
           {/* Category Badge */}
-          <div className="absolute top-4 left-4 sm:top-6 sm:left-6">
+          <div className="z-40 absolute top-4 left-4 sm:top-6 sm:left-6">
             <div className="bg-white/20 backdrop-blur-sm rounded-full px-3 py-1 sm:px-4 sm:py-2 border border-white/30 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
               <span className="text-white text-xs sm:text-sm font-medium">
                 Danh mục
@@ -85,7 +87,7 @@ const CategoryCard = (props: Props) => {
           </div>
 
           {/* Bottom Accent */}
-          <div className="absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-r from-purple-500 to-pink-500 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+          <div className="z-40 absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-r from-purple-500 to-pink-500 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
         </motion.div>
       </motion.div>
     </Link>

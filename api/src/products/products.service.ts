@@ -70,7 +70,10 @@ export class ProductsService {
 
           images: {
             createMany: {
-              data: images,
+              data: images.map((img) => ({
+                ...img,
+                type: 'PRODUCT',
+              })),
             },
           },
           ...(giftProducts &&
