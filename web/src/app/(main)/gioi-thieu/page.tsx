@@ -54,76 +54,75 @@ const AboutUsPage: React.FC = () => {
   const [isVideoPlaying, setIsVideoPlaying] = useState(false);
   const [storeInfo,setStoreInfo] = useState<StoreInterface>();
 
+  const statistics: Statistic[] = [
+    {
+      label: "Khách hàng tin tưởng",
+      value: "50K+",
+      icon: <Heart className="w-6 h-6" style={{ color: "var(--color-primary)" }} />,
+      description: "Trên toàn quốc và khu vực Đông Nam Á"
+    },
+    {
+      label: "Đại lý & đối tác",
+      value: "300+",
+      icon: <Building className="w-6 h-6" style={{ color: "var(--color-accent-green)" }} />,
+      description: "Hệ thống phân phối phủ rộng"
+    },
+    {
+      label: "Kinh nghiệm thị trường",
+      value: "10+",
+      icon: <Award className="w-6 h-6" style={{ color: "var(--color-primary)" }} />,
+      description: "Trong lĩnh vực nội thất cao cấp"
+    },
+    {
+      label: "Dự án hoàn thành",
+      value: "20K+",
+      icon: <Home className="w-6 h-6" style={{ color: "var(--color-accent-green)" }} />,
+      description: "Công trình dân dụng, văn phòng, biệt thự, căn hộ"
+    }
+  ];
 
-const statistics: Statistic[] = [
-  {
-    label: "Khách hàng tin tưởng",
-    value: "50K+",
-    icon: <Heart className="w-6 h-6" />,
-    description: "Trên toàn quốc và khu vực Đông Nam Á"
-  },
-  {
-    label: "Đại lý & đối tác",
-    value: "300+",
-    icon: <Building className="w-6 h-6" />,
-    description: "Hệ thống phân phối phủ rộng"
-  },
-  {
-    label: "Kinh nghiệm thị trường",
-    value: "10+",
-    icon: <Award className="w-6 h-6" />,
-    description: "Trong lĩnh vực máy xây dựng"
-  },
-  {
-    label: "Dự án cung cấp thiết bị",
-    value: "20K+",
-    icon: <Home className="w-6 h-6" />,
-    description: "Công trình dân dụng, công nghiệp, hạ tầng"
-  }
-];
-
-const services = [
-  {
-    title: "Cung Cấp Máy Xây Dựng Mới",
-    description: "Phân phối các dòng máy xây dựng chính hãng, chất lượng cao, đa dạng chủng loại.",
-    icon: "🏗️",
-    features: [
-      "Xe xúc, xe lu, máy ủi, máy trộn bê tông,...",
-      "Hàng mới 100%, bảo hành chính hãng",
-      "Nguồn gốc rõ ràng, chứng từ đầy đủ"
-    ],
-  },
-  {
-    title: "Tư Vấn Lựa Chọn Thiết Bị",
-    description: "Đội ngũ kỹ sư giàu kinh nghiệm hỗ trợ lựa chọn thiết bị phù hợp nhu cầu và ngân sách.",
-    icon: "📐",
-    features: [
-      "Tư vấn tận nơi hoặc online miễn phí",
-      "Đề xuất thiết bị theo loại công trình",
-      "Phân tích chi phí – hiệu suất sử dụng"
-    ],
-  },
-  {
-    title: "Giao Hàng & Bàn Giao Máy",
-    description: "Dịch vụ vận chuyển toàn quốc, lắp đặt tận nơi và hướng dẫn vận hành chi tiết.",
-    icon: "🚚",
-    features: [
-      "Giao hàng đúng tiến độ, an toàn",
-      "Hướng dẫn kỹ thuật vận hành tại công trình",
-      "Miễn phí vận chuyển tại các khu vực chính"
-    ],
-  },
-  {
-    title: "Bảo Hành & Hậu Mãi",
-    description: "Chính sách bảo hành minh bạch, dịch vụ hậu mãi tận tâm và linh kiện thay thế sẵn có.",
-    icon: "🔧",
-    features: [
-      "Bảo hành từ 6–24 tháng tuỳ dòng máy",
-      "Sửa chữa nhanh, có máy thay thế tạm thời",
-      "Hỗ trợ kỹ thuật 24/7"
-    ],
-  }
-];
+  const services: Service[] = [
+    {
+      title: "Thiết Kế Nội Thất Sang Trọng",
+      description: "Đội ngũ thiết kế sáng tạo mang đến không gian hài hòa, thẩm mỹ và tiện dụng.",
+      icon: <Palette className="w-7 h-7" style={{ color: "var(--color-primary)" }} />,
+      features: [
+        "Thiết kế tùy chỉnh theo phong cách khách hàng",
+        "Sử dụng vật liệu cao cấp, bền đẹp",
+        "Tối ưu công năng và ánh sáng"
+      ],
+    },
+    {
+      title: "Sản Phẩm Nội Thất Đa Dạng",
+      description: "Cung cấp các dòng sản phẩm bàn ghế, tủ kệ, giường ngủ với chất lượng vượt trội.",
+      icon: <Sofa className="w-7 h-7" style={{ color: "var(--color-accent-green)" }} />,
+      features: [
+        "Chất liệu gỗ tự nhiên, bền bỉ",
+        "Thiết kế hiện đại, cổ điển đa dạng",
+        "Đảm bảo an toàn và thân thiện môi trường"
+      ],
+    },
+    {
+      title: "Thi Công & Lắp Đặt Chuyên Nghiệp",
+      description: "Đội ngũ thi công giàu kinh nghiệm, đảm bảo tiến độ và chất lượng hoàn thiện.",
+      icon: <Building className="w-7 h-7" style={{ color: "var(--color-primary)" }} />,
+      features: [
+        "Lắp đặt tận nơi, đúng kỹ thuật",
+        "Kiểm tra và nghiệm thu nghiêm ngặt",
+        "Hỗ trợ bảo trì sau thi công"
+      ],
+    },
+    {
+      title: "Tư Vấn & Hậu Mãi Tận Tâm",
+      description: "Luôn đồng hành cùng khách hàng với dịch vụ tư vấn và bảo hành chuyên nghiệp.",
+      icon: <Lightbulb className="w-7 h-7" style={{ color: "var(--color-accent-green)" }} />,
+      features: [
+        "Tư vấn thiết kế và vật liệu miễn phí",
+        "Bảo hành chính hãng, linh kiện thay thế sẵn có",
+        "Hỗ trợ khách hàng 24/7"
+      ],
+    }
+  ];
   
   useEffect(() => {
     fetchStoreInfo();
@@ -133,82 +132,96 @@ const services = [
     return () => clearInterval(interval);
   }, []);
 
-  const fetchStoreInfo = async ()=>{
+  const fetchStoreInfo = async () => {
     let res = await StoreAPI.getStoreInfo();
     if(res.status === 200){
       setStoreInfo(res.data.store)
     }
-
   }
 
-
-  const storeName = storeInfo?.name || "Happy Furniture";
-const [firstWord, ...restWords] = storeName.split(" ");
-const restOfName = restWords.join(" ");
- 
+  const storeName = storeInfo?.name || "HappyFurniture";
+  const [firstWord, ...restWords] = storeName.split(" ");
+  const restOfName = restWords.join(" ");
 
   return (
-    
-    <div className="min-h-screen bg-white overflow-hidden  ">
+    <div className="min-h-screen bg-var(--color-bg) overflow-hidden">
       {/* Hero Section */}
- <section className="relative  min-h-screen flex items-center justify-center bg-gradient-to-br from-amber-50 via-orange-50 to-red-50 overflow-hidden">
-    <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=1200&h=800&fit=crop')] bg-cover bg-center opacity-10" />
+      <section 
+        className="relative min-h-screen flex items-center justify-center overflow-hidden"
+        style={{ 
+          background: 'var(--color-bg-secondary)'
+        }}
+      >
+        <div 
+          className="absolute inset-0 bg-cover bg-center opacity-10"
+          style={{ backgroundImage: "url('https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=1200&h=800&fit=crop')" }}
+        />
 
-    <div className="relative z-10 mx-auto px-6 text-center">
-      <div className="mb-8">
-        <h1 className="text-4xl md:text-6xl font-bold text-gray-900 mb-6">
-          {firstWord}
-          <span className="ml-2 text-transparent bg-clip-text bg-gradient-to-r from-amber-600 to-orange-600">
-            {restOfName}
-          </span>
-        </h1>
-        <p className="text-2xl md:text-3xl text-gray-700 mb-8 max-w-4xl mx-auto">
-          {storeInfo?.description}
-        </p>
-        <div className="flex flex-wrap justify-center gap-4 text-lg text-gray-600">
-          {storeInfo?.tags && storeInfo.tags.length > 0  && storeInfo?.tags.map((tag,index)=>(
-                    <span key={index} className="flex items-center"><Tag className="w-5 h-5 mr-2" />{tag}</span>
-
-          ))}
-          {/* <span className="flex items-center"><Sofa className="w-5 h-5 mr-2" />Nội thất cao cấp</span>
-          <span className="flex items-center"><Palette className="w-5 h-5 mr-2" />Thiết kế nội thất</span>
-          <span className="flex items-center"><Home className="w-5 h-5 mr-2" />Thi công dự án</span>
-          <span className="flex items-center"><MapPin className="w-5 h-5 mr-2" />120+ Showroom toàn quốc</span> */}
-        </div>
-      </div>
-
-      {/* Video Section */}
-      <div className="relative max-w-4xl mx-auto ">
-        <div className="relative rounded-2xl overflow-hidden shadow-2xl bg-white/10 backdrop-blur-sm border border-white/20">
-          {!isVideoPlaying ? (
-            <div className="aspect-video bg-gradient-to-br from-amber-100 to-orange-100 flex items-center justify-center">
-              <button
-                onClick={() => setIsVideoPlaying(true)}
-                className="group bg-white/90 backdrop-blur-sm rounded-full p-6 hover:bg-white transition-all duration-300 transform hover:scale-110 shadow-lg"
+        <div className="relative z-10 mx-auto px-6 text-center max-w-4xl">
+          <div className="mb-8">
+            <h1
+              className="text-4xl md:text-6xl font-bold mb-6 leading-tight"
+              style={{ color: "var(--color-text-primary)" }}
+            >
+              {firstWord}
+              <span 
+                className="ml-2"
+                style={{ 
+                  background: "var(--gradient-primary)", 
+                  WebkitBackgroundClip: "text", 
+                  WebkitTextFillColor: "transparent" 
+                }}
               >
-                <Play className="w-12 h-12 text-amber-600 ml-1 group-hover:text-orange-600 transition-colors" />
-              </button>
+                {restOfName}
+              </span>
+            </h1>
+            <p
+              className="text-2xl md:text-3xl mb-8 max-w-3xl mx-auto leading-relaxed"
+              style={{ color: "var(--color-text-secondary)" }}
+            >
+              {storeInfo?.description || "Mang đến giải pháp nội thất hoàn hảo cho không gian sống và làm việc của bạn."}
+            </p>
+            <div className="flex flex-wrap justify-center gap-4 text-lg" style={{ color: "var(--color-text-muted)" }}>
+              {storeInfo?.tags && storeInfo.tags.length > 0 && storeInfo.tags.map((tag, index) => (
+                <span key={index} className="flex items-center">
+                  <Tag className="w-5 h-5 mr-2" style={{ color: "var(--color-primary)" }} />
+                  {tag}
+                </span>
+              ))}
             </div>
-          ) : (
-            <div className="aspect-video bg-gray-900 flex items-center justify-center">
-              <p className="text-white text-xl">Video giới thiệu về chúng tôi</p>
-            </div>
-          )}
-        </div>
-      </div>
-    </div>
+          </div>
 
-    {/* Floating Elements */}
-    <div className="absolute top-20 left-20 animate-float">
-      <div className="w-20 h-20 bg-amber-200 rounded-full opacity-20" />
-    </div>
-    <div className="absolute bottom-20 right-20 animate-float" style={{ animationDelay: '2s' }}>
-      <div className="w-16 h-16 bg-orange-200 rounded-full opacity-20" />
-    </div>
-  </section>
+          {/* Video Section */}
+          <div className="relative max-w-4xl mx-auto rounded-2xl overflow-hidden shadow-lg border" style={{ borderColor: "var(--color-border)" }}>
+            {!isVideoPlaying ? (
+              <div className="aspect-video flex items-center justify-center" style={{ background: "var(--color-bg-accent)" }}>
+                <button
+                  onClick={() => setIsVideoPlaying(true)}
+                  className="group bg-var(--color-bg) rounded-full p-6 hover:scale-110 transition transform shadow-md"
+                  style={{ boxShadow: "var(--shadow-default)" }}
+                >
+                  <Play className="w-12 h-12" style={{ color: "var(--color-primary)" }} />
+                </button>
+              </div>
+            ) : (
+              <div className="aspect-video bg-var(--color-bg-secondary) flex items-center justify-center">
+                <p style={{ color: "var(--color-text-primary)", fontSize: "1.25rem" }}>Video giới thiệu về chúng tôi</p>
+              </div>
+            )}
+          </div>
+        </div>
+
+        {/* Floating Elements */}
+        <div className="absolute top-20 left-20 animate-float">
+          <div className="w-20 h-20 rounded-full opacity-20" style={{ backgroundColor: "var(--color-primary-light)" }} />
+        </div>
+        <div className="absolute bottom-20 right-20 animate-float" style={{ animationDelay: '2s' }}>
+          <div className="w-16 h-16 rounded-full opacity-20" style={{ backgroundColor: "var(--color-accent-green-light)" }} />
+        </div>
+      </section>
 
       {/* Statistics Section */}
-      <section className="py-20 bg-white">
+      <section className="py-20" style={{ backgroundColor: "var(--color-bg)" }}>
         <div className="max-w-7xl mx-auto px-6">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
             {statistics.map((stat, index) => (
@@ -217,137 +230,66 @@ const restOfName = restWords.join(" ");
                 className="text-center group cursor-pointer"
                 style={{ animationDelay: `${index * 0.2}s` }}
               >
-                <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-br from-amber-500 to-orange-500 text-white rounded-2xl mb-4 group-hover:scale-110 transition-transform duration-300 shadow-lg">
+                <div 
+                  className="inline-flex items-center justify-center w-16 h-16 rounded-2xl mb-4 shadow-lg transition-transform duration-300 group-hover:scale-110"
+                  // style={{ 
+                  //   background: "var(--gradient-primary)", 
+                  //   color: "var(--color-text-white)" 
+                  // }}
+                >
                   {stat.icon}
                 </div>
-                <div className="text-4xl font-bold text-gray-900 mb-2">{stat.value}</div>
-                <div className="text-xl font-semibold text-gray-800 mb-1">{stat.label}</div>
-                <p className="text-gray-600">{stat.description}</p>
+                <div className="text-4xl font-bold mb-2" style={{ color: "var(--color-text-primary)" }}>{stat.value}</div>
+                <div className="text-xl font-semibold mb-1" style={{ color: "var(--color-text-secondary)" }}>{stat.label}</div>
+                <p className="text-base" style={{ color: "var(--color-text-muted)" }}>{stat.description}</p>
               </div>
             ))}
           </div>
         </div>
       </section>
 
-
-
-
-      {/* Timeline Section */}
-      {/* <section className="py-20 bg-white">
+      {/* Services Section */}
+      <section className="py-20" style={{ backgroundColor: "var(--color-bg-secondary)" }}>
         <div className="max-w-7xl mx-auto px-6">
           <div className="text-center mb-16">
-            <h2 className="text-5xl font-bold text-gray-900 mb-6">Our Journey</h2>
-            <p className="text-xl text-gray-600">Key milestones that shaped our company</p>
+            <h2 className="text-5xl font-bold mb-6" style={{ color: "var(--color-text-primary)" }}>Chúng Tôi Cung Cấp</h2>
+            <p className="text-xl max-w-3xl mx-auto" style={{ color: "var(--color-text-secondary)" }}>
+              Các sản phẩm và dịch vụ nội thất cao cấp, đa dạng phong cách và tiện nghi.
+            </p>
           </div>
 
-          <div className="relative">
-            <div className="absolute left-1/2 transform -translate-x-1/2 w-1 h-full bg-gradient-to-b from-amber-400 to-orange-400 rounded-full" />
-            
-            {milestones.map((milestone, index) => (
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+            {services.map((service, index) => (
               <div
                 key={index}
-                className={`relative flex items-center ${index % 2 === 0 ? 'justify-start' : 'justify-end'} mb-12`}
+                className="rounded-2xl p-8 shadow-lg transition-all duration-300 transform hover:-translate-y-2 hover:shadow-xl bg-var(--color-bg)"
+                style={{ border: "1px solid var(--color-border)" }}
               >
-                <div className={`w-1/2 ${index % 2 === 0 ? 'pr-8 text-right' : 'pl-8 text-left'}`}>
-                  <div className="bg-white rounded-xl p-6 shadow-lg border border-gray-100 group hover:shadow-xl transition-shadow duration-300">
-                    <div className="text-3xl font-bold text-amber-600 mb-2">{milestone.year}</div>
-                    <div className="text-xl font-semibold text-gray-900 mb-2">{milestone.title}</div>
-                    <p className="text-gray-600">{milestone.description}</p>
+                <div className="flex items-center mb-6">
+                  <div 
+                    className="p-3 rounded-xl transition-transform duration-300 group-hover:scale-110" 
+                    // style={{ background: "var(--gradient-primary)", color: "var(--color-text-white)" }}
+                  >
+                    {service.icon}
                   </div>
+                  <h3 className="text-2xl font-bold ml-4" style={{ color: "var(--color-text-primary)" }}>{service.title}</h3>
                 </div>
-                
-                <div className="absolute left-1/2 transform -translate-x-1/2 w-4 h-4 bg-gradient-to-br from-amber-400 to-orange-400 rounded-full border-4 border-white shadow-lg" />
+
+                <p className="mb-6" style={{ color: "var(--color-text-secondary)" }}>{service.description}</p>
+
+                <div className="space-y-3">
+                  {service.features.map((feature, featureIndex) => (
+                    <div key={featureIndex} className="flex items-center" style={{ color: "var(--color-text-primary)" }}>
+                      <CheckCircle className="w-5 h-5 text-var(--color-accent-green) mr-3" />
+                      <span>{feature}</span>
+                    </div>
+                  ))}
+                </div>
               </div>
             ))}
           </div>
         </div>
-      </section> */}
-
-      {/* Services Section */}
-<section className="py-20 bg-gradient-to-br from-yellow-50 to-orange-50">
-  <div className="max-w-7xl mx-auto px-6">
-    <div className="text-center mb-16">
-      <h2 className="text-5xl font-bold text-gray-900 mb-6">Chúng Tôi Cung Cấp</h2>
-      <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-        Các sản phẩm liên quan tới âm nhạc chất lượng nhất
-      </p>
-    </div>
-
-    <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-      {services.map((service, index) => (
-        <div
-          key={index}
-          className="bg-white rounded-2xl p-8 shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2 group"
-        >
-          <div className="flex items-center mb-6">
-            <div className="bg-gradient-to-br from-yellow-500 to-orange-500 text-white p-3 rounded-xl group-hover:scale-110 transition-transform duration-300">
-              {service.icon}
-            </div>
-            <h3 className="text-2xl font-bold text-gray-900 ml-4">{service.title}</h3>
-          </div>
-
-          <p className="text-gray-600 mb-6">{service.description}</p>
-
-          <div className="space-y-3">
-            {service.features.map((feature, featureIndex) => (
-              <div key={featureIndex} className="flex items-center">
-                <CheckCircle className="w-5 h-5 text-green-500 mr-3" />
-                <span className="text-gray-700">{feature}</span>
-              </div>
-            ))}
-          </div>
-        </div>
-      ))}
-    </div>
-  </div>
-</section>
-
-
-      {/* Team Section */}
-{/* <section className="py-20 bg-white">
-  <div className="max-w-7xl mx-auto px-6">
-    <div className="text-center mb-16">
-      <h2 className="text-5xl font-bold text-gray-900 mb-6">Đội Ngũ Của Chúng Tôi</h2>
-      <p className="text-xl text-gray-600">Những chuyên gia tận tâm trong ngành máy móc & xây dựng</p>
-    </div>
-
-    <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-      {teamMembers.map((member, index) => (
-        <div
-          key={member.id}
-          className="text-center group cursor-pointer"
-          style={{ animationDelay: `${index * 0.2}s` }}
-        >
-          <div className="relative mb-6">
-            <img
-              src={member.image}
-              alt={member.name}
-              className="w-48 h-48 rounded-full mx-auto object-cover shadow-lg group-hover:shadow-xl transition-shadow duration-300"
-            />
-            <div className="absolute inset-0 rounded-full bg-gradient-to-br from-yellow-500/20 to-orange-500/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-          </div>
-
-          <h3 className="text-2xl font-bold text-gray-900 mb-2">{member.name}</h3>
-          <p className="text-lg text-yellow-600 font-semibold mb-4">{member.position}</p>
-          <p className="text-gray-600 mb-4">{member.bio}</p>
-
-          <div className="flex flex-wrap justify-center gap-2">
-            {member.expertise.map((skill, skillIndex) => (
-              <span
-                key={skillIndex}
-                className="px-3 py-1 bg-yellow-100 text-yellow-800 rounded-full text-sm font-medium"
-              >
-                {skill}
-              </span>
-            ))}
-          </div>
-        </div>
-      ))}
-    </div>
-  </div>
-</section> */}
-
-      {/* CTA Section */}
+      </section>
 
     </div>
   );

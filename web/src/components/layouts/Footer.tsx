@@ -8,7 +8,6 @@ import { SocialInterface, StoreInterface } from "@/types/store";
 import { SocialIcon } from "react-social-icons";
 import Link from "next/link";
 import { ZaloIcon } from "@/common/ZaloPhoneFloating";
-
 interface FooterLink {
   label: string;
   href: string;

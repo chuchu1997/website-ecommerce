@@ -612,7 +612,7 @@ export default function ServicesManagement() {
                     Thêm dự án
                   </Button>
                 </DialogTrigger>
-                <DialogContent className="max-h-[90vh] overflow-y-auto w-[95vw] sm:w-full max-w-2xl">
+                <DialogContent className="max-h-[90vh] overflow-y-auto w-full  mx-auto ">
                   <DialogHeader className="flex-shrink-0 pb-4 border-b">
                     <DialogTitle className="text-center text-xl font-bold text-gray-800">
                       {editingServiceId ? "Chỉnh sửa dự án " : "Tạo mới dự án "}
