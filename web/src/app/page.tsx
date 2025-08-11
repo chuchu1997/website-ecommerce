@@ -12,7 +12,7 @@ import { ProductWithCategoryType } from "./(main)/components/ProductWithCategory
 import { CategoriesListSSR } from "./(main)/components/CategoriesList/categories-list-ssr";
 import { HeroSSR } from "./(main)/components/Hero/HeroSSR";
 import { getCachedStoreInfo } from "./layout";
-export const revalidate = 120; // 5 phút
+export const revalidate = 3600; // 5 phút
 
 const MusicStoreLanding: React.FC = async () => {
   const storeInfo = await getCachedStoreInfo();

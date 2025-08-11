@@ -26,7 +26,7 @@ import { cache } from "react"; // <- quan trọng
  * Cache categories 5 phút, coalesce với cache()
  */
 
-export const revalidate = 120; // 5 phút
+export const revalidate = 3600; // 5 phút
 
 export const getCachedCategories = async (
   limit?: number
