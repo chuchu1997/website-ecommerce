@@ -328,18 +328,36 @@ export const ZaloPhoneWidget = ({ storeInfo }: Props) => {
           {/* Zalo Button */}
           <motion.div variants={mobileItemVariants} className="flex-1">
             <motion.a
-              onClick={() => {
-                console.log("ZALO", zalo);
-              }}
               href={zalo}
               target="_blank"
               rel="noopener noreferrer"
-              className="group relative flex items-center justify-center gap-2 py-2.5 px-4 rounded-xl bg-white text-black font-medium shadow-md border border-gray-200 active:shadow-lg transition-all duration-200"
-              whileHover={{ scale: 1.02 }}
-              whileTap={{ scale: 0.98 }}>
+              className="relative flex items-center justify-center gap-2 py-2.5 px-4 rounded-xl bg-white text-black font-medium shadow-md border border-gray-200 active:shadow-lg transition-all duration-200"
+              whileHover="hover"
+              whileTap={{ scale: 0.98 }}
+              initial="rest"
+              animate="rest"
+              variants={{
+                rest: { scale: 1 },
+                hover: { scale: 1.02 },
+              }}
+              onClick={() => console.log("ZALO", zalo)}>
               {/* Background effects */}
-              <div className="absolute inset-0 rounded-xl bg-gray-50 opacity-0 group-active:opacity-100 transition-opacity duration-200" />
-              <div className="absolute inset-0 rounded-xl bg-gray-100/50 opacity-0 group-hover:opacity-100 transition-opacity duration-200" />
+              <motion.div
+                className="absolute inset-0 rounded-xl bg-gray-50"
+                variants={{
+                  rest: { opacity: 0 },
+                  hover: { opacity: 1 },
+                }}
+                transition={{ duration: 0.2 }}
+              />
+              <motion.div
+                className="absolute inset-0 rounded-xl bg-gray-100/50"
+                variants={{
+                  rest: { opacity: 0 },
+                  hover: { opacity: 1 },
+                }}
+                transition={{ duration: 0.2 }}
+              />
 
               {/* Content */}
               <div className="relative flex items-center justify-center gap-2">
@@ -352,7 +370,14 @@ export const ZaloPhoneWidget = ({ storeInfo }: Props) => {
               </div>
 
               {/* Shine effect */}
-              <div className="absolute inset-0 rounded-xl bg-gradient-to-r from-transparent via-white/40 to-transparent opacity-0 group-active:opacity-100 translate-x-[-100%] group-active:translate-x-[100%] transition-all duration-600" />
+              <motion.div
+                className="absolute inset-0 rounded-xl bg-gradient-to-r from-transparent via-white/40 to-transparent translate-x-[-100%]"
+                variants={{
+                  rest: { opacity: 0, translateX: "-100%" },
+                  hover: { opacity: 1, translateX: "100%" },
+                }}
+                transition={{ duration: 0.6 }}
+              />
             </motion.a>
           </motion.div>
 
@@ -362,16 +387,34 @@ export const ZaloPhoneWidget = ({ storeInfo }: Props) => {
           {/* Phone Button */}
           <motion.div variants={mobileItemVariants} className="flex-1">
             <motion.a
-              onClick={() => {
-                console.log("PHONE", phone);
-              }}
               href={phone}
-              className="group relative flex items-center justify-center gap-2 py-2.5 px-4 rounded-xl bg-gradient-to-r from-emerald-500 to-emerald-600 text-white font-medium shadow-md active:shadow-lg transition-all duration-200"
-              whileHover={{ scale: 1.02 }}
-              whileTap={{ scale: 0.98 }}>
+              className="relative flex items-center justify-center gap-2 py-2.5 px-4 rounded-xl bg-gradient-to-r from-emerald-500 to-emerald-600 text-white font-medium shadow-md active:shadow-lg transition-all duration-200"
+              whileHover="hover"
+              whileTap={{ scale: 0.98 }}
+              initial="rest"
+              animate="rest"
+              variants={{
+                rest: { scale: 1 },
+                hover: { scale: 1.02 },
+              }}
+              onClick={() => console.log("PHONE", phone)}>
               {/* Background effects */}
-              <div className="absolute inset-0 rounded-xl bg-gradient-to-r from-emerald-400 to-emerald-500 opacity-0 group-active:opacity-100 transition-opacity duration-200" />
-              <div className="absolute inset-0 rounded-xl bg-white/10 opacity-0 group-hover:opacity-100 transition-opacity duration-200" />
+              <motion.div
+                className="absolute inset-0 rounded-xl bg-gradient-to-r from-emerald-400 to-emerald-500"
+                variants={{
+                  rest: { opacity: 0 },
+                  hover: { opacity: 1 },
+                }}
+                transition={{ duration: 0.2 }}
+              />
+              <motion.div
+                className="absolute inset-0 rounded-xl bg-white/10"
+                variants={{
+                  rest: { opacity: 0 },
+                  hover: { opacity: 1 },
+                }}
+                transition={{ duration: 0.2 }}
+              />
 
               {/* Content */}
               <div className="relative flex items-center justify-center gap-2">
@@ -380,7 +423,14 @@ export const ZaloPhoneWidget = ({ storeInfo }: Props) => {
               </div>
 
               {/* Shine effect */}
-              <div className="absolute inset-0 rounded-xl bg-gradient-to-r from-transparent via-white/20 to-transparent opacity-0 group-active:opacity-100 translate-x-[-100%] group-active:translate-x-[100%] transition-all duration-600" />
+              <motion.div
+                className="absolute inset-0 rounded-xl bg-gradient-to-r from-transparent via-white/20 to-transparent translate-x-[-100%]"
+                variants={{
+                  rest: { opacity: 0, translateX: "-100%" },
+                  hover: { opacity: 1, translateX: "100%" },
+                }}
+                transition={{ duration: 0.6 }}
+              />
             </motion.a>
           </motion.div>
         </div>
