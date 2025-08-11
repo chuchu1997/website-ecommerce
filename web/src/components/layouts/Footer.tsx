@@ -65,89 +65,73 @@ const Footer: React.FC<Props> = async ({ storeInfo }) => {
   }
 
   return (
-    <footer className="bg-gradient-to-br from-white via-gray-50 to-gray-100 text-gray-800 overflow-hidden border-t border-gray-200 relative">
-      {/* Subtle Background Elements */}
-      <div className="absolute inset-0 opacity-5">
-        <div className="absolute top-0 left-1/4 w-64 h-64 bg-yellow-300 rounded-full blur-3xl transform -translate-y-1/2"></div>
-        <div className="absolute bottom-0 right-1/4 w-48 h-48 bg-yellow-200 rounded-full blur-3xl transform translate-y-1/2"></div>
+    <footer className="bg-[var(--color-bg-primary)] text-[var(--color-text-primary)] overflow-hidden border-t border-[var(--color-border-light)] relative">
+      {/* Ambient Background Glow */}
+      <div className="absolute inset-0 pointer-events-none">
+        <div className="absolute top-0 left-1/4 w-72 h-72 bg-[var(--color-accent-yellow-light)] rounded-full blur-[120px] opacity-20 -translate-y-1/3" />
+        <div className="absolute bottom-0 right-1/4 w-64 h-64 bg-[var(--color-primary-light)] rounded-full blur-[100px] opacity-20 translate-y-1/3" />
       </div>
 
       <div className="relative z-10">
-        {/* Main Footer Content */}
         <div className="py-12 lg:py-16">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12">
-              {/* Brand Section */}
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-12">
+              {/* Brand / About */}
               <div className="lg:col-span-4">
-                <div className="mb-6">
-                  <Image
-                    src="/logo.png"
-                    height={60}
-                    width={60}
-                    alt="logo"
-                    className="mb-4"
-                  />
-                  <p className="text-gray-600 text-sm leading-relaxed max-w-sm">
-                    Chất lượng cao cấp kết hợp với thiết kế đặc biệt. Chúng tôi
-                    đam mê mang đến những sản phẩm vượt trội và nâng tầm phong
-                    cách sống.
-                  </p>
-                </div>
+                <Image
+                  src="/logo.png"
+                  height={60}
+                  width={60}
+                  alt="Logo"
+                  className="mb-5"
+                />
+                <p className="text-[var(--color-text-secondary)] text-sm leading-relaxed max-w-sm mb-6">
+                  Chất lượng cao cấp kết hợp với thiết kế đặc biệt. Chúng tôi
+                  đam mê mang đến những sản phẩm vượt trội và nâng tầm phong
+                  cách sống.
+                </p>
 
                 {/* Contact Info */}
                 <div className="space-y-3">
-                  <div className="flex items-start space-x-3 group">
-                    <div className="bg-yellow-100 p-2 rounded-lg group-hover:bg-yellow-200 transition-colors duration-200 mt-0.5 border border-yellow-200">
-                      <Phone className="h-4 w-4 text-yellow-600" />
-                    </div>
-                    <div className="flex-1">
-                      <span className="text-gray-600 text-sm group-hover:text-gray-800 transition-colors duration-200">
-                        {formatPhoneNumber(storeInfo.phone ?? "")}
+                  {[
+                    {
+                      icon: Phone,
+                      text: formatPhoneNumber(storeInfo.phone ?? ""),
+                    },
+                    { icon: Mail, text: storeInfo.email ?? "" },
+                    { icon: MapPin, text: storeInfo.address ?? "" },
+                  ].map((item, idx) => (
+                    <div
+                      key={idx}
+                      className="flex items-start gap-3 group hover:translate-x-0.5 transition-transform duration-300">
+                      <div className="bg-[var(--color-accent-yellow-light)] p-2 rounded-lg border border-[var(--color-border-accent)] group-hover:bg-[var(--color-accent-yellow)] transition-colors duration-200">
+                        <item.icon className="h-4 w-4 text-[var(--color-accent-yellow-dark)]" />
+                      </div>
+                      <span className="text-sm text-[var(--color-text-secondary)] group-hover:text-[var(--color-text-primary)] transition-colors duration-200 break-words">
+                        {item.text}
                       </span>
                     </div>
-                  </div>
-
-                  <div className="flex items-start space-x-3 group">
-                    <div className="bg-yellow-100 p-2 rounded-lg group-hover:bg-yellow-200 transition-colors duration-200 mt-0.5 border border-yellow-200">
-                      <Mail className="h-4 w-4 text-yellow-600" />
-                    </div>
-                    <div className="flex-1">
-                      <span className="text-gray-600 text-sm group-hover:text-gray-800 transition-colors duration-200 break-all">
-                        {storeInfo.email ?? ""}
-                      </span>
-                    </div>
-                  </div>
-
-                  <div className="flex items-start space-x-3 group">
-                    <div className="bg-yellow-100 p-2 rounded-lg group-hover:bg-yellow-200 transition-colors duration-200 mt-0.5 border border-yellow-200">
-                      <MapPin className="h-4 w-4 text-yellow-600" />
-                    </div>
-                    <div className="flex-1">
-                      <span className="text-gray-600 text-sm group-hover:text-gray-800 transition-colors duration-200 leading-relaxed">
-                        {storeInfo.address ?? ""}
-                      </span>
-                    </div>
-                  </div>
+                  ))}
                 </div>
               </div>
 
-              {/* Footer Links Sections */}
+              {/* Links */}
               <div className="lg:col-span-8">
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-8 lg:gap-12">
                   {footerSections.map((section, index) => (
                     <div key={index} className="space-y-4">
-                      <h3 className="text-yellow-700 font-semibold text-base lg:text-lg relative pb-2">
+                      <h3 className="text-[var(--color-primary-dark)] font-semibold text-base lg:text-lg relative pb-2">
                         {section.title}
-                        <div className="absolute bottom-0 left-0 w-6 h-0.5 bg-gradient-to-r from-yellow-600 to-transparent"></div>
+                        <span className="absolute bottom-0 left-0 w-8 h-0.5 bg-gradient-to-r from-[var(--color-primary)] to-transparent rounded-full" />
                       </h3>
                       <ul className="space-y-2">
                         {section.links.map((link, linkIndex) => (
                           <li key={linkIndex}>
                             <Link
                               href={link.href}
-                              className="text-gray-600 hover:text-yellow-700 text-sm transition-all duration-200 hover:translate-x-1 inline-block relative group">
-                              {link.label}
-                              <span className="absolute bottom-0 left-0 w-0 h-px bg-yellow-600 group-hover:w-full transition-all duration-300"></span>
+                              className="text-sm text-[var(--color-text-secondary)] hover:text-[var(--color-primary-dark)] transition-all duration-200 inline-flex items-center gap-1 group">
+                              <span>{link.label}</span>
+                              <span className="block w-0 group-hover:w-3 h-0.5 bg-[var(--color-primary)] transition-all duration-300"></span>
                             </Link>
                           </li>
                         ))}
@@ -161,33 +145,28 @@ const Footer: React.FC<Props> = async ({ storeInfo }) => {
         </div>
 
         {/* Bottom Bar */}
-        <div className="border-t border-gray-200 bg-gray-50/80 backdrop-blur-sm">
+        <div className="border-t border-[var(--color-border-light)] bg-[var(--color-bg-secondary)] backdrop-blur-sm">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
-            <div className="flex flex-col lg:flex-row justify-between items-center space-y-4 lg:space-y-0">
+            <div className="flex flex-col lg:flex-row justify-between items-center gap-4">
               {/* Certification */}
-              <div className="flex items-center">
-                <Image
-                  src="/bo-cong-thuong.png"
-                  alt="Bộ Công Thương"
-                  height={80}
-                  width={80}
-                  className="opacity-80"
-                />
-              </div>
+              <Image
+                src="/bo-cong-thuong.png"
+                alt="Bộ Công Thương"
+                height={80}
+                width={80}
+                className="opacity-80"
+              />
 
-              {/* Social Links */}
-              <div className="flex items-center space-x-3">
+              {/* Social Icons */}
+              <div className="flex items-center gap-3">
                 {socials.map((social) => (
-                  <div
+                  <Link
                     key={social.id}
-                    className="w-9 h-9 flex items-center justify-center rounded-lg bg-white border border-gray-200 text-gray-500 hover:bg-yellow-400 hover:text-white hover:border-yellow-400 transition-all duration-300 transform hover:scale-105 shadow-sm">
+                    href={social.url}
+                    target="_blank"
+                    className="w-9 h-9 flex items-center justify-center rounded-full border border-[var(--color-border-accent)] bg-[var(--color-bg-primary)] text-[var(--color-text-secondary)] hover:bg-[var(--color-primary)] hover:text-white transition-all duration-300 transform hover:scale-105 shadow-sm">
                     {social.type === "ZALO" ? (
-                      <Link
-                        href={social.url}
-                        target="_blank"
-                        className="flex items-center justify-center w-full h-full">
-                        <ZaloIcon />
-                      </Link>
+                      <ZaloIcon />
                     ) : (
                       <SocialIcon
                         target="_blank"
@@ -197,14 +176,14 @@ const Footer: React.FC<Props> = async ({ storeInfo }) => {
                         style={{ width: "100%", height: "100%" }}
                       />
                     )}
-                  </div>
+                  </Link>
                 ))}
               </div>
             </div>
 
             {/* Copyright */}
-            <div className="border-t border-gray-200 mt-6 pt-4">
-              <p className="text-gray-500 text-xs text-center leading-relaxed">
+            <div className="border-t border-[var(--color-border-light)] mt-6 pt-4">
+              <p className="text-xs text-center text-[var(--color-text-muted)]">
                 © 2025 Tất cả quyền được bảo lưu. Được phát triển bởi
                 NguyenCuong
               </p>

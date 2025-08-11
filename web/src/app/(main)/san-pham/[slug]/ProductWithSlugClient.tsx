@@ -116,7 +116,7 @@ export const ProductClient = ({ product }: propsProductClientPC) => {
   return (
     <div className="min-h-screen bg-white">
       {/* Breadcrumb */}
-      <div className="bg-white border-b border-silver-gray sticky top-2 z-10">
+      <div className="bg-white border-b border-silver-gray sticky top-2 z-10 mt-[30px] sm:mt-[60px]">
         <div className="px-3 sm:px-4 lg:px-8 py-2.5 sm:py-3">
           <nav
             className="flex items-center text-xs sm:text-sm"
@@ -133,7 +133,10 @@ export const ProductClient = ({ product }: propsProductClientPC) => {
               <span className="text-gray-400 flex-shrink-0">/</span>
 
               <span
-                className="text-gray-800 font-medium min-w-0 flex-1"
+                style={{
+                  color: "var(--color-text-secondary)",
+                }}
+                className=" font-medium min-w-0 flex-1"
                 title={product.name}>
                 <span className="block truncate sm:hidden">
                   {product.name.length > 20
@@ -170,7 +173,9 @@ export const ProductClient = ({ product }: propsProductClientPC) => {
             {/* Header */}
             <div className="bg-white rounded-xl border border-silver-gray p-6">
               <div className="flex items-start justify-between mb-4">
-                <h1 className="text-2xl lg:text-3xl font-bold text-gray-900 leading-tight pr-4">
+                <h1
+                  style={{ color: "var(--color-primary)" }}
+                  className="text-2xl lg:text-3xl font-bold text-gray-900 leading-tight pr-4">
                   {product.name}
                 </h1>
                 <div className="flex items-center space-x-2 text-xs bg-gray-100 px-3 py-1 rounded-full whitespace-nowrap">
@@ -355,13 +360,16 @@ export const ProductClient = ({ product }: propsProductClientPC) => {
                     <button
                       onClick={(e: any) => handleAddToCart(e, false)}
                       disabled={product.stock <= 0}
-                      className="flex-1 bg-white border-2 border-yellow-500 text-yellow-500 py-3 px-6 rounded-lg font-semibold hover:bg-yellow-50 transition-colors text-sm sm:text-base disabled:opacity-50 disabled:cursor-not-allowed">
+                      className="cursor-pointer flex-1 bg-white border-2 border-yellow-500 text-yellow-500 py-3 px-6 rounded-lg font-semibold hover:bg-yellow-50 transition-colors text-sm sm:text-base disabled:opacity-50 disabled:cursor-not-allowed">
                       Thêm vào giỏ
                     </button>
                     <button
+                      style={{
+                        backgroundColor: "var(--color-bg-secondary)",
+                      }}
                       onClick={(e) => handleAddToCart(e, true)}
                       disabled={product.stock <= 0}
-                      className="flex-1 bg-yellow-500 text-gray-900 py-3 px-6 rounded-lg font-semibold hover:bg-yellow-600 transition-colors text-sm sm:text-base disabled:opacity-50 disabled:cursor-not-allowed">
+                      className="cursor-pointer flex-1 bg-yellow-500 text-gray-900 py-3 px-6 rounded-lg font-semibold hover:bg-yellow-600 transition-colors text-sm sm:text-base disabled:opacity-50 disabled:cursor-not-allowed">
                       Mua ngay
                     </button>
                   </div>

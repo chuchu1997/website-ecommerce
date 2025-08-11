@@ -2,6 +2,7 @@
 
 import { motion } from 'framer-motion';
 import React, { useEffect, useState } from 'react';
+import { Palette, Home, Lightbulb, Ruler, Sparkles, CheckCircle } from 'lucide-react';
 
 interface Props {
   industry: string;
@@ -15,8 +16,8 @@ export const InteriorContent: React.FC<Props> = ({ industry }) => {
     show: {
       opacity: 1,
       transition: {
-        duration: 0.6,
-        staggerChildren: 0.15,
+        duration: 0.8,
+        staggerChildren: 0.12,
       },
     },
   };
@@ -24,39 +25,23 @@ export const InteriorContent: React.FC<Props> = ({ industry }) => {
   const itemVariants = {
     hidden: { 
       opacity: 0, 
-      y: 30,
-      scale: 0.95
+      y: 24,
     },
     show: {
       opacity: 1,
       y: 0,
-      scale: 1,
       transition: { 
         duration: 0.6,
-        ease: [0.25, 0.1, 0.25, 1]
+        ease: [0.25, 0.46, 0.45, 0.94]
       },
     },
   };
 
-  // Simplified floating animation - less intensive
   const floatingVariants = {
     animate: {
-      y: [-8, 8, -8],
+      y: [-6, 6, -6],
       transition: {
-        duration: 12,
-        repeat: Infinity,
-        ease: "easeInOut"
-      }
-    }
-  };
-
-  // Optimized subtle floating for background elements
-  const subtleFloatVariants = {
-    animate: {
-      y: [-15, 15, -15],
-      x: [-10, 10, -10],
-      transition: {
-        duration: 20,
+        duration: 8,
         repeat: Infinity,
         ease: "easeInOut"
       }
@@ -65,29 +50,43 @@ export const InteriorContent: React.FC<Props> = ({ industry }) => {
 
   const services = [
     {
-      title: 'Phân Phối Máy Móc Công Trình',
-      description:
-        'Cung cấp các dòng máy xây dựng chất lượng cao như máy xúc, máy ủi, máy trộn bê tông... từ các thương hiệu uy tín.',
-      icon: '🚜',
-      gradient: 'from-amber-500 to-yellow-600',
-      hoverGradient: 'from-amber-600 to-yellow-700',
+      title: 'Thiết Kế Nội Thất Cao Cấp',
+      description: 'Tạo ra những không gian sống đẳng cấp với phong cách hiện đại, tối giản và sang trọng. Từ concept đến hoàn thiện.',
+      icon: Palette,
+      color: 'var(--color-primary)',
+      bgColor: 'var(--color-accent-green-light)',
+      features: ['Thiết kế 3D chuyên nghiệp', 'Tư vấn phong thủy', 'Phong cách đa dạng']
     },
     {
-      title: 'Bảo Trì & Sửa Chữa Nhanh Chóng',
-      description:
-        'Dịch vụ bảo dưỡng và sửa chữa tận nơi, giúp máy móc hoạt động ổn định, giảm thời gian ngưng trệ thi công.',
-      icon: '🔧',
-      gradient: 'from-stone-400 to-gray-500',
-      hoverGradient: 'from-stone-500 to-gray-600',
+      title: 'Thi Công & Giám Sát',
+      description: 'Đội ngũ thợ lành nghề với kinh nghiệm nhiều năm, đảm bảo chất lượng thi công theo đúng thiết kế và tiến độ.',
+      icon: Home,
+      color: 'var(--color-accent-green)',
+      bgColor: 'var(--color-primary-light)',
+      features: ['Thi công chuyên nghiệp', 'Giám sát chặt chẽ', 'Bảo hành dài hạn']
     },
     {
-      title: 'Cho Thuê Máy Xây Dựng',
-      description:
-        'Giải pháp thuê máy xây dựng linh hoạt theo ngày, tuần hoặc dự án. Tiết kiệm chi phí đầu tư ban đầu.',
-      icon: '📦',
-      gradient: 'from-amber-600 to-orange-700',
-      hoverGradient: 'from-amber-700 to-orange-800',
+      title: 'Tư Vấn & Lập Kế Hoạch',
+      description: 'Phân tích không gian, tư vấn bố trí hợp lý và lập kế hoạch chi tiết cho từng giai đoạn thực hiện dự án.',
+      icon: Lightbulb,
+      color: 'var(--color-accent-red)',
+      bgColor: 'var(--color-accent-red-light)',
+      features: ['Khảo sát miễn phí', 'Tư vấn chuyên sâu', 'Lập kế hoạch chi tiết']
     },
+    {
+      title: 'Đo Đạc & Thiết Kế 3D',
+      description: 'Sử dụng công nghệ hiện đại để đo đạc chính xác và tạo mô hình 3D chân thực, giúp khách hàng hình dung rõ ràng.',
+      icon: Ruler,
+      color: 'var(--color-primary)',
+      bgColor: 'var(--color-bg-accent)',
+      features: ['Đo đạc laser chính xác', 'Mô hình 3D chân thực', 'Render chất lượng cao']
+    }
+  ];
+
+  const achievements = [
+    { number: '500+', label: 'Dự Án Hoàn Thành', icon: Home },
+    { number: '15+', label: 'Năm Kinh Nghiệm', icon: CheckCircle },
+    { number: '50+', label: 'Đối Tác Tin Cậy', icon: Sparkles },
   ];
 
   useEffect(() => {
@@ -97,30 +96,49 @@ export const InteriorContent: React.FC<Props> = ({ industry }) => {
   if (!isMounted) return null;
 
   return (
-    <section className="relative py-24 lg:py-32 overflow-hidden bg-gradient-to-br from-stone-50 via-gray-50 to-stone-100">
-      {/* Optimized Background - Reduced elements and complexity */}
+    <section 
+      className="relative py-20 lg:py-28 overflow-hidden"
+      style={{ 
+        background: 'linear-gradient(135deg, var(--color-bg) 0%, var(--color-bg-secondary) 100%)',
+        color: 'var(--color-text-primary)'
+      }}
+    >
+      {/* Elegant Background Elements */}
       <div className="absolute inset-0 overflow-hidden">
-        {/* Primary background elements - reduced from 5 to 3 */}
+        {/* Refined floating elements */}
         <motion.div 
-          variants={subtleFloatVariants}
+          variants={floatingVariants}
           animate="animate"
-          className="absolute -top-40 -right-40 w-96 h-96 bg-gradient-to-br from-amber-200/10 to-yellow-300/15 rounded-full blur-2xl will-change-transform"
+          className="absolute top-1/4 right-1/5 w-80 h-80 rounded-full opacity-15"
+          style={{ 
+            background: 'radial-gradient(circle, var(--color-primary-light) 0%, transparent 70%)',
+            filter: 'blur(60px)'
+          }}
         />
         <motion.div 
-          variants={subtleFloatVariants}
+          variants={floatingVariants}
           animate="animate"
-          style={{ animationDelay: "10s" }}
-          className="absolute -bottom-40 -left-40 w-80 h-80 bg-gradient-to-tr from-stone-200/10 to-gray-300/15 rounded-full blur-2xl will-change-transform"
-        />
-        <motion.div 
-          variants={subtleFloatVariants}
-          animate="animate"
-          style={{ animationDelay: "5s" }}
-          className="absolute top-1/2 right-1/4 w-72 h-72 bg-gradient-to-bl from-amber-300/8 to-orange-400/12 rounded-full blur-xl will-change-transform"
+       
+          className="absolute bottom-1/4 left-1/6 w-72 h-72 rounded-full opacity-12"
+          style={{ 
+            background: 'radial-gradient(circle, var(--color-accent-green) 0%, transparent 70%)',
+            filter: 'blur(50px)',
+            animationDelay: "4s" 
+          }}
         />
         
-        {/* Simplified grid pattern - lighter and less intensive */}
-        <div className="absolute inset-0 bg-[linear-gradient(rgba(120,113,108,0.02)_1px,transparent_1px),linear-gradient(90deg,rgba(120,113,108,0.02)_1px,transparent_1px)] bg-[size:80px_80px]" />
+        {/* Sophisticated pattern */}
+        <div 
+          className="absolute inset-0 opacity-[0.015]"
+          style={{
+            backgroundImage: `radial-gradient(circle at 25% 25%, var(--color-border) 2px, transparent 2px)`,
+            backgroundSize: '60px 60px'
+          }}
+        />
+        
+        {/* Decorative lines */}
+        <div className="absolute top-1/3 left-10 w-px h-24 opacity-20" style={{ background: 'var(--color-primary)' }} />
+        <div className="absolute bottom-1/3 right-16 w-px h-32 opacity-15" style={{ background: 'var(--color-accent-green)' }} />
       </div>
 
       <div className="relative container mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl">
@@ -128,160 +146,258 @@ export const InteriorContent: React.FC<Props> = ({ industry }) => {
           variants={containerVariants}
           initial="hidden"
           whileInView="show"
-          viewport={{ once: true, margin: "-50px" }}
+          viewport={{ once: true, margin: "-100px" }}
         >
-          {/* Optimized Hero Header */}
-          <motion.div variants={itemVariants} className="text-center mb-20 lg:mb-28">
-            {/* Simplified floating icon */}
-            <motion.div 
-              className="inline-flex items-center justify-center w-24 h-24 lg:w-28 lg:h-28 mb-10"
-              whileHover={{ scale: 1.1 }}
-              transition={{ type: "spring", stiffness: 300, damping: 20 }}
-            >
-              <div className="relative">
-                <div className="absolute inset-0 bg-gradient-to-r from-amber-400 to-yellow-500 rounded-full blur-lg opacity-20" />
-                <div className="relative bg-gradient-to-r from-amber-500 to-yellow-600 rounded-full p-6 lg:p-7 shadow-xl border border-amber-300/20">
-                  <span className="text-4xl lg:text-5xl">🏗️</span>
-                </div>
-              </div>
-            </motion.div>
+          {/* Premium Header Section */}
+          <motion.div variants={itemVariants} className="text-center mb-16 lg:mb-20">
+            <div className="max-w-5xl mx-auto">
+              {/* Professional badge */}
+              <motion.div 
+                className="inline-flex items-center gap-3 px-6 py-3 rounded-full mb-8 border"
+                style={{ 
+                  background: 'var(--color-bg)',
+                  borderColor: 'var(--color-border)',
+                  color: 'var(--color-text-secondary)',
+                  boxShadow: 'var(--shadow-default)'
+                }}
+                whileHover={{ scale: 1.05, y: -2 }}
+                transition={{ type: "spring", stiffness: 300 }}
+              >
+                <Sparkles className="w-5 h-5" style={{ color: 'var(--color-primary)' }} />
+                <span className="font-medium">Dịch Vụ Chuyên Nghiệp</span>
+                <motion.div 
+                  className="w-2 h-2 rounded-full"
+                  style={{ background: 'var(--color-accent-green)' }}
+                  animate={{ scale: [1, 1.2, 1] }}
+                  transition={{ duration: 2, repeat: Infinity }}
+                />
+              </motion.div>
 
-            {/* Optimized title */}
-            <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-black mb-6 lg:mb-8 leading-[0.9] tracking-tight">
-              <span className="py-4 block bg-gradient-to-r from-stone-700 via-gray-800 to-stone-700 bg-clip-text text-transparent mb-2">
-                Giải Pháp Máy Móc
-              </span>
-              <span className="py-4 block bg-gradient-to-r from-amber-600 via-yellow-600 to-amber-700 bg-clip-text text-transparent">
-                Công Trình
-              </span>
-            </h1>
+              {/* Modern title with better hierarchy */}
+                <h2
+                  className="font-bold text-4xl sm:text-5xl lg:text-6xl  mb-6 leading-tight capitalize"
+                  style={{ color: "var(--color-text-primary)" }}>
+                  Giải pháp {""}
+                  <span style={{ color: "var(--color-primary)" }}>
+                    nội thất hoàn hảo
+                  </span>
+                </h2>
+              {/* Enhanced description */}
+              <motion.p 
+                variants={itemVariants}
+                className="text-lg lg:text-xl xl:text-2xl max-w-4xl mx-auto leading-relaxed mb-8"
+                style={{ color: 'var(--color-text-secondary)' }}
+              >
+                Từ ý tưởng đến hiện thực - chúng tôi tạo nên những không gian sống đẳng cấp, 
+                phản ánh cá tính và phong cách riêng của bạn trong ngành {industry}
+              </motion.p>
 
-            <motion.p 
-              variants={itemVariants}
-              className="text-base sm:text-lg lg:text-xl xl:text-2xl text-stone-600 max-w-4xl mx-auto leading-relaxed font-light"
-            >
-              Cung cấp – bảo trì – cho thuê máy móc công trình hiện đại cho mọi dự án xây dựng tại {industry || "Việt Nam"}
-            </motion.p>
-
-            {/* Simplified animated divider */}
-            <motion.div 
-              variants={itemVariants}
-              className="flex items-center justify-center mt-10 lg:mt-12"
-            >
-              <div className="flex items-center space-x-6">
-                <div className="w-24 h-0.5 bg-gradient-to-r from-transparent via-amber-500 to-transparent" />
-                <div className="flex space-x-3">
-                  <motion.div
-                    className="w-3 h-3 bg-amber-500 rounded-full"
-                    animate={{ 
-                      scale: [1, 1.2, 1],
-                      opacity: [0.5, 1, 0.5] 
-                    }}
-                    transition={{ 
-                      duration: 3, 
-                      repeat: Infinity,
-                      ease: "easeInOut"
-                    }}
-                  />
-                  <motion.div
-                    className="w-3 h-3 bg-stone-400 rounded-full"
-                    animate={{ 
-                      scale: [1, 1.2, 1],
-                      opacity: [0.5, 1, 0.5] 
-                    }}
-                    transition={{ 
-                      duration: 3, 
-                      repeat: Infinity,
-                      delay: 1,
-                      ease: "easeInOut"
-                    }}
-                  />
-                  <motion.div
-                    className="w-3 h-3 bg-amber-600 rounded-full"
-                    animate={{ 
-                      scale: [1, 1.2, 1],
-                      opacity: [0.5, 1, 0.5] 
-                    }}
-                    transition={{ 
-                      duration: 3, 
-                      repeat: Infinity,
-                      delay: 2,
-                      ease: "easeInOut"
-                    }}
-                  />
-                </div>
-                <div className="w-24 h-0.5 bg-gradient-to-r from-transparent via-amber-500 to-transparent" />
-              </div>
-            </motion.div>
+              {/* Professional stats */}
+              <motion.div 
+                variants={itemVariants}
+                className="flex items-center justify-center gap-8 lg:gap-12"
+              >
+                {achievements.map((achievement, index) => (
+                  <div key={index} className="text-center">
+                    <div 
+                      className="text-2xl lg:text-3xl font-bold mb-1"
+                      style={{ color: 'var(--color-primary)' }}
+                    >
+                      {achievement.number}
+                    </div>
+                    <div 
+                      className="text-sm lg:text-base font-medium"
+                      style={{ color: 'var(--color-text-muted)' }}
+                    >
+                      {achievement.label}
+                    </div>
+                  </div>
+                ))}
+              </motion.div>
+            </div>
           </motion.div>
 
-          {/* Optimized Services Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 lg:gap-10">
-            {services.map((item, index) => (
-              <motion.div
-                key={index}
-                variants={itemVariants}
-                className="group relative"
-                whileHover={{ 
-                  y: -8,
-                  transition: { type: "spring", stiffness: 400, damping: 25 }
-                }}
-              >
-                {/* Simplified card design */}
-                <div className="relative bg-white/90 backdrop-blur-sm rounded-2xl border border-stone-200/50 hover:border-amber-300/40 transition-all duration-300 overflow-hidden p-8 lg:p-10 shadow-lg hover:shadow-xl will-change-transform">
+          {/* Enhanced Services Grid */}
+          <motion.div variants={itemVariants} className="mb-16">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-10">
+              {services.map((service, index) => (
+                <motion.div
+                  key={index}
+                  variants={itemVariants}
+                  className="group relative"
+                  whileHover={{ y: -8, scale: 1.02 }}
+                  transition={{ type: "spring", stiffness: 200, damping: 20 }}
+                >
+                  {/* Elegant glow effect */}
+                  <div 
+                    className="absolute -inset-1 rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"
+                    style={{ 
+                      background: service.color,
+                      filter: 'blur(12px)',
+                      opacity: '0.1'
+                    }}
+                  />
                   
-                  {/* Icon section - simplified animation */}
-                  <div className="relative z-10 mb-8">
-                    <motion.div 
-                      className={`inline-flex items-center justify-center w-20 h-20 bg-gradient-to-r ${item.gradient} rounded-2xl shadow-md border border-white/20 group-hover:bg-gradient-to-r group-hover:${item.hoverGradient}`}
-                      whileHover={{ scale: 1.05 }}
-                      transition={{ type: "spring", stiffness: 300, damping: 20 }}
-                    >
-                      <span className="text-3xl lg:text-4xl">
-                        {item.icon}
-                      </span>
-                    </motion.div>
-                  </div>
-
-                  {/* Content */}
-                  <div className="relative z-10">
-                    <h3 className="text-xl lg:text-2xl font-bold text-stone-800 mb-4 group-hover:text-stone-900 transition-colors duration-200">
-                      {item.title}
-                    </h3>
-                    <p className="text-base lg:text-lg text-stone-600 leading-relaxed group-hover:text-stone-700 transition-colors duration-200">
-                      {item.description}
-                    </p>
-                  </div>
-
-                  {/* Bottom accent - simplified */}
-                  <div className={`absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-r ${item.gradient} opacity-0 group-hover:opacity-100 transition-opacity duration-200`} />
-                </div>
-              </motion.div>
-            ))}
-          </div>
-
-          {/* Optimized Stats Badge */}
-          <motion.div variants={itemVariants} className="flex justify-center mt-20 lg:mt-24">
-            <div className="relative group">
-              <div className="relative bg-white/95 backdrop-blur-xl rounded-full border border-amber-300/30 shadow-lg hover:shadow-xl px-12 py-6 lg:px-16 lg:py-7 transition-all duration-300">
-                <div className="flex items-center gap-4">
-                  {/* Simplified status indicators */}
-                  <div className="flex items-center gap-3">
-                    <motion.div 
-                      className="w-3 h-3 bg-amber-500 rounded-full"
-                      animate={{ 
-                        opacity: [0.7, 1, 0.7] 
-                      }}
-                      transition={{ duration: 2.5, repeat: Infinity, ease: "easeInOut" }}
+                  {/* Main service card */}
+                  <div 
+                    className="relative rounded-3xl border transition-all duration-300 overflow-hidden"
+                    style={{ 
+                      background: 'var(--color-bg)',
+                      borderColor: 'var(--color-border)',
+                      boxShadow: 'var(--shadow-default)'
+                    }}
+                  >
+                    {/* Premium accent line */}
+                    <div 
+                      className="absolute top-0 left-0 right-0 h-1 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500"
+                      style={{ background: service.color }}
                     />
-                    <div className="w-2.5 h-2.5 bg-stone-400 rounded-full opacity-60" />
-                    <div className="w-2 h-2 bg-amber-600 rounded-full opacity-50" />
+                    
+                    {/* Card content */}
+                    <div className="p-8 lg:p-10">
+                      {/* Icon and title section */}
+                      <div className="flex items-start gap-6 mb-6">
+                        <motion.div 
+                          className="flex-shrink-0 w-16 h-16 rounded-2xl flex items-center justify-center border"
+                          style={{ 
+                            background: service.bgColor,
+                            borderColor: 'var(--color-border-light)'
+                          }}
+                          whileHover={{ scale: 1.1, rotate: 5 }}
+                          transition={{ type: "spring", stiffness: 300 }}
+                        >
+                          <service.icon 
+                            className="w-8 h-8" 
+                            style={{ color: service.color }}
+                          />
+                        </motion.div>
+                        
+                        <div className="flex-1">
+                          <h3 
+                            className="text-xl lg:text-2xl font-semibold mb-3"
+                            style={{ color: 'var(--color-text-primary)' }}
+                          >
+                            {service.title}
+                          </h3>
+                          <p 
+                            className="text-base lg:text-lg leading-relaxed"
+                            style={{ color: 'var(--color-text-secondary)' }}
+                          >
+                            {service.description}
+                          </p>
+                        </div>
+                      </div>
+
+                      {/* Features list */}
+                      <div className="space-y-3">
+                        {service.features.map((feature, featureIndex) => (
+                          <div key={featureIndex} className="flex items-center gap-3">
+                            <CheckCircle 
+                              className="w-5 h-5 flex-shrink-0" 
+                              style={{ color: service.color }}
+                            />
+                            <span 
+                              className="text-sm lg:text-base"
+                              style={{ color: 'var(--color-text-muted)' }}
+                            >
+                              {feature}
+                            </span>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+
+                    {/* Subtle corner accent */}
+                    <div 
+                      className="absolute bottom-0 right-0 w-20 h-20 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                      style={{ 
+                        background: `linear-gradient(135deg, transparent 50%, ${service.color}15 100%)`,
+                        borderRadius: '1.5rem 0 1.5rem 0'
+                      }}
+                    />
                   </div>
-                  
-                  <span className="text-lg lg:text-xl text-stone-700 font-medium">
-                    Phục vụ <span className="font-bold text-amber-600">500+</span> dự án xây dựng
-                  </span>
+                </motion.div>
+              ))}
+            </div>
+          </motion.div>
+
+          {/* Professional Call-to-Action */}
+          <motion.div variants={itemVariants} className="text-center">
+            <div 
+              className="inline-flex items-center gap-6 px-10 py-6 rounded-2xl border"
+              style={{ 
+                background: 'var(--color-bg)',
+                borderColor: 'var(--color-border)',
+                boxShadow: 'var(--shadow-hover)'
+              }}
+            >
+              {/* Quality indicator */}
+              <div className="flex items-center gap-3">
+                <motion.div 
+                  className="relative"
+                  animate={{ rotate: [0, 360] }}
+                  transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
+                >
+                  <Sparkles 
+                    className="w-6 h-6" 
+                    style={{ color: 'var(--color-primary)' }}
+                  />
+                </motion.div>
+                <div>
+                  <div 
+                    className="text-lg font-semibold"
+                    style={{ color: 'var(--color-text-primary)' }}
+                  >
+                    Chất Lượng Đảm Bảo
+                  </div>
+                  <div 
+                    className="text-sm"
+                    style={{ color: 'var(--color-text-muted)' }}
+                  >
+                    Bảo hành dài hạn
+                  </div>
                 </div>
+              </div>
+
+              {/* Divider */}
+              <div 
+                className="w-px h-12"
+                style={{ background: 'var(--color-border)' }}
+              />
+
+              {/* Main message */}
+              <div className="text-center">
+                <div 
+                  className="text-lg font-medium mb-1"
+                  style={{ color: 'var(--color-text-primary)' }}
+                >
+                  Tư vấn miễn phí cho dự án của bạn
+                </div>
+                <div 
+                  className="text-sm"
+                  style={{ color: 'var(--color-text-secondary)' }}
+                >
+                  Liên hệ ngay để được hỗ trợ tốt nhất
+                </div>
+              </div>
+
+              {/* Status indicator */}
+              <div className="flex items-center gap-2">
+                <motion.div 
+                  className="w-3 h-3 rounded-full"
+                  style={{ background: 'var(--color-accent-green)' }}
+                  animate={{ 
+                    scale: [1, 1.3, 1],
+                    opacity: [0.7, 1, 0.7] 
+                  }}
+                  transition={{ duration: 2.5, repeat: Infinity }}
+                />
+                <span 
+                  className="text-sm font-medium"
+                  style={{ color: 'var(--color-accent-green)' }}
+                >
+                  Đang hoạt động
+                </span>
               </div>
             </div>
           </motion.div>

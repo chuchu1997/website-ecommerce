@@ -207,21 +207,14 @@ export const HighlightedProjectsMotion: React.FC<Props> = ({
 
               {/* Main Title */}
               <div className="space-y-4">
-                <h1 className="text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-light leading-tight">
-                  <span
-                    className="block font-extralight"
-                    style={{ color: "var(--color-text-secondary)" }}>
-                    Dự Án
+                <h2
+                  className="font-bold text-4xl sm:text-5xl lg:text-6xl  mb-6 leading-tight capitalize"
+                  style={{ color: "var(--color-text-primary)" }}>
+                  Dự án {""}
+                  <span style={{ color: "var(--color-primary)" }}>
+                    hoàn thành
                   </span>
-                  <span
-                    className="block font-bold bg-clip-text text-transparent"
-                    style={{
-                      backgroundImage: "var(--gradient-primary)",
-                      WebkitBackgroundClip: "text",
-                    }}>
-                    Tinh Hoa
-                  </span>
-                </h1>
+                </h2>
 
                 <div className="flex items-center gap-4 mt-6">
                   <div
