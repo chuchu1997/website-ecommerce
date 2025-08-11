@@ -637,8 +637,8 @@ export const ProductCard = ({
           </CardDescription>
 
           {/* Rating and Badges */}
-          <div className="flex items-center justify-between gap-2">
-            <div className="flex items-center gap-2">
+          <div className="flex items-center justify-between gap-1">
+            <div className="flex items-center gap-1">
               {renderStars("md")}
               <span
                 className="text-xs md:text-sm ml-1 font-medium"

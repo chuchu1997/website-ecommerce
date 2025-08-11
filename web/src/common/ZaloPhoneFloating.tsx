@@ -4,7 +4,15 @@
 import { Phone, MessageCircle } from "lucide-react";
 import { motion } from "framer-motion";
 import React, { useEffect, useState } from "react";
-import { StoreInterface } from "@/types/store";
+
+// Mock store interface for demo
+interface StoreInterface {
+  phone?: string;
+  socials?: Array<{
+    type: string;
+    url: string;
+  }>;
+}
 
 const containerVariants = {
   hidden: { opacity: 0, x: 100, scale: 0.8 },
@@ -22,12 +30,40 @@ const containerVariants = {
   },
 };
 
+const mobileContainerVariants = {
+  hidden: { opacity: 0, y: 100 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: {
+      type: "spring",
+      damping: 25,
+      stiffness: 200,
+      duration: 0.6,
+      staggerChildren: 0.1,
+    },
+  },
+};
+
 const itemVariants = {
   hidden: { opacity: 0, scale: 0.5, x: 50 },
   visible: {
     opacity: 1,
     scale: 1,
     x: 0,
+    transition: {
+      type: "spring",
+      damping: 20,
+      stiffness: 300,
+    },
+  },
+};
+
+const mobileItemVariants = {
+  hidden: { opacity: 0, y: 30 },
+  visible: {
+    opacity: 1,
+    y: 0,
     transition: {
       type: "spring",
       damping: 20,
@@ -54,12 +90,19 @@ const pulseAnimation = {
     ease: "easeInOut",
   },
 };
-export const ZaloIcon = () => (
+
+export const ZaloIcon = ({
+  width = 40,
+  height = 40,
+}: {
+  width?: number;
+  height?: number;
+}) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     viewBox="0 0 460.1 436.6"
-    width="40"
-    height="48">
+    width={width}
+    height={height}>
     <style>
       {`
         .st0{fill:#fdfefe}
@@ -99,27 +142,37 @@ export const ZaloIcon = () => (
     />
   </svg>
 );
+
 interface Props {
   storeInfo: StoreInterface;
 }
+
 export const ZaloPhoneWidget = ({ storeInfo }: Props) => {
   const [phone, setPhone] = useState("");
   const [zalo, setZalo] = useState("");
   const [mounted, setMounted] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
 
   useEffect(() => {
-    const fetchStoreData = async () => {
-      // Simulate your API call
-      if (storeInfo) {
-        if (storeInfo.phone) {
-          setPhone(`tel:${storeInfo.phone}`);
-        }
-        const hasZalo = storeInfo.socials?.some(
-          (social) => social.type === "ZALO"
-        );
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
 
-        if (storeInfo.socials) {
-          const zaloSocial = storeInfo.socials.find(
+    checkMobile();
+    window.addEventListener("resize", checkMobile);
+
+    const fetchStoreData = async () => {
+      // Simulate your API call - using demo data
+
+      const storeData = storeInfo;
+
+      if (storeData) {
+        if (storeData.phone) {
+          setPhone(`tel:${storeData.phone}`);
+        }
+
+        if (storeData.socials) {
+          const zaloSocial = storeData.socials.find(
             (social) => social.type === "ZALO"
           );
           if (zaloSocial) {
@@ -131,142 +184,228 @@ export const ZaloPhoneWidget = ({ storeInfo }: Props) => {
     };
 
     fetchStoreData();
-  }, []);
+
+    return () => window.removeEventListener("resize", checkMobile);
+  }, [storeInfo]);
 
   if (!mounted) return null;
 
+  // Desktop version (original floating widget)
+  if (!isMobile) {
+    return (
+      <>
+        {/* Ambient glow effect */}
+        <div className="fixed bottom-20 right-8 w-20 h-40 bg-gradient-to-b from-blue-400/20 via-emerald-400/20 to-amber-400/20 rounded-full blur-xl z-40" />
+
+        <motion.div
+          className="fixed bottom-16 right-6 z-50 flex flex-col gap-4 items-center"
+          variants={containerVariants}
+          initial="hidden"
+          animate="visible">
+          {/* Floating particles */}
+          {[...Array(4)].map((_, i) => (
+            <motion.div
+              key={i}
+              className="absolute w-1.5 h-1.5 bg-gradient-to-r from-blue-400 to-emerald-400 rounded-full opacity-60"
+              animate={{
+                x: [-15, 15, -15],
+                y: [0, -30, 0],
+                opacity: [0.6, 1, 0.6],
+                scale: [1, 1.2, 1],
+              }}
+              transition={{
+                duration: 4 + i * 0.5,
+                repeat: Infinity,
+                delay: i * 0.8,
+                ease: "easeInOut",
+              }}
+              style={{
+                left: `${-10 + i * 5}px`,
+                top: `${-20 + i * 10}px`,
+              }}
+            />
+          ))}
+
+          {/* Zalo Button */}
+          <motion.div variants={itemVariants}>
+            <motion.a
+              href={zalo}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="group relative block"
+              whileHover={{
+                scale: 1.1,
+                transition: { duration: 0.2 },
+              }}
+              whileTap={{ scale: 0.9 }}
+              animate={floatingAnimation}>
+              <div className="relative w-16 h-16 rounded-2xl bg-gradient-to-br from-white/30 via-white/20 to-white/10 backdrop-blur-xl border border-white/40 shadow-2xl group-hover:shadow-3xl transition-all duration-300">
+                <div className="absolute inset-2 rounded-xl flex items-center justify-center group-hover:from-blue-400 group-hover:to-blue-500 transition-all duration-300">
+                  <ZaloIcon />
+                  <motion.div
+                    className="absolute inset-0 rounded-xl border-2 border-blue-400 opacity-0 group-hover:opacity-100"
+                    animate={pulseAnimation}
+                  />
+                </div>
+                <div className="absolute inset-0 rounded-2xl bg-gradient-to-tr from-white/40 via-white/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                <div className="absolute inset-0 rounded-2xl bg-blue-500/30 opacity-0 group-hover:opacity-100 transition-opacity duration-300 blur-lg -z-10" />
+              </div>
+
+              {/* Tooltip */}
+              <div className="absolute right-20 top-1/2 transform -translate-y-1/2 bg-gray-900/90 text-white px-3 py-2 rounded-lg text-sm font-medium opacity-0 group-hover:opacity-100 transition-all duration-300 pointer-events-none whitespace-nowrap">
+                <span>Chat Zalo</span>
+                <div className="absolute left-full top-1/2 transform -translate-y-1/2 border-l-4 border-l-gray-900/90 border-y-4 border-y-transparent"></div>
+              </div>
+            </motion.a>
+          </motion.div>
+
+          {/* Decorative separator */}
+          <motion.div
+            className="w-12 h-px bg-gradient-to-r from-transparent via-gray-400/50 to-transparent"
+            variants={itemVariants}
+          />
+
+          {/* Phone Button */}
+          <motion.div variants={itemVariants}>
+            <motion.a
+              href={phone}
+              className="group relative block"
+              whileHover={{
+                scale: 1.1,
+                transition: { duration: 0.2 },
+              }}
+              whileTap={{ scale: 0.9 }}
+              animate={{
+                ...floatingAnimation,
+                transition: { ...floatingAnimation.transition, delay: 1 },
+              }}>
+              <div className="relative w-16 h-16 rounded-2xl bg-gradient-to-br from-white/30 via-white/20 to-white/10 backdrop-blur-xl border border-white/40 shadow-2xl group-hover:shadow-3xl transition-all duration-300">
+                <div className="absolute inset-2 rounded-xl bg-gradient-to-br from-emerald-500 to-emerald-600 flex items-center justify-center group-hover:from-emerald-400 group-hover:to-emerald-500 transition-all duration-300">
+                  <Phone className="w-6 h-6 text-white" />
+                  <motion.div
+                    className="absolute inset-0 rounded-xl border-2 border-emerald-400 opacity-0 group-hover:opacity-100"
+                    animate={pulseAnimation}
+                  />
+                </div>
+                <div className="absolute inset-0 rounded-2xl bg-gradient-to-tr from-white/40 via-white/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                <div className="absolute inset-0 rounded-2xl bg-emerald-500/30 opacity-0 group-hover:opacity-100 transition-opacity duration-300 blur-lg -z-10" />
+              </div>
+
+              {/* Tooltip */}
+              <div className="absolute right-20 top-1/2 transform -translate-y-1/2 bg-gray-900/90 text-white px-3 py-2 rounded-lg text-sm font-medium opacity-0 group-hover:opacity-100 transition-all duration-300 pointer-events-none whitespace-nowrap">
+                <span>Gọi ngay</span>
+                <div className="absolute left-full top-1/2 transform -translate-y-1/2 border-l-4 border-l-gray-900/90 border-y-4 border-y-transparent"></div>
+              </div>
+            </motion.a>
+          </motion.div>
+
+          {/* Contact info badge */}
+          <motion.div variants={itemVariants} className="mt-2 text-center">
+            <div className="bg-white/20 backdrop-blur-sm px-3 py-1 rounded-full border border-white/30">
+              <span className="text-xs font-medium text-gray-700">
+                Tư vấn 24/7
+              </span>
+            </div>
+          </motion.div>
+        </motion.div>
+      </>
+    );
+  }
+
+  // Mobile version (full-width bottom dock)
   return (
     <>
-      {/* Ambient glow effect */}
-      <div className="fixed bottom-20 right-8 w-20 h-40 bg-gradient-to-b from-blue-400/20 via-emerald-400/20 to-amber-400/20 rounded-full blur-xl z-40" />
-
+      {/* Mobile bottom dock */}
       <motion.div
-        className="fixed bottom-16 right-6 z-50 flex flex-col gap-4 items-center"
-        variants={containerVariants}
+        className="fixed bottom-0 left-0 right-0 z-50 bg-white/95 backdrop-blur-xl border-t border-gray-200/50 shadow-2xl"
+        variants={mobileContainerVariants}
         initial="hidden"
         animate="visible">
-        {/* Floating particles */}
-        {[...Array(4)].map((_, i) => (
+        {/* Ambient glow effect for mobile */}
+        <div className="absolute inset-0 bg-gradient-to-t from-blue-500/5 via-emerald-500/5 to-transparent pointer-events-none" />
+
+        <div className="flex items-center justify-center gap-4 px-4 py-3 safe-area-pb">
+          {/* Zalo Button */}
+          <motion.div variants={mobileItemVariants} className="flex-1">
+            <motion.a
+              onClick={() => {
+                console.log("ZALO", zalo);
+              }}
+              href={zalo}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="group relative flex items-center justify-center gap-2 py-2.5 px-4 rounded-xl bg-white text-black font-medium shadow-md border border-gray-200 active:shadow-lg transition-all duration-200"
+              whileHover={{ scale: 1.02 }}
+              whileTap={{ scale: 0.98 }}>
+              {/* Background effects */}
+              <div className="absolute inset-0 rounded-xl bg-gray-50 opacity-0 group-active:opacity-100 transition-opacity duration-200" />
+              <div className="absolute inset-0 rounded-xl bg-gray-100/50 opacity-0 group-hover:opacity-100 transition-opacity duration-200" />
+
+              {/* Content */}
+              <div className="relative flex items-center justify-center gap-2">
+                <div className="w-5 h-5 flex items-center justify-center">
+                  <div className="w-4 h-5">
+                    <ZaloIcon width={20} height={20} />
+                  </div>
+                </div>
+                <span className="text-sm font-medium">Chat Zalo</span>
+              </div>
+
+              {/* Shine effect */}
+              <div className="absolute inset-0 rounded-xl bg-gradient-to-r from-transparent via-white/40 to-transparent opacity-0 group-active:opacity-100 translate-x-[-100%] group-active:translate-x-[100%] transition-all duration-600" />
+            </motion.a>
+          </motion.div>
+
+          {/* Divider */}
+          <div className="w-px h-8 bg-gradient-to-b from-transparent via-gray-300/50 to-transparent" />
+
+          {/* Phone Button */}
+          <motion.div variants={mobileItemVariants} className="flex-1">
+            <motion.a
+              onClick={() => {
+                console.log("PHONE", phone);
+              }}
+              href={phone}
+              className="group relative flex items-center justify-center gap-2 py-2.5 px-4 rounded-xl bg-gradient-to-r from-emerald-500 to-emerald-600 text-white font-medium shadow-md active:shadow-lg transition-all duration-200"
+              whileHover={{ scale: 1.02 }}
+              whileTap={{ scale: 0.98 }}>
+              {/* Background effects */}
+              <div className="absolute inset-0 rounded-xl bg-gradient-to-r from-emerald-400 to-emerald-500 opacity-0 group-active:opacity-100 transition-opacity duration-200" />
+              <div className="absolute inset-0 rounded-xl bg-white/10 opacity-0 group-hover:opacity-100 transition-opacity duration-200" />
+
+              {/* Content */}
+              <div className="relative flex items-center justify-center gap-2">
+                <Phone className="w-4 h-4" />
+                <span className="text-sm font-medium">Gọi ngay</span>
+              </div>
+
+              {/* Shine effect */}
+              <div className="absolute inset-0 rounded-xl bg-gradient-to-r from-transparent via-white/20 to-transparent opacity-0 group-active:opacity-100 translate-x-[-100%] group-active:translate-x-[100%] transition-all duration-600" />
+            </motion.a>
+          </motion.div>
+        </div>
+
+        {/* Floating indicators */}
+        {[...Array(3)].map((_, i) => (
           <motion.div
             key={i}
-            className="absolute w-1.5 h-1.5 bg-gradient-to-r from-blue-400 to-emerald-400 rounded-full opacity-60"
+            className="absolute w-1 h-1 bg-gradient-to-r from-blue-400 to-emerald-400 rounded-full opacity-40"
             animate={{
-              x: [-15, 15, -15],
-              y: [0, -30, 0],
-              opacity: [0.6, 1, 0.6],
-              scale: [1, 1.2, 1],
+              x: [20, 300, 20],
+              y: [-10, -5, -10],
+              opacity: [0.4, 0.8, 0.4],
             }}
             transition={{
-              duration: 4 + i * 0.5,
+              duration: 3 + i * 0.5,
               repeat: Infinity,
               delay: i * 0.8,
               ease: "easeInOut",
             }}
             style={{
-              left: `${-10 + i * 5}px`,
-              top: `${-20 + i * 10}px`,
+              top: `${5 + i * 2}px`,
             }}
           />
         ))}
-
-        {/* Zalo Button */}
-        <motion.div variants={itemVariants}>
-          <motion.a
-            href={zalo}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="group relative block"
-            whileHover={{
-              scale: 1.1,
-              transition: { duration: 0.2 },
-            }}
-            whileTap={{ scale: 0.9 }}
-            animate={floatingAnimation}>
-            {/* Button container with glassmorphism */}
-            <div className="relative w-16 h-16 rounded-2xl bg-gradient-to-br from-white/30 via-white/20 to-white/10 backdrop-blur-xl border border-white/40 shadow-2xl group-hover:shadow-3xl transition-all duration-300">
-              {/* Icon background */}
-              <div className="absolute inset-2 rounded-xl  flex items-center justify-center group-hover:from-blue-400 group-hover:to-blue-500 transition-all duration-300">
-                {/* Using MessageCircle as Zalo replacement */}
-                <ZaloIcon />
-
-                {/* Pulse ring */}
-                <motion.div
-                  className="absolute inset-0 rounded-xl border-2 border-blue-400 opacity-0 group-hover:opacity-100"
-                  animate={pulseAnimation}
-                />
-              </div>
-
-              {/* Shine overlay */}
-              <div className="absolute inset-0 rounded-2xl bg-gradient-to-tr from-white/40 via-white/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-
-              {/* Glow effect */}
-              <div className="absolute inset-0 rounded-2xl bg-blue-500/30 opacity-0 group-hover:opacity-100 transition-opacity duration-300 blur-lg -z-10" />
-            </div>
-
-            {/* Tooltip */}
-            <div className="absolute right-20 top-1/2 transform -translate-y-1/2 bg-gray-900/90 text-white px-3 py-2 rounded-lg text-sm font-medium opacity-0 group-hover:opacity-100 transition-all duration-300 pointer-events-none whitespace-nowrap">
-              <span>Chat Zalo</span>
-              <div className="absolute left-full top-1/2 transform -translate-y-1/2 border-l-4 border-l-gray-900/90 border-y-4 border-y-transparent"></div>
-            </div>
-          </motion.a>
-        </motion.div>
-
-        {/* Decorative separator */}
-        <motion.div
-          className="w-12 h-px bg-gradient-to-r from-transparent via-gray-400/50 to-transparent"
-          variants={itemVariants}
-        />
-
-        {/* Phone Button */}
-        <motion.div variants={itemVariants}>
-          <motion.a
-            href={phone}
-            className="group relative block"
-            whileHover={{
-              scale: 1.1,
-              transition: { duration: 0.2 },
-            }}
-            whileTap={{ scale: 0.9 }}
-            animate={{
-              ...floatingAnimation,
-              transition: { ...floatingAnimation.transition, delay: 1 },
-            }}>
-            {/* Button container with glassmorphism */}
-            <div className="relative w-16 h-16 rounded-2xl bg-gradient-to-br from-white/30 via-white/20 to-white/10 backdrop-blur-xl border border-white/40 shadow-2xl group-hover:shadow-3xl transition-all duration-300">
-              {/* Icon background */}
-              <div className="absolute inset-2 rounded-xl bg-gradient-to-br from-emerald-500 to-emerald-600 flex items-center justify-center group-hover:from-emerald-400 group-hover:to-emerald-500 transition-all duration-300">
-                <Phone className="w-6 h-6 text-white" />
-
-                {/* Pulse ring */}
-                <motion.div
-                  className="absolute inset-0 rounded-xl border-2 border-emerald-400 opacity-0 group-hover:opacity-100"
-                  animate={pulseAnimation}
-                />
-              </div>
-
-              {/* Shine overlay */}
-              <div className="absolute inset-0 rounded-2xl bg-gradient-to-tr from-white/40 via-white/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-
-              {/* Glow effect */}
-              <div className="absolute inset-0 rounded-2xl bg-emerald-500/30 opacity-0 group-hover:opacity-100 transition-opacity duration-300 blur-lg -z-10" />
-            </div>
-
-            {/* Tooltip */}
-            <div className="absolute right-20 top-1/2 transform -translate-y-1/2 bg-gray-900/90 text-white px-3 py-2 rounded-lg text-sm font-medium opacity-0 group-hover:opacity-100 transition-all duration-300 pointer-events-none whitespace-nowrap">
-              <span>Gọi ngay</span>
-              <div className="absolute left-full top-1/2 transform -translate-y-1/2 border-l-4 border-l-gray-900/90 border-y-4 border-y-transparent"></div>
-            </div>
-          </motion.a>
-        </motion.div>
-
-        {/* Contact info badge */}
-        <motion.div variants={itemVariants} className="mt-2 text-center">
-          <div className="bg-white/20 backdrop-blur-sm px-3 py-1 rounded-full border border-white/30">
-            <span className="text-xs font-medium text-gray-700">
-              Tư vấn 24/7
-            </span>
-          </div>
-        </motion.div>
       </motion.div>
     </>
   );
