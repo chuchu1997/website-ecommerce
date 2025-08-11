@@ -26,7 +26,7 @@ import { cache } from "react"; // <- quan trọng
  * Cache categories 5 phút, coalesce với cache()
  */
 
-export const revalidate = 360; // 5 phút
+export const revalidate = 100; // 5 phút
 
 // export const getCachedCategories = cache(
 //   unstable_cache(
@@ -160,7 +160,12 @@ export default async function RootLayout({
                   {children}
                 </BodyContainer>
               </SidebarProvider>
-              <ZaloPhoneWidget storeInfo={storeInfo} />
+              <ZaloPhoneWidget
+                storeInfo={{
+                  ...storeInfo,
+                  phone: storeInfo.phone ?? undefined,
+                }}
+              />
             </CartProvider>
             <Footer storeInfo={storeInfo} />
           </CookiesClientWrapper>
