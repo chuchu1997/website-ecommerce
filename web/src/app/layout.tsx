@@ -25,57 +25,102 @@ import { cache } from "react"; // <- quan trọng
 /**
  * Cache categories 5 phút, coalesce với cache()
  */
-export const getCachedCategories = cache(
-  unstable_cache(
-    async (limit?: number): Promise<CategoryInterface[]> => {
-      const vnTime = new Date().toLocaleString("vi-VN", {
-        timeZone: "Asia/Ho_Chi_Minh",
-        hour12: false,
-      });
 
-      console.log(`🕒 [Categories] GỌI API lúc: ${vnTime}`);
+export const revalidate = 120; // 5 phút
 
-      try {
-        const res = await fetchSafe(
-          () =>
-            CategoryAPI.getAllCategoriesOfStore({
-              currentPage: 1,
-              limit: limit ?? 999,
-              justGetParent: false,
-            }),
-          { categories: [] }
-        );
+// export const getCachedCategories = cache(
+//   unstable_cache(
+//     async (limit?: number): Promise<CategoryInterface[]> => {
+//       const vnTime = new Date().toLocaleString("vi-VN", {
+//         timeZone: "Asia/Ho_Chi_Minh",
+//         hour12: false,
+//       });
 
-        return Array.isArray(res?.categories) ? res.categories : [];
-      } catch (error) {
-        console.error("❌ [Categories] Lỗi khi gọi API:", error);
-        return [];
-      }
-    },
-    ["categories-cache"],
-    {
-      revalidate: 120,
-      tags: ["categories"],
-    }
-  )
-);
+//       console.log(`🕒 [Categories] GỌI API lúc: ${vnTime}`);
+
+//       try {
+//         const res = await fetchSafe(
+//           () =>
+//             CategoryAPI.getAllCategoriesOfStore({
+//               currentPage: 1,
+//               limit: limit ?? 999,
+//               justGetParent: false,
+//             }),
+//           { categories: [] }
+//         );
+
+//         return Array.isArray(res?.categories) ? res.categories : [];
+//       } catch (error) {
+//         console.error("❌ [Categories] Lỗi khi gọi API:", error);
+//         return [];
+//       }
+//     },
+//     ["categories-cache"],
+//     {
+//       revalidate: 120,
+//       tags: ["categories"],
+//     }
+//   )
+// );
+
+export const getCachedCategories = async (
+  limit?: number
+): Promise<CategoryInterface[]> => {
+  const vnTime = new Date().toLocaleString("vi-VN", {
+    timeZone: "Asia/Ho_Chi_Minh",
+    hour12: false,
+  });
+
+  console.log(`🕒 [Categories] GỌI API lúc: ${vnTime}`);
+
+  try {
+    const res = await fetchSafe(
+      () =>
+        CategoryAPI.getAllCategoriesOfStore({
+          currentPage: 1,
+          limit: limit ?? 999,
+          justGetParent: false,
+        }),
+      { categories: [] }
+    );
+
+    return Array.isArray(res?.categories) ? res.categories : [];
+  } catch (error) {
+    console.error("❌ [Categories] Lỗi khi gọi API:", error);
+    return [];
+  }
+};
+
+export const getCachedStoreInfo = async (): Promise<StoreInterface> => {
+  const vnTime = new Date().toLocaleString("vi-VN", {
+    timeZone: "Asia/Ho_Chi_Minh",
+    hour12: false,
+  });
+
+  console.log(`🕒 [StoreInfo] GỌI API lúc: ${vnTime}`);
+
+  const res = await fetchSafe(() => StoreAPI.getStoreInfo(), {
+    store: { industry: "Nội thất" },
+  });
+  return res.store ?? { industry: "Nội thát" };
+};
 
 /**
  * Cache store info 5 phút, coalesce với cache()
  */
-export const getCachedStoreInfo = cache(
-  unstable_cache(
-    async (): Promise<StoreInterface> => {
-      const res = await fetchSafe(() => StoreAPI.getStoreInfo(), {
-        store: { industry: "Xây dựng" },
-      });
+// export const getCachedStoreInfo = cache(
+//   unstable_cache(
+//     async (): Promise<StoreInterface> => {
+//       const res = await fetchSafe(() => StoreAPI.getStoreInfo(), {
+//         store: { industry: "Xây dựng" },
+//       });
 
-      return res.store ?? { industry: "Xây dựng" };
-    },
-    ["store-info-cache"],
-    { revalidate: 120, tags: ["store-info"] }
-  )
-);
+//       return res.store ?? { industry: "Xây dựng" };
+//     },
+//     ["store-info-cache"],
+//     { revalidate: 120, tags: ["store-info"] }
+//   )
+// );
 
 export async function generateMetadata(): Promise<Metadata> {
   const store = await getCachedStoreInfo();

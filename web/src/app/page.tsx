@@ -48,42 +48,11 @@ const MusicStoreLanding: React.FC = async () => {
     <div className=" min-h-screen bg-gray-50 w-full">
       <HeroSSR />
       <CategoriesListSSR />
-      <FeatureProducts industry={storeInfo.industry ?? "Xây dựng"} />
+      <FeatureProducts industry={storeInfo.industry ?? "Nội thất"} />
       <ProductWithCategoryType
         industry={storeInfo.industry ?? ""}
         slug="giuong-ngu"
         isGrayBg={true}
-      />
-      <ProductWithCategoryType
-        industry={storeInfo.industry ?? ""}
-        slug="thiet-bi-xay-dung"
-      />
-      <ProductWithCategoryType
-        industry={storeInfo.industry ?? ""}
-        slug="may-han-dien-tu"
-        isGrayBg={true}
-      />
-      <ProductWithCategoryType
-        industry={storeInfo.industry ?? ""}
-        slug="dung-cu-dien-cam-tay"
-      />
-      <ProductWithCategoryType
-        industry={storeInfo.industry ?? ""}
-        slug="dong-co-no"
-        isGrayBg={true}
-      />
-      <ProductWithCategoryType
-        industry={storeInfo.industry ?? ""}
-        slug="may-bom-nuoc"
-      />
-      <ProductWithCategoryType
-        industry={storeInfo.industry ?? ""}
-        slug="vat-tu-co-khi"
-        isGrayBg={true}
-      />
-      <ProductWithCategoryType
-        industry={storeInfo.industry ?? ""}
-        slug="may-nong-nghiep"
       />
 
       <HighlightedProjects industry={storeInfo.industry ?? ""} />
