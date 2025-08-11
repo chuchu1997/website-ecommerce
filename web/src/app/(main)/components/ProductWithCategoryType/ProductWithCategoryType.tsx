@@ -18,7 +18,7 @@ const getCacheCategoryWithSlug = async (
   slug: string
 ): Promise<CategoryInterface | null> => {
   const res = await fetchSafe(
-    () => CategoryAPI.getCategoryWithSlug(slug, 1, 12),
+    () => CategoryAPI.getCategoryWithSlug(slug, 1, 5),
     null
   );
 

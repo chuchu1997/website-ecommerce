@@ -27,7 +27,7 @@ import { cache } from "react"; // <- quan trọng
  */
 export const getCachedCategories = cache(
   unstable_cache(
-    async (): Promise<CategoryInterface[]> => {
+    async (limit?: number): Promise<CategoryInterface[]> => {
       const vnTime = new Date().toLocaleString("vi-VN", {
         timeZone: "Asia/Ho_Chi_Minh",
         hour12: false,
@@ -40,7 +40,7 @@ export const getCachedCategories = cache(
           () =>
             CategoryAPI.getAllCategoriesOfStore({
               currentPage: 1,
-              limit: 999,
+              limit: limit ?? 999,
               justGetParent: false,
             }),
           { categories: [] }

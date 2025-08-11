@@ -82,12 +82,20 @@ const ProfessionalNavbar: React.FC<NavbarProps> = ({
   // Scroll effect
   useEffect(() => {
     const handleScroll = () => {
-      setIsScrolled(window.scrollY > 10);
+      const scrolled = window.scrollY > 10;
+
+      setIsScrolled((prev) => {
+        if (prev !== scrolled) {
+       
+          return scrolled;
+        }
+        return prev;
+      });
     };
-    window.addEventListener("scroll", handleScroll);
+
+    window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
-
   // Search API function
   const searchAPI = async (query: string): Promise<any[]> => {
     await new Promise((resolve) => setTimeout(resolve, 500));
