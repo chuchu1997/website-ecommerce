@@ -20,17 +20,12 @@ const getCacheFeatureProductSSR = async (): Promise<ProductInterface[]> => {
 
   const products = res.products ?? [];
   return products;
-  // const storeInfo = res.store ?? { industry: "Xây dựng" };
-  // return storeInfo;
 };
 
 export const FeatureProducts = async ({ industry }: Props) => {
   let featureProducts: ProductInterface[] = [];
   let promotions: PromotionInterface[] = [];
-  // const res = await fetchSafe(
-  //   () => ProductAPI.getFeatureProducts({ limit: 5 }),
-  //   { data: { products: [] } }
-  // );
+
   featureProducts = await getCacheFeatureProductSSR();
 
   // Lấy danh sách promotion duy nhất
@@ -46,286 +41,468 @@ export const FeatureProducts = async ({ industry }: Props) => {
   }
   promotions = Array.from(uniquePromotionsMap.values());
 
-  // try {
-  //   const response = await fetchSafe(
-  //     () => ProductAPI.getFeatureProducts({ limit: 5 }),
-  //     { data: { products: [] } }
-  //   );
-
-  //   featureProducts = response.data.products as ProductInterface[];
-
-  //   const allProductPromotions: ProductPromotion[] = featureProducts.flatMap(
-  //     (product) => product.promotionProducts
-  //   );
-
-  //   const uniquePromotionsMap = new Map<number, PromotionInterface>();
-
-  //   for (const promo of allProductPromotions) {
-  //     if (promo.promotion && !uniquePromotionsMap.has(promo.promotionId)) {
-  //       uniquePromotionsMap.set(promo.promotionId, promo.promotion);
-  //     }
-  //   }
-  //   promotions = Array.from(uniquePromotionsMap.values());
-  // } catch (error) {
-  //   console.error("Failed to fetch featured products:", error);
-  // }
-
-  const stats = [
+  const achievements = [
     {
-      value: featureProducts.length,
-      label: "Sản phẩm nổi bật",
-      color: "from-yellow-600 to-yellow-700",
-      bgColor: "from-yellow-50 to-yellow-100",
-      shadowColor: "shadow-yellow-200/50",
-      icon: "🌟",
+      number: featureProducts.length,
+      label: "Bộ sưu tập độc quyền",
+      subtitle: "Thiết kế riêng biệt",
+      icon: "🎨",
     },
     {
-      value: "100%",
-      label: "Chất lượng cao cấp",
-      color: "from-amber-700 to-yellow-800",
-      bgColor: "from-amber-50 to-yellow-50",
-      shadowColor: "shadow-amber-200/50",
-      icon: "✨",
+      number: "2.5K+",
+      label: "Không gian hoàn thiện",
+      subtitle: "Khách hàng hài lòng",
+      icon: "🏠",
     },
     {
-      value: "24/7",
-      label: "Hỗ trợ tận tâm",
-      color: "from-stone-600 to-stone-700",
-      bgColor: "from-stone-50 to-gray-100",
-      shadowColor: "shadow-stone-200/50",
-      icon: "🤝",
-    },
-    {
-      value: promotions.length || 0,
-      label: "Ưu đãi độc quyền",
-      color: "from-yellow-600 to-amber-600",
-      bgColor: "from-yellow-50 to-amber-50",
-      shadowColor: "shadow-yellow-200/50",
-      icon: "🎁",
+      number: promotions.length || 5,
+      label: "Ưu đãi đặc biệt",
+      subtitle: "Giá tốt nhất thị trường",
+      icon: "💎",
     },
   ];
 
   return (
-    <section className="relative py-20 px-2 lg:py-28 bg-gradient-to-br from-white via-gray-50 to-yellow-50/40 overflow-hidden">
-      {/* Sophisticated Background Elements */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        {/* Elegant floating shapes */}
-        <div className="absolute -top-40 -left-40 w-80 h-80 bg-gradient-to-br from-yellow-100/30 to-amber-200/20 rounded-full blur-3xl animate-pulse" />
-        <div className="absolute -bottom-40 -right-40 w-96 h-96 bg-gradient-to-br from-stone-100/25 to-yellow-200/15 rounded-full blur-3xl animate-pulse animation-delay-2000" />
-        <div className="absolute top-1/3 left-1/2 transform -translate-x-1/2 w-64 h-64 bg-gradient-to-br from-gray-100/20 to-yellow-100/10 rounded-full blur-2xl animate-pulse animation-delay-4000" />
-
-        {/* Refined grid pattern */}
-        <div className="absolute inset-0 bg-[linear-gradient(rgba(156,163,175,0.03)_1px,transparent_1px),linear-gradient(90deg,rgba(156,163,175,0.03)_1px,transparent_1px)] bg-[size:80px_80px]" />
-
-        {/* Premium curves */}
-        <svg
-          className="absolute inset-0 w-full h-full opacity-15"
-          xmlns="http://www.w3.org/2000/svg">
-          <defs>
-            <linearGradient
-              id="premiumGradient"
-              x1="0%"
-              y1="0%"
-              x2="100%"
-              y2="100%">
-              <stop offset="0%" stopColor="rgba(245, 158, 11, 0.15)" />
-              <stop offset="50%" stopColor="rgba(217, 119, 6, 0.12)" />
-              <stop offset="100%" stopColor="rgba(120, 113, 108, 0.08)" />
-            </linearGradient>
-          </defs>
-          <path
-            d="M0,120 Q500,60 1000,140 T2000,120"
-            stroke="url(#premiumGradient)"
-            strokeWidth="3"
-            fill="none"
-            className="animate-pulse"
-          />
-          <path
-            d="M0,250 Q700,180 1400,220 T2800,250"
-            stroke="url(#premiumGradient)"
-            strokeWidth="2"
-            fill="none"
-            className="animate-pulse"
-            style={{ animationDelay: "1.5s" }}
-          />
-        </svg>
-      </div>
-
-      <div className="relative container mx-auto">
-        {/* Luxurious Header Section */}
-        <div className="text-center mb-16 lg:mb-24">
-          {/* Premium Icon Container */}
-          <div className="inline-flex items-center justify-center w-20 h-20 lg:w-28 lg:h-28 mb-8 relative">
-            <div className="absolute inset-0 bg-gradient-to-r from-yellow-400 via-amber-500 to-yellow-600 rounded-3xl blur-xl opacity-25 animate-pulse" />
-            <div className="absolute inset-2 bg-gradient-to-r from-yellow-100 to-amber-100 rounded-2xl opacity-50" />
-            <div className="relative bg-white rounded-2xl p-5 lg:p-7 shadow-2xl border border-yellow-200/50 backdrop-blur-sm">
-              <span className="text-3xl lg:text-5xl filter drop-shadow-sm">
-                ⭐
-              </span>
-            </div>
-          </div>
-
-          {/* Sophisticated Title */}
-          <h2 className="text-2xl sm:text-4xl lg:text-5xl xl:text-6xl font-black mb-6 leading-tight tracking-tight flex items-center justify-center gap-x-2">
-            <span className="block text-gray-800 ">Sản Phẩm</span>
-            <span className="block bg-gradient-to-r from-yellow-600 via-amber-600 to-yellow-700 bg-clip-text text-transparent drop-shadow-sm">
-              Nổi Bật
-            </span>
-          </h2>
-
-          {/* Refined Description */}
-          <div className="max-w-4xl mx-auto">
-            <p className="text-base sm:text-xl lg:text-2xl text-gray-600 leading-relaxed font-light mb-4">
-              Khám phá những sản phẩm{" "}
-              <span className="font-semibold text-yellow-700 bg-yellow-50 px-2 py-1 rounded-lg">
-                {industry}
-              </span>{" "}
-              được chế tác tinh xảo, thiết kế hiện đại và được yêu thích nhất từ
-              bộ sưu tập của chúng tôi
-            </p>
-            <div className="inline-flex items-center gap-2 bg-white/80 backdrop-blur-sm border border-gray-200 rounded-full px-6 py-3 shadow-lg">
-              <div className="w-2 h-2 bg-yellow-500 rounded-full animate-pulse"></div>
-              <span className="text-sm text-gray-600 font-medium">
-                Được tuyển chọn kỹ lưỡng
-              </span>
-            </div>
-          </div>
-
-          {/* Elegant Divider */}
-          <div className="flex items-center justify-center mt-12 lg:mt-16">
-            <div className="flex items-center space-x-6">
-              <div className="w-24 h-px bg-gradient-to-r from-transparent via-yellow-400/60 to-transparent"></div>
-              <div className="bg-white rounded-full p-3 shadow-lg border border-yellow-100">
-                <div className="flex space-x-1">
-                  {[0, 1, 2].map((i) => (
+    <section
+      className="relative overflow-hidden"
+      style={{ backgroundColor: "var(--color-bg)" }}>
+      {/* Modern Asymmetric Layout */}
+      <div className="relative">
+        {/* Top Diagonal Section */}
+        <div
+          className="relative py-20 lg:py-32"
+          style={{ background: "var(--gradient-secondary)" }}>
+          <div className="">
+            <div className="container mx-auto px-4 lg:px-6">
+              <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
+                {/* Left: Content */}
+                <div className="space-y-8">
+                  <div className="space-y-6">
+                    {/* Badge */}
                     <div
-                      key={i}
-                      className="w-1.5 h-1.5 bg-yellow-500 rounded-full animate-pulse"
-                      style={{ animationDelay: `${i * 0.3}s` }}
-                    />
+                      className="inline-flex items-center gap-3 rounded-full px-6 py-3 border"
+                      style={{
+                        backgroundColor: "var(--color-bg)",
+                        borderColor: "var(--color-border)",
+                        boxShadow: "var(--shadow-default)",
+                      }}>
+                      <div
+                        className="w-2 h-2 rounded-full animate-pulse"
+                        style={{ backgroundColor: "var(--color-accent-green)" }}
+                      />
+                      <span
+                        className="text-sm font-semibold uppercase tracking-wide"
+                        style={{ color: "var(--color-text-primary)" }}>
+                        {industry} Cao Cấp
+                      </span>
+                    </div>
+
+                    {/* Main Heading */}
+                    <h1 className="text-4xl lg:text-6xl xl:text-7xl font-black leading-tight">
+                      <div
+                        className="mb-2"
+                        style={{ color: "var(--color-text-primary)" }}>
+                        Nghệ Thuật
+                      </div>
+                      <div
+                        className="bg-clip-text text-transparent"
+                        style={{
+                          background: "var(--gradient-primary)",
+                          WebkitBackgroundClip: "text",
+                        }}>
+                        Kiến Tạo
+                      </div>
+                      <div
+                        className="text-3xl lg:text-5xl xl:text-6xl font-light"
+                        style={{ color: "var(--color-text-secondary)" }}>
+                        Không Gian
+                      </div>
+                    </h1>
+
+                    {/* Description */}
+                    <p
+                      className="text-lg lg:text-xl leading-relaxed max-w-lg"
+                      style={{ color: "var(--color-text-secondary)" }}>
+                      Mỗi sản phẩm trong bộ sưu tập được tuyển chọn kỹ lưỡng,
+                      mang đến sự hài hòa hoàn hảo giữa thẩm mỹ và công năng cho
+                      ngôi nhà của bạn.
+                    </p>
+
+                    {/* CTA Buttons */}
+                    <div className="flex flex-col sm:flex-row gap-4">
+                      <button
+                        className="px-8 py-4 rounded-xl font-semibold transition-all duration-300 hover:scale-105"
+                        style={{
+                          background: "var(--gradient-primary)",
+                          color: "var(--color-text-white)",
+                          boxShadow: "var(--shadow-default)",
+                        }}>
+                        Khám Phá Bộ Sưu Tập
+                      </button>
+                      <button
+                        className="px-8 py-4 rounded-xl font-semibold border-2 transition-all duration-300 hover:scale-105"
+                        style={{
+                          backgroundColor: "transparent",
+                          borderColor: "var(--color-primary)",
+                          color: "var(--color-primary)",
+                        }}>
+                        Tư Vấn Miễn Phí
+                      </button>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Right: Achievement Cards */}
+                <div className="relative">
+                  <div className="grid gap-6">
+                    {achievements.map((achievement, index) => (
+                      <div
+                        key={index}
+                        className={`group p-6 rounded-2xl border transition-all duration-500 hover:scale-105 ${
+                          index === 1
+                            ? "lg:ml-12"
+                            : index === 2
+                            ? "lg:ml-24"
+                            : ""
+                        }`}
+                        style={{
+                          backgroundColor: "var(--color-bg)",
+                          borderColor: "var(--color-border-light)",
+                          boxShadow: "var(--shadow-default)",
+                        }}>
+                        <div className="flex items-center gap-4">
+                          <div
+                            className="w-12 h-12 rounded-xl flex items-center justify-center text-xl transition-transform duration-300 group-hover:scale-110"
+                            style={{
+                              backgroundColor:
+                                "var(--color-accent-green-light)",
+                            }}>
+                            {achievement.icon}
+                          </div>
+                          <div>
+                            <div
+                              className="text-2xl lg:text-3xl font-bold bg-clip-text text-transparent"
+                              style={{
+                                background: "var(--gradient-primary)",
+                                WebkitBackgroundClip: "text",
+                              }}>
+                              {achievement.number}
+                            </div>
+                            <div
+                              className="text-sm font-semibold"
+                              style={{ color: "var(--color-text-primary)" }}>
+                              {achievement.label}
+                            </div>
+                            <div
+                              className="text-xs"
+                              style={{ color: "var(--color-text-muted)" }}>
+                              {achievement.subtitle}
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Products Section with Creative Layout */}
+        <div className="relative py-20 lg:py-32">
+          {/* Floating Background Elements */}
+          <div className="absolute inset-0 overflow-hidden pointer-events-none">
+            <div
+              className="absolute top-1/4 left-10 w-32 h-32 rounded-full blur-2xl opacity-20 animate-float"
+              style={{ background: "var(--gradient-primary)" }}
+            />
+            <div
+              className="absolute bottom-1/4 right-10 w-40 h-40 rounded-full blur-2xl opacity-15 animate-float"
+              style={{
+                background: "var(--gradient-accent)",
+                animationDelay: "2s",
+              }}
+            />
+          </div>
+
+          <div className="container mx-auto px-4 lg:px-6">
+            {/* Section Introduction */}
+            <div className="max-w-3xl mb-16 lg:mb-20">
+              <div className="flex items-start gap-6">
+                <div
+                  className="w-16 h-16 lg:w-20 lg:h-20 rounded-2xl flex items-center justify-center text-2xl lg:text-3xl border"
+                  style={{
+                    backgroundColor: "var(--color-bg-secondary)",
+                    borderColor: "var(--color-border)",
+                  }}>
+                  ✨
+                </div>
+                <div>
+                  <h2
+                    className="text-3xl lg:text-5xl font-bold mb-4 leading-tight"
+                    style={{ color: "var(--color-text-primary)" }}>
+                    Sản Phẩm Được
+                    <span
+                      className="block bg-clip-text text-transparent"
+                      style={{
+                        background: "var(--gradient-primary)",
+                        WebkitBackgroundClip: "text",
+                      }}>
+                      Yêu Thích Nhất
+                    </span>
+                  </h2>
+                  <p
+                    className="text-lg lg:text-xl leading-relaxed"
+                    style={{ color: "var(--color-text-secondary)" }}>
+                    Từng chi tiết được chăm chút tỉ mỉ, từng đường nét thể hiện
+                    phong cách sống đẳng cấp và tinh tế của gia chủ.
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            {/* Products Display */}
+            <div className="relative">
+              <ProductListMotionWrapper products={featureProducts} />
+            </div>
+          </div>
+        </div>
+
+        {/* Bottom Section: Brand Promise */}
+        <div
+          className="relative py-16 lg:py-24"
+          style={{ backgroundColor: "var(--color-bg-accent)" }}>
+          <div className="container mx-auto px-4 lg:px-6">
+            <div className="grid lg:grid-cols-3 gap-8 lg:gap-12 items-center">
+              {/* Left: Brand Promise */}
+              <div className="lg:col-span-2 space-y-8">
+                <div className="space-y-6">
+                  <div
+                    className="inline-block px-4 py-2 rounded-full text-sm font-semibold"
+                    style={{
+                      backgroundColor: "var(--color-accent-green-light)",
+                      color: "var(--color-accent-green)",
+                    }}>
+                    Cam Kết Chất Lượng
+                  </div>
+
+                  <h3
+                    className="text-2xl lg:text-4xl font-bold leading-tight"
+                    style={{ color: "var(--color-text-primary)" }}>
+                    Mỗi sản phẩm là một
+                    <span
+                      className="bg-clip-text text-transparent block"
+                      style={{
+                        background: "var(--gradient-primary)",
+                        WebkitBackgroundClip: "text",
+                      }}>
+                      tác phẩm nghệ thuật
+                    </span>
+                  </h3>
+
+                  <p
+                    className="text-lg leading-relaxed max-w-2xl"
+                    style={{ color: "var(--color-text-secondary)" }}>
+                    Chúng tôi không chỉ bán nội thất, mà tạo ra những trải
+                    nghiệm sống. Từ việc lựa chọn nguyên liệu cho đến hoàn thiện
+                    sản phẩm, mọi bước đều được thực hiện với sự tỉ mỉ và đam
+                    mê.
+                  </p>
+                </div>
+
+                {/* Process Steps */}
+                <div className="grid sm:grid-cols-3 gap-6">
+                  {[
+                    {
+                      step: "01",
+                      title: "Tư vấn",
+                      desc: "Thiết kế theo yêu cầu",
+                    },
+                    {
+                      step: "02",
+                      title: "Sản xuất",
+                      desc: "Chất liệu cao cấp",
+                    },
+                    {
+                      step: "03",
+                      title: "Hoàn thiện",
+                      desc: "Lắp đặt chuyên nghiệp",
+                    },
+                  ].map((process, index) => (
+                    <div key={index} className="text-center group">
+                      <div
+                        className="w-16 h-16 mx-auto mb-4 rounded-2xl flex items-center justify-center font-bold text-lg transition-all duration-300 group-hover:scale-110 border"
+                        style={{
+                          backgroundColor: "var(--color-bg)",
+                          borderColor: "var(--color-border)",
+                          color: "var(--color-primary)",
+                        }}>
+                        {process.step}
+                      </div>
+                      <h4
+                        className="font-semibold mb-2"
+                        style={{ color: "var(--color-text-primary)" }}>
+                        {process.title}
+                      </h4>
+                      <p
+                        className="text-sm"
+                        style={{ color: "var(--color-text-muted)" }}>
+                        {process.desc}
+                      </p>
+                    </div>
                   ))}
                 </div>
               </div>
-              <div className="w-24 h-px bg-gradient-to-r from-transparent via-yellow-400/60 to-transparent"></div>
+
+              {/* Right: Floating Stats Card */}
+              <div className="relative">
+                <div
+                  className="rounded-3xl p-8 border-2 relative overflow-hidden"
+                  style={{
+                    backgroundColor: "var(--color-bg)",
+                    borderColor: "var(--color-border)",
+                    boxShadow: "var(--shadow-hover)",
+                  }}>
+                  {/* Card Background Pattern */}
+                  <div
+                    className="absolute top-0 right-0 w-32 h-32 opacity-5"
+                    style={{ background: "var(--gradient-primary)" }}
+                  />
+
+                  <div className="relative space-y-6">
+                    <div className="text-center">
+                      <div
+                        className="w-12 h-12 mx-auto rounded-2xl flex items-center justify-center text-2xl mb-4"
+                        style={{
+                          backgroundColor: "var(--color-accent-green-light)",
+                        }}>
+                        📊
+                      </div>
+                      <h4
+                        className="text-xl font-bold mb-2"
+                        style={{ color: "var(--color-text-primary)" }}>
+                        Thống Kê Nổi Bật
+                      </h4>
+                    </div>
+
+                    <div className="space-y-4">
+                      {achievements.map((achievement, index) => (
+                        <div
+                          key={index}
+                          className="flex items-center gap-4 group">
+                          <div
+                            className="w-10 h-10 rounded-xl flex items-center justify-center text-lg transition-transform duration-300 group-hover:scale-110"
+                            style={{
+                              backgroundColor: "var(--color-bg-secondary)",
+                            }}>
+                            {achievement.icon}
+                          </div>
+                          <div className="flex-1">
+                            <div className="flex items-baseline gap-2">
+                              <span
+                                className="text-xl font-bold bg-clip-text text-transparent"
+                                style={{
+                                  background: "var(--gradient-primary)",
+                                  WebkitBackgroundClip: "text",
+                                }}>
+                                {achievement.number}
+                              </span>
+                              <span
+                                className="text-sm font-medium"
+                                style={{ color: "var(--color-text-primary)" }}>
+                                {achievement.label}
+                              </span>
+                            </div>
+                            <div
+                              className="text-xs"
+                              style={{ color: "var(--color-text-muted)" }}>
+                              {achievement.subtitle}
+                            </div>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </div>
 
-        {/* Enhanced Products Section */}
-        <div className="relative mb-20 lg:mb-28">
-          <div className="absolute inset-0 bg-gradient-to-r from-yellow-50/50 via-transparent to-yellow-50/50 rounded-3xl blur-3xl opacity-60"></div>
-          <div className="relative">
-            <ProductListMotionWrapper products={featureProducts} />
-          </div>
-        </div>
-
-        {/* Luxury Stats Section */}
-        {featureProducts.length > 0 && (
-          <div className="relative">
-            {/* Stats Header */}
-            <div className="text-center mb-16">
-              <div className="inline-flex items-center gap-3 bg-gradient-to-r from-yellow-50 to-amber-50 rounded-full px-8 py-4 border border-yellow-200/50 shadow-lg mb-6">
-                <div className="w-8 h-8 bg-gradient-to-r from-yellow-400 to-amber-500 rounded-full flex items-center justify-center">
-                  <span className="text-white text-sm font-bold">✓</span>
-                </div>
-                <span className="text-yellow-800 font-semibold text-sm uppercase tracking-wider">
-                  Uy tín & Chất lượng
-                </span>
+        {/* Bottom: Trust & Contact Section */}
+        <div
+          className="relative py-16 lg:py-20"
+          style={{ backgroundColor: "var(--color-bg)" }}>
+          <div className="container mx-auto px-4 lg:px-6">
+            <div className="max-w-4xl mx-auto text-center">
+              {/* Trust Indicators */}
+              <div className="grid sm:grid-cols-3 gap-8 mb-12">
+                {[
+                  { icon: "🏅", title: "Chứng nhận", desc: "ISO 9001:2015" },
+                  { icon: "🚚", title: "Giao hàng", desc: "Toàn quốc 24h" },
+                  { icon: "🛠️", title: "Bảo hành", desc: "Lên tới 10 năm" },
+                ].map((trust, index) => (
+                  <div key={index} className="group">
+                    <div
+                      className="w-16 h-16 mx-auto mb-4 rounded-2xl flex items-center justify-center text-2xl transition-transform duration-300 group-hover:scale-110 border"
+                      style={{
+                        backgroundColor: "var(--color-bg-secondary)",
+                        borderColor: "var(--color-border)",
+                      }}>
+                      {trust.icon}
+                    </div>
+                    <h5
+                      className="font-semibold mb-2"
+                      style={{ color: "var(--color-text-primary)" }}>
+                      {trust.title}
+                    </h5>
+                    <p
+                      className="text-sm"
+                      style={{ color: "var(--color-text-muted)" }}>
+                      {trust.desc}
+                    </p>
+                  </div>
+                ))}
               </div>
 
-              <h3 className="text-2xl lg:text-4xl font-black text-gray-800 mb-6">
-                Tại Sao Chọn Chúng Tôi?
-              </h3>
-              <p className="text-lg text-gray-600 max-w-3xl mx-auto leading-relaxed">
-                Những con số minh chứng cho chất lượng và uy tín hàng đầu trong
-                ngành
-              </p>
-            </div>
-
-            {/* Premium Stats Grid */}
-            <div className="grid grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-8">
-              {stats.map((stat, index) => (
+              {/* Final CTA */}
+              <div
+                className="rounded-2xl p-8 lg:p-12 border-2 relative overflow-hidden"
+                style={{
+                  background: "var(--gradient-secondary)",
+                  borderColor: "var(--color-border)",
+                }}>
                 <div
-                  key={index}
-                  className={`group relative bg-white rounded-3xl p-6 lg:p-8 shadow-xl hover:shadow-2xl ${stat.shadowColor} transition-all duration-700 hover:-translate-y-3 border border-gray-100 hover:border-yellow-200 overflow-hidden`}>
-                  {/* Premium Background Gradient */}
-                  <div
-                    className={`absolute inset-0 bg-gradient-to-br ${stat.bgColor} rounded-3xl opacity-0 group-hover:opacity-100 transition-all duration-700`}
-                  />
+                  className="absolute top-0 right-0 w-64 h-64 rounded-full blur-3xl opacity-10"
+                  style={{ background: "var(--gradient-primary)" }}
+                />
 
-                  {/* Floating Accent */}
-                  <div className="absolute top-4 right-4 w-12 h-12 bg-gradient-to-br from-yellow-100 to-amber-100 rounded-full opacity-0 group-hover:opacity-100 transition-all duration-500 blur-sm"></div>
+                <div className="relative">
+                  <h4
+                    className="text-2xl lg:text-3xl font-bold mb-4"
+                    style={{ color: "var(--color-text-primary)" }}>
+                    Sẵn sàng biến ước mơ thành hiện thực?
+                  </h4>
+                  <p
+                    className="text-lg mb-8 max-w-2xl mx-auto"
+                    style={{ color: "var(--color-text-secondary)" }}>
+                    Đội ngũ chuyên gia của chúng tôi sẽ giúp bạn tạo ra không
+                    gian sống hoàn hảo với những sản phẩm nội thất đẳng cấp
+                    nhất.
+                  </p>
 
-                  {/* Content */}
-                  <div className="relative text-center">
-                    {/* Icon with Enhanced Styling */}
-                    <div className="relative mb-6">
-                      <div className="absolute inset-0 bg-gradient-to-r from-yellow-200 to-amber-200 rounded-2xl blur-lg opacity-0 group-hover:opacity-50 transition-opacity duration-500"></div>
-                      <div className="relative bg-gradient-to-br from-gray-50 to-white rounded-2xl p-4 border border-gray-100 group-hover:border-yellow-200 transition-all duration-500">
-                        <div className="text-2xl lg:text-4xl transform group-hover:scale-110 transition-transform duration-500 filter drop-shadow-sm">
-                          {stat.icon}
-                        </div>
-                      </div>
-                    </div>
-
-                    {/* Value with Premium Typography */}
-                    <div
-                      className={`text-2xl lg:text-4xl xl:text-5xl font-black mb-4 bg-gradient-to-r ${stat.color} bg-clip-text text-transparent filter drop-shadow-sm`}>
-                      {stat.value}
-                    </div>
-
-                    {/* Label */}
-                    <div className="text-sm lg:text-base text-gray-600 font-semibold leading-relaxed group-hover:text-gray-700 transition-colors duration-300">
-                      {stat.label}
-                    </div>
-                  </div>
-
-                  {/* Sophisticated Hover Effect */}
-                  <div
-                    className={`absolute inset-0 rounded-3xl bg-gradient-to-br ${stat.bgColor} opacity-0 group-hover:opacity-20 transition-all duration-700`}
-                  />
-
-                  {/* Corner Accent */}
-                  <div className="absolute bottom-0 right-0 w-16 h-16 bg-gradient-to-tl from-yellow-100/50 to-transparent rounded-tl-full opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-                </div>
-              ))}
-            </div>
-          </div>
-        )}
-
-        {/* Premium Trust Badge */}
-        <div className="flex justify-center mt-20 lg:mt-24">
-          <div className="relative group">
-            <div className="absolute -inset-2 bg-gradient-to-r from-yellow-400 via-amber-500 to-yellow-600 rounded-full blur-lg opacity-20 group-hover:opacity-30 transition duration-700" />
-            <div className="relative bg-white/95 backdrop-blur-lg rounded-full border-2 border-yellow-200/50 shadow-2xl px-10 py-6 lg:px-16 lg:py-8">
-              <div className="flex items-center gap-6">
-                {/* Animated Status Indicators */}
-                <div className="flex items-center gap-3">
-                  <div className="relative">
-                    <div className="w-4 h-4 bg-yellow-500 rounded-full animate-pulse shadow-lg"></div>
-                    <div className="absolute inset-0 w-4 h-4 bg-yellow-400 rounded-full animate-ping opacity-50"></div>
-                  </div>
-                  <div
-                    className="w-3 h-3 bg-amber-400 rounded-full animate-pulse shadow-md"
-                    style={{ animationDelay: "0.3s" }}
-                  />
-                  <div
-                    className="w-2 h-2 bg-yellow-600 rounded-full animate-pulse shadow-sm"
-                    style={{ animationDelay: "0.6s" }}
-                  />
-                </div>
-
-                {/* Trust Message */}
-                <div className="text-center">
-                  <div className="text-lg lg:text-xl text-gray-700 font-bold">
-                    Được tin tưởng bởi{" "}
-                    <span className="text-2xl font-black bg-gradient-to-r from-yellow-600 to-amber-600 bg-clip-text text-transparent">
-                      1000+
-                    </span>{" "}
-                    khách hàng
-                  </div>
-                  <div className="text-sm text-gray-500 font-medium mt-1">
-                    Chất lượng được công nhận toàn quốc
+                  <div className="flex flex-col sm:flex-row gap-4 justify-center">
+                    <button
+                      className="px-10 py-4 rounded-xl font-semibold transition-all duration-300 hover:scale-105 flex items-center justify-center gap-3"
+                      style={{
+                        background: "var(--gradient-primary)",
+                        color: "var(--color-text-white)",
+                        boxShadow: "var(--shadow-default)",
+                      }}>
+                      <span>📞</span>
+                      Liên Hệ Ngay
+                    </button>
                   </div>
                 </div>
               </div>
@@ -333,6 +510,25 @@ export const FeatureProducts = async ({ industry }: Props) => {
           </div>
         </div>
       </div>
+
+      {/* Custom Animation Styles */}
+      {/* <style jsx>{`
+        @keyframes float {
+          0%,
+          100% {
+            transform: translateY(0px) rotate(0deg);
+          }
+          33% {
+            transform: translateY(-10px) rotate(1deg);
+          }
+          66% {
+            transform: translateY(5px) rotate(-1deg);
+          }
+        }
+        .animate-float {
+          animation: float 6s ease-in-out infinite;
+        }
+      `}</style> */}
     </section>
   );
 };

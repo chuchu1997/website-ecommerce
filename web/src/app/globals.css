@@ -48,6 +48,115 @@
   --bg-price: #f9e5ea;
   --bg-ship:#def4f7;
 
+
+   /* Primary Colors */
+   --color-primary: #C8A165;            /* Gold Earth - vàng ánh kim sang trọng */
+  --color-primary-hover: #B0895B;      /* Gold nhạt hơn khi hover */
+  --color-primary-light: #E3CBA0;      /* Vàng nhạt mềm mại */
+
+  /* Background Colors */
+  --color-bg: #FFFFFF;                 /* Trắng tinh khiết */
+  --color-bg-secondary: #F7F6F3;       /* Trắng ngà ấm */
+  --color-bg-accent: #ECE8E3;          /* Xám be ấm */
+  --color-bg-hover: #E0DBD4;           /* Xám be đậm hơn khi hover */
+
+  /* Text Colors */
+  --color-text-primary: #3A2F28;       /* Nâu đen - chữ chính */
+  --color-text-secondary: #5A4A3F;     /* Nâu ấm - chữ phụ */
+  --color-text-muted: #7C6F65;         /* Xám nâu nhạt */
+  --color-text-white: #FFFFFF;         /* Trắng trên nền tối */
+
+  /* Border Colors */
+  --color-border: #D6CFC6;             /* Xám be nhạt */
+  --color-border-light: #E8E3DC;       /* Xám sáng */
+  --color-border-accent: #C1B5A4;      /* Nâu be làm điểm nhấn */
+
+  /* Accent Colors */
+  --color-accent-green: #A0A76E;       /* Xanh rêu ánh vàng */
+  --color-accent-green-light: #F3F4ED; /* Nền xanh rêu nhạt */
+  --color-accent-red: #B35E3A;         /* Gạch đỏ đất nung */
+  --color-accent-red-light: #F8EDE9;   /* Nền đỏ đất nhạt */
+
+  /* Shadows */
+  --shadow-default: 0 4px 20px rgba(58, 47, 40, 0.08);
+  --shadow-hover: 0 8px 30px rgba(58, 47, 40, 0.12);
+
+  /* Gradients */
+  --gradient-primary: linear-gradient(135deg, #C8A165 0%, #B0895B 100%);
+  --gradient-secondary: linear-gradient(135deg, #F7F6F3 0%, #E0DBD4 100%);
+  --gradient-accent: linear-gradient(135deg, #ECE8E3 0%, #E0DBD4 100%);
+
+
+
+
+  /* Navbar Color */
+
+    /* Primary Brand Colors - Sophisticated and warm */
+  --navbar-primary: #8B4513;           /* Saddle Brown - warm, professional */
+  --navbar-primary-hover: #A0522D;     /* Sienna - slightly lighter on hover */
+  --navbar-primary-light: #DEB887;     /* Burlywood - accent color */
+  
+  /* Background Colors */
+  --navbar-bg: #FFFFFF;                /* Pure white background */
+  --navbar-bg-secondary: #FAF9F7;      /* Warm off-white */
+  --navbar-bg-accent: #F5F2EE;         /* Subtle warm gray */
+  --navbar-bg-hover: #F0EDE8;          /* Hover state background */
+  
+  /* Text Colors */
+  --navbar-text-primary: #4A3429;      /* Dark brown - main text */
+  --navbar-text-secondary: #6B4E3D;    /* Medium brown - secondary text */
+  --navbar-text-muted: #8B7355;        /* Light brown - muted text */
+  --navbar-text-white: #FFFFFF;        /* White text for dark backgrounds */
+  
+  /* Border Colors */
+  --navbar-border: #E5DDD5;            /* Subtle warm border */
+  --navbar-border-light: #F0E9E2;      /* Lighter border */
+  --navbar-border-accent: #D4C4B0;     /* Accent border */
+  
+  /* Interactive Elements */
+  --navbar-button-primary: #8B4513;    /* Primary button background */
+  --navbar-button-primary-hover: #A0522D; /* Primary button hover */
+  --navbar-button-secondary: #F5F2EE;  /* Secondary button background */
+  --navbar-button-secondary-hover: #E8E2DB; /* Secondary button hover */
+  
+  /* Status Colors */
+  --navbar-accent-green: #6B8E23;      /* Olive green for services */
+  --navbar-accent-green-light: #F0F4E8; /* Light green background */
+  --navbar-accent-red: #CD853F;        /* Peru - for cart notifications */
+  --navbar-accent-red-light: #FDF4F0;  /* Light red background */
+  
+  /* Shadow and Effects */
+  --navbar-shadow: 0 4px 20px rgba(139, 69, 19, 0.1);
+  --navbar-shadow-hover: 0 8px 30px rgba(139, 69, 19, 0.15);
+  --navbar-backdrop: rgba(74, 52, 41, 0.2);
+  
+  /* Gradients */
+  --navbar-gradient-primary: linear-gradient(135deg, #8B4513 0%, #A0522D 100%);
+  --navbar-gradient-secondary: linear-gradient(135deg, #F5F2EE 0%, #E8E2DB 100%);
+  --navbar-gradient-accent: linear-gradient(135deg, #FAF9F7 0%, #F0EDE8 100%);
+  
+  /* Mega Menu Colors */
+  --navbar-mega-bg: #FFFFFF;
+  --navbar-mega-sidebar: #FAF9F7;
+  --navbar-mega-border: #E5DDD5;
+  --navbar-mega-item-hover: #F5F2EE;
+  --navbar-mega-item-active: #F0EDE8;
+  
+  /* Mobile Menu Colors */
+  --navbar-mobile-bg: #FFFFFF;
+  --navbar-mobile-accent: #F5F2EE;
+  --navbar-mobile-border: #E5DDD5;
+  
+  /* Search Modal Colors */
+  --navbar-search-bg: #FFFFFF;
+  --navbar-search-header: #FAF9F7;
+  --navbar-search-border: #E5DDD5;
+  --navbar-search-result-hover: #F5F2EE;
+
+
+
+
+
 }
 .bg-price {
   background: var(--bg-price);

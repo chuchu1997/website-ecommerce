@@ -3,7 +3,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, Grid3x3, Users, Clock, Award } from "lucide-react";
 import { ProjectCard } from "@/components/ui/ProjectCard";
 import { ProjectInterface } from "@/types/project";
 import Link from "next/link";
@@ -20,7 +20,7 @@ export const HighlightedProjectsMotion: React.FC<Props> = ({
 }) => {
   const [isMounted, setIsMounted] = useState(false);
 
-  // Memoize animation variants to prevent recreation on each render
+  // Refined animation variants for interior design aesthetic
   const animationVariants = useMemo(
     () => ({
       containerVariants: {
@@ -28,33 +28,61 @@ export const HighlightedProjectsMotion: React.FC<Props> = ({
         show: {
           opacity: 1,
           transition: {
-            duration: 0.6,
-            staggerChildren: 0.1, // Reduced from 0.15 for faster animations
+            duration: 0.8,
+            staggerChildren: 0.12,
+            ease: [0.25, 0.1, 0.25, 1],
           },
         },
       },
       itemVariants: {
         hidden: {
           opacity: 0,
-          y: 20, // Reduced from 30 for subtler effect
-          scale: 0.98, // Reduced from 0.95 for subtler effect
+          y: 30,
+          scale: 0.96,
         },
         show: {
           opacity: 1,
           y: 0,
           scale: 1,
           transition: {
-            duration: 0.5, // Reduced from 0.8
-            ease: [0.25, 0.1, 0.25, 1], // More optimized easing
+            duration: 0.6,
+            ease: [0.25, 0.1, 0.25, 1],
           },
         },
       },
-      // Simplified floating animation - only one property animated at a time for better performance
+      slideInLeft: {
+        hidden: {
+          opacity: 0,
+          x: -40,
+        },
+        show: {
+          opacity: 1,
+          x: 0,
+          transition: {
+            duration: 0.7,
+            ease: [0.25, 0.1, 0.25, 1],
+          },
+        },
+      },
+      slideInRight: {
+        hidden: {
+          opacity: 0,
+          x: 40,
+        },
+        show: {
+          opacity: 1,
+          x: 0,
+          transition: {
+            duration: 0.7,
+            ease: [0.25, 0.1, 0.25, 1],
+          },
+        },
+      },
       floatingVariants: {
         animate: {
-          y: [-5, 5, -5], // Reduced range for subtler effect
+          y: [-3, 3, -3],
           transition: {
-            duration: 6, // Reduced from 8
+            duration: 8,
             repeat: Infinity,
             ease: "easeInOut",
           },
@@ -64,36 +92,32 @@ export const HighlightedProjectsMotion: React.FC<Props> = ({
     []
   );
 
-  // Memoize static content to prevent unnecessary re-renders
+  // Redesigned stats with interior design focus
   const statsData = useMemo(
     () => [
       {
-        icon: "📊",
+        icon: Grid3x3,
         value: projects.length,
         label: "Dự án hoàn thành",
-        gradient: "from-amber-500 to-yellow-600",
-        glow: "amber-500/20",
+        description: "Không gian được thiết kế",
       },
       {
-        icon: "⭐",
+        icon: Users,
         value: "100%",
-        label: "Hài lòng",
-        gradient: "from-stone-400 to-gray-500",
-        glow: "stone-400/20",
+        label: "Khách hàng hài lòng",
+        description: "Đánh giá tích cực",
       },
       {
-        icon: "🎯",
+        icon: Clock,
         value: "5+",
         label: "Năm kinh nghiệm",
-        gradient: "from-amber-600 to-orange-700",
-        glow: "amber-600/20",
+        description: "Chuyên môn sâu",
       },
       {
-        icon: "🏅",
+        icon: Award,
         value: "24/7",
-        label: "Hỗ trợ",
-        gradient: "from-zinc-500 to-gray-600",
-        glow: "zinc-500/20",
+        label: "Tư vấn thiết kế",
+        description: "Hỗ trợ liên tục",
       },
     ],
     [projects.length]
@@ -106,240 +130,410 @@ export const HighlightedProjectsMotion: React.FC<Props> = ({
   if (!isMounted) return null;
 
   return (
-    <section className="relative min-h-screen py-20 lg:py-32 overflow-hidden bg-gradient-to-br from-stone-50 via-gray-50 to-stone-100">
-      {/* Optimized Background Elements - Use will-change and transform3d */}
-      <div
-        className="absolute inset-0 overflow-hidden"
-        style={{ willChange: "transform" }}>
-        {/* Simplified animated gradient orbs - removed rotation for better performance */}
-        <motion.div
-          variants={animationVariants.floatingVariants}
-          animate="animate"
-          className="absolute -top-32 -right-32 w-72 h-72 bg-gradient-to-br from-amber-200/15 to-yellow-300/20 rounded-full blur-3xl"
-          style={{ willChange: "transform" }}
-        />
-        <motion.div
-          variants={animationVariants.floatingVariants}
-          animate="animate"
+    <section
+      className="relative py-24 lg:py-32 overflow-hidden"
+      style={{
+        backgroundColor: "var(--color-bg-secondary)",
+        background: "var(--gradient-secondary)",
+      }}>
+      {/* Sophisticated Background Elements */}
+      <div className="absolute inset-0 overflow-hidden">
+        {/* Geometric pattern overlay */}
+        <div
+          className="absolute inset-0 opacity-40"
           style={{
-            animationDelay: "2s", // Reduced from 3s
-            willChange: "transform",
+            backgroundImage: `radial-gradient(circle at 25% 25%, var(--color-primary-light) 1px, transparent 1px),
+                             radial-gradient(circle at 75% 75%, var(--color-border) 1px, transparent 1px)`,
+            backgroundSize: "60px 60px",
           }}
-          className="absolute -bottom-32 -left-32 w-96 h-96 bg-gradient-to-tr from-stone-200/15 to-gray-300/20 rounded-full blur-3xl"
-        />
-        <motion.div
-          variants={animationVariants.floatingVariants}
-          animate="animate"
-          style={{
-            animationDelay: "4s", // Reduced from 6s
-            willChange: "transform",
-          }}
-          className="absolute top-1/4 right-1/3 w-56 h-56 bg-gradient-to-bl from-amber-300/10 to-orange-400/15 rounded-full blur-2xl"
         />
 
-        {/* Static geometric pattern - no animation needed */}
-        <div className="absolute inset-0 bg-[linear-gradient(rgba(120,113,108,0.03)_1px,transparent_1px),linear-gradient(90deg,rgba(120,113,108,0.03)_1px,transparent_1px)] bg-[size:48px_48px]" />
+        {/* Elegant floating elements */}
+        <motion.div
+          variants={animationVariants.floatingVariants}
+          animate="animate"
+          className="absolute top-20 right-20 w-64 h-64 rounded-full opacity-30 blur-3xl"
+          style={{
+            background: "var(--gradient-primary)",
+            willChange: "transform",
+          }}
+        />
+
+        <motion.div
+          variants={animationVariants.floatingVariants}
+          animate="animate"
+          className="absolute bottom-20 left-20 w-80 h-80 rounded-full opacity-20 blur-3xl"
+          style={{
+            background: "var(--gradient-accent)",
+            willChange: "transform",
+            animationDelay: "4s",
+          }}
+        />
       </div>
 
       <div className="relative container mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl">
+        {/* Header Section - Interior Design Inspired */}
         <motion.div
           variants={animationVariants.containerVariants}
           initial="hidden"
           whileInView="show"
-          viewport={{ once: true, margin: "-50px" }}>
-          {/* Hero Header */}
-          <motion.div
-            variants={animationVariants.itemVariants}
-            className="text-center mb-16 lg:mb-24">
-            {/* Optimized floating icon badge */}
+          viewport={{ once: true, margin: "-100px" }}
+          className="mb-20 lg:mb-28">
+          <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
+            {/* Left Column - Text Content */}
             <motion.div
-              className="inline-flex items-center justify-center w-20 h-20 lg:w-24 lg:h-24 mb-8"
-              whileHover={{
-                scale: 1.05, // Reduced from 1.1
-                rotate: 2, // Reduced from 5
-              }}
-              transition={{
-                type: "spring",
-                stiffness: 400, // Increased for snappier response
-                damping: 25, // Added damping for smoother motion
-              }}
-              style={{ willChange: "transform" }}>
-              <div className="relative">
-                <div className="absolute inset-0 bg-gradient-to-r from-amber-400 to-yellow-500 rounded-3xl blur-lg opacity-30" />
-                <div className="relative bg-gradient-to-r from-amber-500 to-yellow-600 rounded-3xl p-4 lg:p-5 shadow-2xl border border-amber-300/30">
-                  <span className="text-3xl lg:text-4xl">🏆</span>
-                </div>
-              </div>
-            </motion.div>
-
-            {/* Main title */}
-            <h1 className="text-3xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-black lg:mb-8 flex items-center gap-x-2 justify-center tracking-tight">
-              <span className="block bg-gradient-to-r from-stone-700 via-gray-800 to-stone-700 bg-clip-text text-transparent py-2">
-                Dự Án
-              </span>
-              <span className="block bg-gradient-to-r from-amber-600 via-yellow-600 to-amber-700 bg-clip-text text-transparent py-2">
-                Nổi Bật
-              </span>
-            </h1>
-
-            {/* Description */}
-            <motion.p
-              variants={animationVariants.itemVariants}
-              className="text-base sm:text-lg lg:text-xl xl:text-2xl text-stone-600 max-w-4xl mx-auto leading-relaxed font-light">
-              Khám phá những dự án tiêu biểu thể hiện tay nghề và sự sáng tạo
-              trong ngành {industry}
-            </motion.p>
-
-            {/* Simplified animated divider - removed complex animations */}
-            <motion.div
-              variants={animationVariants.itemVariants}
-              className="flex items-center justify-center mt-10 lg:mt-12">
-              <div className="flex items-center space-x-4">
-                <div className="w-16 h-0.5 bg-gradient-to-r from-transparent via-amber-500 to-transparent" />
-                <div className="flex space-x-1.5">
-                  <div className="w-2 h-2 bg-amber-500 rounded-full opacity-80" />
-                  <div className="w-2 h-2 bg-stone-400 rounded-full opacity-60" />
-                  <div className="w-2 h-2 bg-amber-600 rounded-full opacity-80" />
-                </div>
-                <div className="w-16 h-0.5 bg-gradient-to-r from-transparent via-amber-500 to-transparent" />
-              </div>
-            </motion.div>
-          </motion.div>
-
-          {/* Optimized Projects Grid */}
-          <motion.div
-            variants={animationVariants.itemVariants}
-            className="mb-16 lg:mb-24">
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
-              {projects.map((project) => (
-                <motion.div
-                  key={project.id}
-                  variants={animationVariants.itemVariants}
-                  whileHover={{
-                    y: -8, // Reduced from -12
-                    transition: {
-                      duration: 0.3, // Reduced from 0.4
-                      ease: "easeOut",
-                    },
-                  }}
-                  className="group relative"
-                  style={{ willChange: "transform" }}>
-                  <ProjectCard project={project} />
-
-                  {/* Simplified glow effect - single layer for better performance */}
-                  <div className="absolute -inset-2 bg-gradient-to-r from-amber-400/15 to-yellow-500/15 rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 blur-xl -z-10" />
-                </motion.div>
-              ))}
-            </div>
-          </motion.div>
-
-          {/* Optimized CTA Section */}
-          <motion.div
-            variants={animationVariants.itemVariants}
-            className="text-center mb-16 lg:mb-24">
-            <Link href="/danh-muc/du-an">
-              <motion.button
-                whileHover={{
-                  scale: 1.03, // Reduced from 1.05
-                  boxShadow: "0 20px 40px rgba(217, 119, 6, 0.25)", // Reduced shadow
+              variants={animationVariants.slideInLeft}
+              className="space-y-8">
+              {/* Elegant Badge */}
+              <motion.div
+                className="inline-flex items-center gap-3 px-6 py-3 rounded-full border shadow-sm"
+                style={{
+                  backgroundColor: "var(--color-bg)",
+                  borderColor: "var(--color-border)",
+                  boxShadow: "var(--shadow-default)",
                 }}
-                whileTap={{ scale: 0.97 }} // Reduced from 0.95
-                transition={{
-                  duration: 0.2, // Faster transition
-                  ease: "easeOut",
-                }}
-                className="group relative inline-flex items-center gap-3 bg-gradient-to-r from-amber-600 via-yellow-600 to-amber-700 hover:from-amber-700 hover:via-yellow-700 hover:to-amber-800 text-white px-8 py-4 lg:px-12 lg:py-6 rounded-2xl text-base lg:text-xl font-bold transition-all duration-300 shadow-2xl hover:shadow-amber-500/25 overflow-hidden"
-                style={{ willChange: "transform" }}>
-                {/* Simplified background overlay */}
-                <div className="absolute inset-0 bg-gradient-to-r from-white/10 to-white/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-
-                <span className="relative z-10 flex items-center gap-3">
-                  Xem Tất Cả Dự Án
-                  <ArrowRight className="w-5 h-5 lg:w-6 lg:h-6 transition-transform group-hover:translate-x-1" />
+                whileHover={{ scale: 1.02 }}
+                transition={{ duration: 0.3 }}>
+                <div
+                  className="w-3 h-3 rounded-full"
+                  style={{ backgroundColor: "var(--color-primary)" }}
+                />
+                <span
+                  className="text-sm font-medium uppercase tracking-wider"
+                  style={{ color: "var(--color-text-secondary)" }}>
+                  Portfolio Thiết Kế
                 </span>
-              </motion.button>
-            </Link>
-          </motion.div>
+              </motion.div>
 
-          {/* Optimized Stats Section */}
-          {projects.length > 0 && (
-            <motion.div
-              variants={animationVariants.itemVariants}
-              className="mb-16 lg:mb-20">
-              <div className="grid grid-cols-2 sm:grid-cols-4 gap-6 lg:gap-8">
+              {/* Main Title */}
+              <div className="space-y-4">
+                <h1 className="text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-light leading-tight">
+                  <span
+                    className="block font-extralight"
+                    style={{ color: "var(--color-text-secondary)" }}>
+                    Dự Án
+                  </span>
+                  <span
+                    className="block font-bold bg-clip-text text-transparent"
+                    style={{
+                      backgroundImage: "var(--gradient-primary)",
+                      WebkitBackgroundClip: "text",
+                    }}>
+                    Tinh Hoa
+                  </span>
+                </h1>
+
+                <div className="flex items-center gap-4 mt-6">
+                  <div
+                    className="w-12 h-0.5"
+                    style={{ backgroundColor: "var(--color-primary)" }}
+                  />
+                  <span
+                    className="text-sm uppercase tracking-widest font-medium"
+                    style={{ color: "var(--color-text-muted)" }}>
+                    {industry}
+                  </span>
+                  <div
+                    className="w-12 h-0.5"
+                    style={{ backgroundColor: "var(--color-border-accent)" }}
+                  />
+                </div>
+              </div>
+
+              {/* Description */}
+              <p
+                className="text-lg lg:text-xl leading-relaxed max-w-lg font-light"
+                style={{ color: "var(--color-text-secondary)" }}>
+                Những không gian sống được thiết kế tinh tế, thể hiện phong cách
+                và cá tính riêng của từng gia chủ.
+              </p>
+            </motion.div>
+
+            {/* Right Column - Featured Stats in Card Layout */}
+            <motion.div variants={animationVariants.slideInRight}>
+              <div className="grid grid-cols-2 gap-4 lg:gap-6">
                 {statsData.map((stat, index) => (
                   <motion.div
                     key={index}
                     variants={animationVariants.itemVariants}
                     whileHover={{
-                      scale: 1.03, // Reduced from 1.05
-                      y: -3, // Reduced from -5
+                      y: -5,
+                      transition: { duration: 0.3 },
                     }}
-                    transition={{
-                      duration: 0.2,
-                      ease: "easeOut",
-                    }}
-                    className="group text-center"
-                    style={{ willChange: "transform" }}>
-                    <div className="relative mb-4">
-                      <div
-                        className={`absolute -inset-1 bg-gradient-to-r ${stat.gradient} rounded-2xl blur opacity-25 group-hover:opacity-40 transition-opacity duration-300`}
-                      />
-                      <div
-                        className={`relative inline-flex items-center justify-center w-16 h-16 lg:w-20 lg:h-20 bg-gradient-to-r ${stat.gradient} rounded-2xl shadow-lg border border-white/20`}>
-                        <span className="text-2xl lg:text-3xl">
-                          {stat.icon}
-                        </span>
+                    className="relative group">
+                    <div
+                      className="p-6 lg:p-8 rounded-2xl border backdrop-blur-sm transition-all duration-300"
+                      style={{
+                        backgroundColor: "var(--color-bg)",
+                        borderColor: "var(--color-border-light)",
+                        boxShadow: "var(--shadow-default)",
+                      }}>
+                      <div className="space-y-4">
+                        <div className="flex items-center justify-between">
+                          <stat.icon
+                            className="w-8 h-8 lg:w-10 lg:h-10"
+                            style={{ color: "var(--color-primary)" }}
+                          />
+                          <div
+                            className="w-2 h-2 rounded-full"
+                            style={{
+                              backgroundColor: "var(--color-accent-green)",
+                            }}
+                          />
+                        </div>
+
+                        <div>
+                          <div
+                            className="text-2xl lg:text-3xl font-bold mb-1"
+                            style={{ color: "var(--color-text-primary)" }}>
+                            {stat.value}
+                          </div>
+                          <div
+                            className="text-sm font-medium mb-1"
+                            style={{ color: "var(--color-text-secondary)" }}>
+                            {stat.label}
+                          </div>
+                          <div
+                            className="text-xs"
+                            style={{ color: "var(--color-text-muted)" }}>
+                            {stat.description}
+                          </div>
+                        </div>
                       </div>
-                    </div>
-                    <div className="text-2xl sm:text-3xl lg:text-4xl font-black text-stone-800 mb-2">
-                      {stat.value}
-                    </div>
-                    <div className="text-sm lg:text-base text-stone-600 font-medium">
-                      {stat.label}
                     </div>
                   </motion.div>
                 ))}
               </div>
             </motion.div>
-          )}
+          </div>
+        </motion.div>
 
-          {/* Simplified Portfolio Showcase Hint */}
+        {/* Projects Gallery - Interior Design Layout */}
+        <motion.div
+          variants={animationVariants.containerVariants}
+          initial="hidden"
+          whileInView="show"
+          viewport={{ once: true, margin: "-100px" }}
+          className="mb-20 lg:mb-28">
+          {/* Section Header */}
           <motion.div
             variants={animationVariants.itemVariants}
-            className="flex justify-center">
-            <div className="relative group">
-              <div className="absolute -inset-1 bg-gradient-to-r from-amber-400 via-yellow-400 to-amber-500 rounded-full blur opacity-25 group-hover:opacity-40 transition-opacity duration-300" />
+            className="text-center mb-12 lg:mb-16">
+            <h2
+              className="text-2xl lg:text-3xl font-light mb-4"
+              style={{ color: "var(--color-text-primary)" }}>
+              Không Gian <span className="font-bold">Đã Thực Hiện</span>
+            </h2>
+            <div className="flex items-center justify-center gap-3">
+              <div
+                className="w-8 h-px"
+                style={{ backgroundColor: "var(--color-border-accent)" }}
+              />
+              <div
+                className="w-2 h-2 rounded-full"
+                style={{ backgroundColor: "var(--color-primary)" }}
+              />
+              <div
+                className="w-8 h-px"
+                style={{ backgroundColor: "var(--color-border-accent)" }}
+              />
+            </div>
+          </motion.div>
 
-              <div className="relative bg-white/80 backdrop-blur-xl rounded-full border border-stone-300/40 shadow-2xl px-8 py-4 lg:px-10 lg:py-5">
-                <div className="flex items-center gap-4">
-                  <div className="flex -space-x-3">
-                    {[1, 2, 3].map((i) => (
-                      <motion.div
-                        key={i}
-                        className="w-10 h-10 lg:w-12 lg:h-12 bg-gradient-to-r from-amber-400 to-stone-500 rounded-full border-3 border-white flex items-center justify-center shadow-lg"
-                        whileHover={{
-                          scale: 1.05, // Reduced from 1.1
-                          zIndex: 10,
-                        }}
-                        transition={{
-                          type: "spring",
-                          stiffness: 400,
-                          damping: 25,
-                        }}
-                        style={{ willChange: "transform" }}>
-                        <span className="text-white text-sm lg:text-base font-bold">
-                          {i}
-                        </span>
-                      </motion.div>
-                    ))}
-                  </div>
+          {/* Projects Grid - Masonry-style for Interior Design */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
+            {projects.map((project, index) => (
+              <motion.div
+                key={project.id}
+                variants={animationVariants.itemVariants}
+                whileHover={{
+                  y: -8,
+                  transition: {
+                    duration: 0.4,
+                    ease: [0.25, 0.1, 0.25, 1],
+                  },
+                }}
+                className="group relative"
+                style={{ willChange: "transform" }}>
+                {/* Elegant wrapper with custom styling */}
+                <div
+                  className="relative overflow-hidden rounded-3xl border transition-all duration-500"
+                  style={{
+                    backgroundColor: "var(--color-bg)",
+                    borderColor: "var(--color-border-light)",
+                    boxShadow: "var(--shadow-default)",
+                  }}>
+                  <ProjectCard project={project} />
 
-                  <span className="text-base lg:text-lg text-stone-700 font-medium">
-                    Và nhiều dự án khác đang chờ bạn khám phá
+                  {/* Overlay for additional design appeal */}
+                  <div
+                    className="absolute inset-0 opacity-0 group-hover:opacity-5 transition-opacity duration-300 pointer-events-none"
+                    style={{ backgroundColor: "var(--color-primary)" }}
+                  />
+                </div>
+
+                {/* Subtle glow effect */}
+                <div
+                  className="absolute -inset-1 rounded-3xl opacity-0 group-hover:opacity-20 transition-opacity duration-500 blur-xl -z-10"
+                  style={{ backgroundColor: "var(--color-primary)" }}
+                />
+
+                {/* Project number indicator */}
+                <motion.div
+                  className="absolute -top-3 -right-3 w-8 h-8 rounded-full border-2 flex items-center justify-center text-xs font-bold opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                  style={{
+                    backgroundColor: "var(--color-bg)",
+                    borderColor: "var(--color-primary)",
+                    color: "var(--color-primary)",
+                  }}
+                  initial={{ scale: 0 }}
+                  animate={{ scale: 1 }}
+                  transition={{ delay: index * 0.1 }}>
+                  {index + 1}
+                </motion.div>
+              </motion.div>
+            ))}
+          </div>
+        </motion.div>
+
+        {/* Elegant CTA Section */}
+        <motion.div
+          variants={animationVariants.containerVariants}
+          initial="hidden"
+          whileInView="show"
+          viewport={{ once: true }}
+          className="text-center mb-20 lg:mb-24">
+          <motion.div
+            variants={animationVariants.itemVariants}
+            className="space-y-8">
+            {/* Call to Action */}
+            <div className="space-y-4">
+              <h3
+                className="text-xl lg:text-2xl font-light"
+                style={{ color: "var(--color-text-secondary)" }}>
+                Khám phá thêm những dự án thiết kế độc đáo
+              </h3>
+
+              <Link href="/danh-muc/du-an">
+                <motion.button
+                  whileHover={{
+                    scale: 1.02,
+                    y: -2,
+                  }}
+                  whileTap={{ scale: 0.98 }}
+                  transition={{
+                    duration: 0.3,
+                    ease: "easeOut",
+                  }}
+                  className="group relative inline-flex items-center gap-4 px-10 py-5 lg:px-12 lg:py-6 rounded-full text-lg font-medium transition-all duration-300 overflow-hidden"
+                  style={{
+                    backgroundColor: "var(--color-primary)",
+                    color: "var(--color-text-white)",
+                    boxShadow: "var(--shadow-hover)",
+                  }}>
+                  {/* Button background overlay */}
+                  <div
+                    className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                    style={{ backgroundColor: "var(--color-primary-hover)" }}
+                  />
+
+                  <span className="relative z-10 flex items-center gap-3">
+                    Xem Toàn Bộ Portfolio
+                    <ArrowRight className="w-5 h-5 lg:w-6 lg:h-6 transition-transform group-hover:translate-x-2" />
                   </span>
+                </motion.button>
+              </Link>
+            </div>
+
+            {/* Decorative element */}
+            <motion.div
+              variants={animationVariants.itemVariants}
+              className="flex items-center justify-center">
+              <div className="flex items-center gap-3">
+                <div
+                  className="w-16 h-px"
+                  style={{ backgroundColor: "var(--color-border-accent)" }}
+                />
+                <div className="flex gap-2">
+                  <div
+                    className="w-1.5 h-1.5 rounded-full"
+                    style={{ backgroundColor: "var(--color-primary)" }}
+                  />
+                  <div
+                    className="w-1.5 h-1.5 rounded-full"
+                    style={{ backgroundColor: "var(--color-accent-green)" }}
+                  />
+                  <div
+                    className="w-1.5 h-1.5 rounded-full"
+                    style={{ backgroundColor: "var(--color-border-accent)" }}
+                  />
+                </div>
+                <div
+                  className="w-16 h-px"
+                  style={{ backgroundColor: "var(--color-border-accent)" }}
+                />
+              </div>
+            </motion.div>
+          </motion.div>
+        </motion.div>
+
+        {/* Bottom Design Element - Interior Design Quote */}
+        <motion.div
+          variants={animationVariants.containerVariants}
+          initial="hidden"
+          whileInView="show"
+          viewport={{ once: true }}>
+          <motion.div
+            variants={animationVariants.itemVariants}
+            className="relative max-w-4xl mx-auto">
+            <div
+              className="relative p-8 lg:p-12 rounded-3xl border backdrop-blur-sm"
+              style={{
+                backgroundColor: "var(--color-bg)",
+                borderColor: "var(--color-border)",
+                boxShadow: "var(--shadow-default)",
+              }}>
+              {/* Quote marks */}
+              <div
+                className="absolute top-6 left-6 text-4xl font-serif opacity-20"
+                style={{ color: "var(--color-primary)" }}>
+                "
+              </div>
+
+              <div className="text-center space-y-6 relative z-10">
+                <blockquote
+                  className="text-xl lg:text-2xl font-light leading-relaxed italic"
+                  style={{ color: "var(--color-text-primary)" }}>
+                  Thiết kế không chỉ là cách mọi thứ trông như thế nào. Thiết kế
+                  là cách mọi thứ vận hành và cảm nhận.
+                </blockquote>
+
+                <div className="flex items-center justify-center gap-4">
+                  <div
+                    className="w-12 h-px"
+                    style={{ backgroundColor: "var(--color-border-accent)" }}
+                  />
+                  <span
+                    className="text-sm font-medium tracking-wider"
+                    style={{ color: "var(--color-text-muted)" }}>
+                    TRIẾT LÝ THIẾT KẾ
+                  </span>
+                  <div
+                    className="w-12 h-px"
+                    style={{ backgroundColor: "var(--color-border-accent)" }}
+                  />
                 </div>
               </div>
+
+              {/* Decorative corner elements */}
+              <div
+                className="absolute top-4 right-4 w-8 h-8 border-t-2 border-r-2 rounded-tr-2xl opacity-30"
+                style={{ borderColor: "var(--color-primary)" }}
+              />
+              <div
+                className="absolute bottom-4 left-4 w-8 h-8 border-b-2 border-l-2 rounded-bl-2xl opacity-30"
+                style={{ borderColor: "var(--color-primary)" }}
+              />
             </div>
           </motion.div>
         </motion.div>

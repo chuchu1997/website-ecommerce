@@ -24,7 +24,11 @@ export const BadgeFlashSale = ({
             className={cn(
               "bg-[#fdf0f7] text-price text-sm font-semibold flex items-center",
               className
-            )}>
+            )}
+            style={{
+              backgroundColor: "var(--color-primary)",
+              color: "var(--color-text-white)",
+            }}>
             <Zap />
             <FlashSaleCountDown promotion={promotion} />
           </Badge>
