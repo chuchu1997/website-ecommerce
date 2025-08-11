@@ -81,6 +81,9 @@ export class CategoriesService {
 
       // Chạy transaction
       const [, newCategory] = await this.prisma.$transaction(transactionOps);
+      console.log(
+        `[Category Created] Tên: ${newCategory.name} | ID: ${newCategory.id} | Thời gian: ${new Date().toLocaleString('vi-VN')}`,
+      );
 
       return newCategory;
     } catch (err) {
