@@ -64,7 +64,7 @@ export const BannerClient = () => {
               id={banner.id}
               image={banner.imageUrl}
               description={banner.description ?? ""}
-              variant={""}
+              variant={"Electronics"}
               onDelete={(id) => {
                 showDialog({
                   title: "Xóa sản phẩm?",

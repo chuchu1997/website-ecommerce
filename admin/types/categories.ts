@@ -31,6 +31,9 @@ export interface CategoryInterface extends CategoryBase{
     id:number;
 };
 
+export interface CategoryWithChildren extends CategoryInterface {
+  children?: CategoryWithChildren[];
+}
 export interface CreateCategoryInterface extends Omit<CategoryBase,"createdAt"|"updatedAt">{
 };
 export interface UpdateCategoryInterface extends Omit<CategoryInterface,"id">{

@@ -214,7 +214,7 @@ const DanhMucPageClient = ({ categoryProps }: Props) => {
         {category.variant ? (
           <div className="space-y-8">{renderVariantContent()}</div>
         ) : (
-          <div className="space-y-8">
+          <div className="space-y-8 container mx-auto">
             <ScrollToLoadProductsWithCategory
               categoryName={category.name}
               fetchProducts={fetchProductsFromCategory}
