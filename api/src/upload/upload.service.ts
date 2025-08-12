@@ -40,16 +40,16 @@ export class UploadService {
     const imageUrls: string[] = [];
 
     for (const buffer of buffers) {
-      const pass = new PassThrough();
-      // sharp chuyển đổi và pipe thẳng vào PassThrough stream
-      sharp(buffer).webp({ quality: 100 }).pipe(pass);
-
+      const outputBuffer = await sharp(buffer)
+        .webp({ quality: 100 })
+        .toBuffer();
       const key = `${this.folderS3}/${uuidv4()}.webp`;
+      // sharp chuyển đổi và pipe thẳng vào PassThrough stream
 
       const command = new PutObjectCommand({
         Bucket: process.env.AWS_S3_BUCKET_NAME!,
         Key: key,
-        Body: pass,
+        Body: outputBuffer,
         ContentType: 'image/webp',
       });
       await this.s3.send(command);
