@@ -7,6 +7,8 @@ import { BadRequestException, Injectable } from '@nestjs/common';
 import { v4 as uuidv4 } from 'uuid';
 import * as sharp from 'sharp';
 import { SkipThrottle } from '@nestjs/throttler';
+import { NodeHttpHandler } from '@smithy/node-http-handler';
+import { PassThrough } from 'stream';
 
 @Injectable()
 export class UploadService {
@@ -21,6 +23,7 @@ export class UploadService {
         accessKeyId: process.env.AWS_ACCESS_KEY_ID!,
         secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY!,
       },
+      requestHandler: new NodeHttpHandler({ requestTimeout: 30000 }), // 30s
     });
     this.bucketName = process.env.AWS_BUCKET_NAME!;
     this.folderS3 = process.env.AWS_S3_FOLDER_SAVE!;
@@ -36,34 +39,23 @@ export class UploadService {
   }) {
     const imageUrls: string[] = [];
 
-    for (let i = 0; i < buffers.length; i++) {
-      try {
-        // 👇 Convert ảnh sang .webp
-        const webpBuffer = await sharp(buffers[i])
-          .webp({ quality: 100 }) // bạn có thể điều chỉnh quality tại đây
-          .toBuffer();
+    for (const buffer of buffers) {
+      const pass = new PassThrough();
+      // sharp chuyển đổi và pipe thẳng vào PassThrough stream
+      sharp(buffer).webp({ quality: 100 }).pipe(pass);
 
-        // 👇 Random file name không dính original name
-        const fileKey = `${this.folderS3}/${uuidv4()}.webp`;
+      const key = `${this.folderS3}/${uuidv4()}.webp`;
 
-        const command = new PutObjectCommand({
-          Bucket: process.env.AWS_S3_BUCKET_NAME!,
-          Key: fileKey,
-          Body: webpBuffer,
-          ContentType: 'image/webp',
-        });
-
-        await this.s3.send(command);
-
-        const imageUrl = `https://${process.env.AWS_S3_BUCKET_NAME}.s3.${process.env.AWS_REGION}.amazonaws.com/${fileKey}`;
-        imageUrls.push(imageUrl);
-      } catch (error) {
-        console.error(
-          `❌ Upload thất bại ở file ${originalFilenames[i]}`,
-          error,
-        );
-        // Optional: tiếp tục hoặc dừng tuỳ bạn
-      }
+      const command = new PutObjectCommand({
+        Bucket: process.env.AWS_S3_BUCKET_NAME!,
+        Key: key,
+        Body: pass,
+        ContentType: 'image/webp',
+      });
+      await this.s3.send(command);
+      imageUrls.push(
+        `https://${process.env.AWS_S3_BUCKET_NAME}.s3.${process.env.AWS_REGION}.amazonaws.com/${key}`,
+      );
     }
 
     if (imageUrls.length === 0) {
