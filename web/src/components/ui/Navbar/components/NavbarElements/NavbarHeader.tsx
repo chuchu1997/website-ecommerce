@@ -24,12 +24,12 @@ export const NavbarHeader: React.FC<NavbarHeaderProps> = ({
   return (
     <div className="border border-[var(--color-border)] bg-[var(--color-bg)] shadow-[var(--shadow-default)]">
       <div className="container mx-auto py-4">
-        <div className="flex items-center justify-between">
+        <div className="flex items-center justify-between px-2">
           {/* Mobile Menu Button */}
           <div className="lg:hidden">
             <button
               onClick={onMobileMenuToggle}
-              className="p-2 rounded-xl border border-transparent hover:border-[var(--color-border-accent)] hover:bg-[var(--color-bg-hover)] transition-all duration-200"
+              className="p-2 mr-2 rounded-xl border border-transparent hover:border-[var(--color-border-accent)] hover:bg-[var(--color-bg-hover)] transition-all duration-200"
               aria-label="Menu">
               {isMobileMenuOpen ? (
                 <X className="h-6 w-6 text-[var(--color-primary)]" />
@@ -40,7 +40,7 @@ export const NavbarHeader: React.FC<NavbarHeaderProps> = ({
           </div>
 
           {/* Logo */}
-          <Link href="/" prefetch={true} className="flex-shrink-0">
+          <Link href="/" prefetch={true} className="flex-shrink-0 ">
             <Image
               priority
               alt="Interior Design & Furniture Logo"
@@ -100,18 +100,22 @@ export const NavbarHeader: React.FC<NavbarHeaderProps> = ({
           <button
             onClick={onSearchOpen}
             className="
-              md:hidden flex-1 mx-4 p-3
-              bg-[var(--color-bg-secondary)]
-              border-2 border-[var(--color-primary)]
-              rounded-full
-              text-[var(--color-primary)]
-              hover:bg-[var(--color-bg-hover)]
-              transition-all duration-200
-            "
+                         md:hidden flex-1 mx-4 p-3
+                         bg-[var(--color-bg)]
+                         border border-[var(--color-border)]
+                         hover:border-[var(--color-primary)]
+                         rounded-xl
+                         text-[var(--color-text-primary)]
+                         hover:bg-[var(--color-bg-secondary)]
+                         transition-all duration-200
+                         shadow-sm
+                       "
             aria-label="Search">
             <div className="flex items-center gap-x-2">
-              <Search className="h-5 w-5" />
-              <span className="text-sm font-medium">Tìm nội thất...</span>
+              <Search className="h-5 w-5 text-[var(--color-primary)]" />
+              <span className="text-sm font-medium text-[var(--color-text-muted)]">
+                Tìm nội thất...
+              </span>
             </div>
           </button>
 
@@ -120,20 +124,29 @@ export const NavbarHeader: React.FC<NavbarHeaderProps> = ({
             href="/gio-hang"
             prefetch={true}
             className="
-              inline-flex relative p-3 text-[var(--color-primary)]
-              hover:text-[var(--color-primary-hover)] hover:bg-[var(--color-bg-hover)]
-              rounded-xl transition-all duration-200 sm:hidden items-center group
-              border border-transparent hover:border-[var(--color-border-accent)]
-            ">
-            <ShoppingCart className="w-6 h-6 group-hover:scale-110 transition-transform duration-200" />
+                sm:hidden relative p-2 
+                text-[var(--color-primary)]
+                hover:text-[var(--color-primary-hover)] 
+                hover:bg-gradient-to-br hover:from-[var(--color-primary-light)]/30 hover:to-[var(--color-bg-hover)]
+                rounded-lg
+                transition-all duration-300 ease-out
+                group
+                border border-[var(--color-border-light)] 
+                hover:border-[var(--color-primary)]/40
+                shadow-[var(--shadow-default)] hover:shadow-[var(--shadow-hover)]
+              ">
+            <ShoppingCart className="w-6 h-6 group-hover:scale-110 transition-transform duration-300" />
             {cartQuantity > 0 && (
               <span
                 className="
-                absolute -top-1 -right-1
-                bg-gradient-to-r from-rose-500 to-rose-600
-                text-white text-xs rounded-full w-6 h-6 flex items-center justify-center font-bold shadow-lg animate-pulse
-              ">
-                {cartQuantity}
+                  absolute -top-2 -right-2
+                  bg-gradient-to-r from-[var(--color-accent-red)] to-[var(--color-accent-red)]/80
+                  text-[var(--color-text-white)] text-xs rounded-full w-6 h-6 
+                  flex items-center justify-center font-bold 
+                  shadow-lg animate-pulse
+                  border-2 border-[var(--color-bg)]
+                ">
+                {cartQuantity > 99 ? "99+" : cartQuantity}
               </span>
             )}
           </Link>

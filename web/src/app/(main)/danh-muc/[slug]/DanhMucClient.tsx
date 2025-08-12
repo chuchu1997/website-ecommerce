@@ -210,7 +210,7 @@ const DanhMucPageClient = ({ categoryProps }: Props) => {
   };
   return (
     <div className="min-h-screen ">
-      <div className="container mx-auto py-2 ">
+      <div className="py-2 ">
         {category.variant ? (
           <div className="space-y-8">{renderVariantContent()}</div>
         ) : (

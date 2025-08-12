@@ -80,7 +80,7 @@ const DuAnSlugSSR = async ({params}:{
     );
   }
 
-  return <div className = "container mx-auto py-[35px] sm:py-[70px]">
+  return <div className = "container mx-auto py-[35px] sm:py-[70px] px-2">
       {/* Header */}
 
       <div className="mb-6">
@@ -108,7 +108,7 @@ const DuAnSlugSSR = async ({params}:{
       )}
 
       {/* Content */}
-      <div className="relative text-gray-700 leading-relaxed whitespace-pre-line">
+      <div className="relative text-gray-700 leading-relaxed whitespace-pre-line ">
         <EditorClientWrapper jsonString={project.description} />
       </div>
   

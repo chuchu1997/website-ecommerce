@@ -44,7 +44,7 @@ const DanhMucPageSSR = async  (
     const resolvedParams = await params;
     const category:CategoryInterface = await getCachedCategoryWithSlug(resolvedParams.slug) as CategoryInterface ?? undefined;
   
-  return <div className="min-h-screen container mx-auto pt-0 sm:pt-[30px]">
+  return <div className="min-h-screen  pt-0 sm:pt-[30px]">
     <DanhMucPageClient categoryProps={category}/>
   </div>;
 };

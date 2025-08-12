@@ -322,9 +322,9 @@ export const InteriorContent: React.FC<Props> = ({ industry }) => {
           </motion.div>
 
           {/* Professional Call-to-Action */}
-          <motion.div variants={itemVariants} className="text-center">
+          <motion.div variants={itemVariants} className="">
             <div 
-              className="inline-flex items-center gap-6 px-10 py-6 rounded-2xl border"
+              className="grid grid-cols-1 sm:grid-cols-2 gap-6 px-10 py-6 rounded-2xl border"
               style={{ 
                 background: 'var(--color-bg)',
                 borderColor: 'var(--color-border)',
@@ -360,13 +360,10 @@ export const InteriorContent: React.FC<Props> = ({ industry }) => {
               </div>
 
               {/* Divider */}
-              <div 
-                className="w-px h-12"
-                style={{ background: 'var(--color-border)' }}
-              />
+          
 
               {/* Main message */}
-              <div className="text-center">
+              <div className="">
                 <div 
                   className="text-lg font-medium mb-1"
                   style={{ color: 'var(--color-text-primary)' }}

@@ -4,10 +4,12 @@ import { ProductAPI } from "@/api/products/product.api";
 import { ProductListMotionWrapper } from "@/components/ui/product/ProductListMotionWrapper";
 import { ProductInterface } from "@/types/product";
 import { PromotionInterface, ProductPromotion } from "@/types/promotion";
+import { StoreInterface } from "@/types/store";
 import { fetchSafe } from "@/utils/fetchSafe";
+import Link from "next/link";
 
 interface Props {
-  industry: string;
+  storeInfo: StoreInterface;
 }
 
 const getCacheFeatureProductSSR = async (): Promise<ProductInterface[]> => {
@@ -22,7 +24,7 @@ const getCacheFeatureProductSSR = async (): Promise<ProductInterface[]> => {
   return products;
 };
 
-export const FeatureProducts = async ({ industry }: Props) => {
+export const FeatureProducts = async ({ storeInfo }: Props) => {
   let featureProducts: ProductInterface[] = [];
   let promotions: PromotionInterface[] = [];
 
@@ -93,7 +95,7 @@ export const FeatureProducts = async ({ industry }: Props) => {
                       <span
                         className="text-sm font-semibold uppercase tracking-wide"
                         style={{ color: "var(--color-text-primary)" }}>
-                        {industry} Cao Cấp
+                        {storeInfo.industry} Cao Cấp
                       </span>
                     </div>
 
@@ -231,11 +233,8 @@ export const FeatureProducts = async ({ industry }: Props) => {
             <div className="max-w-3xl mb-16 lg:mb-20">
               <div className="flex items-start gap-6">
                 <div
-                  className="w-16 h-16 lg:w-20 lg:h-20 rounded-2xl flex items-center justify-center text-2xl lg:text-3xl border"
-                  style={{
-                    backgroundColor: "var(--color-bg-secondary)",
-                    borderColor: "var(--color-border)",
-                  }}>
+                  className="w-20 h-20 lg:w-25 lg:h-25 rounded-2xl flex items-center justify-center text-2xl lg:text-3xl border"
+                  style={{}}>
                   ✨
                 </div>
                 <div>
@@ -312,7 +311,7 @@ export const FeatureProducts = async ({ industry }: Props) => {
                 </div>
 
                 {/* Process Steps */}
-                <div className="grid sm:grid-cols-3 gap-6">
+                <div className="grid grid-cols-3 gap-4">
                   {[
                     {
                       step: "01",
@@ -437,7 +436,7 @@ export const FeatureProducts = async ({ industry }: Props) => {
           <div className="container mx-auto px-4 lg:px-6">
             <div className="max-w-4xl mx-auto text-center">
               {/* Trust Indicators */}
-              <div className="grid sm:grid-cols-3 gap-8 mb-12">
+              <div className="grid grid-cols-3 gap-4 mb-12">
                 {[
                   { icon: "🏅", title: "Chứng nhận", desc: "ISO 9001:2015" },
                   { icon: "🚚", title: "Giao hàng", desc: "Toàn quốc 24h" },
@@ -493,7 +492,9 @@ export const FeatureProducts = async ({ industry }: Props) => {
                   </p>
 
                   <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                    <button
+                    <Link
+                      target="_blank"
+                      href={storeInfo.phone ? `tel:${storeInfo.phone}` : "/"}
                       className="px-10 py-4 rounded-xl font-semibold transition-all duration-300 hover:scale-105 flex items-center justify-center gap-3"
                       style={{
                         background: "var(--gradient-primary)",
@@ -502,7 +503,7 @@ export const FeatureProducts = async ({ industry }: Props) => {
                       }}>
                       <span>📞</span>
                       Liên Hệ Ngay
-                    </button>
+                    </Link>
                   </div>
                 </div>
               </div>

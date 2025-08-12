@@ -48,7 +48,7 @@ const MusicStoreLanding: React.FC = async () => {
     <div className=" min-h-screen bg-gray-50 w-full">
       <HeroSSR />
       <CategoriesListSSR />
-      <FeatureProducts industry={storeInfo.industry ?? "Nội thất"} />
+      <FeatureProducts storeInfo={storeInfo} />
       <ProductWithCategoryType
         industry={storeInfo.industry ?? ""}
         slug="giuong-ngu"

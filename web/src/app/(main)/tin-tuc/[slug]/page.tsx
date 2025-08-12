@@ -85,7 +85,7 @@ const TinTucSlugSSR = async ({params}:{
     );
   }
 
-  return <div className = "container mx-auto py-[35px] sm:py-[70px]">
+  return <div className = "container mx-auto py-[35px] sm:py-[70px] px-2">
       {/* Header */}
 
       <div className="mb-6">

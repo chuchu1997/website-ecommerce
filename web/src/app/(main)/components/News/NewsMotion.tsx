@@ -207,7 +207,7 @@ export const NewsMotion: React.FC<Props> = ({ news, industry }) => {
                       style={{ background: 'var(--gradient-primary)' }}
                     />
                     
-                    <div className="relative z-10 p-6">
+                    <div className="relative z-10 ">
                       <NewsCard news={newsItem} />
                     </div>
                   </div>

@@ -2,15 +2,24 @@
 
 "use client";
 import React, { useEffect, useState } from "react";
-import { Building2, Sparkles, TrendingUp, Award } from "lucide-react";
+import {
+  Building2,
+  Sparkles,
+  TrendingUp,
+  Award,
+  Grid3X3,
+  List,
+  Search,
+  Filter,
+  Eye,
+  Calendar,
+  MapPin,
+  Layers,
+} from "lucide-react";
 import { ProjectAPI } from "@/api/projects/projects.api";
 import PaginationCustom from "@/common/PaginationCustom";
 import { ProjectCard } from "@/components/ui/ProjectCard";
 import { ProjectInterface } from "@/types/project";
-
-// Mock API and interfaces for demo
-
-// Mock PaginationCustom component
 
 const ProjectsSection = () => {
   const [projects, setProjects] = useState<ProjectInterface[]>([]);
@@ -21,6 +30,16 @@ const ProjectsSection = () => {
   const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("all");
+  const [showFilters, setShowFilters] = useState(false);
+
+  const categories = [
+    { id: "all", label: "Tất cả dự án", count: 0 },
+    { id: "residential", label: "Căn hộ & Nhà ở", count: 45 },
+    { id: "commercial", label: "Thương mại", count: 28 },
+    { id: "office", label: "Văn phòng", count: 32 },
+    { id: "hospitality", label: "Khách sạn & Resort", count: 15 },
+    { id: "retail", label: "Showroom & Cửa hàng", count: 22 },
+  ];
 
   useEffect(() => {
     setIsMounted(true);
@@ -32,7 +51,7 @@ const ProjectsSection = () => {
 
   const fetchProjects = async () => {
     try {
-      const limit = 8;
+      const limit = 3;
       setLoading(true);
 
       let res = await ProjectAPI.getProjects({
@@ -58,14 +77,43 @@ const ProjectsSection = () => {
   if (!isMounted) return null;
 
   const ProjectsSkeletonLoader = () => (
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
-      {Array.from({ length: 8 }).map((_, i) => (
+    <div
+      className={`grid gap-4 sm:gap-6 lg:gap-8 ${
+        viewMode === "grid"
+          ? "grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4"
+          : "grid-cols-1 lg:grid-cols-2"
+      }`}>
+      {Array.from({ length: 12 }).map((_, i) => (
         <div key={i} className="animate-pulse">
-          <div className="bg-gradient-to-r from-gray-200 via-gray-300 to-gray-200 h-48 rounded-2xl mb-4 bg-[length:200%_100%] animate-[shimmer_2s_infinite]"></div>
+          <div
+            className="h-48 sm:h-56 lg:h-64 rounded-2xl mb-4 bg-gradient-to-r bg-[length:200%_100%] animate-[shimmer_2s_infinite]"
+            style={{
+              background: `linear-gradient(90deg, var(--color-bg-secondary) 25%, var(--color-bg-accent) 50%, var(--color-bg-secondary) 75%)`,
+              backgroundSize: "200% 100%",
+            }}
+          />
           <div className="space-y-3">
-            <div className="h-5 bg-gradient-to-r from-gray-200 via-gray-300 to-gray-200 rounded-lg bg-[length:200%_100%] animate-[shimmer_2s_infinite]"></div>
-            <div className="h-4 bg-gradient-to-r from-gray-200 via-gray-300 to-gray-200 rounded-lg w-3/4 bg-[length:200%_100%] animate-[shimmer_2s_infinite]"></div>
-            <div className="h-3 bg-gradient-to-r from-gray-200 via-gray-300 to-gray-200 rounded-lg w-1/2 bg-[length:200%_100%] animate-[shimmer_2s_infinite]"></div>
+            <div
+              className="h-5 rounded-lg bg-gradient-to-r bg-[length:200%_100%] animate-[shimmer_2s_infinite]"
+              style={{
+                background: `linear-gradient(90deg, var(--color-bg-secondary) 25%, var(--color-bg-accent) 50%, var(--color-bg-secondary) 75%)`,
+                backgroundSize: "200% 100%",
+              }}
+            />
+            <div
+              className="h-4 rounded-lg w-3/4 bg-gradient-to-r bg-[length:200%_100%] animate-[shimmer_2s_infinite]"
+              style={{
+                background: `linear-gradient(90deg, var(--color-bg-secondary) 25%, var(--color-bg-accent) 50%, var(--color-bg-secondary) 75%)`,
+                backgroundSize: "200% 100%",
+              }}
+            />
+            <div
+              className="h-3 rounded-lg w-1/2 bg-gradient-to-r bg-[length:200%_100%] animate-[shimmer_2s_infinite]"
+              style={{
+                background: `linear-gradient(90deg, var(--color-bg-secondary) 25%, var(--color-bg-accent) 50%, var(--color-bg-secondary) 75%)`,
+                backgroundSize: "200% 100%",
+              }}
+            />
           </div>
         </div>
       ))}
@@ -73,54 +121,323 @@ const ProjectsSection = () => {
   );
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-gray-50">
-      <div className="max-w-7xl mx-auto px-6 py-16">
+    <div
+      className="min-h-screen relative overflow-hidden"
+      style={{ background: "var(--gradient-secondary)" }}>
+      {/* Decorative Background Elements */}
+      <div className="absolute inset-0 pointer-events-none overflow-hidden opacity-10">
+        <div
+          className="absolute top-20 right-20 w-40 h-40 sm:w-64 sm:h-64 lg:w-80 lg:h-80 rounded-full blur-3xl animate-pulse"
+          style={{ backgroundColor: "var(--color-primary)" }}
+        />
+        <div
+          className="absolute bottom-32 left-20 w-48 h-48 sm:w-72 sm:h-72 lg:w-96 lg:h-96 rounded-full blur-3xl animate-pulse"
+          style={{
+            backgroundColor: "var(--color-accent-green)",
+            animationDelay: "1.5s",
+          }}
+        />
+
+        {/* Architectural grid pattern */}
+        <div className="absolute inset-0 opacity-5">
+          <div className="grid grid-cols-12 h-full w-full">
+            {Array.from({ length: 12 }).map((_, i) => (
+              <div key={i} className="border-r border-current" />
+            ))}
+          </div>
+        </div>
+      </div>
+
+      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12 lg:py-16">
         {/* Header Section */}
-        <div className="text-center mb-4 md:mb-16">
-          <div className="inline-flex items-center justify-center space-x-2 bg-blue-50 text-blue-600 px-4 py-2 rounded-full text-sm font-medium mb-6">
-            <Sparkles className="w-4 h-4" />
-            <span>Dự án nổi bật</span>
+        <div className="text-center mb-12 sm:mb-16 lg:mb-20">
+          <div
+            className="inline-flex items-center justify-center space-x-3 px-4 py-2 rounded-full text-xs sm:text-sm font-medium mb-6 transition-all duration-300 hover:scale-105"
+            style={{
+              backgroundColor: "var(--color-primary-light)",
+              color: "var(--color-primary)",
+              border: "1px solid var(--color-border-light)",
+            }}>
+            <Sparkles className="w-3 h-3 sm:w-4 sm:h-4" />
+            <span>Dự án đã thực hiện</span>
           </div>
 
-          <h1 className="hidden md:block text-4xl md:text-7xl font-bold text-gray-900 mb-6">
-            Dự Án
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-purple-600">
+          <h1
+            className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold mb-4 sm:mb-6 leading-tight"
+            style={{ color: "var(--color-text-primary)" }}>
+            Kiến tạo
+            <br className="sm:hidden" />
+            <span
+              className="text-transparent bg-clip-text"
+              style={{ backgroundImage: "var(--gradient-primary)" }}>
               {" "}
-              Thành Công
+              không gian sống
             </span>
           </h1>
 
-          <p className="hidden md:block text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed mb-8">
-            Khám phá những dự án xuất sắc mà chúng tôi đã thực hiện thành công,
+          <p
+            className="text-sm sm:text-base md:text-lg lg:text-xl max-w-2xl lg:max-w-3xl mx-auto leading-relaxed mb-8 sm:mb-12 px-4"
+            style={{ color: "var(--color-text-secondary)" }}>
+            Khám phá bộ sưu tập những dự án thiết kế nội thất xuất sắc, từ căn
+            hộ hiện đại đến biệt thự sang trọng, được thực hiện bởi đội ngũ kiến
+            trúc sư chuyên nghiệp.
           </p>
 
-          {/* Stats */}
-          <div className="hidden md:flex flex-wrap justify-center gap-8 mb-12">
-            <div className="flex items-center space-x-2 text-gray-600">
-              <div className="bg-green-100 p-2 rounded-full">
-                <TrendingUp className="w-5 h-5 text-green-600" />
-              </div>
-              <div>
-                <div className="text-2xl font-bold text-gray-900">150+</div>
-                <div className="text-sm">Dự án hoàn thành</div>
+          {/* Enhanced Stats */}
+          <div className="grid grid-cols-2 sm:grid-cols-3 gap-4 sm:gap-6 lg:gap-8 max-w-4xl mx-auto">
+            <div className="group">
+              <div
+                className="p-4 sm:p-6 rounded-2xl transition-all duration-300 group-hover:scale-105"
+                style={{
+                  backgroundColor: "var(--color-bg)",
+                  boxShadow: "var(--shadow-default)",
+                  border: "1px solid var(--color-border-light)",
+                }}>
+                <div
+                  className="w-10 h-10 sm:w-12 sm:h-12 rounded-xl flex items-center justify-center mb-3 mx-auto"
+                  style={{
+                    backgroundColor: "var(--color-accent-green-light)",
+                  }}>
+                  <TrendingUp
+                    className="w-5 h-5 sm:w-6 sm:h-6"
+                    style={{ color: "var(--color-accent-green)" }}
+                  />
+                </div>
+                <div
+                  className="text-xl sm:text-2xl lg:text-3xl font-bold mb-1"
+                  style={{ color: "var(--color-text-primary)" }}>
+                  200+
+                </div>
+                <div
+                  className="text-xs sm:text-sm"
+                  style={{ color: "var(--color-text-muted)" }}>
+                  Dự án hoàn thành
+                </div>
               </div>
             </div>
-            <div className="flex items-center space-x-2 text-gray-600">
-              <div className="bg-blue-100 p-2 rounded-full">
-                <Award className="w-5 h-5 text-blue-600" />
-              </div>
-              <div>
-                <div className="text-2xl font-bold text-gray-900">98%</div>
-                <div className="text-sm">Khách hàng hài lòng</div>
+
+            <div className="group">
+              <div
+                className="p-4 sm:p-6 rounded-2xl transition-all duration-300 group-hover:scale-105"
+                style={{
+                  backgroundColor: "var(--color-bg)",
+                  boxShadow: "var(--shadow-default)",
+                  border: "1px solid var(--color-border-light)",
+                }}>
+                <div
+                  className="w-10 h-10 sm:w-12 sm:h-12 rounded-xl flex items-center justify-center mb-3 mx-auto"
+                  style={{ backgroundColor: "var(--color-accent-red-light)" }}>
+                  <Award
+                    className="w-5 h-5 sm:w-6 sm:h-6"
+                    style={{ color: "var(--color-accent-red)" }}
+                  />
+                </div>
+                <div
+                  className="text-xl sm:text-2xl lg:text-3xl font-bold mb-1"
+                  style={{ color: "var(--color-text-primary)" }}>
+                  98%
+                </div>
+                <div
+                  className="text-xs sm:text-sm"
+                  style={{ color: "var(--color-text-muted)" }}>
+                  Hài lòng
+                </div>
               </div>
             </div>
-            <div className="flex items-center space-x-2 text-gray-600">
-              <div className="bg-purple-100 p-2 rounded-full">
-                <Building2 className="w-5 h-5 text-purple-600" />
+
+            <div className="group col-span-2 sm:col-span-1">
+              <div
+                className="p-4 sm:p-6 rounded-2xl transition-all duration-300 group-hover:scale-105"
+                style={{
+                  backgroundColor: "var(--color-bg)",
+                  boxShadow: "var(--shadow-default)",
+                  border: "1px solid var(--color-border-light)",
+                }}>
+                <div
+                  className="w-10 h-10 sm:w-12 sm:h-12 rounded-xl flex items-center justify-center mb-3 mx-auto"
+                  style={{ backgroundColor: "var(--color-primary-light)" }}>
+                  <Building2
+                    className="w-5 h-5 sm:w-6 sm:h-6"
+                    style={{ color: "var(--color-primary)" }}
+                  />
+                </div>
+                <div
+                  className="text-xl sm:text-2xl lg:text-3xl font-bold mb-1"
+                  style={{ color: "var(--color-text-primary)" }}>
+                  15
+                </div>
+                <div
+                  className="text-xs sm:text-sm"
+                  style={{ color: "var(--color-text-muted)" }}>
+                  Năm kinh nghiệm
+                </div>
               </div>
-              <div>
-                <div className="text-2xl font-bold text-gray-900">50+</div>
-                <div className="text-sm">Đối tác tin cậy</div>
+            </div>
+          </div>
+        </div>
+
+        {/* Filters & Search Section */}
+        <div
+          className="rounded-3xl p-4 sm:p-6 lg:p-8 mb-8 sm:mb-12"
+          style={{
+            backgroundColor: "var(--color-bg)",
+            boxShadow: "var(--shadow-default)",
+            border: "1px solid var(--color-border-light)",
+          }}>
+          {/* Search Bar */}
+          <div className="mb-6">
+            <div className="relative max-w-md mx-auto sm:max-w-lg">
+              <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                <Search
+                  className="h-5 w-5"
+                  style={{ color: "var(--color-text-muted)" }}
+                />
+              </div>
+              <input
+                type="text"
+                placeholder="Tìm kiếm dự án theo tên, địa điểm..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className="w-full pl-12 pr-4 py-3 sm:py-4 rounded-2xl transition-all duration-300 focus:ring-4 focus:ring-opacity-20 text-sm sm:text-base"
+                style={{
+                  backgroundColor: "var(--color-bg-secondary)",
+                  border: "2px solid var(--color-border)",
+                  color: "var(--color-text-primary)",
+                }}
+              />
+            </div>
+          </div>
+
+          {/* Category Filters */}
+          <div className="mb-6">
+            <div className="flex items-center justify-between mb-4">
+              <h3
+                className="text-sm sm:text-base font-semibold"
+                style={{ color: "var(--color-text-primary)" }}>
+                Danh mục dự án
+              </h3>
+              <button
+                onClick={() => setShowFilters(!showFilters)}
+                className="sm:hidden flex items-center space-x-2 px-3 py-2 rounded-xl transition-all duration-300"
+                style={{
+                  backgroundColor: "var(--color-bg-accent)",
+                  color: "var(--color-text-secondary)",
+                }}>
+                <Filter className="w-4 h-4" />
+                <span className="text-sm">Lọc</span>
+              </button>
+            </div>
+
+            <div className={`${showFilters ? "block" : "hidden"} sm:block`}>
+              <div className="flex flex-wrap gap-2 sm:gap-3">
+                {categories.map((category) => (
+                  <button
+                    key={category.id}
+                    onClick={() => setSelectedCategory(category.id)}
+                    className={`px-3 sm:px-4 py-2 sm:py-3 rounded-xl text-xs sm:text-sm font-medium transition-all duration-300 hover:scale-105 ${
+                      selectedCategory === category.id
+                        ? "shadow-md"
+                        : "hover:shadow-sm"
+                    }`}
+                    style={{
+                      backgroundColor:
+                        selectedCategory === category.id
+                          ? "var(--color-primary)"
+                          : "var(--color-bg-secondary)",
+                      color:
+                        selectedCategory === category.id
+                          ? "var(--color-text-white)"
+                          : "var(--color-text-secondary)",
+                      border: "1px solid var(--color-border)",
+                    }}>
+                    {category.label}
+                    {category.count > 0 && (
+                      <span
+                        className={`ml-2 px-2 py-0.5 rounded-full text-xs ${
+                          selectedCategory === category.id ? "bg-white/20" : ""
+                        }`}
+                        style={{
+                          backgroundColor:
+                            selectedCategory === category.id
+                              ? "rgba(255,255,255,0.2)"
+                              : "var(--color-bg-accent)",
+                        }}>
+                        {category.count}
+                      </span>
+                    )}
+                  </button>
+                ))}
+              </div>
+            </div>
+          </div>
+
+          {/* View Controls & Results Info */}
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+            <div
+              className="text-sm sm:text-base"
+              style={{ color: "var(--color-text-secondary)" }}>
+              Hiển thị{" "}
+              <span
+                className="font-semibold"
+                style={{ color: "var(--color-text-primary)" }}>
+                {projects.length}
+              </span>{" "}
+              dự án
+              {searchQuery && (
+                <span>
+                  {" "}
+                  cho từ khóa "
+                  <span
+                    className="font-semibold"
+                    style={{ color: "var(--color-primary)" }}>
+                    "{searchQuery}"
+                  </span>
+                </span>
+              )}
+            </div>
+
+            <div className="flex items-center space-x-4">
+              <div
+                className="text-xs sm:text-sm"
+                style={{ color: "var(--color-text-muted)" }}>
+                Trang {currentPage} / {totalPages}
+              </div>
+
+              <div className="flex items-center space-x-2">
+                <button
+                  onClick={() => setViewMode("grid")}
+                  className={`p-2 rounded-lg transition-all duration-300 ${
+                    viewMode === "grid" ? "shadow-sm" : ""
+                  }`}
+                  style={{
+                    backgroundColor:
+                      viewMode === "grid"
+                        ? "var(--color-primary)"
+                        : "var(--color-bg-secondary)",
+                    color:
+                      viewMode === "grid"
+                        ? "var(--color-text-white)"
+                        : "var(--color-text-muted)",
+                  }}>
+                  <Grid3X3 className="w-4 h-4" />
+                </button>
+                <button
+                  onClick={() => setViewMode("list")}
+                  className={`p-2 rounded-lg transition-all duration-300 ${
+                    viewMode === "list" ? "shadow-sm" : ""
+                  }`}
+                  style={{
+                    backgroundColor:
+                      viewMode === "list"
+                        ? "var(--color-primary)"
+                        : "var(--color-bg-secondary)",
+                    color:
+                      viewMode === "list"
+                        ? "var(--color-text-white)"
+                        : "var(--color-text-muted)",
+                  }}>
+                  <List className="w-4 h-4" />
+                </button>
               </div>
             </div>
           </div>
@@ -131,35 +448,11 @@ const ProjectsSection = () => {
           <ProjectsSkeletonLoader />
         ) : (
           <>
-            {/* Results Info */}
-            <div className="flex items-center justify-between mb-8">
-              <div className="text-gray-600">
-                Hiển thị{" "}
-                <span className="font-semibold text-gray-900">
-                  {projects.length}
-                </span>{" "}
-                dự án
-                {searchQuery && (
-                  <span>
-                    {" "}
-                    cho từ khóa "
-                    <span className="font-semibold text-blue-600">
-                      {searchQuery}
-                    </span>
-                    "
-                  </span>
-                )}
-              </div>
-              <div className="text-sm text-gray-500">
-                Trang {currentPage} / {totalPages}
-              </div>
-            </div>
-
             {/* Projects Grid */}
             <div
-              className={`grid gap-8 mb-12 ${
+              className={`grid gap-4 sm:gap-6 lg:gap-8 mb-12 ${
                 viewMode === "grid"
-                  ? "grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4"
+                  ? "grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 "
                   : "grid-cols-1 lg:grid-cols-2"
               }`}>
               {projects.map((project) => (
@@ -167,48 +460,63 @@ const ProjectsSection = () => {
               ))}
             </div>
 
-            {/* Empty State */}
+            {/* Enhanced Empty State */}
             {projects.length === 0 && !loading && (
-              <div className="text-center py-16">
-                <div className="bg-gray-100 rounded-full w-24 h-24 mx-auto mb-6 flex items-center justify-center">
-                  <Building2 className="w-12 h-12 text-gray-400" />
+              <div
+                className="text-center py-12 sm:py-16 lg:py-20 rounded-3xl"
+                style={{
+                  backgroundColor: "var(--color-bg)",
+                  boxShadow: "var(--shadow-default)",
+                  border: "1px solid var(--color-border-light)",
+                }}>
+                <div
+                  className="w-20 h-20 sm:w-24 sm:h-24 mx-auto mb-6 rounded-2xl flex items-center justify-center"
+                  style={{ backgroundColor: "var(--color-bg-accent)" }}>
+                  <Building2
+                    className="w-10 h-10 sm:w-12 sm:h-12"
+                    style={{ color: "var(--color-text-muted)" }}
+                  />
                 </div>
-                <h3 className="text-2xl font-bold text-gray-900 mb-2">
-                  Không tìm thấy dự án
+                <h3
+                  className="text-xl sm:text-2xl font-bold mb-4"
+                  style={{ color: "var(--color-text-primary)" }}>
+                  Không tìm thấy dự án phù hợp
                 </h3>
-                <p className="text-gray-600 mb-6">
-                  Thử thay đổi bộ lọc hoặc từ khóa tìm kiếm
+                <p
+                  className="text-sm sm:text-base mb-6 max-w-md mx-auto"
+                  style={{ color: "var(--color-text-secondary)" }}>
+                  Thử thay đổi từ khóa tìm kiếm hoặc chọn danh mục khác để khám
+                  phá thêm dự án tuyệt vời
                 </p>
                 <button
                   onClick={() => {
                     setSearchQuery("");
                     setSelectedCategory("all");
                   }}
-                  className="bg-blue-600 text-white px-6 py-3 rounded-xl hover:bg-blue-700 transition-colors duration-200">
-                  Xóa bộ lọc
+                  className="inline-flex items-center px-6 py-3 rounded-2xl font-semibold transition-all duration-300 hover:scale-105"
+                  style={{
+                    backgroundImage: "var(--gradient-primary)",
+                    color: "var(--color-text-white)",
+                    boxShadow: "var(--shadow-default)",
+                  }}>
+                  <Eye className="w-5 h-5 mr-2" />
+                  Xem tất cả dự án
                 </button>
               </div>
             )}
 
             {/* Pagination */}
             {totalPages > 1 && (
-              <PaginationCustom
-                totalPages={totalPages}
-                currentPage={currentPage}
-                onPageChange={(page) => setCurrentPage(page)}
-              />
+              <div className="mt-8 sm:mt-12">
+                <PaginationCustom
+                  totalPages={totalPages}
+                  currentPage={currentPage}
+                  onPageChange={(page) => setCurrentPage(page)}
+                />
+              </div>
             )}
           </>
         )}
-      </div>
-
-      {/* Background Decoration */}
-      <div className="fixed inset-0 pointer-events-none overflow-hidden">
-        <div className="absolute -top-40 -right-40 w-80 h-80 bg-gradient-to-br from-blue-100 to-purple-100 rounded-full opacity-50 animate-pulse" />
-        <div
-          className="absolute -bottom-40 -left-40 w-80 h-80 bg-gradient-to-br from-green-100 to-blue-100 rounded-full opacity-50 animate-pulse"
-          style={{ animationDelay: "2s" }}
-        />
       </div>
 
       <style jsx>{`
@@ -220,11 +528,30 @@ const ProjectsSection = () => {
             background-position: 200% 0;
           }
         }
-        .line-clamp-2 {
-          display: -webkit-box;
-          -webkit-line-clamp: 2;
-          -webkit-box-orient: vertical;
-          overflow: hidden;
+
+        /* Enhanced hover effects */
+        .group:hover {
+          transform: translateY(-2px);
+        }
+
+        /* Smooth transitions */
+        * {
+          transition: all 0.2s ease-in-out;
+        }
+
+        /* Custom scrollbar for mobile */
+        @media (max-width: 640px) {
+          .overflow-x-auto::-webkit-scrollbar {
+            height: 4px;
+          }
+          .overflow-x-auto::-webkit-scrollbar-track {
+            background: var(--color-bg-secondary);
+            border-radius: 8px;
+          }
+          .overflow-x-auto::-webkit-scrollbar-thumb {
+            background: var(--color-primary);
+            border-radius: 8px;
+          }
         }
       `}</style>
     </div>
