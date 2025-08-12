@@ -5,7 +5,7 @@ import toast from "react-hot-toast";
 
 const api = axios.create({
   baseURL: process.env.NEXT_PUBLIC_API,
-  timeout: 10000, // Thời gian timeout là 10 giây
+  timeout: 30000, // Thời gian timeout là 10 giây
 });
 
 // Gắn request interceptor
