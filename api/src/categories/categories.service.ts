@@ -74,7 +74,7 @@ export class CategoriesService {
                 create: {
                   url: imageBannerUrl,
                   alt: '',
-                  type: ImageMediaType.CATEGORY,
+                  type: ImageMediaType.CATEGORYBANNER,
                 },
               },
             }),
@@ -361,11 +361,16 @@ export class CategoriesService {
             url: data.imageUrl,
           },
         },
-        banner: {
-          update: {
-            url: data.imageBannerUrl,
+        ...(data.imageBannerUrl && {
+          banner: {
+            delete: {},
+            create: {
+              url: data.imageBannerUrl,
+              alt: '',
+              type: ImageMediaType.CATEGORYBANNER,
+            },
           },
-        },
+        }),
       },
     });
 

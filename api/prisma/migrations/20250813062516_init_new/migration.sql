@@ -164,7 +164,6 @@ CREATE TABLE `Category` (
     `description` TEXT NOT NULL,
     `parentId` INTEGER NULL,
     `imageUrl` VARCHAR(191) NOT NULL,
-    `bannerId` INTEGER NULL,
     `seo` JSON NULL,
     `variant` ENUM('NEWS', 'COURSES', 'SERVICES', 'PROMOTION', 'CONTACT', 'PROJECTS') NULL,
     `position` INTEGER NULL DEFAULT 1,
@@ -174,7 +173,6 @@ CREATE TABLE `Category` (
 
     UNIQUE INDEX `Category_name_key`(`name`),
     UNIQUE INDEX `Category_slug_key`(`slug`),
-    UNIQUE INDEX `Category_bannerId_key`(`bannerId`),
     INDEX `Category_parentId_idx`(`parentId`),
     INDEX `Category_storeId_idx`(`storeId`),
     PRIMARY KEY (`id`)
@@ -436,7 +434,7 @@ CREATE TABLE `ImageMedia` (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
     `url` VARCHAR(191) NOT NULL,
     `alt` VARCHAR(191) NULL,
-    `type` ENUM('PRODUCT', 'CATEGORY', 'BANNER', 'BRAND', 'NEWS', 'SERVICE', 'PROJECT', 'NONE') NULL,
+    `type` ENUM('PRODUCT', 'CATEGORY', 'CATEGORYBANNER', 'BANNER', 'BRAND', 'NEWS', 'SERVICE', 'PROJECT', 'NONE') NULL,
     `size` INTEGER NULL,
     `width` INTEGER NULL,
     `height` INTEGER NULL,

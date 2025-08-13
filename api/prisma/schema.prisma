@@ -97,12 +97,14 @@ enum CategoryVariant {
 enum ImageMediaType {
  PRODUCT
  CATEGORY
+ CATEGORYBANNER
  BANNER
  BRAND
  NEWS
  SERVICE
  PROJECT
  NONE
+ 
 }
 
 // =============================================================================
@@ -317,10 +319,9 @@ model Category {
   subCategories Category[] @relation("SubCategory")
   parentCategory Category? @relation("SubCategory", fields: [parentId], references: [id], onDelete: NoAction, onUpdate: NoAction)
   
-  
     // Ảnh banner category
   banner      ImageMedia? @relation("CategoryBanner")
-  bannerId    Int?        @unique
+
   products    Product[]
   services Service[]
   project Project[]
