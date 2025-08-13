@@ -105,39 +105,42 @@ export class CategoriesService {
   }
 
   async findAll(query: CategoryQueryFilterDto) {
-    //Chỉ lấy ra các categories cha !!!
+    try {
+      const {
+        justGetParent = false,
+        storeID,
+        currentPage = 1,
+        limit = 9999,
+      } = query;
 
-    const {
-      justGetParent = false,
-      storeID,
-      currentPage = 1,
-      limit = 9999,
-    } = query;
+      const categories = await this.prisma.category.findMany({
+        where: {
+          storeId: storeID,
+          parentId: justGetParent ? null : undefined,
+          // parentId: justGetParent === 'true' ? null : undefined, // Lấy các category có parentId là null (các category cha)
+        },
+        include: {
+          subCategories: true, // Lấy cấp con đầu tiên
+        },
+        orderBy: {
+          position: 'asc',
+        },
+        skip: (currentPage - 1) * limit,
+        take: limit,
+        // orderBy: {
+        //   createdAt: 'desc', // Sắp xếp theo thời gian tạo (có thể tùy chỉnh)
+        // },
+      });
+      // Đệ quy lấy các cấp con của từng category
+      for (const category of categories) {
+        category.subCategories = await this.getNestedCategories(category.id);
+      }
 
-    const categories = await this.prisma.category.findMany({
-      where: {
-        storeId: storeID,
-        parentId: justGetParent ? null : undefined,
-        // parentId: justGetParent === 'true' ? null : undefined, // Lấy các category có parentId là null (các category cha)
-      },
-      include: {
-        subCategories: true, // Lấy cấp con đầu tiên
-      },
-      orderBy: {
-        position: 'asc',
-      },
-      skip: (currentPage - 1) * limit,
-      take: limit,
-      // orderBy: {
-      //   createdAt: 'desc', // Sắp xếp theo thời gian tạo (có thể tùy chỉnh)
-      // },
-    });
-    // Đệ quy lấy các cấp con của từng category
-    for (const category of categories) {
-      category.subCategories = await this.getNestedCategories(category.id);
+      return categories;
+    } catch (err) {
+      console.log('Có lỗi khi lấy categories filter ', err);
     }
-
-    return categories;
+    //Chỉ lấy ra các categories cha !!!
   }
   async getNestedCategories(parentId: number | null): Promise<any[]> {
     const categories = await this.prisma.category.findMany({
