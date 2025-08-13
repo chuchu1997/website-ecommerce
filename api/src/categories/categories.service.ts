@@ -5,7 +5,7 @@ import { PrismaService } from 'src/prisma.service';
 import { CategoryQueryFilterDto } from './dto/category-query-filter.dto';
 import { ProductsService } from 'src/products/products.service';
 import { UploadService } from 'src/upload/upload.service';
-import { Prisma } from '@prisma/client';
+import { ImageMediaType, Prisma } from '@prisma/client';
 
 @Injectable()
 export class CategoriesService {
@@ -15,7 +15,7 @@ export class CategoriesService {
   ) {}
 
   async create(createCategoryDto: CreateCategoryDto) {
-    const { seo, position, ...data } = createCategoryDto;
+    const { seo, position, imageBannerUrl, ...data } = createCategoryDto;
     try {
       const existingCategory = await this.prisma.category.findUnique({
         where: { slug: data.slug },
@@ -69,11 +69,22 @@ export class CategoriesService {
           data: {
             ...data,
             position,
+            ...(imageBannerUrl && {
+              banner: {
+                create: {
+                  url: imageBannerUrl,
+                  alt: '',
+                  type: ImageMediaType.CATEGORYBANNER,
+                },
+              },
+            }),
+
             image: {
               create: {
                 url: data.imageUrl,
               },
             },
+
             ...(seo !== undefined && { seo: seo as any }),
           },
         }),
@@ -81,6 +92,9 @@ export class CategoriesService {
 
       // Chạy transaction
       const [, newCategory] = await this.prisma.$transaction(transactionOps);
+      console.log(
+        `[Category Created] Tên: ${newCategory.name} | ID: ${newCategory.id} | Thời gian: ${new Date().toLocaleString('vi-VN')}`,
+      );
 
       return newCategory;
     } catch (err) {
@@ -91,39 +105,42 @@ export class CategoriesService {
   }
 
   async findAll(query: CategoryQueryFilterDto) {
-    //Chỉ lấy ra các categories cha !!!
-    console.log('Call get all categories !! ');
-    const {
-      justGetParent = false,
-      storeID,
-      currentPage = 1,
-      limit = 9999,
-    } = query;
+    try {
+      const {
+        justGetParent = false,
+        storeID,
+        currentPage = 1,
+        limit = 9999,
+      } = query;
 
-    const categories = await this.prisma.category.findMany({
-      where: {
-        storeId: storeID,
-        parentId: justGetParent ? null : undefined,
-        // parentId: justGetParent === 'true' ? null : undefined, // Lấy các category có parentId là null (các category cha)
-      },
-      include: {
-        subCategories: true, // Lấy cấp con đầu tiên
-      },
-      orderBy: {
-        position: 'asc',
-      },
-      skip: (currentPage - 1) * limit,
-      take: limit,
-      // orderBy: {
-      //   createdAt: 'desc', // Sắp xếp theo thời gian tạo (có thể tùy chỉnh)
-      // },
-    });
-    // Đệ quy lấy các cấp con của từng category
-    for (const category of categories) {
-      category.subCategories = await this.getNestedCategories(category.id);
+      const categories = await this.prisma.category.findMany({
+        where: {
+          storeId: storeID,
+          parentId: justGetParent ? null : undefined,
+          // parentId: justGetParent === 'true' ? null : undefined, // Lấy các category có parentId là null (các category cha)
+        },
+        include: {
+          subCategories: true, // Lấy cấp con đầu tiên
+        },
+        orderBy: {
+          position: 'asc',
+        },
+        skip: (currentPage - 1) * limit,
+        take: limit,
+        // orderBy: {
+        //   createdAt: 'desc', // Sắp xếp theo thời gian tạo (có thể tùy chỉnh)
+        // },
+      });
+      // Đệ quy lấy các cấp con của từng category
+      for (const category of categories) {
+        category.subCategories = await this.getNestedCategories(category.id);
+      }
+
+      return categories;
+    } catch (err) {
+      console.log('Có lỗi khi lấy categories filter ', err);
     }
-
-    return categories;
+    //Chỉ lấy ra các categories cha !!!
   }
   async getNestedCategories(parentId: number | null): Promise<any[]> {
     const categories = await this.prisma.category.findMany({
@@ -240,6 +257,7 @@ export class CategoriesService {
       where: { id },
       select: {
         imageUrl: true,
+        banner: true,
       },
     });
     const isImagesUpdated =
@@ -249,6 +267,17 @@ export class CategoriesService {
     if (isImagesUpdated) {
       await this.uploadService.deleteImagesFromS3(
         checkImageChange?.imageUrl ?? '',
+      );
+    }
+
+    const isImageBannerUpdated =
+      data.imageUrl &&
+      JSON.stringify(data.imageBannerUrl) !==
+        JSON.stringify(checkImageChange?.banner?.url);
+
+    if (isImageBannerUpdated) {
+      await this.uploadService.deleteImagesFromS3(
+        checkImageChange?.banner?.url ?? '',
       );
     }
 
@@ -332,6 +361,16 @@ export class CategoriesService {
             url: data.imageUrl,
           },
         },
+        ...(data.imageBannerUrl && {
+          banner: {
+            delete: {},
+            create: {
+              url: data.imageBannerUrl,
+              alt: '',
+              type: ImageMediaType.CATEGORYBANNER,
+            },
+          },
+        }),
       },
     });
 
@@ -348,6 +387,7 @@ export class CategoriesService {
         storeId: true,
         image: true,
         imageUrl: true,
+        banner: true,
       },
     });
     if (existCategory?.imageUrl) {
@@ -355,6 +395,14 @@ export class CategoriesService {
       await this.prisma.imageMedia.delete({
         where: {
           id: existCategory.image?.id,
+        },
+      });
+    }
+    if (existCategory?.banner) {
+      await this.uploadService.deleteImagesFromS3(existCategory.banner.url);
+      await this.prisma.imageMedia.delete({
+        where: {
+          categoryBannerId: existCategory.banner?.id,
         },
       });
     }
