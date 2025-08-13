@@ -1,5 +1,5 @@
 -- 1. Drop unique index cũ ở productId nếu tồn tại
-DROP INDEX `ImageMedia_productId_key` ON `ImageMedia`;
+-- DROP INDEX `ImageMedia_productId_key` ON `ImageMedia`;
 
 -- 2. Tạo index thường cho productId
 CREATE INDEX `ImageMedia_productId_idx` ON `ImageMedia`(`productId`);
