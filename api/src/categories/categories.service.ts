@@ -5,7 +5,7 @@ import { PrismaService } from 'src/prisma.service';
 import { CategoryQueryFilterDto } from './dto/category-query-filter.dto';
 import { ProductsService } from 'src/products/products.service';
 import { UploadService } from 'src/upload/upload.service';
-import { Prisma } from '@prisma/client';
+import { ImageMediaType, Prisma } from '@prisma/client';
 
 @Injectable()
 export class CategoriesService {
@@ -15,7 +15,7 @@ export class CategoriesService {
   ) {}
 
   async create(createCategoryDto: CreateCategoryDto) {
-    const { seo, position, ...data } = createCategoryDto;
+    const { seo, position, imageBannerUrl, ...data } = createCategoryDto;
     try {
       const existingCategory = await this.prisma.category.findUnique({
         where: { slug: data.slug },
@@ -69,11 +69,22 @@ export class CategoriesService {
           data: {
             ...data,
             position,
+            ...(imageBannerUrl && {
+              banner: {
+                create: {
+                  url: imageBannerUrl,
+                  alt: '',
+                  type: ImageMediaType.CATEGORY,
+                },
+              },
+            }),
+
             image: {
               create: {
                 url: data.imageUrl,
               },
             },
+
             ...(seo !== undefined && { seo: seo as any }),
           },
         }),
@@ -95,7 +106,7 @@ export class CategoriesService {
 
   async findAll(query: CategoryQueryFilterDto) {
     //Chỉ lấy ra các categories cha !!!
-    console.log('Call get all categories !! ');
+
     const {
       justGetParent = false,
       storeID,
@@ -243,6 +254,7 @@ export class CategoriesService {
       where: { id },
       select: {
         imageUrl: true,
+        banner: true,
       },
     });
     const isImagesUpdated =
@@ -252,6 +264,17 @@ export class CategoriesService {
     if (isImagesUpdated) {
       await this.uploadService.deleteImagesFromS3(
         checkImageChange?.imageUrl ?? '',
+      );
+    }
+
+    const isImageBannerUpdated =
+      data.imageUrl &&
+      JSON.stringify(data.imageBannerUrl) !==
+        JSON.stringify(checkImageChange?.banner?.url);
+
+    if (isImageBannerUpdated) {
+      await this.uploadService.deleteImagesFromS3(
+        checkImageChange?.banner?.url ?? '',
       );
     }
 
@@ -335,6 +358,11 @@ export class CategoriesService {
             url: data.imageUrl,
           },
         },
+        banner: {
+          update: {
+            url: data.imageBannerUrl,
+          },
+        },
       },
     });
 
@@ -351,6 +379,7 @@ export class CategoriesService {
         storeId: true,
         image: true,
         imageUrl: true,
+        banner: true,
       },
     });
     if (existCategory?.imageUrl) {
@@ -358,6 +387,14 @@ export class CategoriesService {
       await this.prisma.imageMedia.delete({
         where: {
           id: existCategory.image?.id,
+        },
+      });
+    }
+    if (existCategory?.banner) {
+      await this.uploadService.deleteImagesFromS3(existCategory.banner.url);
+      await this.prisma.imageMedia.delete({
+        where: {
+          categoryBannerId: existCategory.banner?.id,
         },
       });
     }

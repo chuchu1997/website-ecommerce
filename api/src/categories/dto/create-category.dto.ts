@@ -61,6 +61,10 @@ export class CreateCategoryDto {
   @IsString()
   imageUrl: string;
 
+  @IsOptional()
+  @IsString()
+  imageBannerUrl: string;
+
   @IsNotEmpty()
   @IsString()
   @MaxLength(8000, { message: 'Mô tả không thể vượt quá 8000 ký tự ' })
