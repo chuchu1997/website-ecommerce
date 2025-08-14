@@ -387,12 +387,14 @@ export const ProductForm: React.FC<ProductProps> = ({ initialData }) => {
   return (
     <div className="min-h-screen  bg-gradient-to-br from-gray-50 via-white to-gray-100">
       {/* Header Section */}
-      <div className="bg-white shadow-lg border-b border-gray-200">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8">
-          <div className="text-center">
-            <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full mb-4 transform hover:scale-110 transition-all duration-300 shadow-lg">
+      <div className="bg-white shadow-sm border-b border-slate-200">
+        <div className="w-full mx-auto">
+          {/* Breadcrumb */}
+          <div className="px-6 py-4 border-b border-slate-100">
+            <nav className="flex items-center space-x-2 text-sm text-slate-500">
+              <span>Sản phẩm</span>
               <svg
-                className="w-8 h-8 text-white"
+                className="w-4 h-4"
                 fill="none"
                 stroke="currentColor"
                 viewBox="0 0 24 24">
@@ -400,36 +402,78 @@ export const ProductForm: React.FC<ProductProps> = ({ initialData }) => {
                   strokeLinecap="round"
                   strokeLinejoin="round"
                   strokeWidth={2}
-                  d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"
+                  d="M9 5l7 7-7 7"
                 />
               </svg>
-            </div>
-            <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-gray-900 mb-2 tracking-tight">
-              {action}
-            </h1>
-            <p className="text-sm sm:text-base text-gray-600 max-w-2xl mx-auto">
-              Điền thông tin chi tiết để tạo sản phẩm mới với giao diện trực
-              quan và dễ sử dụng
-            </p>
+              <span className="text-slate-900 font-medium">{action}</span>
+            </nav>
+          </div>
 
-            {initialData && (
-              <div className="mt-6 inline-block">
-                <div className="bg-gradient-to-r from-blue-50 to-purple-50 border border-blue-200 rounded-xl p-4 shadow-sm hover:shadow-md transition-all duration-300 transform hover:scale-105">
-                  <div className="flex items-center justify-center space-x-3">
-                    <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
-                    <div className="text-sm text-gray-700">
-                      <span className="font-medium">Sản phẩm hiện tại:</span>
-                      <span className="ml-2 font-bold text-blue-600">
-                        {initialData.name}
+          {/* Header Content */}
+          <div className="px-6 py-8">
+            <div className="flex items-start justify-between">
+              <div className="flex items-start space-x-4">
+                <div className="flex-shrink-0">
+                  <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-blue-600 rounded-xl flex items-center justify-center shadow-lg">
+                    <svg
+                      className="w-6 h-6 text-white"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24">
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"
+                      />
+                    </svg>
+                  </div>
+                </div>
+                <div>
+                  <h1 className="text-3xl font-bold text-slate-900 tracking-tight">
+                    {action}
+                  </h1>
+                  <p className="text-slate-600 mt-2 max-w-2xl">
+                    {initialData
+                      ? "Cập nhật thông tin sản phẩm với các trường dữ liệu chi tiết"
+                      : "Tạo sản phẩm mới với thông tin đầy đủ và chính xác"}
+                  </p>
+
+                  {initialData && (
+                    <div className="mt-4 inline-flex items-center px-3 py-2 bg-blue-50 border border-blue-200 rounded-lg">
+                      <div className="w-2 h-2 bg-green-500 rounded-full mr-2 animate-pulse"></div>
+                      <span className="text-sm text-slate-700">
+                        <span className="font-medium">Đang chỉnh sửa:</span>
+                        <span className="ml-1 font-semibold text-blue-700">
+                          {initialData.name}
+                        </span>
                       </span>
                     </div>
-                  </div>
-                  <p className="text-xs text-gray-500 mt-2">
-                    ID: {initialData.id}
-                  </p>
+                  )}
                 </div>
               </div>
-            )}
+
+              <Button
+                type="button"
+                variant="outline"
+                onClick={() => router.back()}
+                disabled={loading}
+                className="flex items-center space-x-2 px-4 py-2 border border-slate-300 rounded-lg hover:bg-slate-50 transition-colors">
+                <svg
+                  className="w-4 h-4"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24">
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M10 19l-7-7m0 0l7-7m-7 7h18"
+                  />
+                </svg>
+                <span>Quay lại</span>
+              </Button>
+            </div>
           </div>
         </div>
       </div>
@@ -475,25 +519,6 @@ export const ProductForm: React.FC<ProductProps> = ({ initialData }) => {
 
                 {/* Basic Info Section */}
                 <div className="bg-white rounded-2xl shadow-lg border border-gray-200 p-4 sm:p-8 hover:shadow-xl transition-all duration-300 transform hover:scale-[1.02]">
-                  <div className="flex items-center mb-6">
-                    <div className="w-10 h-10 bg-gradient-to-r from-purple-500 to-pink-500 rounded-lg flex items-center justify-center mr-4">
-                      <svg
-                        className="w-5 h-5 text-white"
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24">
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth={2}
-                          d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-                        />
-                      </svg>
-                    </div>
-                    <h3 className="text-lg font-semibold text-gray-900">
-                      Thông tin cơ bản
-                    </h3>
-                  </div>
                   <BasicInfoSection
                     isProductForm={true}
                     form={form}
@@ -504,25 +529,6 @@ export const ProductForm: React.FC<ProductProps> = ({ initialData }) => {
 
                 {/* Description Section */}
                 <div className="bg-white rounded-2xl shadow-lg border border-gray-200 p-6 sm:p-8 hover:shadow-xl transition-all duration-300 transform hover:scale-[1.02]">
-                  <div className="flex items-center mb-6">
-                    <div className="w-10 h-10 bg-gradient-to-r from-yellow-500 to-orange-500 rounded-lg flex items-center justify-center mr-4">
-                      <svg
-                        className="w-5 h-5 text-white"
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24">
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth={2}
-                          d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
-                        />
-                      </svg>
-                    </div>
-                    <h3 className="text-lg font-semibold text-gray-900">
-                      Mô tả sản phẩm
-                    </h3>
-                  </div>
                   <DescriptionSection form={form} loading={loading} />
                 </div>
 

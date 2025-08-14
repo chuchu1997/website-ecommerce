@@ -22,6 +22,7 @@ input[type=number] {
   -moz-appearance: textfield;
 }
 
+
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);

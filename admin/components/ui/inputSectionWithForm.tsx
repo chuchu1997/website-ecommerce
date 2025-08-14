@@ -1,10 +1,11 @@
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
 import {
   FormControl,
   FormField,
   FormItem,
   FormMessage,
   FormLabel,
+  FormDescription,
 } from "@/components/ui/form";
 import { Package } from "lucide-react";
 import { Input } from "./input";
@@ -39,27 +40,40 @@ export const InputSectionWithForm: React.FC<InputProps> = ({
       control={form.control}
       name={nameFormField}
       render={({ field }) => (
-        <FormItem>
+        <FormItem className="space-y-3">
           <FormLabel className="text-sm font-medium text-gray-700 flex items-center gap-2">
-            <Icon className="w-4 h-4 text-blue-600" />
+            <div className="p-1.5 bg-blue-50 rounded-md">
+              <Icon className="w-3.5 h-3.5 text-blue-600" />
+            </div>
             {title}
           </FormLabel>
           <FormControl>
-            <Input
-              className={`${type === "number" ? "appearance-none" : ""} ${
-                disabled ? "bg-gray-50" : ""
-              }`}
-              {...field}
-              type={type}
-              pattern={nameFormField === "slug" ? "\\S*" : undefined}
-              disabled={disabled ?? loading}
-              placeholder={placeholder}
-            />
+            <div className="relative">
+              <Input
+                {...field}
+                type={type}
+                pattern={nameFormField === "slug" ? "\\S*" : undefined}
+                disabled={disabled || loading}
+                placeholder={placeholder}
+                className={`
+                  h-11 border-gray-200 bg-white transition-all duration-200
+                  focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10
+                  hover:border-gray-300
+                  ${type === "number" ? "appearance-none" : ""}
+                  ${disabled || loading ? "bg-gray-50 text-gray-500 cursor-not-allowed" : ""}
+                  ${field.value ? "border-green-300 bg-green-50/30" : ""}
+                `}
+              />
+              {/* Success indicator */}
+       
+            </div>
           </FormControl>
-          {description && (
-            <p className="text-xs text-gray-500 mt-1">{description}</p>
-          )}
-          <FormMessage />
+          {/* {description && (
+            <FormDescription className="text-xs text-gray-500 flex items-start gap-1">
+              <span>{description}</span>
+            </FormDescription>
+          )} */}
+          <FormMessage className="text-xs" />
         </FormItem>
       )}
     />
@@ -70,8 +84,8 @@ export const InputSectionWithForm: React.FC<InputProps> = ({
   }
 
   return (
-    <Card className="shadow-sm border-gray-200">
-      <CardContent className="pt-6">{FormContent}</CardContent>
+    <Card className="border-gray-200 shadow-sm hover:shadow-md transition-shadow duration-200">
+      <CardContent className="p-6">{FormContent}</CardContent>
     </Card>
   );
 };

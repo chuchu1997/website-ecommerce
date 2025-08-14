@@ -2,8 +2,16 @@
 import { Button } from "@/components/ui/button";
 import { CategoryVariantLabels } from "@/constants/categories/variants";
 import { CategoryWithChildren } from "@/types/categories";
-import { Eye, EyeOff, Edit, Trash2 } from "lucide-react";
-
+import { 
+  ChevronRight, 
+  ChevronDown, 
+  Edit, 
+  Trash2, 
+  Image as ImageIcon,
+  Hash,
+  FileText,
+  Tag
+} from "lucide-react";
 
 interface CategoryTreeItemProps {
   category: CategoryWithChildren;
@@ -14,6 +22,35 @@ interface CategoryTreeItemProps {
   onDelete: (id: number) => void;
 }
 
+const getDepthStyles = (depth: number) => {
+  switch (depth) {
+    case 0:
+      return {
+        color: "border-l-blue-500 bg-blue-50/30",
+        dot: "bg-blue-500",
+        badge: "bg-blue-100 text-blue-700"
+      };
+    case 1:
+      return {
+        color: "border-l-emerald-500 bg-emerald-50/30",
+        dot: "bg-emerald-500",
+        badge: "bg-emerald-100 text-emerald-700"
+      };
+    case 2:
+      return {
+        color: "border-l-purple-500 bg-purple-50/30",
+        dot: "bg-purple-500",
+        badge: "bg-purple-100 text-purple-700"
+      };
+    default:
+      return {
+        color: "border-l-gray-500 bg-gray-50/30",
+        dot: "bg-gray-500",
+        badge: "bg-gray-100 text-gray-700"
+      };
+  }
+};
+
 export const CategoryTreeItem: React.FC<CategoryTreeItemProps> = ({
   category,
   depth,
@@ -22,111 +59,151 @@ export const CategoryTreeItem: React.FC<CategoryTreeItemProps> = ({
   onEdit,
   onDelete,
 }) => {
+  const styles = getDepthStyles(depth);
+  const hasChildren = category.children && category.children.length > 0;
+  const canDelete = !hasChildren;
+
   return (
-    <div className="group">
-      <div className="bg-white border border-gray-200 rounded-lg shadow-sm hover:shadow-md transition-all duration-200 hover:scale-[1.01] overflow-hidden">
-        <div className="p-3 sm:p-4">
-          <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-3">
-            {/* Left section */}
-            <div className="flex-1 min-w-0">
-              {/* Header */}
-              <div className="flex items-center gap-2 mb-2">
-                <div className="flex items-center gap-1">
-                  <div
-                    className={`w-3 h-3 rounded-full ${
-                      depth === 0
-                        ? "bg-blue-500"
-                        : depth === 1
-                        ? "bg-green-500"
-                        : "bg-purple-500"
-                    }`}
-                  ></div>
-                  <span className="text-xs sm:text-sm text-gray-500 font-medium">
-                    {depth === 0 ? "Danh mục chính" : `Cấp ${depth + 1}`}
-                  </span>
-                </div>
-                {category.children && category.children?.length > 0 && (
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    onClick={() => onToggleExpand(category.id)}
-                    className="p-1 h-6 w-6 hover:bg-gray-100 rounded-full"
-                  >
-                    {expanded ? (
-                      <EyeOff className="h-3 w-3" />
-                    ) : (
-                      <Eye className="h-3 w-3" />
-                    )}
-                  </Button>
-                )}
-              </div>
-
-              {/* Title */}
-              <h3 className="text-sm sm:text-base font-semibold text-gray-900 mb-2 uppercase tracking-wide">
-                {category.name}
-              </h3>
-
-              {/* Info */}
-              <div className="space-y-1 text-xs sm:text-sm text-gray-600">
-                <div className="flex flex-wrap gap-1">
-                  <span className="font-medium">Mô tả:</span>
-                  <span className="break-words">{category.description}</span>
-                </div>
-                <div className="flex flex-wrap gap-1">
-                  <span className="font-medium">Slug:</span>
-                  <code className="bg-gray-100 px-1 py-0.5 rounded text-xs">
-                    {category.slug}
-                  </code>
-                </div>
-                {category.variant &&
-                  CategoryVariantLabels[category.variant] && (
-                    <div className="flex flex-wrap gap-1">
-                      <span className="font-medium">Biến thể:</span>
-                      <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
-                        {CategoryVariantLabels[category.variant]}
-                      </span>
-                    </div>
+    <div className="group relative">
+      <div className={`
+        relative bg-white border border-gray-200 rounded-xl shadow-sm 
+        hover:shadow-lg hover:border-gray-300 transition-all duration-300 
+        overflow-hidden ${styles.color} border-l-4
+      `}>
+        
+        {/* Main Content */}
+        <div className="p-5">
+          {/* Header Row */}
+          <div className="flex items-start justify-between mb-4">
+            <div className="flex items-center gap-3 flex-1 min-w-0">
+              {/* Expand/Collapse Button */}
+              {hasChildren && (
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={() => onToggleExpand(category.id)}
+                  className="p-1.5 h-8 w-8 rounded-lg hover:bg-gray-100 transition-colors flex-shrink-0"
+                >
+                  {expanded ? (
+                    <ChevronDown className="h-4 w-4 text-gray-600" />
+                  ) : (
+                    <ChevronRight className="h-4 w-4 text-gray-600" />
                   )}
-                {category.imageUrl && (
-                  <details className="cursor-pointer">
-                    <summary className="text-blue-600 hover:text-blue-800 underline font-medium">
-                      Xem hình ảnh
-                    </summary>
-                    <div className="mt-2 p-2 bg-gray-50 rounded border-l-4 border-blue-400">
-                      <p className="text-xs break-all">{category.imageUrl}</p>
-                    </div>
-                  </details>
-                )}
+                </Button>
+              )}
+              
+              {/* Category Level Indicator */}
+              <div className="flex items-center gap-2 flex-shrink-0">
+                <div className={`w-2.5 h-2.5 rounded-full ${styles.dot}`} />
+                <span className={`
+                  text-xs font-medium px-2.5 py-1 rounded-full ${styles.badge}
+                `}>
+                  {depth === 0 ? "Chính" : `Cấp ${depth + 1}`}
+                </span>
               </div>
             </div>
 
-            {/* Actions */}
-            <div className="flex gap-2 sm:flex-col sm:w-auto w-full">
+            {/* Action Buttons */}
+            <div className="flex items-center gap-2 opacity-0 group-hover:opacity-100 transition-opacity duration-200">
               <Button
-                variant="outline"
+                variant="ghost"
                 size="sm"
                 onClick={() => onEdit(category)}
-                className="flex-1 sm:flex-none hover:bg-blue-50 hover:border-blue-300 transition-colors"
+                className="h-8 w-8 p-0 hover:bg-blue-50 hover:text-blue-600 transition-colors"
               >
-                <Edit className="h-3 w-3 sm:h-4 sm:w-4 mr-1" />
-                <span className="text-xs sm:text-sm">Sửa</span>
+                <Edit className="h-4 w-4" />
               </Button>
               <Button
-                variant="outline"
-                disabled={category.children &&category.children?.length > 0}
+                variant="ghost"
                 size="sm"
+                disabled={!canDelete}
                 onClick={() => {
                   if (window.confirm("Bạn có chắc chắn muốn xóa danh mục này?")) {
                     onDelete(category.id);
                   }
                 }}
-                className="flex-1 sm:flex-none hover:bg-red-50 hover:border-red-300 transition-colors disabled:opacity-50"
+                className="h-8 w-8 p-0 hover:bg-red-50 hover:text-red-600 transition-colors disabled:opacity-30 disabled:cursor-not-allowed"
               >
-                <Trash2 className="h-3 w-3 sm:h-4 sm:w-4 mr-1" />
-                <span className="text-xs sm:text-sm">Xóa</span>
+                <Trash2 className="h-4 w-4" />
               </Button>
             </div>
           </div>
+
+          {/* Category Title */}
+          <h3 className="text-lg font-semibold text-gray-900 mb-3 tracking-tight">
+            {category.name}
+          </h3>
+
+          {/* Category Details Grid */}
+          <div className="grid gap-3">
+            {/* Description */}
+            {category.description && (
+              <div className="flex items-start gap-3">
+                <FileText className="h-4 w-4 text-gray-400 mt-0.5 flex-shrink-0" />
+                <div className="flex-1 min-w-0">
+                  <span className="text-sm font-medium text-gray-700">Mô tả</span>
+                  <p className="text-sm text-gray-600 mt-1 break-words leading-relaxed">
+                    {category.description}
+                  </p>
+                </div>
+              </div>
+            )}
+
+            {/* Slug */}
+            <div className="flex items-center gap-3">
+              <Hash className="h-4 w-4 text-gray-400 flex-shrink-0" />
+              <div className="flex-1 min-w-0">
+                <span className="text-sm font-medium text-gray-700">Slug</span>
+                <code className="block text-sm text-gray-600 bg-gray-100 px-2 py-1 rounded-md mt-1 font-mono break-all">
+                  {category.slug}
+                </code>
+              </div>
+            </div>
+
+            {/* Variant */}
+            {category.variant && CategoryVariantLabels[category.variant] && (
+              <div className="flex items-center gap-3">
+                <Tag className="h-4 w-4 text-gray-400 flex-shrink-0" />
+                <div className="flex-1 min-w-0">
+                  <span className="text-sm font-medium text-gray-700">Biến thể</span>
+                  <div className="mt-1">
+                    <span className="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium bg-indigo-100 text-indigo-800">
+                      {CategoryVariantLabels[category.variant]}
+                    </span>
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {/* Image URL */}
+            {category.imageUrl && (
+              <div className="flex items-start gap-3">
+                <ImageIcon className="h-4 w-4 text-gray-400 mt-0.5 flex-shrink-0" />
+                <div className="flex-1 min-w-0">
+                  <span className="text-sm font-medium text-gray-700">Hình ảnh</span>
+                  <details className="mt-1 group/details">
+                    <summary className="text-sm text-blue-600 hover:text-blue-800 cursor-pointer underline decoration-dotted underline-offset-2">
+                      Xem URL hình ảnh
+                    </summary>
+                    <div className="mt-2 p-3 bg-gray-50 rounded-lg border">
+                      <p className="text-xs text-gray-600 break-all font-mono leading-relaxed">
+                        {category.imageUrl}
+                      </p>
+                    </div>
+                  </details>
+                </div>
+              </div>
+            )}
+          </div>
+
+          {/* Children Count Indicator */}
+          {hasChildren && (
+            <div className="mt-4 pt-3 border-t border-gray-100">
+              <span className="text-xs text-gray-500 font-medium">
+                {category.children && category.children.length} danh mục con
+              </span>
+            </div>
+          )}
         </div>
       </div>
     </div>

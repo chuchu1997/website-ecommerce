@@ -1,14 +1,7 @@
 /** @format */
 
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import React, { useEffect } from "react";
 import { Input } from "@/components/ui/input";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 import {
   FormControl,
   FormDescription,
@@ -17,10 +10,9 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import { Check, ChevronsUpDown, Tag } from "lucide-react";
+import { Check, ChevronsUpDown, Info, Package2, SaladIcon } from "lucide-react";
 import { NumericFormat } from "react-number-format";
 import { Textarea } from "@/components/ui/textarea";
-import { useEffect } from "react";
 import {
   Popover,
   PopoverContent,
@@ -36,6 +28,7 @@ import {
   CommandList,
 } from "@/components/ui/command";
 import { cn } from "@/lib/utils";
+import { InputSectionWithForm } from "@/components/ui/inputSectionWithForm";
 
 interface BasicInfoSectionProps {
   form: any;
@@ -50,20 +43,19 @@ export const BasicInfoSection: React.FC<BasicInfoSectionProps> = ({
   categories,
   isProductForm = false,
 }) => {
-const generateSlug = (str: string): string =>
-  str
-    .toLowerCase()
-    .replace(/đ/g, "d") // thay đ -> d
-    .replace(/Đ/g, "d") // thay Đ -> d nếu có viết hoa
-    .normalize("NFD") // tách dấu tiếng Việt
-    .replace(/[\u0300-\u036f]/g, "") // xoá dấu
-    .replace(/[.]/g, " ") // chuyển dấu chấm thành khoảng trắng
-    .replace(/[^a-z0-9\s-]/g, "") // xoá ký tự đặc biệt
-    .trim()
-    .replace(/\s+/g, "-") // khoảng trắng -> dấu -
-    .replace(/-+/g, "-"); // gộp nhiều dấu - liên tiếp
+  const generateSlug = (str: string): string =>
+    str
+      .toLowerCase()
+      .replace(/đ/g, "d")
+      .replace(/Đ/g, "d")
+      .normalize("NFD")
+      .replace(/[\u0300-\u036f]/g, "")
+      .replace(/[.]/g, " ")
+      .replace(/[^a-z0-9\s-]/g, "")
+      .trim()
+      .replace(/\s+/g, "-")
+      .replace(/-+/g, "-");
 
-  // Theo dõi thay đổi của name → cập nhật slug nếu là Product Form
   useEffect(() => {
     if (!isProductForm) return;
 
@@ -79,199 +71,110 @@ const generateSlug = (str: string): string =>
   }, [form, isProductForm]);
 
   return (
-    <Card className="shadow-sm">
-      <CardHeader>
-        <CardTitle className="flex items-center gap-3">
-          <div className="p-2 bg-green-50 rounded-lg">
-            <Tag className="w-5 h-5 text-green-600" />
-          </div>
-          Thông tin cơ bản
-        </CardTitle>
-      </CardHeader>
-      <CardContent className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <FormField
-          control={form.control}
-          name="name"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Tên sản phẩm *</FormLabel>
-              <FormControl>
-                <Input
-                  disabled={loading}
-                  {...field}
-                  placeholder="Nhập tên sản phẩm"
-                  className="focus:ring-2 focus:ring-blue-500"
-                />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <FormField
-          control={form.control}
-          name="shortDescription"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Mô tả ngắn *</FormLabel>
-              <FormControl>
-                <Textarea
-                  disabled={loading}
-                  {...field}
-                  placeholder="Nhập mô tả ngắn "
-                  className="focus:ring-2 focus:ring-blue-500"
-                />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
+    <div className="space-y-8">
+      {/* Section Header */}
+      <div className="flex items-center space-x-4 pb-6 border-b border-gray-100">
+        <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center shadow-lg">
+          <Info className="w-6 h-6 text-white" />
+        </div>
+        <div>
+          <h3 className="text-xl font-semibold text-gray-900">
+            Thông tin cơ bản
+          </h3>
+          <p className="text-sm text-gray-500 mt-1">
+            Các thông tin cần thiết về sản phẩm
+          </p>
+        </div>
+      </div>
 
-        {!isProductForm && (
+      {/* Form Grid */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        {/* Product Name - Full Width */}
+        <div className="lg:col-span-2">
           <FormField
             control={form.control}
-            name="slug"
+            name="name"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Slug *</FormLabel>
+                <FormLabel className="text-sm font-semibold text-gray-800 flex items-center">
+                  Tên sản phẩm
+                  <span className="text-red-500 ml-1">*</span>
+                </FormLabel>
                 <FormControl>
                   <Input
                     disabled={loading}
                     {...field}
-                    placeholder="san-pham-moi"
-                    pattern="\S*"
-                    className="focus:ring-2 focus:ring-blue-500"
+                    placeholder="Nhập tên sản phẩm của bạn"
+                    className="h-12 text-base border-2 border-gray-200 focus:border-blue-500 focus:ring-4 focus:ring-blue-50 rounded-xl transition-all duration-200 hover:border-gray-300"
                   />
                 </FormControl>
-                <FormDescription>
-                  URL thân thiện (không dấu, không khoảng trắng)
-                </FormDescription>
-                <FormMessage />
+                <FormMessage className="text-sm mt-2" />
               </FormItem>
             )}
           />
-        )}
+        </div>
 
+        {/* Short Description - Full Width */}
+        <div className="lg:col-span-2">
+          <FormField
+            control={form.control}
+            name="shortDescription"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel className="text-sm font-semibold text-gray-800 flex items-center">
+                  Mô tả ngắn
+                  <span className="text-red-500 ml-1">*</span>
+                </FormLabel>
+                <FormControl>
+                  <Textarea
+                    disabled={loading}
+                    {...field}
+                    placeholder="Nhập mô tả ngắn về sản phẩm"
+                    className="min-h-[120px] text-base border-2 border-gray-200 focus:border-blue-500 focus:ring-4 focus:ring-blue-50 rounded-xl transition-all duration-200 hover:border-gray-300 resize-none"
+                  />
+                </FormControl>
+                <FormMessage className="text-sm mt-2" />
+              </FormItem>
+            )}
+          />
+        </div>
+
+        {/* SKU */}
         <FormField
           control={form.control}
           name="sku"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>SKU *</FormLabel>
+              <FormLabel className="text-sm font-semibold text-gray-800 flex items-center">
+                SKU
+                <span className="text-red-500 ml-1">*</span>
+              </FormLabel>
               <FormControl>
                 <Input
                   disabled={loading}
                   {...field}
                   placeholder="SP-001"
-                  className="focus:ring-2 focus:ring-blue-500"
+                  className="h-12 text-base border-2 border-gray-200 focus:border-blue-500 focus:ring-4 focus:ring-blue-50 rounded-xl transition-all duration-200 hover:border-gray-300"
                 />
               </FormControl>
-              <FormDescription>Mã sản phẩm duy nhất</FormDescription>
-              <FormMessage />
+              <FormDescription className="text-sm text-gray-500 mt-2">
+                Mã sản phẩm duy nhất để quản lý
+              </FormDescription>
+              <FormMessage className="text-sm mt-2" />
             </FormItem>
           )}
         />
 
-        <FormField
-          control={form.control}
-          name="originalPrice"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Giá cũ </FormLabel>
-              <FormControl>
-                <NumericFormat
-                  thousandSeparator="."
-                  decimalSeparator=","
-                  suffix=" ₫"
-                  allowNegative={false}
-                  placeholder="299.000 ₫"
-                  disabled={loading}
-                  customInput={Input}
-                  className="focus:ring-2 focus:ring-blue-500"
-                  value={field.value}
-                  onValueChange={(values) => {
-                    field.onChange(values.floatValue); // Lưu số thật, không phải chuỗi
-                  }}
-                />
-              </FormControl>
-              <FormDescription>Giá bán cơ bản (VNĐ)</FormDescription>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-
-        <FormField
-          control={form.control}
-          name="price"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Giá cơ bản *</FormLabel>
-              <FormControl>
-                <NumericFormat
-                  thousandSeparator="."
-                  decimalSeparator=","
-                  suffix=" ₫"
-                  allowNegative={false}
-                  placeholder="299.000 ₫"
-                  disabled={loading}
-                  customInput={Input}
-                  className="focus:ring-2 focus:ring-blue-500"
-                  value={field.value}
-                  onValueChange={(values) => {
-                    field.onChange(values.floatValue); // Lưu số thật, không phải chuỗi
-                  }}
-                />
-              </FormControl>
-              <FormDescription>Giá bán cơ bản (VNĐ)</FormDescription>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        {isProductForm && (
-          <FormField
-            control={form.control}
-            name="saleCount"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Số lượt bán sản phẩm *</FormLabel>
-                <FormControl>
-                  <Input
-                    type="number"
-                    disabled={loading}
-                    {...field}
-                    placeholder="số lượt bán"
-                    className="focus:ring-2 focus:ring-blue-500"
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-        )}
-        <FormField
-          control={form.control}
-          name="stock"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Số lượng tồn kho</FormLabel>
-              <FormControl>
-                <Input
-                  type="number"
-                  disabled={loading}
-                  {...field}
-                  placeholder="100"
-                  className="focus:ring-2 focus:ring-blue-500"
-                />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
+        {/* Category */}
         <FormField
           control={form.control}
           name="categoryId"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Danh mục *</FormLabel>
+              <FormLabel className="text-sm font-semibold text-gray-800 flex items-center">
+                Danh mục
+                <span className="text-red-500 ml-1">*</span>
+              </FormLabel>
               <Popover>
                 <PopoverTrigger asChild>
                   <FormControl>
@@ -279,25 +182,29 @@ const generateSlug = (str: string): string =>
                       variant="outline"
                       role="combobox"
                       disabled={loading}
-                      className="flex items-center w-[180px] justify-between  focus:ring-2 focus:ring-blue-500">
-                      <span className="truncate">
+                      className="w-full h-12 justify-between text-base border-2 border-gray-200 hover:border-gray-300 focus:border-blue-500 focus:ring-4 focus:ring-blue-50 rounded-xl transition-all duration-200 bg-white hover:bg-gray-50">
+                      <span className="truncate text-left font-normal">
                         {field.value
                           ? categories.find(
                               (category) =>
                                 category.id.toString() === field.value
                             )?.name
-                          : "Chọn danh mục"}
+                          : "Chọn danh mục sản phẩm"}
                       </span>
-
-                      <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                      <ChevronsUpDown className="ml-2 h-5 w-5 shrink-0 opacity-50" />
                     </Button>
                   </FormControl>
                 </PopoverTrigger>
-                <PopoverContent className="w-full p-0">
-                  <Command>
-                    <CommandInput placeholder="Tìm kiếm danh mục..." />
+                <PopoverContent className="w-full p-0 border-0 shadow-2xl rounded-2xl">
+                  <Command className="rounded-2xl border border-gray-200">
+                    <CommandInput
+                      placeholder="Tìm kiếm danh mục..."
+                      className="h-12 text-base border-0 focus:ring-0"
+                    />
                     <CommandList className="max-h-[300px]">
-                      <CommandEmpty>Không tìm thấy danh mục nào.</CommandEmpty>
+                      <CommandEmpty className="py-6 text-center text-gray-500">
+                        Không tìm thấy danh mục nào.
+                      </CommandEmpty>
                       <CommandGroup>
                         {categories.map((category) => (
                           <CommandItem
@@ -305,16 +212,17 @@ const generateSlug = (str: string): string =>
                             value={category.name}
                             onSelect={() => {
                               field.onChange(category.id.toString());
-                            }}>
+                            }}
+                            className="py-3 px-4 cursor-pointer hover:bg-blue-50 transition-colors duration-150 text-base">
                             <Check
                               className={cn(
-                                "mr-2 h-4 w-4",
+                                "mr-3 h-5 w-5 text-blue-600",
                                 field.value === category.id.toString()
                                   ? "opacity-100"
                                   : "opacity-0"
                               )}
                             />
-                            {category.name}
+                            <span className="font-medium">{category.name}</span>
                           </CommandItem>
                         ))}
                       </CommandGroup>
@@ -322,11 +230,137 @@ const generateSlug = (str: string): string =>
                   </Command>
                 </PopoverContent>
               </Popover>
-              <FormMessage />
+              <FormMessage className="text-sm mt-2" />
             </FormItem>
           )}
         />
-      </CardContent>
-    </Card>
+
+        {/* Original Price */}
+        <FormField
+          control={form.control}
+          name="originalPrice"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel className="text-sm font-semibold text-gray-800">
+                Giá cũ
+              </FormLabel>
+              <FormControl>
+                <NumericFormat
+                  thousandSeparator="."
+                  decimalSeparator=","
+                  suffix=" ₫"
+                  allowNegative={false}
+                  placeholder="299.000 ₫"
+                  disabled={loading}
+                  customInput={Input}
+                  className="h-12 text-base border-2 border-gray-200 focus:border-blue-500 focus:ring-4 focus:ring-blue-50 rounded-xl transition-all duration-200 hover:border-gray-300"
+                  value={field.value}
+                  onValueChange={(values) => {
+                    field.onChange(values.floatValue);
+                  }}
+                />
+              </FormControl>
+              <FormDescription className="text-sm text-gray-500 mt-2">
+                Giá bán trước khi giảm giá (VNĐ)
+              </FormDescription>
+              <FormMessage className="text-sm mt-2" />
+            </FormItem>
+          )}
+        />
+
+        {/* Current Price */}
+        <FormField
+          control={form.control}
+          name="price"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel className="text-sm font-semibold text-gray-800 flex items-center">
+                Giá bán
+                <span className="text-red-500 ml-1">*</span>
+              </FormLabel>
+              <FormControl>
+                <NumericFormat
+                  thousandSeparator="."
+                  decimalSeparator=","
+                  suffix=" ₫"
+                  allowNegative={false}
+                  placeholder="199.000 ₫"
+                  disabled={loading}
+                  customInput={Input}
+                  className="h-12 text-base border-2 border-gray-200 focus:border-blue-500 focus:ring-4 focus:ring-blue-50 rounded-xl transition-all duration-200 hover:border-gray-300"
+                  value={field.value}
+                  onValueChange={(values) => {
+                    field.onChange(values.floatValue);
+                  }}
+                />
+              </FormControl>
+              <FormDescription className="text-sm text-gray-500 mt-2">
+                Giá bán hiện tại (VNĐ)
+              </FormDescription>
+              <FormMessage className="text-sm mt-2" />
+            </FormItem>
+          )}
+        />
+        {/* Sale Count - Only for Product Form */}
+        {isProductForm && (
+          <InputSectionWithForm
+            form={form}
+            nameFormField="saleCount"
+            loading={false}
+            title=" Số lượt sản phẩm đã bán"
+            placeholder="Nhập Số lượt sản phẩm đã bán (VD: 1000, 2, 3...)"
+            type="number"
+            showCard={false}
+            icon={SaladIcon}
+            description=" Số lượt sản phẩm đã bán"
+          />
+        )}
+
+        {/* Stock */}
+
+        <InputSectionWithForm
+          form={form}
+          nameFormField="stock"
+          loading={false}
+          title="Số lượng tồn kho"
+          placeholder="Nhập số lượng tồn kho (VD: 1, 2, 3...)"
+          type="number"
+          showCard={false}
+          icon={Package2}
+          description="Số lượng sản phẩm còn lại trong kho"
+        />
+
+        {/* Slug - Only for non-Product Form */}
+        {!isProductForm && (
+          <div className="lg:col-span-2">
+            <FormField
+              control={form.control}
+              name="slug"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel className="text-sm font-semibold text-gray-800 flex items-center">
+                    Slug
+                    <span className="text-red-500 ml-1">*</span>
+                  </FormLabel>
+                  <FormControl>
+                    <Input
+                      disabled={loading}
+                      {...field}
+                      placeholder="san-pham-moi"
+                      pattern="\S*"
+                      className="h-12 text-base border-2 border-gray-200 focus:border-blue-500 focus:ring-4 focus:ring-blue-50 rounded-xl transition-all duration-200 hover:border-gray-300"
+                    />
+                  </FormControl>
+                  <FormDescription className="text-sm text-gray-500 mt-2">
+                    URL thân thiện (không dấu, không khoảng trắng)
+                  </FormDescription>
+                  <FormMessage className="text-sm mt-2" />
+                </FormItem>
+              )}
+            />
+          </div>
+        )}
+      </div>
+    </div>
   );
 };

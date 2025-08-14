@@ -39,7 +39,7 @@ import { CategoriesListSSR } from "./(main)/components/CategoriesList/categories
 import { HeroSSR } from "./(main)/components/Hero/HeroSSR";
 import { fetchSafe } from "@/utils/fetchSafe";
 import { getCachedStoreInfo } from "./layout";
-export const revalidate = 100; // 5 phút
+export const revalidate = 360; // 5 phút
 
 const MusicStoreLanding: React.FC = async () => {
   const storeInfo = await getCachedStoreInfo();

@@ -22,7 +22,23 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 
-import { Edit, Trash2, Plus, FolderTree, Eye, EyeOff } from "lucide-react";
+import {
+  Edit,
+  Trash2,
+  Plus,
+  FolderTree,
+  Eye,
+  EyeOff,
+  Save,
+  Search,
+  ImageIcon,
+  TreePine,
+  MessageSquare,
+  Hash,
+  Layers,
+  FileText,
+  Tag,
+} from "lucide-react";
 
 import CategoryAPI from "@/app/api/categories/categories.api";
 import { useParams } from "next/navigation";
@@ -59,6 +75,7 @@ import { CategoryVariantLabels } from "@/constants/categories/variants";
 import { buildCategoryTree } from "@/lib/utils/categories/tree-builder";
 import { CategorySelectOptions } from "./components/CategorySelectOption";
 import { CategoryTree } from "./components/CategoryTree/CategoryTree";
+import { SearchableCategorySelect } from "./components/CategorySearchable/CategorySearchable";
 
 interface CategoryWithChildren extends CategoryInterface {
   children?: CategoryWithChildren[];
@@ -374,159 +391,308 @@ export default function CategoriesManagement() {
                       resetForm();
                       setIsDialogOpen(true);
                     }}
-                    className="bg-white text-blue-600 hover:bg-blue-50 hover:scale-105 transition-all duration-200 shadow-lg">
-                    <Plus className="h-4 w-4 mr-2" />
-                    <span className="text-sm sm:text-base">Thêm mới</span>
+                    className="group relative overflow-hidden bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white border-0 shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105">
+                    <div className="absolute inset-0 bg-white/20 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700 ease-in-out" />
+                    <Plus className="h-4 w-4 mr-2 transition-transform group-hover:rotate-90 duration-300" />
+                    <span className="text-sm sm:text-base font-medium">
+                      Thêm mới danh mục
+                    </span>
                   </Button>
                 </DialogTrigger>
-                <DialogContent className="max-h-[90vh] overflow-y-auto w-[95vw] sm:w-full max-w-2xl">
-                  <DialogHeader className="flex-shrink-0 pb-4 border-b">
-                    <DialogTitle className="text-center text-lg sm:text-xl font-bold text-gray-800">
-                      {editingCategoryId
-                        ? "Chỉnh sửa danh mục"
-                        : "Tạo mới danh mục"}
-                    </DialogTitle>
+
+                <DialogContent className="overflow-y-auto py-10 max-h-[95vh] w-full bg-white border-0 shadow-2xl rounded-3xl">
+                  {/* Enhanced Header */}
+                  <DialogHeader className="relative overflow-hidden">
+                    {/* Animated gradient background */}
+                    <div className="absolute inset-0 bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 opacity-80" />
+                    <div className="absolute top-0 left-0 w-full h-1.5 bg-gradient-to-r from-blue-500 via-indigo-500 to-purple-500 animate-pulse" />
+
+                    {/* Floating shapes for visual interest */}
+                    <div className="absolute top-4 right-8 w-16 h-16 bg-blue-100/40 rounded-full blur-sm" />
+                    <div className="absolute top-8 right-16 w-8 h-8 bg-indigo-100/60 rounded-full blur-sm" />
+
+                    <div className="relative px-8 py-8 border-b border-gray-100/50">
+                      <DialogTitle className="text-3xl font-bold text-gray-800 flex items-center gap-4">
+                        <div className="relative group">
+                          <div className="absolute inset-0 bg-gradient-to-br from-blue-400 to-indigo-500 rounded-xl blur opacity-20 group-hover:opacity-40 transition-opacity" />
+                          <div className="relative p-3 bg-white rounded-xl shadow-lg border border-gray-100">
+                            {editingCategoryId ? (
+                              <Edit className="w-7 h-7 text-blue-600" />
+                            ) : (
+                              <Plus className="w-7 h-7 text-blue-600" />
+                            )}
+                          </div>
+                        </div>
+                        <div className="flex flex-col">
+                          <span className="bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent">
+                            {editingCategoryId
+                              ? "Chỉnh sửa danh mục"
+                              : "Tạo mới danh mục"}
+                          </span>
+                          <p className="text-base font-normal text-gray-600 mt-2">
+                            {editingCategoryId
+                              ? "Cập nhật thông tin danh mục của bạn với giao diện hiện đại"
+                              : "Tạo danh mục mới với đầy đủ thông tin và tối ưu SEO"}
+                          </p>
+                        </div>
+                      </DialogTitle>
+                    </div>
                   </DialogHeader>
 
-                  <div className="flex-1 overflow-y-auto px-1 py-4">
+                  {/* Scrollable Form Content */}
+                  <div className="flex-1 overflow-y-auto">
                     <Form {...form}>
                       <form
                         onSubmit={form.handleSubmit(onSubmit)}
-                        className="space-y-4 sm:space-y-6">
-                        <InputSectionWithForm
-                          form={form}
-                          nameFormField="name"
-                          loading={false}
-                          title="Tên danh mục"
-                          placeholder="Vui lòng nhập tên danh mục"
-                        />
+                        className="p-8">
+                        {/* Enhanced Grid Layout */}
+                        <div className="grid grid-cols-1 xl:grid-cols-2 gap-8">
+                          {/* Left Column - Basic Information */}
+                          <div className="space-y-8">
+                            {/* Basic Info Card */}
+                            <div className="group bg-white rounded-2xl border border-gray-200 shadow-sm hover:shadow-md transition-all duration-300 overflow-hidden">
+                              <div className="relative bg-gradient-to-r from-gray-50 to-blue-50/30 px-6 py-5 border-b border-gray-100">
+                                <div className="absolute inset-0 bg-blue-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                                <h3 className="relative text-xl font-bold text-gray-800 flex items-center gap-3">
+                                  <div className="p-2 bg-blue-100 rounded-lg group-hover:bg-blue-200 transition-colors">
+                                    <FileText className="w-5 h-5 text-blue-600" />
+                                  </div>
+                                  Thông tin cơ bản
+                                </h3>
+                                <p className="text-sm text-gray-600 mt-1">
+                                  Thông tin chính của danh mục
+                                </p>
+                              </div>
 
-                        <ImageUploadSection
-                          form={form}
-                          loading={false}
-                          nameFormField="imageUrl"
-                        />
+                              <div className="p-8 space-y-8">
+                                <InputSectionWithForm
+                                  form={form}
+                                  nameFormField="name"
+                                  loading={false}
+                                  title="Tên danh mục"
+                                  placeholder="Nhập tên danh mục..."
+                                  showCard={false}
+                                  icon={Tag}
+                                  description="Tên hiển thị chính của danh mục"
+                                />
 
-                        <FormField
-                          control={form.control}
-                          name="variant"
-                          render={({ field }) => (
-                            <FormItem>
-                              <FormLabel className="text-sm sm:text-base font-medium">
-                                Biến thể
-                              </FormLabel>
-                              <Select
-                                onValueChange={field.onChange}
-                                value={field.value}>
-                                <FormControl>
-                                  <SelectTrigger className="h-10 sm:h-11">
-                                    <SelectValue placeholder="Chọn biến thể nếu có" />
-                                  </SelectTrigger>
-                                </FormControl>
-                                <SelectContent>
-                                  {Object.values(CategoryVariant).map(
-                                    (variant) => (
-                                      <SelectItem key={variant} value={variant}>
-                                        {CategoryVariantLabels[variant]}
-                                      </SelectItem>
-                                    )
+                                <FormField
+                                  control={form.control}
+                                  name="variant"
+                                  render={({ field }) => (
+                                    <FormItem>
+                                      <FormLabel className="text-sm font-medium text-gray-700 flex items-center gap-2">
+                                        <div className="p-1.5 bg-purple-50 rounded-md">
+                                          <Layers className="w-3.5 h-3.5 text-purple-600" />
+                                        </div>
+                                        Biến thể danh mục
+                                      </FormLabel>
+                                      <Select
+                                        onValueChange={field.onChange}
+                                        value={field.value}>
+                                        <FormControl>
+                                          <SelectTrigger className="h-12 border-gray-200 focus:border-purple-500 focus:ring-4 focus:ring-purple-500/10 rounded-lg">
+                                            <SelectValue placeholder="Chọn loại biến thể..." />
+                                          </SelectTrigger>
+                                        </FormControl>
+                                        <SelectContent className="border-0 shadow-xl rounded-xl">
+                                          {Object.values(CategoryVariant).map(
+                                            (variant) => (
+                                              <SelectItem
+                                                key={variant}
+                                                value={variant}
+                                                className="hover:bg-purple-50 focus:bg-purple-50 rounded-lg m-1">
+                                                <div className="flex items-center gap-2">
+                                                  <div className="w-2 h-2 bg-purple-400 rounded-full" />
+                                                  {
+                                                    CategoryVariantLabels[
+                                                      variant
+                                                    ]
+                                                  }
+                                                </div>
+                                              </SelectItem>
+                                            )
+                                          )}
+                                        </SelectContent>
+                                      </Select>
+                                   
+                                      <FormMessage />
+                                    </FormItem>
                                   )}
-                                </SelectContent>
-                              </Select>
-                              <FormMessage />
-                            </FormItem>
-                          )}
-                        />
+                                />
 
-                        <FormField
-                          control={form.control}
-                          name="parentId"
-                          render={({ field }) => (
-                            <FormItem>
-                              <FormLabel className="text-sm sm:text-base font-medium">
-                                Danh mục cha
-                              </FormLabel>
-                              <Select
-                                onValueChange={field.onChange}
-                                value={field.value}>
-                                <FormControl>
-                                  <SelectTrigger className="h-10 sm:h-11">
-                                    <SelectValue placeholder="Chọn danh mục cha" />
-                                  </SelectTrigger>
-                                </FormControl>
-                                <SelectContent className="max-h-[300px] overflow-y-auto">
-                                  <SelectItem
-                                    value="isParent"
-                                    className="font-semibold text-blue-600">
-                                    <div className="flex items-center gap-2">
-                                      <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
-                                      Không (Là Danh mục Cha)
-                                    </div>
-                                  </SelectItem>
-                                  <div className="my-1 border-t border-gray-200"></div>
+                                <InputSectionWithForm
+                                  form={form}
+                                  nameFormField="position"
+                                  loading={false}
+                                  title="Vị trí hiển thị"
+                                  placeholder="Nhập số thứ tự (VD: 1, 2, 3...)"
+                                  type="number"
+                                  showCard={false}
+                                  icon={Hash}
+                                  description="Thứ tự sắp xếp danh mục trong danh sách"
+                                />
+                              </div>
+                            </div>
 
-                                  <CategorySelectOptions
-                                    categories={categoryTree}
-                                    editingCategoryId={editingCategoryId ?? 0}
-                                    depth={0}
-                                  />
-                                  {/* {renderHierarchicalOptions(categoryTree, 0)} */}
-                                </SelectContent>
-                              </Select>
-                              <FormMessage />
-                              <FormDescription className="text-xs text-gray-500 mt-1">
-                                Chọn danh mục cha để tạo cấu trúc phân cấp, hoặc
-                                để trống để tạo danh mục gốc
-                              </FormDescription>
-                            </FormItem>
-                          )}
-                        />
+                            {/* Description Card */}
+                            <div className="group bg-white rounded-2xl border border-gray-200 shadow-sm hover:shadow-md transition-all duration-300 overflow-hidden">
+                              <div className="relative bg-gradient-to-r from-gray-50 to-emerald-50/30 px-6 py-5 border-b border-gray-100">
+                                <div className="absolute inset-0 bg-emerald-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                                <h3 className="relative text-xl font-bold text-gray-800 flex items-center gap-3">
+                                  <div className="p-2 bg-emerald-100 rounded-lg group-hover:bg-emerald-200 transition-colors">
+                                    <MessageSquare className="w-5 h-5 text-emerald-600" />
+                                  </div>
+                                  Mô tả chi tiết
+                                </h3>
+                                <p className="text-sm text-gray-600 mt-1">
+                                  Thông tin mô tả về danh mục
+                                </p>
+                              </div>
 
-                        <InputSectionWithForm
-                          form={form}
-                          nameFormField="position"
-                          // disabled={form.watch("parentId") !== "isParent"}
+                              <div className="p-8">
+                                <TextAreaSectionWithForm
+                                  form={form}
+                                  loading={false}
+                                  nameFormField="description"
+                                  title=""
+                                  placeholder="Nhập mô tả chi tiết, đặc điểm và mục đích sử dụng của danh mục..."
+                                  icon={MessageSquare}
+                                  showCard={false}
+                                  maxLength={500}
+                                />
+                              </div>
+                            </div>
+                          </div>
 
-                          loading={false}
-                          title="Vị trí hiển thị"
-                          placeholder="Nhập vị trí hiển thị (tùy chọn )"
-                        />
+                          {/* Right Column - Hierarchy, Media & SEO */}
+                          <div className="space-y-8 ">
+                            {/* Hierarchy Card with Searchable Select */}
+                            <div className=" group bg-white rounded-2xl border border-gray-200 shadow-sm hover:shadow-md transition-all duration-300 ">
+                              <div className="relative bg-gradient-to-r from-gray-50 to-indigo-50/30 px-6 py-5 border-b border-gray-100">
+                                <div className="absolute inset-0 bg-indigo-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                                <h3 className="relative text-xl font-bold text-gray-800 flex items-center gap-3">
+                                  <div className="p-2 bg-indigo-100 rounded-lg group-hover:bg-indigo-200 transition-colors">
+                                    <TreePine className="w-5 h-5 text-indigo-600" />
+                                  </div>
+                                  Cấu trúc phân cấp
+                                </h3>
+                                <p className="text-sm text-gray-600 mt-1">
+                                  Tìm kiếm và chọn danh mục cha
+                                </p>
+                              </div>
 
-                        <TextAreaSectionWithForm
-                          form={form}
-                          loading={false}
-                          nameFormField="description"
-                          title="Mô tả"
-                          placeholder="Vui lòng nhập mô tả danh mục"
-                        />
+                              <SearchableCategorySelect
+                                form={form}
+                                categories={categoryTree}
+                                editingCategoryId={editingCategoryId ?? 0}
+                                nameFormField="parentId"
+                              />
+                            </div>
 
-                        <SEOForm form={form} loading={false} />
+                            {/* Image Upload Card */}
+                            <div className="group bg-white rounded-2xl border border-gray-200 shadow-sm hover:shadow-md transition-all duration-300 overflow-hidden">
+                              <div className="relative bg-gradient-to-r from-gray-50 to-pink-50/30 px-6 py-5 border-b border-gray-100">
+                                <div className="absolute inset-0 bg-pink-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                                <h3 className="relative text-xl font-bold text-gray-800 flex items-center gap-3">
+                                  <div className="p-2 bg-pink-100 rounded-lg group-hover:bg-pink-200 transition-colors">
+                                    <ImageIcon className="w-5 h-5 text-pink-600" />
+                                  </div>
+                                  Hình ảnh đại diện
+                                </h3>
+                                <p className="text-sm text-gray-600 mt-1">
+                                  Upload ảnh cho danh mục
+                                </p>
+                              </div>
 
-                        <DialogFooter className="flex-shrink-0 pt-6 mt-6 border-t flex-col sm:flex-row gap-3">
-                          <Button
-                            type="button"
-                            variant="outline"
-                            onClick={() => {
-                              resetForm();
-                              setIsDialogOpen(false);
-                            }}
-                            className="w-full sm:w-auto order-2 sm:order-1">
-                            Hủy
-                          </Button>
-                          <Button
-                            type="submit"
-                            disabled={form.formState.isSubmitting}
-                            className="w-full sm:w-auto order-1 sm:order-2 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700">
-                            {form.formState.isSubmitting
-                              ? "Đang xử lý..."
-                              : editingCategoryId
-                              ? "Lưu thay đổi"
-                              : "Tạo mới"}
-                          </Button>
-                        </DialogFooter>
+                              <div className="p-6">
+                                <ImageUploadSection
+                                  form={form}
+                                  loading={false}
+                                  nameFormField="imageUrl"
+                                />
+                              </div>
+                            </div>
+
+                            {/* SEO Card */}
+                            <div className="group bg-white rounded-2xl border border-gray-200 shadow-sm hover:shadow-md transition-all duration-300 overflow-hidden">
+                              <div className="relative bg-gradient-to-r from-gray-50 to-yellow-50/30 px-6 py-5 border-b border-gray-100">
+                                <div className="absolute inset-0 bg-yellow-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                                <h3 className="relative text-xl font-bold text-gray-800 flex items-center gap-3">
+                                  <div className="p-2 bg-yellow-100 rounded-lg group-hover:bg-yellow-200 transition-colors">
+                                    <Search className="w-5 h-5 text-yellow-600" />
+                                  </div>
+                                  Tối ưu SEO
+                                </h3>
+                                <p className="text-sm text-gray-600 mt-1">
+                                  Cài đặt SEO cho danh mục
+                                </p>
+                              </div>
+
+                              <div className="p-6">
+                                <SEOForm form={form} loading={false} />
+                              </div>
+                            </div>
+                          </div>
+                        </div>
                       </form>
                     </Form>
                   </div>
+
+                  {/* Enhanced Footer */}
+                  <DialogFooter className="relative bg-gradient-to-r from-gray-50 to-blue-50/30 px-8 py-6 border-t border-gray-200/50">
+                    <div className="absolute inset-0 backdrop-blur-sm bg-white/80" />
+                    <div className="relative flex items-center justify-end gap-4 w-full">
+                      <Button
+                        type="button"
+                        variant="outline"
+                        onClick={() => {
+                          resetForm();
+                          setIsDialogOpen(false);
+                        }}
+                        className="group px-6 py-3 border-gray-300 hover:border-gray-400 hover:bg-gray-50 transition-all duration-200 rounded-xl">
+                        <span className="text-gray-700 group-hover:text-gray-800 font-medium">
+                          Hủy bỏ
+                        </span>
+                      </Button>
+
+                      <Button
+                        type="submit"
+                        disabled={form.formState.isSubmitting}
+                        className="group relative overflow-hidden px-8 py-3 bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 hover:from-blue-700 hover:via-indigo-700 hover:to-purple-700 shadow-lg hover:shadow-xl transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed rounded-xl border-0"
+                        onClick={form.handleSubmit(onSubmit)}>
+                        {/* Button shine effect */}
+                        <div className="absolute inset-0 bg-gradient-to-r from-white/0 via-white/20 to-white/0 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700" />
+
+                        <div className="relative flex items-center gap-2">
+                          {form.formState.isSubmitting ? (
+                            <>
+                              <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                              <span className="font-medium">Đang xử lý...</span>
+                            </>
+                          ) : (
+                            <>
+                              {editingCategoryId ? (
+                                <>
+                                  <Save className="w-4 h-4 transition-transform group-hover:scale-110" />
+                                  <span className="font-medium">
+                                    Lưu thay đổi
+                                  </span>
+                                </>
+                              ) : (
+                                <>
+                                  <Plus className="w-4 h-4 transition-transform group-hover:rotate-90" />
+                                  <span className="font-medium">
+                                    Tạo danh mục
+                                  </span>
+                                </>
+                              )}
+                            </>
+                          )}
+                        </div>
+                      </Button>
+                    </div>
+                  </DialogFooter>
                 </DialogContent>
               </Dialog>
             </div>
