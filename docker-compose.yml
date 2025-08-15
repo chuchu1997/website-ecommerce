@@ -12,7 +12,7 @@ services:
     ports:
       - "3322:3306"
     volumes:
-      - mysql-data-happyfurniture:/var/lib/mysql
+      - mysql-data-duy-bds:/var/lib/mysql
       - ./init.sql:/docker-entrypoint-initdb.d/init.sql  # Add this line
 
     networks:
