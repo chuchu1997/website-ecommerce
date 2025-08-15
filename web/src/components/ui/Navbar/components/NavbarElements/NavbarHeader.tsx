@@ -114,13 +114,13 @@ export const NavbarHeader: React.FC<NavbarHeaderProps> = ({
             <div className="flex items-center gap-x-2">
               <Search className="h-5 w-5 text-[var(--color-primary)]" />
               <span className="text-sm font-medium text-[var(--color-text-muted)]">
-                Tìm nội thất...
+                Tìm kiếm các nội thất
               </span>
             </div>
           </button>
 
           {/* Mobile Cart Button */}
-          <Link
+          {/* <Link
             href="/gio-hang"
             prefetch={true}
             className="
@@ -149,7 +149,7 @@ export const NavbarHeader: React.FC<NavbarHeaderProps> = ({
                 {cartQuantity > 99 ? "99+" : cartQuantity}
               </span>
             )}
-          </Link>
+          </Link> */}
 
           {/* Desktop Right Section */}
           <div className="hidden lg:flex items-center gap-4">

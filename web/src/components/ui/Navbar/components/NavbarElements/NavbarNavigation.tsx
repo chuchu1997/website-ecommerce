@@ -305,7 +305,7 @@ export const NavbarNavigation: React.FC<NavbarNavigationProps> = ({
             </Link>
 
             {/* Shopping Cart Button */}
-            <Link
+            {/* <Link
               href="/gio-hang"
               prefetch={true}
               className="group relative flex items-center gap-3 px-5 py-2 rounded-xl transition-all duration-300 font-medium border overflow-hidden"
@@ -324,22 +324,12 @@ export const NavbarNavigation: React.FC<NavbarNavigationProps> = ({
                 e.currentTarget.style.boxShadow = "var(--shadow-default)";
                 e.currentTarget.style.transform = "translateY(0px) scale(1)";
               }}>
-              {/* Premium shimmer effect */}
+          
               <div className="absolute inset-0 -translate-x-full group-hover:translate-x-full transition-transform duration-700 bg-gradient-to-r from-transparent via-white/25 to-transparent" />
 
               <div className="relative">
                 <ShoppingCart className="w-5 h-5 transition-all duration-300 group-hover:scale-105" />
-                {/* {cartQuantity > 0 && (
-                  <span
-                    className="absolute -top-2 -right-2 w-5 h-5 rounded-full flex items-center justify-center text-xs font-bold animate-pulse"
-                    style={{
-                      background: "var(--color-accent-red)",
-                      color: "var(--color-text-white)",
-                      boxShadow: "0 2px 8px rgba(179, 94, 58, 0.4)",
-                    }}>
-                    {cartQuantity}
-                  </span>
-                )} */}
+             
               </div>
 
               <div className="hidden lg:flex flex-col items-center">
@@ -351,7 +341,7 @@ export const NavbarNavigation: React.FC<NavbarNavigationProps> = ({
                 </span>
               </div>
               <span className="lg:hidden text-sm font-semibold">Giỏ hàng</span>
-            </Link>
+            </Link> */}
           </div>
 
           {/* Mobile Brand Name */}

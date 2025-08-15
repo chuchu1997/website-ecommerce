@@ -296,7 +296,7 @@ export const FeatureProperties = async ({ storeInfo }: Props) => {
 
             {/* Properties Grid */}
             <div className="relative">
-              <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
+              <div className="grid grid-cols-1 sm:grid-cols-4 gap-2">
                 {featureProjects.map((project) => (
                   <ProjectCard key={project.id} project={project} />
                 ))}

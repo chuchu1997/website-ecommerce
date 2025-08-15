@@ -42,7 +42,7 @@ export const HeroClient: React.FC<Props> = ({ bannersProps }) => {
   return (
     <section
       id="home"
-      className="relative border mt-[10px] md:mt-[90px] h-[300px] md:h-[800px] flex items-center justify-center overflow-hidden">
+      className="relative border mt-[80px] md:mt-[90px] h-[300px] md:h-[800px] flex items-center justify-center overflow-hidden">
       {/* Background image */}
       <div className="absolute inset-0 z-0">
         <ImageLoader
@@ -61,7 +61,7 @@ export const HeroClient: React.FC<Props> = ({ bannersProps }) => {
         <div className="absolute inset-0 bg-black/5 z-40" />
       </div>
       {/* Text and CTA */}
-      <div className="relative z-20 text-center text-white max-w-4xl mx-auto px-4">
+      <div className="relative z-20 text-center text-white max-w-4xl mx-auto px-4 ">
         <HeroMotion
           mainTitle={currentBanner.title || ""}
           subTitle={currentBanner.description || ""}
