@@ -128,7 +128,7 @@ export default function ImagePickerDialog({
 
   return (
     <Dialog open={open} onOpenChange={handleClose}>
-      <DialogContent className="sm:max-w-[600px] p-0 overflow-hidden bg-gradient-to-br from-slate-50 to-white dark:from-slate-900 dark:to-slate-800">
+      <DialogContent className="overflow-y-scroll max-h-[700px] sm:max-w-[600px] p-0 bg-gradient-to-br from-slate-50 to-white dark:from-slate-900 dark:to-slate-800">
         <DialogHeader className="px-6 pt-6 pb-4 border-b border-slate-200 dark:border-slate-700">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
