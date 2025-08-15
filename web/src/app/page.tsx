@@ -24,8 +24,6 @@ import { SeoInterface } from "@/types/seo";
 // import { NewsMasterPage } from "./components/News/News";
 import NavbarComponent from "@/components/ui/Navbar";
 import { HeroClient } from "./(main)/components/Hero/Hero";
-import { InteriorContent } from "./(main)/components/InteriorContent";
-import { FeatureProducts } from "./(main)/components/FeatureProduct/FeatureProduct";
 import { ProductCategories } from "./(main)/components/ProductCategories/ProductCategories";
 import { HighlightedProjects } from "./(main)/components/HighlightProject/HighlightProject";
 import { PartnerBrands } from "./(main)/components/PartnerBrands/PartnerBrands";
@@ -39,6 +37,8 @@ import { CategoriesListSSR } from "./(main)/components/CategoriesList/categories
 import { HeroSSR } from "./(main)/components/Hero/HeroSSR";
 import { fetchSafe } from "@/utils/fetchSafe";
 import { getCachedStoreInfo } from "./layout";
+import { FeatureProperties } from "./(main)/components/FeatureProduct/FeatureProduct";
+import { RealEstateServices } from "./(main)/components/InteriorContent";
 export const revalidate = 360; // 5 phút
 
 const MusicStoreLanding: React.FC = async () => {
@@ -47,19 +47,19 @@ const MusicStoreLanding: React.FC = async () => {
   return (
     <div className=" min-h-screen bg-gray-50 w-full">
       <HeroSSR />
-      <CategoriesListSSR />
-      <FeatureProducts storeInfo={storeInfo} />
-      <ProductWithCategoryType
+      {/* <CategoriesListSSR /> */}
+      <FeatureProperties storeInfo={storeInfo} />
+      {/* <ProductWithCategoryType
         industry={storeInfo.industry ?? ""}
         slug="giuong-ngu"
         isGrayBg={true}
-      />
+      /> */}
 
       <HighlightedProjects industry={storeInfo.industry ?? ""} />
 
       <PartnerBrands industry={storeInfo.industry ?? ""} />
       <NewsMasterPage industry={storeInfo.industry ?? ""} />
-      <InteriorContent industry={storeInfo.industry ?? ""} />
+      <RealEstateServices industry={storeInfo.industry ?? ""} />
     </div>
   );
 };

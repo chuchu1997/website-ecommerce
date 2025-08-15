@@ -2,10 +2,10 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { HeroMotion } from "./HeroMotion";
 import { BannerAPI } from "@/api/banner/banner.api";
 import { BannerInterface } from "@/types/banner";
 import { ImageLoader } from "@/components/ui/image-loader";
+import { HeroMotion } from "./HeroMotion";
 
 interface Props {
   bannersProps: BannerInterface[];
@@ -29,7 +29,7 @@ export const HeroClient: React.FC<Props> = ({ bannersProps }) => {
     if (banners.length === 0) return;
     const timer = setInterval(() => {
       setCurrentSlide((prev) => (prev + 1) % banners.length);
-    }, 5000);
+    }, 7000);
     return () => clearInterval(timer);
   }, [banners]);
 
@@ -44,7 +44,6 @@ export const HeroClient: React.FC<Props> = ({ bannersProps }) => {
       id="home"
       className="relative border mt-[10px] md:mt-[90px] h-[300px] md:h-[800px] flex items-center justify-center overflow-hidden">
       {/* Background image */}
-
       <div className="absolute inset-0 z-0">
         <ImageLoader
           src={currentBanner.imageUrl}
@@ -61,28 +60,33 @@ export const HeroClient: React.FC<Props> = ({ bannersProps }) => {
         />
         <div className="absolute inset-0 bg-black/5 z-40" />
       </div>
-
       {/* Text and CTA */}
       <div className="relative z-20 text-center text-white max-w-4xl mx-auto px-4">
         <HeroMotion
-        // mainTitle={currentBanner.title || "Máy xây dựng mới "}
-        // subTitle={currentBanner.description || "Sản phẩm tiêu chuẩn"}
-        // action={currentBanner.cta?.title || "Khám phá"}
-        // link={currentBanner.cta?.link}
+          mainTitle={currentBanner.title || ""}
+          subTitle={currentBanner.description || ""}
+          action={currentBanner.cta?.title || ""}
+          link={currentBanner.cta?.link}
         />
       </div>
-
       {/* Dot navigation */}
+
       <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 z-30 flex space-x-3">
         {banners.map((_, index) => (
           <button
             key={index}
             onClick={() => setCurrentSlide(index)}
-            className={`w-3 h-3 rounded-full transition-all duration-300 ${
-              index === currentSlide
-                ? "bg-yellow-400 w-8"
-                : "bg-white/50 hover:bg-white/75"
+            className={`h-3 rounded-full transition-all duration-300 ${
+              index === currentSlide ? "w-8" : "w-3 hover:scale-110"
             }`}
+            style={{
+              backgroundColor:
+                index === currentSlide
+                  ? "var(--color-primary)"
+                  : "rgba(255, 255, 255, 0.5)",
+              boxShadow:
+                index === currentSlide ? "var(--shadow-focus)" : "none",
+            }}
           />
         ))}
       </div>

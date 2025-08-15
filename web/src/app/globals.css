@@ -49,44 +49,87 @@
   --bg-ship:#def4f7;
 
 
-   /* Primary Colors */
-   --color-primary: #C8A165;            /* Gold Earth - vàng ánh kim sang trọng */
-  --color-primary-hover: #B0895B;      /* Gold nhạt hơn khi hover */
-  --color-primary-light: #E3CBA0;      /* Vàng nhạt mềm mại */
+/* Real Estate Color Palette - Cyan Primary */
 
-  /* Background Colors */
-  --color-bg: #FFFFFF;                 /* Trắng tinh khiết */
-  --color-bg-secondary: #F7F6F3;       /* Trắng ngà ấm */
-  --color-bg-accent: #ECE8E3;          /* Xám be ấm */
-  --color-bg-hover: #E0DBD4;           /* Xám be đậm hơn khi hover */
+/* Primary Colors */
+--color-primary: #2DD4BF;            /* Teal Cyan - modern và professional */
+--color-primary-hover: #14B8A6;      /* Teal đậm hơn khi hover */
+--color-primary-light: #99F6E4;      /* Cyan nhạt mềm mại */
+--color-primary-dark: #0F766E;       /* Cyan tối cho contrast cao */
 
-  /* Text Colors */
-  --color-text-primary: #3A2F28;       /* Nâu đen - chữ chính */
-  --color-text-secondary: #5A4A3F;     /* Nâu ấm - chữ phụ */
-  --color-text-muted: #7C6F65;         /* Xám nâu nhạt */
-  --color-text-white: #FFFFFF;         /* Trắng trên nền tối */
+/* Background Colors */
+--color-bg: #FFFFFF;                 /* Trắng tinh khiết */
+--color-bg-secondary: #F0FDFA;       /* Trắng xanh nhạt */
+--color-bg-accent: #E6FFFA;          /* Mint green nhạt */
+--color-bg-hover: #CCFBF1;           /* Teal nhạt khi hover */
 
-  /* Border Colors */
-  --color-border: #D6CFC6;             /* Xám be nhạt */
-  --color-border-light: #E8E3DC;       /* Xám sáng */
-  --color-border-accent: #C1B5A4;      /* Nâu be làm điểm nhấn */
+/* Text Colors */
+--color-text-primary: #134E4A;       /* Teal tối - chữ chính */
+--color-text-secondary: #0F766E;     /* Teal vừa - chữ phụ */
+--color-text-muted: #5EEAD4;         /* Teal nhạt muted */
+--color-text-white: #FFFFFF;         /* Trắng trên nền tối */
 
-  /* Accent Colors */
-  --color-accent-green: #A0A76E;       /* Xanh rêu ánh vàng */
-  --color-accent-green-light: #F3F4ED; /* Nền xanh rêu nhạt */
-  --color-accent-red: #B35E3A;         /* Gạch đỏ đất nung */
-  --color-accent-red-light: #F8EDE9;   /* Nền đỏ đất nhạt */
+/* Border Colors */
+--color-border: #B2F5EA;             /* Teal rất nhạt */
+--color-border-light: #E6FFFA;       /* Mint nhạt */
+--color-border-accent: #4FD1C7;      /* Teal vừa làm điểm nhấn */
 
-  /* Shadows */
-  --shadow-default: 0 4px 20px rgba(58, 47, 40, 0.08);
-  --shadow-hover: 0 8px 30px rgba(58, 47, 40, 0.12);
+/* Accent Colors */
+--color-accent-blue: #3B82F6;        /* Blue chuyên nghiệp */
+--color-accent-blue-light: #EFF6FF;  /* Nền blue nhạt */
+--color-accent-orange: #F59E0B;      /* Amber cho call-to-action */
+--color-accent-orange-light: #FFFBEB; /* Nền amber nhạt */
+--color-accent-gray: #6B7280;        /* Gray neutral */
+--color-accent-gray-light: #F9FAFB;  /* Nền gray nhạt */
 
-  /* Gradients */
-  --gradient-primary: linear-gradient(135deg, #C8A165 0%, #B0895B 100%);
-  --gradient-secondary: linear-gradient(135deg, #F7F6F3 0%, #E0DBD4 100%);
-  --gradient-accent: linear-gradient(135deg, #ECE8E3 0%, #E0DBD4 100%);
+/* Success & Error States */
+--color-success: #10B981;            /* Emerald green */
+--color-success-light: #ECFDF5;      /* Nền success nhạt */
+--color-error: #EF4444;              /* Red error */
+--color-error-light: #FEF2F2;        /* Nền error nhạt */
+--color-warning: #F59E0B;            /* Amber warning */
+--color-warning-light: #FFFBEB;      /* Nền warning nhạt */
 
+/* Shadows */
+--shadow-default: 0 4px 20px rgba(19, 78, 74, 0.08);
+--shadow-hover: 0 8px 30px rgba(19, 78, 74, 0.12);
+--shadow-focus: 0 0 0 3px rgba(45, 212, 191, 0.3);
 
+/* Gradients */
+--gradient-primary: linear-gradient(135deg, #2DD4BF 0%, #14B8A6 100%);
+--gradient-secondary: linear-gradient(135deg, #F0FDFA 0%, #E6FFFA 100%);
+--gradient-accent: linear-gradient(135deg, #99F6E4 0%, #5EEAD4 100%);
+--gradient-hero: linear-gradient(135deg, #0F766E 0%, #134E4A 100%);
+
+/* Real Estate Specific Colors */
+--color-luxury: #1E293B;             /* Slate dark cho luxury properties */
+--color-luxury-light: #F8FAFC;       /* Nền luxury nhạt */
+--color-sold: #DC2626;               /* Red cho "SOLD" */
+--color-price: #059669;              /* Emerald cho giá bán */
+--color-new-listing: #7C3AED;        /* Purple cho "NEW" */
+--color-featured: #F59E0B;           /* Amber cho "FEATURED" */
+
+/* Usage Examples:
+   Primary Button: background: var(--color-primary), color: var(--color-text-white)
+   Secondary Button: background: var(--color-bg-accent), color: var(--color-text-primary)
+   Property Card: background: var(--color-bg), border: 1px solid var(--color-border)
+   Price Display: color: var(--color-price), font-weight: bold
+   Status Badge: background: var(--color-featured), color: var(--color-text-white)
+*/
+
+/* Optional: CSS Custom Properties for consistent spacing */
+--spacing-xs: 0.25rem;    /* 4px */
+--spacing-sm: 0.5rem;     /* 8px */
+--spacing-md: 1rem;       /* 16px */
+--spacing-lg: 1.5rem;     /* 24px */
+--spacing-xl: 2rem;       /* 32px */
+--spacing-2xl: 3rem;      /* 48px */
+
+/* Border Radius */
+--radius-sm: 0.25rem;     /* 4px */
+--radius-md: 0.5rem;      /* 8px */
+--radius-lg: 0.75rem;     /* 12px */
+--radius-xl: 1rem;        /* 16px */
 
 
   /* Navbar Color */

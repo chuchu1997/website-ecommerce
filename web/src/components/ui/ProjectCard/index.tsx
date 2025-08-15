@@ -77,7 +77,7 @@ export const ProjectCard: React.FC<{ project: ProjectInterface }> = ({
         {/* Project Type Badge */}
         <div
           className="
-          absolute top-4 left-4 z-20
+          absolute top-4 left-4 z-40
           transform translate-y-2 opacity-0
           group-hover:translate-y-0 group-hover:opacity-100
           transition-all duration-300 ease-out delay-100
@@ -103,14 +103,16 @@ export const ProjectCard: React.FC<{ project: ProjectInterface }> = ({
         {/* View Project Overlay Button */}
         <div
           className="
-          absolute inset-0 
+          absolute inset-0 z-40
           flex items-center justify-center
           opacity-0 
           group-hover:opacity-100
           transition-all duration-300 ease-out delay-200
-          z-10
+        
         ">
-          <div
+          <Link
+            href={`/du-an/${project.slug}`}
+            prefetch={true}
             className="
             flex items-center gap-3
             bg-[var(--color-bg)]/95 
@@ -127,13 +129,13 @@ export const ProjectCard: React.FC<{ project: ProjectInterface }> = ({
             <span className="text-sm font-semibold text-[var(--color-text-primary)]">
               Xem chi tiết
             </span>
-          </div>
+          </Link>
         </div>
 
         {/* Bottom Title Overlay */}
         <div
           className="
-          absolute bottom-0 left-0 right-0 
+          absolute bottom-0 left-0 right-0  z-30
           bg-gradient-to-t from-[var(--color-text-primary)]/90 to-transparent
           p-6 pb-4
           transform translate-y-2
