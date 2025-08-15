@@ -9,6 +9,7 @@ import { SeoType } from "./seo";
 export enum ImageMediaType {
  PRODUCT="PRODUCT",
  CATEGORY="CATEGORY",
+ CATEGORYBANNER="CATEGORYBANNER",
  BANNER="BANNER",
  BRAND="BRAND",
  NEWS="NEWS",

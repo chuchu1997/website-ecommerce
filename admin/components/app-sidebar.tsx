@@ -30,6 +30,7 @@ import {
   Landmark,
   MessageCircleMore,
   Settings,
+  CameraIcon,
 } from "lucide-react";
 
 import {
@@ -75,6 +76,13 @@ export function AppSidebar() {
         icon: Newspaper,
         active: pathname === `/${params.storeId}/news`,
         badge: "12",
+      },
+
+      {
+        href: `/${params.storeId}/media`,
+        label: "Quản lý Media",
+        icon: CameraIcon,
+        active: pathname === `/${params.storeId}/media`,
       },
       {
         href: `/${params.storeId}/orders`,
